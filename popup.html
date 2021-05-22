@@ -22,45 +22,187 @@
     </p>
     <ul class="list">
         <li>
-            <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
-                <span class="mdc-notched-outline">
-                    <span class="mdc-notched-outline__leading"></span>
-                    <span class="mdc-notched-outline__notch">
-                    <span class="mdc-floating-label" id="url-label">URL</span>
-                    </span>
-                    <span class="mdc-notched-outline__trailing"></span>
-                </span>
-                <input type="text" class="mdc-text-field__input" id="url-input" aria-labelledby="url-label"  onClick="this.select();">
+            <label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField">
+                <span class="mdc-text-field__ripple"></span>
+                <span class="mdc-floating-label" id="url-label">URL</span>
+                <input class="mdc-text-field__input" type="text" aria-labelledby="url-label" id="url-input"
+                    onClick="this.select();">
+                <span class="mdc-line-ripple"></span>
             </label>
         </li>
         <li>
-            <input type="checkbox" id="podfic_label" checked="true" />
-            <label for="podfic_label">Add the tag "Podfic"</label>
+            <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
+                <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
+                    <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_label" checked="true" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                    <div class="mdc-checkbox__ripple"></div>
+                </div>
+                <label for="podfic_label">Add the tag "Podfic"</label>
+            </div>
         </li>
         <li>
-            <input type="checkbox" id="podfic_length_label" checked="true" />
-            <label for="podfic_length_label">Add a "Podfic Length" tag</label>
-            <select id="podfic_length_value">
-                <option value="0-10 Minutes">0-10 Minutes</option>
-                <option value="10-20 Minutes">10-20 Minutes</option>
-                <option value="20-30 Minutes">20-30 Minutes</option>
-                <option value="30-45 Minutes">30-45 Minutes</option>
-                <option value="45-60 Minutes">45-60 Minutes</option>
-                <option value="1-1.5 Hours">1-1.5 Hours</option>
-                <option value="1.5-2 Hours">1.5-2 Hours</option>
-                <option value="2-2.5 Hours">2-2.5 Hours</option>
-                <option value="2.5-3 Hours">2.5-3 Hours</option>
-                <option value="3-3.5 Hours">3-3.5 Hours</option>
-                <option value="3.5-4 Hours">3.5-4 Hours</option>
-                <option value="4-4.5 Hours">4-4.5 Hours</option>
-                <option value="4.5-5 Hours">4.5-5 Hours</option>
-                <option value="5-6 Hours">5-6 Hours</option>
-                <option value="6-7 Hours">6-7 Hours</option>
-                <option value="7-10 Hours">7-10 Hours</option>
-                <option value="10-15 Hours">10-15 Hours</option>
-                <option value="15-20 Hours">15-20 Hours</option>
-                <option value="Over 20 Hours">Over 20 Hours</option>
-            </select>
+            <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
+                <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
+                    <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_length_label"
+                        checked="true" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                    <div class="mdc-checkbox__ripple"></div>
+                </div>
+                <label for="podfic_length_label">Add a "Podfic Length" tag</label>
+            </div>
+            <div class="mdc-select mdc-select--filled" data-mdc-auto-init="MDCSelect">
+                <input type="hidden" name="podfic_length_value" id="podfic_length_value" />
+                <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false"
+                    aria-labelledby="podfic-length-label podfic-length-selected-text">
+                    <span class="mdc-select__ripple"></span>
+                    <span id="podfic-length-label" class="mdc-floating-label">Length</span>
+                    <span class="mdc-select__selected-text-container">
+                        <span id="podfic-length-selected-text" class="mdc-select__selected-text">10-20 Minutes</span>
+                    </span>
+                    <span class="mdc-select__dropdown-icon">
+                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5" focusable="false">
+                            <polygon class="mdc-select__dropdown-icon-inactive" stroke="none" fill-rule="evenodd"
+                                points="7 10 12 15 17 10">
+                            </polygon>
+                            <polygon class="mdc-select__dropdown-icon-active" stroke="none" fill-rule="evenodd"
+                                points="7 15 12 10 17 15">
+                            </polygon>
+                        </svg>
+                    </span>
+                    <span class="mdc-line-ripple"></span>
+                </div>
+
+                <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
+                    data-mdc-auto-init="MDCMenu">
+                    <ul class="mdc-list" role="listbox" aria-label="Podfic length listbox">
+                        <li class="mdc-list-item mdc-list-item--selected" aria-selected="false"
+                            data-value="10-20 Minutes" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">10-20 Minutes</span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="20-30 Minutes" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                20-30 Minutes
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="30-45 Minutes" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                30-45 Minutes
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="45-60 Minutes" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                45-60 Minutes
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="1-1.5 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                1-1.5 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="1.5-2 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                1.5-2 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="2-2.5 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                2-2.5 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="2.5-3 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                2.5-3 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="2.5-3 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                2.5-3 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="3-3.5 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                3-3.5 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="3.5-4 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                3.5-4 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="4-4.5 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                4-4.5 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="4.5-5 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                4.5-5 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="5-6 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                5-6 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="6-7 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                6-7 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="7-10 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                7-10 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="10-15 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                10-15 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="15-20 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                15-20 Hours
+                            </span>
+                        </li>
+                        <li class="mdc-list-item" aria-selected="false" data-value="Over 20 Hours" role="option">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span class="mdc-list-item__text">
+                                Over 20 Hours
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </li>
         <li>
             <input type="checkbox" id="transform_title" checked="true" />
@@ -84,4 +226,5 @@
     </ul>
 </body>
 <script src="init-components.js"></script>
+
 </html>
