@@ -5,11 +5,12 @@
     <link rel="stylesheet" href="popup.css">
     <link href="resources/material-components-web.min.css" rel="stylesheet">
     <script src="resources/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="theming.css">
     <link rel="stylesheet" href="resources/material-icons.css">
     <link rel="stylesheet" href="resources/roboto.css">
 </head>
 
-<body class="mdc-typography" class="mdc-typography--body1">
+<body class="mdc-typography mdc-typography--body2">
     <h1 class="mdc-typography--headline6">Podfic Posting helper</h1>
     <p>
         Navigate to the "New Work" page on AO3, fill in the URL of the fic
@@ -23,9 +24,9 @@
     </p>
     <ul class="list">
         <li>
-            <label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField">
+            <label class="mdc-text-field mdc-text-field--filled mdc-theme--primary url-text-field" data-mdc-auto-init="MDCTextField">
                 <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="url-label">URL</span>
+                <span class="mdc-floating-label" id="url-label">URL of work to import from</span>
                 <input class="mdc-text-field__input" type="text" aria-labelledby="url-label" id="url-input"
                     onClick="this.select();">
                 <span class="mdc-line-ripple"></span>

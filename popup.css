@@ -1,5 +1,6 @@
-#url-input {
-  width: 400px;
+body {
+  /* Max width allowed by any chrome extension */
+  width: 600px;
 }
 
 .list {
@@ -18,4 +19,8 @@ li {
 
 .length-checkbox {
   margin-right: 8px;
+}
+
+.url-text-field {
+  width: 100%;
 }
