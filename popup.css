@@ -7,3 +7,11 @@
   margin: 0;
   padding: 0;
 }
+
+li {
+  margin-bottom: 8px;
+}
+
+.podfic-length-controls {
+  display: flex;
+}
