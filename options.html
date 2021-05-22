@@ -14,38 +14,43 @@
     <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <span class="mdc-top-app-bar__title">AO3 Podfic Posting Helper Extension</span>
+                <span class="mdc-top-app-bar__title">AO3 Podfic Posting Helper Extension Options</span>
             </section>
         </div>
     </header>
     <main class="mdc-top-app-bar--fixed-adjust page-content">
         <section>
-            <p>
-                Set the default work template for your work: (this won't replace
-                any metadata for you, but at least you won't have to go find
-                whereever you have this saved for yourself).
-            </p>
-            <p>
-                Note: this will leave the body of your work alone if your draft
-                already has text there.
-            </p>
             <form id="form">
-                <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                    data-mdc-auto-init="MDCTextField">
-                    <span class="mdc-text-field__ripple"></span>
-                    <span class="mdc-floating-label" id="default_body_label">Template</span>
-                    <span class="mdc-text-field__resizer">
-                        <textarea class="mdc-text-field__input" rows="20" cols="100"
-                            aria-labelledby="default_body_label" id="default_body" required></textarea>
-                    </span>
-                    <span class="mdc-line-ripple"></span>
-                </label>
-                <br>
-                <br>
-                <button class="mdc-button mdc-button--raised" type="submit" data-mdc-auto-init="MDCRipple">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">Save as default</span>
-                </button>
+                <div class="mdc-card mdc-card--outlined">
+                    <header>
+                        <h1 class="mdc-typography--subtitle1">Work template</h1>
+                    </header>
+                    <p>
+                        Set the default work template for your work: (this won't replace
+                        any metadata for you, but at least you won't have to go find
+                        whereever you have this saved for yourself).
+                    </p>
+                    <p>
+                        Note: this will leave the body of your work alone if your draft
+                        already has text there.
+                    </p>
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
+                        data-mdc-auto-init="MDCTextField">
+                        <span class="mdc-text-field__ripple"></span>
+                        <span class="mdc-floating-label" id="default_body_label">Template</span>
+                        <span class="mdc-text-field__resizer">
+                            <textarea class="mdc-text-field__input" rows="20" cols="100"
+                                aria-labelledby="default_body_label" id="default_body" required></textarea>
+                        </span>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+                    <div class="mdc-card__actions actions">
+                        <button class="mdc-button mdc-card__action" type="submit" data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <span class="mdc-button__label">Save as default</span>
+                        </button>
+                    </div>
+                </div>
             </form>
         </section>
     </main>
