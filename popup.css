@@ -1,8 +1,8 @@
-#url-input{
+#url-input {
   width: 400px;
 }
 
-.list{
+.list {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -14,4 +14,8 @@ li {
 
 .podfic-length-controls {
   display: flex;
+}
+
+.length-checkbox {
+  margin-right: 8px;
 }
