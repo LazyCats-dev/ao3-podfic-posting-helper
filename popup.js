@@ -1,3 +1,5 @@
+import { getOptionsWithDefaults, savePopUpOptions } from './option-saver.js';
+
 /** @type {HTMLInputElement} */
 const urlInput = document.getElementById("url-input");
 /** @type {HTMLInputElement} */
@@ -12,8 +14,13 @@ const transformSummary = document.getElementById("transform_summary");
 const transformTitle = document.getElementById("transform_title");
 const importButton = document.getElementById("import");
 
-// Import options from storage
-chrome.storage.sync.get("options", async ({ options }) => {
+// Treat hitting "enter" in the url box the same as clicking the "import" button.
+urlInput.addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) { importButton.click(); }
+});
+
+// Import pop-up options from storage.
+getOptionsWithDefaults((options) => {
     urlInput.value = options['url'];
     podficLabel.checked = options['podfic_label'];
     podficLengthLabel.checked = options['podfic_length_label'];
@@ -22,27 +29,26 @@ chrome.storage.sync.get("options", async ({ options }) => {
     transformTitle.checked = options['transform_title'];
 });
 
-urlInput.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) { importButton.click(); }
-});
-
-// When the button is clicked, import metadata from original work
+// When the button is clicked, import metadata from original work.
 importButton.addEventListener("click", async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    chrome.storage.sync.set({
-        'options': {
-            'url': urlInput.value,
-            'podfic_label': podficLabel.checked,
-            'podfic_length_label': podficLengthLabel.checked,
-            'podfic_length_value': podficLengthValue.value,
-            'transform_summary': transformSummary.checked,
-            'transform_title': transformTitle.checked
-        }
+    // Save the options, because we won't be able to access them later.
+    console.log("url input:");
+    console.log(urlInput);
+    savePopUpOptions({
+        'url': urlInput.value,
+        'podfic_label': podficLabel.checked,
+        'podfic_length_label': podficLengthLabel.checked,
+        'podfic_length_value': podficLengthValue.value,
+        'transform_summary': transformSummary.checked,
+        'transform_title': transformTitle.checked
+
     });
 
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
+        // main just waits for importAndFillMetadata
         function: main,
     });
 });
@@ -50,6 +56,7 @@ importButton.addEventListener("click", async () => {
 async function main() {
 
     /**
+     * Query a (potentially empty) list of HTMLElements
      * @param parent {HTMLElement}
      * @param query {string}
      * @return {HTMLElement[]}
@@ -62,6 +69,7 @@ async function main() {
     }
 
     /**
+     * Query to get the first matching HTMLElement
      * @param parent {HTMLElement}
      * @param query {string}
      * @return {HTMLElement}
@@ -70,7 +78,9 @@ async function main() {
         return queryElements(parent, query)[0];
     }
 
-    /**@param url {string} */
+    /**
+     * @param url {string}
+     */
     function canonicalUrl(url) {
         //https://archiveofourown.org/
         if (url.startsWith("http")) {
@@ -81,7 +91,7 @@ async function main() {
     }
 
     /**
-     * 
+     * Strip <p> tags, since AO3 doesn't like them in the summary.
      * @param summary {HtmlElement} 
      */
     function sanitizeSummary(summary) {
@@ -98,6 +108,23 @@ async function main() {
             .trim();
     }
 
+    /**
+     * Transform a list of <a> html elements into a map from link text to link url.
+     * @param authors {HTMLElement[]}
+     * @returns {Map<string,string>}
+     */
+    function mapAuthors(authors) {
+        return authors.reduce((total, authorLink) => {
+            total.set(authorLink.innerText.trim(), authorLink.href); return total;
+        }, new Map());
+    }
+
+    /**
+     * Parse the metadata from a work page.
+     * @param doc {Document}
+     * @param url {string}
+     * @returns 
+     */
     function parseGenMetadata(doc, url) {
         const meta = queryElement(doc, ".meta");
         const rating = queryElement(meta, "dd.rating.tags").innerText.trim();
@@ -121,23 +148,24 @@ async function main() {
         };
     }
 
-    function mapAuthors(authors) {
-        return authors.reduce((total, authorLink) => {
-            total.set(authorLink.innerText.trim(), authorLink.href); return total;
-        }, new Map());
-    }
-
+    /**
+     * Parse the metadata from an adult work warning page.
+     * @param doc {Document}
+     * @param url {string}
+     * @returns
+     */
     function parseMatureMetadata(doc, url) {
         const work = queryElement(doc, ".blurb");
 
         const headerModule = queryElement(work, "div.header.module");
         const heading = queryElement(headerModule, "h4.heading");
-        // Note: the first "author" is actually the title.
-        const authors = queryElements(heading, "a");
-        const title = authors[0].innerText.trim();
-        // This removes the title, so authors now actually contains just the authors.
-        authors.shift();
-        const actualAuthors = mapAuthors(authors);
+        // Note: this is a list of elements where the first element
+        // is the title, and the remaining are the authors.
+        const titleAndAuthors = queryElements(heading, "a");
+        const title = titleAndAuthors[0].innerText.trim();
+        // This removes the title, so the array just contains the authors.
+        titleAndAuthors.shift();
+        const authors = mapAuthors(titleAndAuthors);
         const fandoms = queryElements(queryElement(headerModule, "h5.fandoms.heading"), "a").map(a => a.innerText.trim());
         const requiredTagsEl = queryElement(headerModule, "ul.required-tags");
         const rating = queryElement(requiredTagsEl, "span.rating").innerText.trim();
@@ -152,32 +180,39 @@ async function main() {
         const language = queryElement(work, "dd.language").innerText.trim();
 
         return {
-            title, actualAuthors, rating, warnings, relationships, characters, categories, fandoms,
+            title, actualAuthors: authors, rating, warnings, relationships, characters, categories, fandoms,
             freeformTags, language, summary, url,
         };
     }
 
-
-    // Example mature work: https://archiveofourown.org/works/31337180
-    // Example gen work: https://archiveofourown.org/works/28401015
+    /**
+     * Parse the metadata for the work at this url.
+     * @param url {string}
+     * @returns 
+     */
     async function importMetadata(url) {
         console.log(url);
         const result = await window.fetch(url);
         const html = await result.text();
         const domParser = new DOMParser();
         const doc = domParser.parseFromString(html, "text/html");
-        // The "This work could have adult content. If you proceed...." blurb
+        // The "This work could have adult content. If you proceed...." blurb.
         const caution = queryElements(doc, ".caution");
         if (caution.length == 0) {
             // Doc structure for gen pages (or if you're logged in and turned
-            // the warning off)
+            // the warning off).
             return parseGenMetadata(doc, url);
         } else {
-            // Doc structure for pages with a warning
+            // Doc structure for pages with a warning.
             return parseMatureMetadata(doc, url);
         }
     }
 
+    /**
+     * Return a map from option text to option value.
+     * @param options {HTMLOptionElement[]}
+     * @returns {Map<string,string>}
+     */
     function mapOptions(options) {
         return queryElements(options, "option")
             .reduce((total, optionElement) => {
@@ -185,6 +220,11 @@ async function main() {
             }, new Map());
     }
 
+    /**
+     * Return a map from input text to input element.
+     * @param inputs {HTMLElement[]}
+     * @returns {Map<string,HTMLElement>}
+     */
     function mapInputs(inputs) {
         return inputs
             .reduce((total, inputElement) => {
@@ -192,32 +232,66 @@ async function main() {
             }, new Map());
     }
 
+    /**
+     * Format a url and some text as a (string) <a> tag.
+     * @param url {string}
+     * @param text {string}
+     * @returns {string}
+     */
     function link(url, text) {
         return '<a href="' + canonicalUrl(url) + '">' + text + '</a>';
     }
 
+    /**
+     * Transform a summary by wrapping it in a <blockquote> and linking the original
+     * work/authors.
+     * @param summary {string}
+     * @param title {string}
+     * @param url {string}
+     * @param authors {Map<string,string>}
+     * @returns 
+     */
     function transform(summary, title, url, authors) {
         const newSummary = "<blockquote>" + summary + "</blockquote>Podfic of " + link(url, title) + " by ";
         const newAuthors = Array.from(authors).map(([author, authorUrl]) => (link(authorUrl, author))).join(", ");
         return newSummary + newAuthors + ".";
     }
 
+    /**
+     * Fill in the new work page with the extracted metadata.
+     * @param metadata 
+     * @param options 
+     */
     async function fillMetadata(metadata, options) {
-        const newWorkPage = queryElement(document, ".works-new ");
+        const newWorkPage = document.getElementById("main");
 
+        // Find the rating drop down, and pick the correct value.
         const ratingSelect = queryElement(newWorkPage, "#work_rating_string");
         const ratingOptions = mapOptions(ratingSelect);
         ratingSelect.value = ratingOptions.get(metadata['rating']);
+
+        // Find the warning check boxes, and check all the ones that apply.
         const warningBoxes = mapInputs(queryElements(queryElement(newWorkPage, "fieldset.warnings"), "input"));
         metadata["warnings"].forEach(warning => warningBoxes.get(warning).checked = true);
+
+        // Find the fandom text input, and insert a comma-separated list of fandoms.
         const fandomInput = queryElement(queryElement(newWorkPage, "dd.fandom"), "input");
         fandomInput.value = metadata["fandoms"].join(", ");
+
+        // Find the category check boxes, and check all the ones that apply.
         const categoryBoxes = mapInputs(queryElements(queryElement(newWorkPage, "dd.category"), "input"));
         metadata["categories"].forEach(category => categoryBoxes.get(category).checked = true);
+
+        // Find the relationship text input, and insert a comma-separated list of relationships.
         const relationshipInput = queryElement(queryElement(newWorkPage, "dd.relationship"), "input");
         relationshipInput.value = metadata["relationships"].join(", ");
+
+        // Find the character input, and insert a comma-separated list of characters.
         const characterInput = queryElement(queryElement(newWorkPage, "dd.character"), "input");
         characterInput.value = metadata["characters"].join(", ");
+
+        // Find the freeform tags input, and insert a comma-separated list of freeform tags.
+        // (potentially auto-adding "Podfic" and "Podfic Length" tags)
         const additionalTagsInput = queryElement(queryElement(newWorkPage, "dd.freeform"), "input");
         if (options['podfic_label']) {
             metadata["freeformTags"].push("Podfic");
@@ -227,12 +301,15 @@ async function main() {
         }
         additionalTagsInput.value = metadata["freeformTags"].join(", ");
 
+        // Set the title.
         const titleInput = queryElement(queryElement(newWorkPage, "dd.title"), "input");
         if (options['transform_title']) {
             titleInput.value = "[Podfic] " + metadata["title"];
         } else {
             titleInput.value = metadata["title"];
         }
+
+        // Set the summary, optionally wrapping it in a block quote.
         const summaryTextArea = queryElement(queryElement(newWorkPage, "dd.summary"), "textarea");
         if (options["transform_summary"]) {
             summaryTextArea.value =
@@ -241,6 +318,7 @@ async function main() {
             summaryTextArea.value = metadata["summary"];
         }
 
+        // Set the "inspired by" work url.
         const parentCheckmark = queryElement(queryElement(newWorkPage, "dt.parent"), "input");
         if (!parentCheckmark.checked) {
             parentCheckmark.click();
@@ -248,18 +326,21 @@ async function main() {
         const parentUrl = queryElement(newWorkPage, "#work_parent_attributes_url");
         parentUrl.value = metadata["url"];
 
+        // Set the same language as the original work.
         const languageSelect = queryElement(newWorkPage, "#work_language_id");
         const languageOptions = mapOptions(languageSelect);
         languageSelect.value = languageOptions.get(metadata["language"]);
 
+        // Set the new work text.
         const workText = queryElement(newWorkPage, ".mce-editor");
+        // If there's nothing here yet, over-write it.
         if (workText.value == "") {
-            workText.value = "Hello world!";
+            workText.value = options["default_body"];
         }
     }
 
     // The body of this function will be executed as a content script inside the
-    // current page
+    // "new work" page.
     async function importAndFillMetadata() {
         chrome.storage.sync.get("options", async ({ options }) => {
             const metadata = await importMetadata(options['url']);
@@ -269,5 +350,4 @@ async function main() {
     }
 
     await importAndFillMetadata();
-
 }
