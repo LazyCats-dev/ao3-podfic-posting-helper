@@ -19,13 +19,6 @@ const transformSummary = document.getElementById("transform_summary");
 const transformTitle = document.getElementById("transform_title");
 const importButton = document.getElementById("import");
 
-// Treat hitting "enter" in the url box the same as clicking the "import" button.
-// urlInput.addEventListener("keyup", (event) => {
-//     if (event.keyCode === 13) {
-//         importButton.click();
-//     }
-// });
-
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
     setInputValue(urlInput, options['url']);
@@ -307,6 +300,31 @@ async function main() {
     }
 
     /**
+     * Sets the value of a tag input, triggering all necessary events.
+     * @param inputElement {HTMLInputElement} 
+     * @param value {string}
+     */
+    function setTagsInputValue(inputElement, value) {
+        const event = new InputEvent('input', {
+            bubbles: true,
+            data: value
+        });
+        inputElement.value = value;
+        // Replicates the value changing.
+        inputElement.dispatchEvent(event);
+        // Replicates the user hitting enter.
+        inputElement.dispatchEvent(new KeyboardEvent('keydown', { 'key': ',' }));
+    }
+
+
+    // Treat hitting "enter" in the url box the same as clicking the "import" button.
+    // urlInput.addEventListener("keyup", (event) => {
+    //     if (event.keyCode === 13) {
+    //         importButton.click();
+    //     }
+    // });
+
+    /**
      * Fill in the new work page with the extracted metadata.
      * @param metadata 
      * @param options 
@@ -324,23 +342,27 @@ async function main() {
         metadata["warnings"].forEach(warning => warningBoxes.get(warning).checked = true);
 
         // Find the fandom text input, and insert a comma-separated list of fandoms.
+        // Tell ao3 we did so.
         const fandomInput = queryElement(queryElement(newWorkPage, "dd.fandom"), "input");
-        fandomInput.value = metadata["fandoms"].join(", ");
+        setTagsInputValue(fandomInput, metadata["fandoms"].join(", "));
 
         // Find the category check boxes, and check all the ones that apply.
         const categoryBoxes = mapInputs(queryElements(queryElement(newWorkPage, "dd.category"), "input"));
         metadata["categories"].forEach(category => categoryBoxes.get(category).checked = true);
 
         // Find the relationship text input, and insert a comma-separated list of relationships.
+        // Tell ao3 we did so.
         const relationshipInput = queryElement(queryElement(newWorkPage, "dd.relationship"), "input");
-        relationshipInput.value = metadata["relationships"].join(", ");
+        setTagsInputValue(relationshipInput, metadata["relationships"].join(", "));
 
         // Find the character input, and insert a comma-separated list of characters.
+        // Tell ao3 we did so.
         const characterInput = queryElement(queryElement(newWorkPage, "dd.character"), "input");
-        characterInput.value = metadata["characters"].join(", ");
+        setTagsInputValue(characterInput, metadata["characters"].join(", "));
 
         // Find the freeform tags input, and insert a comma-separated list of freeform tags.
         // (potentially auto-adding "Podfic" and "Podfic Length" tags)
+        // Tell ao3 we did so.
         const additionalTagsInput = queryElement(queryElement(newWorkPage, "dd.freeform"), "input");
         if (options['podfic_label']) {
             metadata["freeformTags"].push("Podfic");
@@ -348,7 +370,7 @@ async function main() {
         if (options['podfic_length_label']) {
             metadata["freeformTags"].push("Podfic Length: " + options["podfic_length_value"]);
         }
-        additionalTagsInput.value = metadata["freeformTags"].join(", ");
+        setTagsInputValue(additionalTagsInput, metadata["freeformTags"].join(", "));
 
         // Set the title.
         const titleInput = queryElement(queryElement(newWorkPage, "dd.title"), "input");
