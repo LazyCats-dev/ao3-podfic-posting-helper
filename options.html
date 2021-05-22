@@ -20,10 +20,21 @@
             Note: this will leave the body of your work alone if your draft
             already has text there.
         </p>
-        <textarea id="default_body"></textarea>
-        <button id="save">Save as default</button>
+        <form id="form">
+            <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea" data-mdc-auto-init="MDCTextField">
+                <span class="mdc-text-field__ripple"></span>
+                <span class="mdc-floating-label" id="default_body_label">Template</span>
+                <span class="mdc-text-field__resizer">
+                    <textarea class="mdc-text-field__input" rows="40" cols="40" aria-labelledby="default_body_label"
+                        id="default_body"></textarea>
+                </span>
+                <span class="mdc-line-ripple"></span>
+            </label>
+            <button id="save">Save as default</button>
+        </form>
     </div>
 </body>
+<script type="module" src="init-components.js"></script>
 <script src="options.js" type="module"></script>
 
 </html>
