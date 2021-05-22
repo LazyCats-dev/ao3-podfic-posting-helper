@@ -5,6 +5,8 @@ import {
 
 /** @type {HTMLInputElement} */
 const urlInput = document.getElementById("url-input");
+/** @type {HTMLFormElement} */
+const form = document.getElementById("form");
 /** @type {HTMLInputElement} */
 const podficLabel = document.getElementById("podfic_label");
 /** @type {HTMLInputElement} */
@@ -18,11 +20,11 @@ const transformTitle = document.getElementById("transform_title");
 const importButton = document.getElementById("import");
 
 // Treat hitting "enter" in the url box the same as clicking the "import" button.
-urlInput.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) {
-        importButton.click();
-    }
-});
+// urlInput.addEventListener("keyup", (event) => {
+//     if (event.keyCode === 13) {
+//         importButton.click();
+//     }
+// });
 
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
@@ -48,15 +50,14 @@ getOptionsWithDefaults((options) => {
 });
 
 // When the button is clicked, import metadata from original work.
-importButton.addEventListener("click", async () => {
+form.addEventListener("submit", async (submitEvent) => {
+    submitEvent.preventDefault();
     const [tab] = await chrome.tabs.query({
         active: true,
         currentWindow: true
     });
 
     // Save the options, because we won't be able to access them later.
-    console.log("url input:");
-    console.log(urlInput);
     savePopUpOptions({
         'url': urlInput.value,
         'podfic_label': podficLabel.checked,
@@ -74,6 +75,9 @@ importButton.addEventListener("click", async () => {
         function: main,
     });
 });
+
+// Focus the URL input for a11y.
+urlInput.focus();
 
 async function main() {
 
@@ -405,9 +409,6 @@ async function main() {
  * @param value {string}
  */
 function setInputValue(inputElement, value) {
-    console.error("setting value");
-    console.error(inputElement);
-    console.error(value);
     const event = new InputEvent('input', {
         bubbles: true,
         data: value
