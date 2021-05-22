@@ -1,4 +1,7 @@
-import { getOptionsWithDefaults, savePopUpOptions } from './option-saver.js';
+import {
+    getOptionsWithDefaults,
+    savePopUpOptions
+} from './option-saver.js';
 
 /** @type {HTMLInputElement} */
 const urlInput = document.getElementById("url-input");
@@ -16,14 +19,17 @@ const importButton = document.getElementById("import");
 
 // Treat hitting "enter" in the url box the same as clicking the "import" button.
 urlInput.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) { importButton.click(); }
+    if (event.keyCode === 13) {
+        importButton.click();
+    }
 });
 
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
-    urlInput.value = options['url'];
+    setInputValue(urlInput, options['url']);
     podficLabel.checked = options['podfic_label'];
     podficLengthLabel.checked = options['podfic_length_label'];
+    setInputValue(podficLengthValue, options['podfic_length_value']);
     podficLengthValue.value = options['podfic_length_value'];
     transformSummary.checked = options['transform_summary'];
     transformTitle.checked = options['transform_title'];
@@ -31,7 +37,10 @@ getOptionsWithDefaults((options) => {
 
 // When the button is clicked, import metadata from original work.
 importButton.addEventListener("click", async () => {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    });
 
     // Save the options, because we won't be able to access them later.
     console.log("url input:");
@@ -46,7 +55,9 @@ importButton.addEventListener("click", async () => {
     });
 
     chrome.scripting.executeScript({
-        target: { tabId: tab.id },
+        target: {
+            tabId: tab.id
+        },
         // main just waits for importAndFillMetadata
         function: main,
     });
@@ -114,7 +125,8 @@ async function main() {
      */
     function mapAuthors(authors) {
         return authors.reduce((total, authorLink) => {
-            total.set(authorLink.innerText.trim(), authorLink.href); return total;
+            total.set(authorLink.innerText.trim(), authorLink.href);
+            return total;
         }, new Map());
     }
 
@@ -142,8 +154,18 @@ async function main() {
         const summary = sanitizeSummary(queryElement(queryElement(work, "div.summary.module"), ".userstuff"));
 
         return {
-            title, authors, rating, warnings, relationships, characters, categories, fandoms,
-            freeformTags, language, summary, url,
+            title,
+            authors,
+            rating,
+            warnings,
+            relationships,
+            characters,
+            categories,
+            fandoms,
+            freeformTags,
+            language,
+            summary,
+            url,
         };
     }
 
@@ -179,8 +201,18 @@ async function main() {
         const language = queryElement(work, "dd.language").innerText.trim();
 
         return {
-            title, actualAuthors: authors, rating, warnings, relationships, characters, categories, fandoms,
-            freeformTags, language, summary, url,
+            title,
+            actualAuthors: authors,
+            rating,
+            warnings,
+            relationships,
+            characters,
+            categories,
+            fandoms,
+            freeformTags,
+            language,
+            summary,
+            url,
         };
     }
 
@@ -215,7 +247,8 @@ async function main() {
     function mapOptions(options) {
         return queryElements(options, "option")
             .reduce((total, optionElement) => {
-                total.set(optionElement.innerText.trim(), optionElement.value); return total;
+                total.set(optionElement.innerText.trim(), optionElement.value);
+                return total;
             }, new Map());
     }
 
@@ -227,7 +260,8 @@ async function main() {
     function mapInputs(inputs) {
         return inputs
             .reduce((total, inputElement) => {
-                total.set(inputElement.value.trim(), inputElement); return total;
+                total.set(inputElement.value.trim(), inputElement);
+                return total;
             }, new Map());
     }
 
@@ -341,7 +375,9 @@ async function main() {
     // The body of this function will be executed as a content script inside the
     // "new work" page.
     async function importAndFillMetadata() {
-        chrome.storage.sync.get("options", async ({ options }) => {
+        chrome.storage.sync.get("options", async ({
+            options
+        }) => {
             const metadata = await importMetadata(options['url']);
             console.log(metadata);
             await fillMetadata(metadata, options);
@@ -349,4 +385,24 @@ async function main() {
     }
 
     await importAndFillMetadata();
+}
+
+/**
+ * Sets the value of the input, trigger all necessary events.
+ * @param inputElement {HTMLInputElement} 
+ * @param value {string}
+ */
+function setInputValue(inputElement, value) {
+    console.error("setting value");
+    console.error(inputElement);
+    console.error(value);
+    const event = new InputEvent('input', {
+        bubbles: true,
+        data: value
+    });
+    inputElement.value = value;
+    // Replicates the value changing.
+    inputElement.dispatchEvent(event);
+    // Replicates the user leaving focus of the input element.
+    inputElement.dispatchEvent(new Event('change'));
 }
