@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="theming.css">
+    <link rel="stylesheet" href="options.css">
     <link href="resources/material-components-web.min.css" rel="stylesheet">
     <script src="resources/material-components-web.min.js"></script>
     <link rel="stylesheet" href="theming.css">
@@ -11,7 +11,14 @@
 </head>
 
 <body class="mdc-typography mdc-typography--body2">
-    <div>
+    <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <span class="mdc-top-app-bar__title">AO3 Podfic Posting Helper Extension</span>
+            </section>
+        </div>
+    </header>
+    <main class="mdc-top-app-bar--fixed-adjust page-content">
         <p>
             Set the default work template for your work: (this won't replace
             any metadata for you, but at least you won't have to go find
@@ -27,7 +34,7 @@
                 <span class="mdc-text-field__ripple"></span>
                 <span class="mdc-floating-label" id="default_body_label">Template</span>
                 <span class="mdc-text-field__resizer">
-                    <textarea class="mdc-text-field__input" rows="20" cols="40" aria-labelledby="default_body_label"
+                    <textarea class="mdc-text-field__input" rows="20" cols="100" aria-labelledby="default_body_label"
                         id="default_body" required></textarea>
                 </span>
                 <span class="mdc-line-ripple"></span>
@@ -39,7 +46,7 @@
                 <span class="mdc-button__label">Save as default</span>
             </button>
         </form>
-    </div>
+    </main>
 </body>
 <script type="module" src="init-components.js"></script>
 <script src="options.js" type="module"></script>
