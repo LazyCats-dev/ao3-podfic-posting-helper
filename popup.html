@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="popup.css">
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    <h1>Podfic Posting helper</h1>
+    <p>
+        Navigate to the "New Work" page on AO3, fill in the URL of the fic
+        you were inspired by in this pop-up, and watch all the associated
+        metadata get imported for you!
+    </p>
+    <p>
+        Note: this extension assumes it's dealing with an empty form. Anything
+        you enter in the form before importing metadata may get erased!
+    </p>
+    <ul class="list">
+        <li>
+            <label for="url-input">URL:</label>
+            <input id="url-input" type="text" onClick="this.select();" />
+        </li>
+        <li>
+            <input type="checkbox" id="podfic_label" checked="true" />
+            <label for="podfic_label">Add the tag "Podfic"</label>
+        </li>
+        <li>
+            <input type="checkbox" id="podfic_length_label" checked="true" />
+            <label for="podfic_length_label">Add a "Podfic Length" tag</label>
+            <select id="podfic_length_value">
+                <option value="0-10 Minutes">0-10 Minutes</option>
+                <option value="10-20 Minutes">10-20 Minutes</option>
+                <option value="20-30 Minutes">20-30 Minutes</option>
+                <option value="30-45 Minutes">30-45 Minutes</option>
+                <option value="45-60 Minutes">45-60 Minutes</option>
+                <option value="1-1.5 Hours">1-1.5 Hours</option>
+                <option value="1.5-2 Hours">1.5-2 Hours</option>
+                <option value="2-2.5 Hours">2-2.5 Hours</option>
+                <option value="2.5-3 Hours">2.5-3 Hours</option>
+                <option value="3-3.5 Hours">3-3.5 Hours</option>
+                <option value="3.5-4 Hours">3.5-4 Hours</option>
+                <option value="4-4.5 Hours">4-4.5 Hours</option>
+                <option value="4.5-5 Hours">4.5-5 Hours</option>
+                <option value="5-6 Hours">5-6 Hours</option>
+                <option value="6-7 Hours">6-7 Hours</option>
+                <option value="7-10 Hours">7-10 Hours</option>
+                <option value="10-15 Hours">10-15 Hours</option>
+                <option value="15-20 Hours">15-20 Hours</option>
+                <option value="Over 20 Hours">Over 20 Hours</option>
+            </select>
+        </li>
+        <li>
+            <input type="checkbox" id="transform_title" checked="true" />
+            <label for="transform_title">
+                Set title to "[Podfic] " + original title (otherwise just copies the title)
+            </label>
+        </li>
+        <li>
+            <input type="checkbox" id="transform_summary" checked="true" />
+            <label for="transform_summary">
+                Wrap original summary in a blockquote and link to original
+                work/author(s) (otherwise just copies the summary)
+            </label>
+        </li>
+        <li>
+            <button id="import">Import</button>
+        </li>
+    </ul>
+</body>
+
+</html>

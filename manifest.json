@@ -1,0 +1,17 @@
+{
+    "name": "AO3 Transformer",
+    "description": "Autofill metadata to match a work you were inspired by",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
