@@ -65,7 +65,7 @@
                     </div>
                     <label for="podfic_length_label">Add a "Podfic Length" tag</label>
                 </div>
-                <div class="mdc-select mdc-select--filled" data-mdc-auto-init="MDCSelect">
+                <div class="mdc-select mdc-select--filled" id="podfic-length-select" data-mdc-auto-init="MDCSelect">
                     <input type="hidden" name="podfic_length_value" id="podfic_length_value" />
                     <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false"
                         aria-labelledby="podfic-length-label podfic-length-selected-text">
@@ -247,7 +247,7 @@
             </div>
         </li>
         <li>
-            <button class="mdc-button mdc-button--raised" id="import" data-mdc-auto-init="MDCRipple">
+            <button class="mdc-button mdc-button--raised" id="import" type="submit" data-mdc-auto-init="MDCRipple">
                 <div class="mdc-button__ripple"></div>
                 <i class="material-icons mdc-button__icon" aria-hidden="true">import_export</i>
                 <span class="mdc-button__label">Import</span>

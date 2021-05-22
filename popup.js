@@ -33,6 +33,18 @@ getOptionsWithDefaults((options) => {
     podficLengthValue.value = options['podfic_length_value'];
     transformSummary.checked = options['transform_summary'];
     transformTitle.checked = options['transform_title'];
+
+    // Podfic length value has special considerations
+    const selectElement = document.getElementById("podfic-length-select");
+    const selectInputElement = selectElement.querySelector('input');
+    setInputValue(selectInputElement, options['podfic_length_value']);
+    // For some reason a select is really stupid so we have to find the option
+    // with the correct text and click it.
+    const optionElements = selectElement.querySelectorAll(".mdc-list-item");
+    const optionMatchingValue = Array.from(optionElements).find(option => option.dataset.value === options['podfic_length_value']);
+    if (optionMatchingValue) {
+        optionMatchingValue.click();
+    }
 });
 
 // When the button is clicked, import metadata from original work.
