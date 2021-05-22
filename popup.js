@@ -43,7 +43,6 @@ importButton.addEventListener("click", async () => {
         'podfic_length_value': podficLengthValue.value,
         'transform_summary': transformSummary.checked,
         'transform_title': transformTitle.checked
-
     });
 
     chrome.scripting.executeScript({
