@@ -22,8 +22,16 @@
     </p>
     <ul class="list">
         <li>
-            <label for="url-input">URL:</label>
-            <input id="url-input" type="text" onClick="this.select();" />
+            <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__notch">
+                    <span class="mdc-floating-label" id="url-label">URL</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="text" class="mdc-text-field__input" id="url-input" aria-labelledby="url-label"  onClick="this.select();">
+            </label>
         </li>
         <li>
             <input type="checkbox" id="podfic_label" checked="true" />
