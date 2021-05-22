@@ -3,15 +3,17 @@ import { setInputValue } from './utils.js';
 
 /** @type {HTMLInputElement} */
 const defaultBody = document.getElementById("default_body");
-const saveButton = document.getElementById("save");
+/** @type {HTMLFormElement} */
+const form = document.getElementById("form");
 
 // Import default body text from storage.
 getOptionsWithDefaults((options) => {
     setInputValue(defaultBody, options['default_body']);
 });
 
-// When the button is clicked, save the default body text (without overriding other options).
-saveButton.addEventListener("click", async () => {
+// When the form is submitted, save the default body text (without overriding other options).
+form.addEventListener("submit", async submitEvent => {
+    submitEvent.preventDefault();
     saveOptionPageOptions({ 'default_body': defaultBody.value });
 });
 

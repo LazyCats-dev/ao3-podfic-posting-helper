@@ -18,14 +18,6 @@ const podficLengthValue = document.getElementById("podfic_length_value");
 const transformSummary = document.getElementById("transform_summary");
 /** @type {HTMLInputElement} */
 const transformTitle = document.getElementById("transform_title");
-const importButton = document.getElementById("import");
-
-// Treat hitting "enter" in the url box the same as clicking the "import" button.
-// urlInput.addEventListener("keyup", (event) => {
-//     if (event.keyCode === 13) {
-//         importButton.click();
-//     }
-// });
 
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
@@ -50,7 +42,7 @@ getOptionsWithDefaults((options) => {
     }
 });
 
-// When the button is clicked, import metadata from original work.
+// When the form is submitted, import metadata from original work.
 form.addEventListener("submit", async (submitEvent) => {
     submitEvent.preventDefault();
     const [tab] = await chrome.tabs.query({
