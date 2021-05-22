@@ -2,6 +2,7 @@ import {
     getOptionsWithDefaults,
     savePopUpOptions
 } from './option-saver.js';
+import { setInputValue } from './utils.js';
 
 /** @type {HTMLInputElement} */
 const urlInput = document.getElementById("url-input");
@@ -17,7 +18,6 @@ const podficLengthValue = document.getElementById("podfic_length_value");
 const transformSummary = document.getElementById("transform_summary");
 /** @type {HTMLInputElement} */
 const transformTitle = document.getElementById("transform_title");
-const importButton = document.getElementById("import");
 
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
@@ -42,7 +42,7 @@ getOptionsWithDefaults((options) => {
     }
 });
 
-// When the button is clicked, import metadata from original work.
+// When the form is submitted, import metadata from original work.
 form.addEventListener("submit", async (submitEvent) => {
     submitEvent.preventDefault();
     const [tab] = await chrome.tabs.query({
@@ -316,14 +316,6 @@ async function main() {
         inputElement.dispatchEvent(new KeyboardEvent('keydown', { 'key': ',' }));
     }
 
-
-    // Treat hitting "enter" in the url box the same as clicking the "import" button.
-    // urlInput.addEventListener("keyup", (event) => {
-    //     if (event.keyCode === 13) {
-    //         importButton.click();
-    //     }
-    // });
-
     /**
      * Fill in the new work page with the extracted metadata.
      * @param metadata 
@@ -423,21 +415,4 @@ async function main() {
     }
 
     await importAndFillMetadata();
-}
-
-/**
- * Sets the value of the input, trigger all necessary events.
- * @param inputElement {HTMLInputElement} 
- * @param value {string}
- */
-function setInputValue(inputElement, value) {
-    const event = new InputEvent('input', {
-        bubbles: true,
-        data: value
-    });
-    inputElement.value = value;
-    // Replicates the value changing.
-    inputElement.dispatchEvent(event);
-    // Replicates the user leaving focus of the input element.
-    inputElement.dispatchEvent(new Event('change'));
 }

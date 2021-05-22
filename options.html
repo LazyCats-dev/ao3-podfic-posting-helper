@@ -2,28 +2,55 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="theming.css">
+    <link rel="stylesheet" href="options.css">
     <link href="resources/material-components-web.min.css" rel="stylesheet">
     <script src="resources/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="theming.css">
     <link rel="stylesheet" href="resources/material-icons.css">
     <link rel="stylesheet" href="resources/roboto.css">
 </head>
 
 <body class="mdc-typography mdc-typography--body2">
-    <div>
-        <p>
-            Set the default work template for your work: (this won't replace
-            any metadata for you, but at least you won't have to go find
-            whereever you have this saved for yourself).
-        </p>
-        <p>
-            Note: this will leave the body of your work alone if your draft
-            already has text there.
-        </p>
-        <textarea id="default_body"></textarea>
-        <button id="save">Save as default</button>
-    </div>
+    <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <span class="mdc-top-app-bar__title">AO3 Podfic Posting Helper Extension</span>
+            </section>
+        </div>
+    </header>
+    <main class="mdc-top-app-bar--fixed-adjust page-content">
+        <section>
+            <p>
+                Set the default work template for your work: (this won't replace
+                any metadata for you, but at least you won't have to go find
+                whereever you have this saved for yourself).
+            </p>
+            <p>
+                Note: this will leave the body of your work alone if your draft
+                already has text there.
+            </p>
+            <form id="form">
+                <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
+                    data-mdc-auto-init="MDCTextField">
+                    <span class="mdc-text-field__ripple"></span>
+                    <span class="mdc-floating-label" id="default_body_label">Template</span>
+                    <span class="mdc-text-field__resizer">
+                        <textarea class="mdc-text-field__input" rows="20" cols="100"
+                            aria-labelledby="default_body_label" id="default_body" required></textarea>
+                    </span>
+                    <span class="mdc-line-ripple"></span>
+                </label>
+                <br>
+                <br>
+                <button class="mdc-button mdc-button--raised" type="submit" data-mdc-auto-init="MDCRipple">
+                    <div class="mdc-button__ripple"></div>
+                    <span class="mdc-button__label">Save as default</span>
+                </button>
+            </form>
+        </section>
+    </main>
 </body>
+<script type="module" src="init-components.js"></script>
 <script src="options.js" type="module"></script>
 
 </html>
