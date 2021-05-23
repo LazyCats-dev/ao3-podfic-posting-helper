@@ -312,7 +312,7 @@ async function main() {
         inputElement.value = value;
         // Replicates the value changing.
         inputElement.dispatchEvent(event);
-        // Replicates the user hitting enter.
+        // Replicates the user hitting comma.
         inputElement.dispatchEvent(new KeyboardEvent('keydown', { 'key': ',' }));
     }
 
