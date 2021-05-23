@@ -41,4 +41,4 @@ The only way to pass information between the form fields in the pop-up and the i
 
 ### Code design
 
-The pop-up and options page are built using [Material Design Components for Web](https://material.io/)/. We using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
+The pop-up and options page are built using [Material Design Components for Web](https://material.io/). We using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
