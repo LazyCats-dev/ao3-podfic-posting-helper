@@ -4,7 +4,7 @@
 
 When you post a new work, this extension can help you by importing metadata such as tags and rating to match the work that inspired you.
 
-_This is an unoffical extension and not supported by AO3_. PLease do not raise issues with this extension to AO3 support.
+_This is an unofficial extension and not supported by AO3_. Please do not raise issues with this extension to AO3 support.
 
 TODO: add a link to the chrome web store once the extension is publicly available, so people can install it.
 
