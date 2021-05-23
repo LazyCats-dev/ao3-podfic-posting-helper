@@ -26,7 +26,7 @@ optionsButton.addEventListener("click", () => {
     });
     if (currentTab.url !== "https://archiveofourown.org/works/new") {
         document.querySelector(".page-content").innerHTML = `This extension can only be used on a tab at
-        <a href="https://archiveofourown.org/works/new">https://archiveofourown.org/works/new</a>`;
+        <a href="https://archiveofourown.org/works/new" target="_blank" rel="noopener">https://archiveofourown.org/works/new</a>`;
     } else {
         setupPopup();
     }
