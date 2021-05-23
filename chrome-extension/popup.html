@@ -41,9 +41,14 @@
                         <span class="mdc-text-field__ripple"></span>
                         <span class="mdc-floating-label" id="url-label">URL of work to import from</span>
                         <input class="mdc-text-field__input" type="text" aria-labelledby="url-label" id="url-input"
-                            required>
+                            required aria-controls="url-error-hint" aria-describedby="url-error-hint">
                         <span class="mdc-line-ripple"></span>
                     </label>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                            id="url-error-hint" aria-hidden="true">
+                        </div>
+                    </div>
                 </li>
                 <li>
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
@@ -292,8 +297,8 @@
             </ul>
         </form>
     </main>
-    <script src="popup.js" type="module"></script>
 </body>
 <script type="module" src="init-components.js"></script>
-
+<!-- Must be last so that the components are initialized! -->
+<script src="popup.js" type="module"></script>
 </html>
