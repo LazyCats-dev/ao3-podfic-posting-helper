@@ -2,7 +2,9 @@ import {
     getOptionsWithDefaults,
     savePopUpOptions
 } from './option-saver.js';
-import { setInputValue } from './utils.js';
+import {
+    setInputValue
+} from './utils.js';
 
 /** @type {HTMLInputElement} */
 const urlInput = document.getElementById("url-input");
@@ -18,6 +20,8 @@ const podficLengthValue = document.getElementById("podfic_length_value");
 const transformSummary = document.getElementById("transform_summary");
 /** @type {HTMLInputElement} */
 const transformTitle = document.getElementById("transform_title");
+/** @type {HTMLButtonElement} */
+const optionsButton = document.getElementById("options_button");
 
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
@@ -39,6 +43,14 @@ getOptionsWithDefaults((options) => {
     const optionMatchingValue = Array.from(optionElements).find(option => option.dataset.value === options['podfic_length_value']);
     if (optionMatchingValue) {
         optionMatchingValue.click();
+    }
+});
+
+optionsButton.addEventListener("click", () => {
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('options.html'));
     }
 });
 
@@ -313,7 +325,9 @@ async function main() {
         // Replicates the value changing.
         inputElement.dispatchEvent(event);
         // Replicates the user hitting enter.
-        inputElement.dispatchEvent(new KeyboardEvent('keydown', { 'key': ',' }));
+        inputElement.dispatchEvent(new KeyboardEvent('keydown', {
+            'key': ','
+        }));
     }
 
     /**
