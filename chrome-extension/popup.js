@@ -45,6 +45,7 @@ function setupPopup() {
     const transformTitle = document.getElementById("transform_title");
     /** @type {HTMLElement} */
     const urlTextField = document.querySelector(".url-text-field").MDCTextField;
+    const snackbar = document.querySelector(".mdc-snackbar").MDCSnackbar;
 
     // Import pop-up options from storage.
 
@@ -498,5 +499,6 @@ function setupPopup() {
         }
 
         await importAndFillMetadata();
+        snackbar.open();
     }
 }
