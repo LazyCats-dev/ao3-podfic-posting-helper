@@ -37,7 +37,7 @@ The core importing logic that gets the metadata from the original work, and the 
 
 ### Storing options
 
-Users can set some options in the options page, and some in the pop-up. `option-saver.js` has some shared logic for writing that to/loading that from storage.
+The only way to pass information between the form fields in the pop-up and the injected html that fills in the "new work" form is to write it to storage and then read it back. That's what the chrome.storage.sync.set/get calls do.
 
 ### Code design
 

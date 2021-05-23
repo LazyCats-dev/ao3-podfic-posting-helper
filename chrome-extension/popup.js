@@ -1,8 +1,4 @@
 import {
-    getOptionsWithDefaults,
-    savePopUpOptions
-} from './option-saver.js';
-import {
     setInputValue,
     setCheckboxState
 } from './utils.js';
@@ -51,7 +47,8 @@ function setupPopup() {
     const urlTextField = document.querySelector(".url-text-field").MDCTextField;
 
     // Import pop-up options from storage.
-    getOptionsWithDefaults((options) => {
+
+    chrome.storage.sync.get("options", ({ options }) => {
         setInputValue(urlInput, options['url']);
         setCheckboxState(podficLabel, options['podfic_label']);
         setCheckboxState(podficLengthLabel, options['podfic_length_label']);
@@ -77,14 +74,16 @@ function setupPopup() {
         urlTextField.valid = true;
         urlTextField.helperTextContent = '';
         // Save the options, because we won't be able to access them later.
-        console.log(urlInput.value);
-        savePopUpOptions({
-            'url': urlInput.value,
-            'podfic_label': podficLabel.checked,
-            'podfic_length_label': podficLengthLabel.checked,
-            'podfic_length_value': podficLengthValue.value,
-            'transform_summary': transformSummary.checked,
-            'transform_title': transformTitle.checked
+
+        chrome.storage.sync.set({
+            'options': {
+                'url': urlInput.value,
+                'podfic_label': podficLabel.checked,
+                'podfic_length_label': podficLengthLabel.checked,
+                'podfic_length_value': podficLengthValue.value,
+                'transform_summary': transformSummary.checked,
+                'transform_title': transformTitle.checked
+            }
         });
 
         await main();
@@ -139,13 +138,13 @@ function setupPopup() {
         /**
          * Transform a list of <a> html elements into a map from link text to link url.
          * @param authors {HTMLElement[]}
-         * @returns {Map<string,string>}
+         * @returns {Array<[string,string]>}
          */
         function mapAuthors(authors) {
-            return authors.reduce((total, authorLink) => {
-                total.set(authorLink.innerText.trim(), authorLink.href);
+            return Array.from(authors.reduce((total, authorLink) => {
+                total.set(authorLink.innerText.trim(), authorLink.getAttribute("href"));
                 return total;
-            }, new Map());
+            }, new Map()).entries());
         }
 
         /**
@@ -205,6 +204,7 @@ function setupPopup() {
             // This removes the title, so the array just contains the authors.
             titleAndAuthors.shift();
             const authors = mapAuthors(titleAndAuthors);
+            console.log(authors);
             const fandoms = queryElements(queryElement(headerModule, "h5.fandoms.heading"), "a").map(a => a.innerText.trim());
             const requiredTagsEl = queryElement(headerModule, "ul.required-tags");
             const rating = queryElement(requiredTagsEl, "span.rating").innerText.trim();
@@ -380,9 +380,10 @@ function setupPopup() {
                     }));
                 }
 
-                chrome.storage.sync.get(["metadata", "options"], ({
+                chrome.storage.sync.get(["metadata", "options", "workbody"], ({
                     options,
-                    metadata
+                    metadata,
+                    workbody,
                 }) => {
                     console.log(metadata);
                     console.log(options);
@@ -395,6 +396,7 @@ function setupPopup() {
 
                     // Find the warning check boxes, and check all the ones that apply.
                     const warningBoxes = mapInputs(queryElements(queryElement(newWorkPage, "fieldset.warnings"), "input"));
+                    warningBoxes.set('Creator Chose Not To Use Archive Warnings', warningBoxes.get('Choose Not To Use Archive Warnings'));
                     metadata["warnings"].forEach(warning => warningBoxes.get(warning).checked = true);
 
                     // Find the fandom text input, and insert a comma-separated list of fandoms.
@@ -440,7 +442,7 @@ function setupPopup() {
                     const summaryTextArea = queryElement(queryElement(newWorkPage, "dd.summary"), "textarea");
                     if (options["transform_summary"]) {
                         summaryTextArea.value =
-                            transform(metadata["summary"], metadata["title"], metadata["url"], metadata["authors"]);
+                            transform(metadata["summary"], metadata["title"], metadata["url"], new Map(metadata["authors"]));
                     } else {
                         summaryTextArea.value = metadata["summary"];
                     }
@@ -462,7 +464,7 @@ function setupPopup() {
                     const workText = queryElement(newWorkPage, ".mce-editor");
                     // If there's nothing here yet, over-write it.
                     if (workText.value == "") {
-                        workText.value = options["default_body"];
+                        workText.value = workbody["default"];
                     }
                 });
             }
@@ -485,6 +487,8 @@ function setupPopup() {
         // "new work" page.
         async function importAndFillMetadata() {
             const metadata = await importMetadata(urlInput.value);
+            console.log("about to save metadata");
+            console.log(metadata);
             if (metadata) {
                 chrome.storage.sync.set({
                     metadata
