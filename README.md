@@ -4,6 +4,8 @@
 
 When you post a new work, this extension can help you by importing metadata such as tags and rating to match the work that inspired you.
 
+_This is an unoffical extension and not supported by AO3_. PLease do not raise issues with this extension to AO3 support.
+
 TODO: add a link to the chrome web store once the extension is publicly available, so people can install it.
 
 You can configure it to:
@@ -37,6 +39,6 @@ The core importing logic that gets the metadata from the original work, and the 
 
 Users can set some options in the options page, and some in the pop-up. `option-saver.js` has some shared logic for writing that to/loading that from storage.
 
-### UI
+### Code design
 
-The pop-up and options page use material design. We weren't able to figure CORS out, so the resources we need are copied into the resources directory.
+The pop-up and options page are built using [Material Design Components for Web](https://material.io/)/. We using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
