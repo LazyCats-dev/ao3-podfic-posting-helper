@@ -14,7 +14,8 @@
     <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <img class="material-icons mdc-top-app-bar__navigation-icon" role="presentation" alt="" src="/icons/icon-32.png">
+                <img class="material-icons mdc-top-app-bar__navigation-icon" role="presentation" alt=""
+                    src="/icons/icon-32.png">
                 <h1 class="mdc-top-app-bar__title">AO3 Podfic Posting Helper</h1>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
@@ -298,8 +299,17 @@
             </ul>
         </form>
     </main>
+    <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackBar">
+        <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+            <div class="mdc-snackbar__label" aria-atomic="false">
+            </div>
+            <div class="mdc-snackbar__actions" aria-atomic="true">
+            </div>
+        </div>
+    </div>
 </body>
 <script type="module" src="init-components.js"></script>
 <!-- Must be last so that the components are initialized! -->
 <script src="popup.js" type="module"></script>
+
 </html>

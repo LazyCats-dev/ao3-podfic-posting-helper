@@ -26,7 +26,7 @@ optionsButton.addEventListener("click", () => {
     });
     if (currentTab.url !== "https://archiveofourown.org/works/new") {
         document.querySelector(".page-content").innerHTML = `This extension can only be used on a tab at
-        <a href="https://archiveofourown.org/works/new">https://archiveofourown.org/works/new</a>`;
+        <a href="https://archiveofourown.org/works/new" target="_blank" rel="noopener">https://archiveofourown.org/works/new</a>`;
     } else {
         setupPopup();
     }
@@ -73,7 +73,6 @@ function setupPopup() {
 
     // When the form is submitted, import metadata from original work.
     form.addEventListener("submit", async (submitEvent) => {
-        console.log("Starting thing");
         submitEvent.preventDefault();
         urlTextField.valid = true;
         urlTextField.helperTextContent = '';
@@ -485,17 +484,13 @@ function setupPopup() {
         // The body of this function will be executed as a content script inside the
         // "new work" page.
         async function importAndFillMetadata() {
-            chrome.storage.sync.get("options", async ({
-                options
-            }) => {
-                const metadata = await importMetadata(options['url']);
-                if (metadata) {
-                    chrome.storage.sync.set({
-                        metadata
-                    });
-                    await fillMetadata();
-                }
-            });
+            const metadata = await importMetadata(urlInput.value);
+            if (metadata) {
+                chrome.storage.sync.set({
+                    metadata
+                });
+                await fillMetadata();
+            }
         }
 
         await importAndFillMetadata();
