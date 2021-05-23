@@ -205,7 +205,6 @@ function setupPopup() {
             // This removes the title, so the array just contains the authors.
             titleAndAuthors.shift();
             const authors = mapAuthors(titleAndAuthors);
-            console.log(authors);
             const fandoms = queryElements(queryElement(headerModule, "h5.fandoms.heading"), "a").map(a => a.innerText.trim());
             const requiredTagsEl = queryElement(headerModule, "ul.required-tags");
             const rating = queryElement(requiredTagsEl, "span.rating").innerText.trim();
@@ -386,8 +385,6 @@ function setupPopup() {
                     metadata,
                     workbody,
                 }) => {
-                    console.log(metadata);
-                    console.log(options);
                     const newWorkPage = document.getElementById("main");
 
                     // Find the rating drop down, and pick the correct value.
@@ -488,8 +485,6 @@ function setupPopup() {
         // "new work" page.
         async function importAndFillMetadata() {
             const metadata = await importMetadata(urlInput.value);
-            console.log("about to save metadata");
-            console.log(metadata);
             if (metadata) {
                 chrome.storage.sync.set({
                     metadata
