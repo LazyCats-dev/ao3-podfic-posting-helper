@@ -3,7 +3,7 @@ import {
     savePopUpOptions
 } from './option-saver.js';
 import {
-    setInputValue
+    setInputValue, setCheckboxState
 } from './utils.js';
 
 /** @type {HTMLInputElement} */
@@ -26,12 +26,10 @@ const optionsButton = document.getElementById("options_button");
 // Import pop-up options from storage.
 getOptionsWithDefaults((options) => {
     setInputValue(urlInput, options['url']);
-    podficLabel.checked = options['podfic_label'];
-    podficLengthLabel.checked = options['podfic_length_label'];
-    setInputValue(podficLengthValue, options['podfic_length_value']);
-    podficLengthValue.value = options['podfic_length_value'];
-    transformSummary.checked = options['transform_summary'];
-    transformTitle.checked = options['transform_title'];
+    setCheckboxState(podficLabel, options['podfic_label']);
+    setCheckboxState(podficLengthLabel, options['podfic_length_label']);
+    setCheckboxState(transformSummary, options['transform_summary']);
+    setCheckboxState(transformTitle, options['transform_title']);
 
     // Podfic length value has special considerations
     const selectElement = document.getElementById("podfic-length-select");
