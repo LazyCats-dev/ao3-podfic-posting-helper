@@ -11,8 +11,18 @@
 </head>
 
 <body class="mdc-typography mdc-typography--body2">
-    <h1 class="mdc-typography--headline6">Podfic Posting helper</h1>
-    <main>
+    <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <h1 class="mdc-top-app-bar__title">AO3 Podfic Posting Helper</h1>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                    aria-label="Extension options" title="Extension options" id="options_button">settings</button>
+            </section>
+        </div>
+    </header>
+    <main class="mdc-top-app-bar--fixed-adjust page-content">
         <p>
             Navigate to the "New Work" page on AO3, fill in the URL of the fic
             you were inspired by in this pop-up, and watch all the associated
@@ -38,8 +48,7 @@
                 <li>
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                            <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_label"
-                                checked="true" />
+                            <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_label" />
                             <div class="mdc-checkbox__background">
                                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                     <path class="mdc-checkbox__checkmark-path" fill="none"
@@ -56,8 +65,7 @@
                     <div class="podfic-length-controls">
                         <div class="mdc-form-field length-checkbox" data-mdc-auto-init="MDCFormField">
                             <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                                <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_length_label"
-                                    checked="true" />
+                                <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_length_label" />
                                 <div class="mdc-checkbox__background">
                                     <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                         <path class="mdc-checkbox__checkmark-path" fill="none"
@@ -241,8 +249,7 @@
                 <li>
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_title"
-                                checked="true" />
+                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_title" />
                             <div class="mdc-checkbox__background">
                                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                     <path class="mdc-checkbox__checkmark-path" fill="none"
@@ -260,8 +267,7 @@
                 <li>
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_summary"
-                                checked="true" />
+                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_summary" />
                             <div class="mdc-checkbox__background">
                                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                     <path class="mdc-checkbox__checkmark-path" fill="none"

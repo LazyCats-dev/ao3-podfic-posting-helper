@@ -1,6 +1,11 @@
 body {
   /* Max width allowed by any chrome extension */
   width: 600px;
+  margin: 0;
+}
+
+.page-content {
+  margin: 0 8px 8px 8px;
 }
 
 .list {
@@ -23,4 +28,8 @@ li {
 
 .url-text-field {
   width: 100%;
+}
+
+h1 {
+  margin: 0;
 }
