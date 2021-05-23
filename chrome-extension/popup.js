@@ -57,7 +57,10 @@ optionsButton.addEventListener("click", () => {
 
 // When the form is submitted, import metadata from original work.
 form.addEventListener("submit", async (submitEvent) => {
+    console.log("Starting thing");
     submitEvent.preventDefault();
+    urlTextField.valid = true;
+    urlTextField.helperTextContent = '';
     // Save the options, because we won't be able to access them later.
     savePopUpOptions({
         'url': urlInput.value,
@@ -361,7 +364,10 @@ async function main() {
                 }));
             }
 
-            chrome.storage.sync.get(["metadata", "options"], ({options, metadata}) => {
+            chrome.storage.sync.get(["metadata", "options"], ({
+                options,
+                metadata
+            }) => {
                 const newWorkPage = document.getElementById("main");
 
                 // Find the rating drop down, and pick the correct value.
@@ -442,7 +448,7 @@ async function main() {
                 }
             });
         }
-        
+
         const [tab] = await chrome.tabs.query({
             active: true,
             currentWindow: true
