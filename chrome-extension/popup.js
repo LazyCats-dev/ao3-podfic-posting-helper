@@ -221,7 +221,7 @@ async function main() {
 
         return {
             title,
-            actualAuthors: authors,
+            authors,
             rating,
             warnings,
             relationships,
