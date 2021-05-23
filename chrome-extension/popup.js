@@ -7,6 +7,18 @@ import {
     setCheckboxState
 } from './utils.js';
 
+
+/** @type {HTMLButtonElement} */
+const optionsButton = document.getElementById("options_button");
+
+optionsButton.addEventListener("click", () => {
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('options.html'));
+    }
+});
+
 (async () => {
     const [currentTab] = await chrome.tabs.query({
         active: true,
@@ -35,8 +47,6 @@ function setupPopup() {
     const transformSummary = document.getElementById("transform_summary");
     /** @type {HTMLInputElement} */
     const transformTitle = document.getElementById("transform_title");
-    /** @type {HTMLButtonElement} */
-    const optionsButton = document.getElementById("options_button");
     /** @type {HTMLElement} */
     const urlTextField = document.querySelector(".url-text-field").MDCTextField;
 
@@ -58,14 +68,6 @@ function setupPopup() {
         const optionMatchingValue = Array.from(optionElements).find(option => option.dataset.value === options['podfic_length_value']);
         if (optionMatchingValue) {
             optionMatchingValue.click();
-        }
-    });
-
-    optionsButton.addEventListener("click", () => {
-        if (chrome.runtime.openOptionsPage) {
-            chrome.runtime.openOptionsPage();
-        } else {
-            window.open(chrome.runtime.getURL('options.html'));
         }
     });
 
