@@ -1,6 +1,6 @@
 # AO3 Podfic Posting Helper
 
-![Logo with a platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true "AO3 Platypus")
+![Logo: A platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true)
 
 When you post a new work, this extension can help you by importing metadata such as tags and rating to match the work that inspired you. You can also configure a default template for the body of the work.
 
