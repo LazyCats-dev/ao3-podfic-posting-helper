@@ -78,6 +78,7 @@ function setupPopup() {
         urlTextField.valid = true;
         urlTextField.helperTextContent = '';
         // Save the options, because we won't be able to access them later.
+        console.log(urlInput.value);
         savePopUpOptions({
             'url': urlInput.value,
             'podfic_label': podficLabel.checked,
@@ -384,6 +385,8 @@ function setupPopup() {
                     options,
                     metadata
                 }) => {
+                    console.log(metadata);
+                    console.log(options);
                     const newWorkPage = document.getElementById("main");
 
                     // Find the rating drop down, and pick the correct value.

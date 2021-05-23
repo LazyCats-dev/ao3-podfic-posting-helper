@@ -1,4 +1,3 @@
-import { getOptionsWithDefaults, saveOptionPageOptions } from './option-saver.js';
 import { setInputValue } from './utils.js';
 
 /** @type {HTMLInputElement} */
@@ -7,14 +6,18 @@ const defaultBody = document.getElementById("default_body");
 const form = document.getElementById("form");
 
 // Import default body text from storage.
-getOptionsWithDefaults((options) => {
-    setInputValue(defaultBody, options['default_body']);
+chrome.storage.sync.get("workbody", async ({ workbody }) => {
+    setInputValue(defaultBody, workbody['default']);
 });
 
 // When the form is submitted, save the default body text (without overriding other options).
 form.addEventListener("submit", async submitEvent => {
     submitEvent.preventDefault();
-    saveOptionPageOptions({ 'default_body': defaultBody.value });
+    chrome.storage.sync.set({
+        'workbody': {
+            'default': defaultBody.value
+        }
+    });
 });
 
 // Set focus for a11y.
