@@ -37,6 +37,6 @@ The core importing logic that gets the metadata from the original work, and the 
 
 Users can set some options in the options page, and some in the pop-up. `option-saver.js` has some shared logic for writing that to/loading that from storage.
 
-### UI
+### Code design
 
-The pop-up and options page use material design. We weren't able to figure CORS out, so the resources we need are copied into the resources directory.
+The pop-up and options page are built using [Material Design Components for Web](https://material.io/)/. We using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
