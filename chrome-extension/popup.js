@@ -21,8 +21,9 @@ optionsButton.addEventListener("click", () => {
         currentWindow: true
     });
     if (currentTab.url !== "https://archiveofourown.org/works/new") {
-        document.querySelector(".page-content").innerHTML = `This extension can only be used on a tab at
-        <a href="https://archiveofourown.org/works/new" target="_blank" rel="noopener">https://archiveofourown.org/works/new</a>`;
+        document.querySelector(".page-content").innerHTML = `To use this extension go to
+        <a href="https://archiveofourown.org/works/new" target="_blank" rel="noopener">https://archiveofourown.org/works/new</a>
+        and then click on the extension icon again`;
     } else {
         setupPopup();
     }
@@ -49,7 +50,9 @@ function setupPopup() {
 
     // Import pop-up options from storage.
 
-    chrome.storage.sync.get("options", ({ options }) => {
+    chrome.storage.sync.get("options", ({
+        options
+    }) => {
         setInputValue(urlInput, options['url']);
         setCheckboxState(podficLabel, options['podfic_label']);
         setCheckboxState(podficLengthLabel, options['podfic_length_label']);
