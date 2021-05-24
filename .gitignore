@@ -16,3 +16,7 @@
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
 
+# Prevent accidental uploading of the private key
+*.pem
+# The binary itself has no reason to be in the code
+*.crx
