@@ -1,7 +1,7 @@
 {
     "name": "AO3 Podfic Posting Helper",
     "description": "Autofill metadata to match a work you were inspired by",
-    "version": "0.0.0.1",
+    "version": "0.0.0.2",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
