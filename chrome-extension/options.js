@@ -1,4 +1,6 @@
-import { setInputValue } from './utils.js';
+import {
+    setInputValue
+} from './utils.js';
 
 /** @type {HTMLInputElement} */
 const defaultBody = document.getElementById("default_body");
@@ -7,7 +9,9 @@ const form = document.getElementById("form");
 const snackbar = document.querySelector(".mdc-snackbar").MDCSnackbar;
 
 // Import default body text from storage.
-chrome.storage.sync.get("workbody", async ({ workbody }) => {
+chrome.storage.sync.get("workbody", async ({
+    workbody
+}) => {
     setInputValue(defaultBody, workbody['default']);
 });
 
@@ -21,6 +25,8 @@ form.addEventListener("submit", async submitEvent => {
     });
     snackbar.open();
 });
+
+document.querySelector('.version').textContent = chrome.runtime.getManifest().version
 
 // Set focus for a11y.
 defaultBody.focus();
