@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 
 <head>
     <link rel="stylesheet" href="popup.css">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="theming.css">
     <link rel="stylesheet" href="resources/material-icons.css">
     <link rel="stylesheet" href="resources/roboto.css">
+    <title>AO3 Podfic Posting Helper</title>
 </head>
 
 <body class="mdc-typography mdc-typography--body2">
@@ -39,8 +40,8 @@
             you enter in the form before importing metadata may get erased!
         </p>
         <form id="form">
-            <ul class="list" role="group">
-                <li>
+            <div class="list" role="group">
+                <div class="form-item">
                     <label class="mdc-text-field mdc-text-field--filled mdc-theme--primary url-text-field"
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
@@ -56,8 +57,8 @@
                             id="url-error-hint" aria-hidden="true">
                         </div>
                     </div>
-                </li>
-                <li>
+                </div>
+                <div class="form-item">
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
                             <input type="checkbox" class="mdc-checkbox__native-control" id="podfic_label" />
@@ -72,8 +73,8 @@
                         </div>
                         <label for="podfic_label">Add the tag "Podfic"</label>
                     </div>
-                </li>
-                <li>
+                </div>
+                <div class="form-item">
                     <div class="podfic-length-controls" role="group">
                         <div class="mdc-form-field length-checkbox" data-mdc-auto-init="MDCFormField">
                             <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
@@ -258,8 +259,8 @@
                             </div>
                         </div>
                     </div>
-                </li>
-                <li>
+                </div>
+                <div class="form-item">
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
                             <input type="checkbox" class="mdc-checkbox__native-control" id="transform_title" />
@@ -276,8 +277,8 @@
                             Set title to "[Podfic] " + original title (otherwise just copies the title)
                         </label>
                     </div>
-                </li>
-                <li>
+                </div>
+                <div class="form-item">
                     <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
                         <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
                             <input type="checkbox" class="mdc-checkbox__native-control" id="transform_summary" />
@@ -293,16 +294,16 @@
                         <label for="transform_summary">Wrap original summary in a blockquote and link to original
                             work/author(s) (otherwise just copies the summary)</label>
                     </div>
-                </li>
-                <li>
+                </div>
+                <div class="form-item">
                     <button class="mdc-button mdc-button--raised" id="import" type="submit"
                         data-mdc-auto-init="MDCRipple">
                         <div class="mdc-button__ripple"></div>
                         <i class="material-icons mdc-button__icon" aria-hidden="true">import_export</i>
                         <span class="mdc-button__label">Import</span>
                     </button>
-                </li>
-            </ul>
+                </div>
+            </div>
         </form>
     </main>
     <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">

@@ -9,12 +9,11 @@ body {
 }
 
 .list {
-  list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-li {
+.form-item {
   margin-bottom: 8px;
 }
 
