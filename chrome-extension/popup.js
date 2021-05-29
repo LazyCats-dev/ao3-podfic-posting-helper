@@ -282,8 +282,8 @@ function setupPopup() {
       }
       if (!result.ok) {
         urlTextField.valid = false;
-        urlTextField.helperTextContent =
-            `Failed to fetch the work! ${result.status}: ${result.statusText}`;
+        urlTextField.helperTextContent = `Failed to fetch the work! Error: ${
+            result.status} ${result.statusText}`;
         urlTextField.focus();
         return undefined;
       }
@@ -534,10 +534,10 @@ function setupPopup() {
       if (metadata) {
         chrome.storage.sync.set({metadata});
         await fillMetadata();
+        snackbar.open();
       }
     }
 
     await importAndFillMetadata();
-    snackbar.open();
   }
 }
