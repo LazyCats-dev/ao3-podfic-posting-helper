@@ -14,8 +14,7 @@
     "permissions": [
         "storage",
         "activeTab",
-        "tabs",
-        "*://archiveofourown.org/*"
+        "tabs"
     ],
     "browser_action": {
         "default_popup": "popup.html",
