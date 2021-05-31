@@ -7,9 +7,10 @@ const form = document.getElementById('form');
 const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
 
 // Import default body text from storage.
-
-const {workbody} = await browser.storage.sync.get('workbody');
-setInputValue(defaultBody, workbody['default']);
+(async () => {
+  const {workbody} = await browser.storage.sync.get('workbody');
+  setInputValue(defaultBody, workbody['default']);
+})();
 
 // When the form is submitted, save the default body text (without overriding
 // other options).
