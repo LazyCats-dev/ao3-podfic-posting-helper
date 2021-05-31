@@ -15,12 +15,12 @@ setInputValue(defaultBody, workbody['default']);
 // other options).
 form.addEventListener('submit', async submitEvent => {
   submitEvent.preventDefault();
-  await chrome.storage.sync.set({'workbody': {'default': defaultBody.value}});
+  await browser.storage.sync.set({'workbody': {'default': defaultBody.value}});
   snackbar.open();
 });
 
 document.querySelector('.version').textContent =
-    chrome.runtime.getManifest().version
+    browser.runtime.getManifest().version
 
 // Set focus for a11y.
 defaultBody.focus();
