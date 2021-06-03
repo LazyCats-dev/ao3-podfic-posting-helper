@@ -271,7 +271,21 @@ async function setupPopup() {
     async function importMetadata(url) {
       let result;
       try {
-        result = await window.fetch(url);
+        /**
+         * @callback FetchFn
+         * @param url {string}
+         * @returns {Promise<Response>}
+         */
+
+
+        /** @type {FetchFn} */
+        let fetchFn;
+        if (!!window.content && typeof content.fetch === 'function') {
+          fetchFn = content.fetch;
+        } else {
+          fetchFn = window.fetch;
+        }
+        result = await fetchFn(url);
       } catch (e) {
         urlTextField.valid = false;
         urlTextField.helperTextContent =
