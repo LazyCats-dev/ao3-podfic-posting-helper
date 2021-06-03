@@ -277,7 +277,6 @@ async function setupPopup() {
          * @returns {Promise<Response>}
          */
 
-
         /** @type {FetchFn} */
         let fetchFn;
         if (!!window.content && typeof content.fetch === 'function') {
