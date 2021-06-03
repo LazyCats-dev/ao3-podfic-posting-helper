@@ -20,3 +20,5 @@
 *.pem
 # The binary itself has no reason to be in the code
 *.crx
+chrome-extension/ao3-podfic-posting-helper.zip
+*.DS_Store
