@@ -31,3 +31,7 @@ section {
 .about-section section:not(:last-of-type) {
     border-bottom: 1px inset rgba(0, 0, 0, 0.12);
 }
+
+.header-icon {
+    margin-left: 4px;
+}
