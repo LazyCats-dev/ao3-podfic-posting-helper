@@ -418,11 +418,18 @@
   try {
     await importAndFillMetadata();
   } catch (e) {
+    let debugMessage;
+    if (e instanceof Error) {
+      debugMessage = `${e.message}: ${e.stack}`;
+    } else {
+      // Not much we can do here besides just try to coerce this to a string.
+      debugMessage = `${e}`;
+    }
     browser.runtime.sendMessage({
       result: 'error',
       message:
           `Unhandled error while importing metadata and filling in the form: ${
-              e}`,
+              debugMessage}`,
     });
   }
 })();
