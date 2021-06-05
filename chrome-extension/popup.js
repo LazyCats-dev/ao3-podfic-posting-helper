@@ -74,11 +74,14 @@ async function setupPopup() {
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async (submitEvent) => {
+    // Need to prevent the default so that the popup doesn't refresh.
     submitEvent.preventDefault();
+    // Clear any existing errors as they are no longer relevant
     urlTextField.valid = true;
     urlTextField.helperTextContent = '';
-    // Save the options, because we won't be able to access them later.
 
+    // Save the options, because we won't be able to access them in the injected
+    // script.
     await browser.storage.sync.set({
       'options': {
         'url': urlInput.value,
@@ -90,252 +93,25 @@ async function setupPopup() {
       }
     });
 
-    await main();
+    // We can't get a response back from the script because we are using promise
+    // based APIs and chrome doesn't support getting a promise back as a result
+    // so instead we listen for a message we expect to the send from the script.
+    browser.runtime.onMessage.addListener(injectedScriptResult => {
+      if (injectedScriptResult.result === 'error') {
+        urlTextField.valid = false;
+        urlTextField.focus();
+        urlTextField.helperTextContent = injectedScriptResult.message;
+      } else {
+        snackbar.open();
+      }
+    });
+
+    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    await browser.tabs.executeScript(
+        tab.id, {file: '/resources/browser-polyfill.min.js'});
+    await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
   });
 
   // Focus the URL input for a11y.
   urlInput.focus();
-
-  async function main() {
-    /**
-     * Query a (potentially empty) list of HTMLElements
-     * @param parent {HTMLElement}
-     * @param query {string}
-     * @return {HTMLElement[]}
-     */
-    function queryElements(parent, query) {
-      if (parent === undefined) {
-        return [];
-      }
-      return Array.from(parent.querySelectorAll(query));
-    }
-
-    /**
-     * Query to get the first matching HTMLElement
-     * @param parent {HTMLElement}
-     * @param query {string}
-     * @return {HTMLElement}
-     */
-    function queryElement(parent, query) {
-      return queryElements(parent, query)[0];
-    }
-
-    /**
-     * Strip <p> tags, since AO3 doesn't like them in the summary.
-     * @param summary {HtmlElement}
-     */
-    function sanitizeSummary(summary) {
-      // An opening <p> tag (shouldn't have attributes,
-      // but even if it does we can still strip it)
-      const pOpen = /\s*<p(\s[^>]*)?>\s*/g;
-      // A closing </p> tag
-      const pClose = /\s*<\/p>\s*/g;
-      const atats = /@@@+/g;
-      return summary.innerHTML.replace(pOpen, '@@@')
-          .replace(pClose, '@@@')
-          .replace(atats, '\n\n')
-          .trim();
-    }
-
-    /**
-     * Transform a list of <a> html elements into a map from link text to link
-     * url.
-     * @param authors {HTMLElement[]}
-     * @returns {Array<[string,string]>}
-     */
-    function mapAuthors(authors) {
-      return Array.from(authors
-                            .reduce(
-                                (total, authorLink) => {
-                                  total.set(
-                                      authorLink.innerText.trim(),
-                                      authorLink.getAttribute('href'));
-                                  return total;
-                                },
-                                new Map())
-                            .entries());
-    }
-
-    /**
-     * Parse the metadata from a work page.
-     * @param doc {Document}
-     * @param url {string}
-     * @returns
-     */
-    function parseGenMetadata(doc, url) {
-      const meta = queryElement(doc, '.meta');
-      const rating = queryElement(meta, 'dd.rating.tags').innerText.trim();
-      const warnings = queryElements(queryElement(meta, 'dd.warning.tags'), 'a')
-                           .map(a => a.innerText.trim());
-      const relationships =
-          queryElements(queryElement(meta, 'dd.relationship.tags'), 'a')
-              .map(a => a.innerText.trim());
-      const characters =
-          queryElements(queryElement(meta, 'dd.character.tags'), 'a')
-              .map(a => a.innerText.trim());
-      const categories =
-          queryElements(queryElement(meta, 'dd.category.tags'), 'a')
-              .map(a => a.innerText.trim());
-      const fandoms = queryElements(queryElement(meta, 'dd.fandom.tags'), 'a')
-                          .map(a => a.innerText.trim());
-      const freeformTags =
-          queryElements(queryElement(meta, 'dd.freeform.tags'), 'a')
-              .map(a => a.innerText.trim());
-      const language = queryElement(meta, 'dd.language').innerText.trim();
-
-      const work = doc.getElementById('workskin');
-      const title = queryElement(work, 'h2.title').innerText.trim();
-      const authors =
-          mapAuthors(queryElements(queryElement(work, '.byline'), 'a'));
-      // The actual html of the summary, with <p>s replaced.
-      const summary = sanitizeSummary(
-          queryElement(queryElement(work, 'div.summary.module'), '.userstuff'));
-
-      return {
-        title,
-        authors,
-        rating,
-        warnings,
-        relationships,
-        characters,
-        categories,
-        fandoms,
-        freeformTags,
-        language,
-        summary,
-        url,
-      };
-    }
-
-    /**
-     * Parse the metadata from an adult work warning page.
-     * @param doc {Document}
-     * @param url {string}
-     * @returns
-     */
-    function parseMatureMetadata(doc, url) {
-      const work = queryElement(doc, '.blurb');
-
-      const headerModule = queryElement(work, 'div.header.module');
-      const heading = queryElement(headerModule, 'h4.heading');
-      // Note: this is a list of elements where the first element
-      // is the title, and the remaining are the authors.
-      const titleAndAuthors = queryElements(heading, 'a');
-      const title = titleAndAuthors[0].innerText.trim();
-      // This removes the title, so the array just contains the authors.
-      titleAndAuthors.shift();
-      const authors = mapAuthors(titleAndAuthors);
-      const fandoms =
-          queryElements(queryElement(headerModule, 'h5.fandoms.heading'), 'a')
-              .map(a => a.innerText.trim());
-      const requiredTagsEl = queryElement(headerModule, 'ul.required-tags');
-      const rating =
-          queryElement(requiredTagsEl, 'span.rating').innerText.trim();
-      const categories = queryElement(requiredTagsEl, 'span.category')
-                             .innerText.split(',')
-                             .map(a => a.trim());
-
-      const superTags = queryElement(work, 'ul.tags.commas');
-      const warnings =
-          queryElements(superTags, '.warnings').map(a => a.innerText.trim());
-      const relationships = queryElements(superTags, '.relationships')
-                                .map(a => a.innerText.trim());
-      const characters =
-          queryElements(superTags, '.characters').map(a => a.innerText.trim());
-      const freeformTags =
-          queryElements(superTags, '.freeforms').map(a => a.innerText.trim());
-      const summary =
-          sanitizeSummary(queryElement(work, 'blockquote.userstuff.summary'));
-      const language = queryElement(work, 'dd.language').innerText.trim();
-
-      return {
-        title,
-        authors,
-        rating,
-        warnings,
-        relationships,
-        characters,
-        categories,
-        fandoms,
-        freeformTags,
-        language,
-        summary,
-        url,
-      };
-    }
-
-    /**
-     * Parse the metadata for the work at this url.
-     * @param url {string}
-     */
-    async function importMetadata(url) {
-      let result;
-      try {
-        /**
-         * @callback FetchFn
-         * @param url {string}
-         * @returns {Promise<Response>}
-         */
-
-        /** @type {FetchFn} */
-        let fetchFn;
-        if (!!window.content && typeof content.fetch === 'function') {
-          fetchFn = content.fetch;
-        } else {
-          fetchFn = window.fetch;
-        }
-        result = await fetchFn(url);
-      } catch (e) {
-        urlTextField.valid = false;
-        urlTextField.helperTextContent =
-            `Failed to fetch the work! ${e.message}`;
-        urlTextField.focus();
-        return undefined;
-      }
-      if (!result.ok) {
-        urlTextField.valid = false;
-        urlTextField.helperTextContent = `Failed to fetch the work! Error: ${
-            result.status} ${result.statusText}`;
-        urlTextField.focus();
-        return undefined;
-      }
-      const html = await result.text();
-      const domParser = new DOMParser();
-      const doc = domParser.parseFromString(html, 'text/html');
-      // The "This work could have adult content. If you proceed...." blurb.
-      const caution = queryElements(doc, '.caution');
-      if (caution.length == 0) {
-        // Doc structure for gen pages (or if you're logged in and turned
-        // the warning off).
-        return parseGenMetadata(doc, url);
-      } else {
-        // Doc structure for pages with a warning.
-        return parseMatureMetadata(doc, url);
-      }
-    }
-
-    /**
-     * Fill in the new work page with the extracted metadata.
-     */
-    async function fillMetadata() {
-      const [tab] =
-          await browser.tabs.query({active: true, currentWindow: true});
-      await browser.tabs.executeScript(
-          tab.id, {file: '/resources/browser-polyfill.min.js'});
-      await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
-    }
-
-    // The body of this function will be executed as a content script inside the
-    // "new work" page.
-    async function importAndFillMetadata() {
-      const metadata = await importMetadata(urlInput.value);
-      if (metadata) {
-        await browser.storage.sync.set({metadata});
-        await fillMetadata();
-        snackbar.open();
-      }
-    }
-
-    await importAndFillMetadata();
-  }
 }
