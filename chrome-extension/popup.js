@@ -43,10 +43,10 @@ async function setupPopup() {
   const transformSummary = document.getElementById('transform_summary');
   /** @type {HTMLInputElement} */
   const transformTitle = document.getElementById('transform_title');
-  /** @type {HTMLElement} */
   const urlTextField = document.querySelector('.url-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
-
+  /** @type {HTMLButtonElement} */
+  const submitButton = document.querySelector('#import');
   // Import pop-up options from storage.
 
   const {options} = await browser.storage.sync.get('options');
@@ -72,6 +72,22 @@ async function setupPopup() {
     optionMatchingValue.click();
   }
 
+  // Used for injected scripts.
+  // We can't get a response back from the script because we are using promise
+  // based APIs and chrome doesn't support getting a promise back as a result
+  // so instead we listen for a message we expect to the send from the script.
+  browser.runtime.onMessage.addListener(injectedScriptResult => {
+    // Enable submitting the form again
+    submitButton.disabled = false;
+    if (injectedScriptResult.result === 'error') {
+      urlTextField.valid = false;
+      urlTextField.focus();
+      urlTextField.helperTextContent = injectedScriptResult.message;
+    } else {
+      snackbar.open();
+    }
+  });
+
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async (submitEvent) => {
     // Need to prevent the default so that the popup doesn't refresh.
@@ -79,6 +95,8 @@ async function setupPopup() {
     // Clear any existing errors as they are no longer relevant
     urlTextField.valid = true;
     urlTextField.helperTextContent = '';
+    // Disable submitting the form until we get a result back
+    submitButton.disabled = true;
 
     // Save the options, because we won't be able to access them in the injected
     // script.
@@ -90,19 +108,6 @@ async function setupPopup() {
         'podfic_length_value': podficLengthValue.value,
         'transform_summary': transformSummary.checked,
         'transform_title': transformTitle.checked
-      }
-    });
-
-    // We can't get a response back from the script because we are using promise
-    // based APIs and chrome doesn't support getting a promise back as a result
-    // so instead we listen for a message we expect to the send from the script.
-    browser.runtime.onMessage.addListener(injectedScriptResult => {
-      if (injectedScriptResult.result === 'error') {
-        urlTextField.valid = false;
-        urlTextField.focus();
-        urlTextField.helperTextContent = injectedScriptResult.message;
-      } else {
-        snackbar.open();
       }
     });
 
