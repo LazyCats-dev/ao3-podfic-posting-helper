@@ -8,6 +8,8 @@ _This is an unofficial extension and not supported by AO3_. Please do not raise 
 
 [Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma)
 
+[Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/)
+
 You can configure it to:
 
 *   Automatically add the "Podfic" tag
@@ -31,7 +33,7 @@ The core importing logic that gets the metadata from the original work, and the 
 
 ### Storing options
 
-The only way to pass information between the form fields in the pop-up and the injected html that fills in the "new work" form is to write it to storage and then read it back. That's what the chrome.storage.sync.set/get calls do.
+The only way to pass information between the form fields in the pop-up and the injected html that fills in the "new work" form is to write it to storage and then read it back. That's what the `browser.storage.sync.set`/`get` calls do.
 
 ### Code design
 
