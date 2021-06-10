@@ -14,7 +14,8 @@ optionsButton.addEventListener('click', () => {
 (async () => {
   const [currentTab] =
       await browser.tabs.query({active: true, currentWindow: true});
-  if (currentTab.url !== 'https://archiveofourown.org/works/new') {
+  if (currentTab.url !== 'https://archiveofourown.org/works/new' &&
+      !currentTab.url.match(/https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/)) {
     document.querySelector('.page-content').innerHTML =
         `To use this extension go to
         <a
