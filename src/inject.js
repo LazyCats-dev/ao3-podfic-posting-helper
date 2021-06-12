@@ -301,6 +301,7 @@
   }
 
   async function importAndFillMetadata() {
+    let showPartialCompletionWarning = false;
     const {options, workbody} =
         await browser.storage.sync.get(['options', 'workbody']);
 
@@ -326,8 +327,16 @@
     warningBoxes.set(
         'Creator Chose Not To Use Archive Warnings',
         warningBoxes.get('Choose Not To Use Archive Warnings'));
-    metadata['warnings'].forEach(
-        warning => warningBoxes.get(warning).checked = true);
+    // Somehow it is possible for the imported metadata to have different
+    // warnings than new work form. In this case we just ignore the warning
+    // we failed to map.
+    for (const warning of metadata['warnings']) {
+      if (warningBoxes.has(warning)) {
+        warningBoxes.get(warning).checked = true;
+      } else {
+        showPartialCompletionWarning = true;
+      }
+    }
 
     // Find the fandom text input, and insert a comma-separated list of
     // fandoms. Tell ao3 we did so.
@@ -338,8 +347,16 @@
     // Find the category check boxes, and check all the ones that apply.
     const categoryBoxes = mapInputs(
         queryElements(queryElement(newWorkPage, 'dd.category'), 'input'));
-    metadata['categories'].forEach(
-        category => categoryBoxes.get(category).checked = true);
+    // Somehow it is possible for the imported metadata to have different
+    // categories than new work form. In this case we just ignore the warning
+    // we failed to map.
+    for (const category of metadata['categories']) {
+      if (categoryBoxes.has(category)) {
+        categoryBoxes.get(category).checked = true;
+      } else {
+        showPartialCompletionWarning = true;
+      }
+    }
 
     // Find the relationship text input, and insert a comma-separated list
     // of relationships. Tell ao3 we did so.
@@ -408,10 +425,19 @@
       workText.value = workbody['default'];
     }
 
-    // Tell the popup that the import worked as expected.
-    browser.runtime.sendMessage({
-      result: 'success',
-    });
+    if (showPartialCompletionWarning) {
+      browser.runtime.sendMessage({
+        result: 'error',
+        message:
+            'Some data could not be imported, the most likely reason is that ' +
+            'you set your AO3 preferences to hide warnings or tags',
+      });
+    } else {
+      // Tell the popup that the import worked as expected.
+      browser.runtime.sendMessage({
+        result: 'success',
+      });
+    }
   }
 
   // A cheap way to get a general unhandled error listener.
