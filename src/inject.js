@@ -108,7 +108,7 @@
    */
   function sanitizeSummary(summary) {
     if (!summary) {
-      throw new Error('wat');
+      return '';
     }
     // An opening <p> tag (shouldn't have attributes,
     // but even if it does we can still strip it)
