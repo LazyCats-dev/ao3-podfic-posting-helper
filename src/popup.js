@@ -11,20 +11,36 @@ optionsButton.addEventListener('click', () => {
   }
 });
 
+/**
+ * A list of URL patterns that the popup can operate on.
+ * @type {RegExp|string[]}
+ */
+const ALLOWED_URL_PATTERNS = [
+  // Standard new work
+  'https://archiveofourown.org/works/new',
+  // New work added to a collection
+  /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/,
+  // Editing an existing work
+  /https:\/\/archiveofourown.org\/works\/[0-9]+\/edit/,
+];
+
 (async () => {
   const [currentTab] =
       await browser.tabs.query({active: true, currentWindow: true});
-  if (currentTab.url !== 'https://archiveofourown.org/works/new' &&
-      !currentTab.url.match(
-          /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/)) {
+  // If no allowed URL matches then we are not on a page we support.
+  if (!ALLOWED_URL_PATTERNS.some(
+          allowedUrlPattern =>
+              currentTab.url.match(allowedUrlPattern) !== null)) {
     document.querySelector('.page-content').innerHTML =
-        `To use this extension go to
+        `This extension can only be used on the AO3 page to create a new work,
+        create a new work in a collection, or edit and existing work.
+        Please go to a supported URL and click the extension icon again.
+        To create a new work go to
         <a
             href="https://archiveofourown.org/works/new"
             target="_blank"
             rel="noopener">
-                https://archiveofourown.org/works/new</a>
-        and then click on the extension icon again`;
+                https://archiveofourown.org/works/new</a>`;
   } else {
     await setupPopup();
   }
