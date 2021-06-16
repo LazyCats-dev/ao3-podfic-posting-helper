@@ -50,7 +50,17 @@ async function setupPopup() {
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
 
+  // Setting this means that we have to update the validity of the text field
+  // when native validation shows the field as invalid. This is the only way
+  // we can keep validation in sync with our submit only validity checks.
   urlTextField.useNativeValidation = false;
+
+  urlInput.addEventListener('input', () => {
+    // Always clear the custom error when the user changes the value.
+    urlTextField.helperTextContent = '';
+    // Keep the text field in sync with the input.
+    urlTextField.valid = urlInput.validity.valid;
+  });
 
   // Import pop-up options from storage.
   const {options} = await browser.storage.sync.get('options');
