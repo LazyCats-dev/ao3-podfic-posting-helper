@@ -432,8 +432,8 @@
       browser.runtime.sendMessage({
         result: 'error',
         message:
-            'Some data could not be imported, the most likely reason is that ' +
-            'you set your AO3 preferences to hide warnings or tags',
+            'Warning: some data could not be imported, the most likely reason' +
+            'is that you set your AO3 preferences to hide warnings or tags',
       });
     } else {
       // Tell the popup that the import worked as expected.
