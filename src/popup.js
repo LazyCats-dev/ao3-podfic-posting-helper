@@ -15,7 +15,8 @@ optionsButton.addEventListener('click', () => {
   const [currentTab] =
       await browser.tabs.query({active: true, currentWindow: true});
   if (currentTab.url !== 'https://archiveofourown.org/works/new' &&
-      !currentTab.url.match(/https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/)) {
+      !currentTab.url.match(
+          /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/)) {
     document.querySelector('.page-content').innerHTML =
         `To use this extension go to
         <a
@@ -48,8 +49,10 @@ async function setupPopup() {
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
-  // Import pop-up options from storage.
 
+  urlTextField.useNativeValidation = false;
+
+  // Import pop-up options from storage.
   const {options} = await browser.storage.sync.get('options');
 
   setInputValue(urlInput, options['url']);
@@ -82,8 +85,8 @@ async function setupPopup() {
     submitButton.disabled = false;
     if (injectedScriptResult.result === 'error') {
       urlTextField.valid = false;
-      urlTextField.focus();
       urlTextField.helperTextContent = injectedScriptResult.message;
+      urlTextField.focus();
     } else {
       snackbar.open();
     }
