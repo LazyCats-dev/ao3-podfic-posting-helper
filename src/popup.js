@@ -33,7 +33,7 @@ const ALLOWED_URL_PATTERNS = [
               currentTab.url.match(allowedUrlPattern) !== null)) {
     document.querySelector('.page-content').innerHTML =
         `This extension can only be used on the AO3 page to create a new work,
-        create a new work in a collection, or edit and existing work.
+        create a new work in a collection, or edit an existing work.
         Please go to a supported URL and click the extension icon again.
         To create a new work go to
         <a
