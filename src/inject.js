@@ -104,9 +104,12 @@
 
   /**
    * Strip <p> tags, since AO3 doesn't like them in the summary.
-   * @param summary {HtmlElement}
+   * @param {HTMLElement|undefined} summary
    */
   function sanitizeSummary(summary) {
+    if (!summary) {
+      return '';
+    }
     // An opening <p> tag (shouldn't have attributes,
     // but even if it does we can still strip it)
     const pOpen = /\s*<p(\s[^>]*)?>\s*/g;
@@ -429,8 +432,8 @@
       browser.runtime.sendMessage({
         result: 'error',
         message:
-            'Some data could not be imported, the most likely reason is that ' +
-            'you set your AO3 preferences to hide warnings or tags',
+            'Warning: some data could not be imported, the most likely reason' +
+            'is that you set your AO3 preferences to hide warnings or tags',
       });
     } else {
       // Tell the popup that the import worked as expected.

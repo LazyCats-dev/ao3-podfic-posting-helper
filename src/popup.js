@@ -11,19 +11,36 @@ optionsButton.addEventListener('click', () => {
   }
 });
 
+/**
+ * A list of URL patterns that the popup can operate on.
+ * @type {RegExp|string[]}
+ */
+const ALLOWED_URL_PATTERNS = [
+  // Standard new work
+  'https://archiveofourown.org/works/new',
+  // New work added to a collection
+  /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/,
+  // Editing an existing work
+  /https:\/\/archiveofourown.org\/works\/[0-9]+\/edit/,
+];
+
 (async () => {
   const [currentTab] =
       await browser.tabs.query({active: true, currentWindow: true});
-  if (currentTab.url !== 'https://archiveofourown.org/works/new' &&
-      !currentTab.url.match(/https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/)) {
+  // If no allowed URL matches then we are not on a page we support.
+  if (!ALLOWED_URL_PATTERNS.some(
+          allowedUrlPattern =>
+              currentTab.url.match(allowedUrlPattern) !== null)) {
     document.querySelector('.page-content').innerHTML =
-        `To use this extension go to
+        `This extension can only be used on the AO3 page to create a new work,
+        create a new work in a collection, or edit an existing work.
+        Please go to a supported URL and click the extension icon again.
+        To create a new work go to
         <a
             href="https://archiveofourown.org/works/new"
             target="_blank"
             rel="noopener">
-                https://archiveofourown.org/works/new</a>
-        and then click on the extension icon again`;
+                https://archiveofourown.org/works/new</a>`;
   } else {
     await setupPopup();
   }
@@ -48,8 +65,20 @@ async function setupPopup() {
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
-  // Import pop-up options from storage.
 
+  // Setting this means that we have to update the validity of the text field
+  // when native validation shows the field as invalid. This is the only way
+  // we can keep validation in sync with our submit only validity checks.
+  urlTextField.useNativeValidation = false;
+
+  urlInput.addEventListener('input', () => {
+    // Always clear the custom error when the user changes the value.
+    urlTextField.helperTextContent = '';
+    // Keep the text field in sync with the input.
+    urlTextField.valid = urlInput.validity.valid;
+  });
+
+  // Import pop-up options from storage.
   const {options} = await browser.storage.sync.get('options');
 
   setInputValue(urlInput, options['url']);
@@ -82,8 +111,8 @@ async function setupPopup() {
     submitButton.disabled = false;
     if (injectedScriptResult.result === 'error') {
       urlTextField.valid = false;
-      urlTextField.focus();
       urlTextField.helperTextContent = injectedScriptResult.message;
+      urlTextField.focus();
     } else {
       snackbar.open();
     }
