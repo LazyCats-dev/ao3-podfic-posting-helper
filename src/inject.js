@@ -249,26 +249,31 @@
   }
 
   /**
+   * @callback FetchFn
+   * @param {string} url
+   * @param {RequestInit=} init
+   * @returns {Promise<Response>}
+   */
+
+  /** @type {FetchFn} */
+  let fetchFn;
+  if (!!window.content && typeof content.fetch === 'function') {
+    fetchFn = content.fetch;
+  } else {
+    fetchFn = window.fetch;
+  }
+
+  /**
    * Parse the metadata for the work at this url.
-   * @param url {string}
+   * @param {string} url
    */
   async function importMetadata(url) {
+    // Initially try to get the work without credentials, this handles cases
+    // where the user has tags or warnings hidden but can fail if the work
+    // the user is importing from is only available to logged-in users.
     let result;
     try {
-      /**
-       * @callback FetchFn
-       * @param url {string}
-       * @returns {Promise<Response>}
-       */
-
-      /** @type {FetchFn} */
-      let fetchFn;
-      if (!!window.content && typeof content.fetch === 'function') {
-        fetchFn = content.fetch;
-      } else {
-        fetchFn = window.fetch;
-      }
-      result = await fetchFn(url);
+      result = await fetchFn(url, {credentials: 'omit'});
     } catch (e) {
       return {
         result: 'error',
@@ -282,6 +287,29 @@
             result.statusText}`
       };
     }
+
+    // If we end up in this case it means that the work was not available to
+    // logged out users so we will attempt the fetch again but this time we will
+    // forward the user's credentials. If the user has warnings or tags hidden
+    // then there will be errors later on but these are handled.
+    if (result.redirected) {
+      try {
+        result = await fetchFn(url, {credentials: 'include'});
+      } catch (e) {
+        return {
+          result: 'error',
+          message: `Failed to fetch the work! ${e.message}`
+        };
+      }
+      if (!result.ok) {
+        return {
+          result: 'error',
+          message: `Failed to fetch the work! Error: ${result.status} ${
+              result.statusText}`
+        };
+      }
+    }
+
     const html = await result.text();
     const domParser = new DOMParser();
     const doc = domParser.parseFromString(html, 'text/html');
