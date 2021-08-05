@@ -20,3 +20,5 @@
 *.pem
 # The binary itself has no reason to be in the code
 *.crx
+*.xpi
+*.zip
