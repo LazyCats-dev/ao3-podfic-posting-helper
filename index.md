@@ -2,10 +2,12 @@
 
 <a href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=github_pages"
     target="_blank" rel="noopener" class="download-button">
+    <img alt="" role="presentation" src="/assets/img/chrome-logo.svg">
     <strong>Chrome Web Store</strong>
 </a>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/" target="_blank" rel="noopener"
     class="download-button">
+    <img alt="" role="presentation" src="/assets/img/firefox-logo.svg">
     <strong>Firefox Add-ons Store</strong>
 </a>
 <a href="{{ site.github.zip_url }}" target="_blank" rel="noopener" class="download-button">

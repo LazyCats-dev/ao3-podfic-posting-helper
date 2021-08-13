@@ -5,4 +5,12 @@
 
 .download-button {
     display: block;
+    height: 40px;
+    border: solid 1px black;
+
+    .download-logo {
+        height: 40px;
+        width: 40px;
+        margin-right: 8px;
+    }
 }
