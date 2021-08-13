@@ -24,12 +24,12 @@ extension to AO3 support.
 
 ## Support
 
-<a href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=github_pages"
+<a href="https://discord.gg/rhynWjrCw2"
     target="_blank" rel="noopener" class="button">
     <img alt="" role="presentation" src="/assets/img/discord-logo.svg" class="logo">
     Discord
 </a>
-<a href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/" target="_blank" rel="noopener"
+<a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new" target="_blank" rel="noopener"
     class="button">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo">
     GitHub
