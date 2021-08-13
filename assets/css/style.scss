@@ -7,8 +7,11 @@
     display: flex;
     align-items: center;
     height: 40px;
-    border: solid 1px black;
     margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: rgb(153, 0, 0);
+    color: white;
 
     .download-logo {
         height: 40px;
