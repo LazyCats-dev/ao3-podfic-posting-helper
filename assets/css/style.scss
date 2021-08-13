@@ -3,7 +3,7 @@
 
 @import "{{ site.theme }}";
 
-.download-button {
+.button {
     display: flex;
     align-items: center;
     height: 40px;
@@ -19,7 +19,7 @@
         font-weight: normal;
     }
 
-    .download-logo {
+    .logo {
         height: 40px;
         width: 40px;
         margin-right: 8px;
