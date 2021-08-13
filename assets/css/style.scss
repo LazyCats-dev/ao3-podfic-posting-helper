@@ -14,7 +14,7 @@
     color: white;
     width: 200px;
 
-    :hover, :focus {
+    &:hover, &:focus {
         color: white;
         font-weight: normal;
     }
