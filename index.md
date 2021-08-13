@@ -6,7 +6,20 @@ _This is an unofficial extension and not supported by AO3._ Please do not raise 
 
 ## Download
 
-[Chrome web store](https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=github_pages)
-[Firefox Add-ons store](https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/)
-[Source]({{ site.github.zip_url }})
-
+<ul class="downloads">
+    <li>
+        <a href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=github_pages" target="_blank" rel="noopener" class="download">
+            Chrome Web Store
+        </a>
+    </li>
+    <li>
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/" target="_blank" rel="noopener">
+            Firefox Add-ons Store
+        </a>
+    </li>
+    <li>
+        <a href="{{ site.github.zip_url }}" target="_blank" rel="noopener">
+            Source
+        </a>
+    </li>
+</ul>
