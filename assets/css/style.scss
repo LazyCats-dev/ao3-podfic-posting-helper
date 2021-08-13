@@ -1,7 +1,4 @@
----
----
-
-@import "{{ site.theme }}";
+--- --- @import "{{ site.theme }}";
 
 .button {
     display: flex;
@@ -14,7 +11,13 @@
     color: white;
     width: 200px;
 
-    &:hover, &:focus {
+    // Stolen from MDC
+    &:hover {
+        box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+    }
+
+    &:hover,
+    &:focus {
         color: white;
         font-weight: normal;
     }
