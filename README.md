@@ -6,7 +6,7 @@ When you post a new work, this extension can help you by importing metadata such
 
 _This is an unofficial extension and not supported by AO3_. Please do not raise issues with this extension to AO3 support.
 
-[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma)
+[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=readme)
 
 [Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/)
 
