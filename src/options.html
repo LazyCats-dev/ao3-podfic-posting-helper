@@ -13,7 +13,7 @@
 </head>
 
 <body class="mdc-typography mdc-typography--body2">
-    <header class="mdc-top-app-bar">
+    <header class="mdc-top-app-bar" data-mdc-auto-init="MDCTopAppBar">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <img class="material-icons mdc-top-app-bar__navigation-icon header-icon" role="presentation" alt=""
@@ -23,11 +23,17 @@
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                 <a class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Github"
                     title="Github" id="github_button" href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
-                    target="_blank" rel="noopener">code</a>
+                    target="_blank" rel="noopener" data-mdc-auto-init="MDCRipple">
+                    <div class="mdc-icon-button__ripple"></div>
+                    code
+                </a>
                 <a class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Submit feedback"
                     title="Submit feedback"
                     href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
-                    target="_blank" rel="noopener">feedback</a>
+                    target="_blank" rel="noopener" data-mdc-auto-init="MDCRipple">
+                    <div class="mdc-icon-button__ripple"></div>
+                    feedback
+                </a>
             </section>
         </div>
     </header>
