@@ -13,6 +13,20 @@ const defaultBody = document.getElementById('default_body');
 /** @type {HTMLFormElement} */
 const workForm = document.getElementById('work_form');
 const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
+/** @type {HTMLButtonElement} */
+const titleResetButton = document.getElementById('title_reset');
+/** @type {HTMLButtonElement} */
+const summaryResetButton = document.getElementById('summary_reset');
+
+titleResetButton.addEventListener('click', (async () => {
+  const { title_template } = await browser.storage.sync.get('title_template');
+  setInputValue(titleTemplate, title_template['default']);
+}));
+
+summaryResetButton.addEventListener('click', (async () => {
+  const { summary_template } = await browser.storage.sync.get('summary_template');
+  setInputValue(summaryTemplate, summary_template['default']);
+}));
 
 // Import default body text from storage.
 (async () => {

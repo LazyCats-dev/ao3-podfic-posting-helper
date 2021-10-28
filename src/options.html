@@ -79,6 +79,12 @@
                             <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
                             <span class="mdc-button__label">Save</span>
                         </button>
+                        <button id="title_reset" class="mdc-button mdc-button--raised mdc-card__action" type="reset"
+                            data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">restart_alt</i>
+                            <span class="mdc-button__label">Reset</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -111,9 +117,11 @@
                     </ul>
                     <p>
                         The original version of this extension allowed you to pick between
-                        two default options, "<strong>${summary}</strong>" and 
-                        "<strong>${blocksummary}</strong>Podfic of <strong>${title}</strong> by 
-                        <strong>${author}</strong>.".
+                        two default options, "<strong>${summary}</strong>", which merely copied the
+                        original summary, and "<strong>${blocksummary}</strong>Podfic of 
+                        <strong>${title}</strong> by <strong>${author}</strong>.", which wraps the
+                        original summary in a block quote and links to the original work and author(s)
+                        (<a href="https://archiveofourown.org/works/29213196">example work</a>).
                     </p>
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
@@ -131,6 +139,12 @@
                             <div class="mdc-button__ripple"></div>
                             <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
                             <span class="mdc-button__label">Save</span>
+                        </button>
+                        <button id="summary_reset" class="mdc-button mdc-button--raised mdc-card__action" type="reset"
+                            data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">restart_alt</i>
+                            <span class="mdc-button__label">Reset</span>
                         </button>
                     </div>
                 </div>
