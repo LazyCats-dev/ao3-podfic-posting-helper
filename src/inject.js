@@ -374,8 +374,8 @@
 
   async function importAndFillMetadata() {
     let showPartialCompletionWarning = false;
-    const { options, workbody } =
-      await browser.storage.sync.get(['options', 'workbody']);
+    const { options, workbody, summary_template, title_template } =
+      await browser.storage.sync.get(['options', 'workbody', 'summary_template', 'title_template']);
 
     const importResult = await importMetadata(options['url']);
 
@@ -459,21 +459,13 @@
     // Set the title.
     const titleInput =
       queryElement(queryElement(newWorkPage, 'dd.title'), 'input');
-    let titleTemplate = '${title}';
-    if (options['transform_title']) {
-      titleTemplate = '[Podfic] ${title}';
-    }
-    titleInput.value = transformTitle(titleTemplate, metadata['title'],
+    titleInput.value = transformTitle(title_template['default'], metadata['title'],
       new Map(metadata['authors']));
 
     // Set the summary, optionally wrapping it in a block quote.
     const summaryTextArea =
       queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea');
-    let summaryTemplate = "${summary}";
-    if (options['transform_summary']) {
-      summaryTemplate = "${blocksummary}Podfic of ${title} by ${authors}.";
-    }
-    summaryTextArea.value = transformSummary(summaryTemplate,
+    summaryTextArea.value = transformSummary(summary_template['default'],
       metadata['summary'], metadata['title'], metadata['url'],
       new Map(metadata['authors']));
 
