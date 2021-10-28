@@ -21,6 +21,10 @@ body {
   display: flex;
 }
 
+.title-template-controls {
+  display: flex;
+}
+
 .length-checkbox {
   margin-right: 8px;
 }

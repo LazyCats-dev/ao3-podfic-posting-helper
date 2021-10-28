@@ -265,6 +265,71 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-item">
+                    <div class="title-template-controls" role="group">
+                        <div class="mdc-form-field length-checkbox" data-mdc-auto-init="MDCFormField">
+                            <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
+                                <input type="checkbox" class="mdc-checkbox__native-control" id="title_template_label" />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path" fill="none"
+                                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                                <div class="mdc-checkbox__ripple"></div>
+                            </div>
+                            <label for="title_template_label">Apply a title template</label>
+                        </div>
+                        <div class="mdc-select mdc-select--filled" id="title-template-select"
+                            data-mdc-auto-init="MDCSelect">
+                            <input type="hidden" name="title_template_value" id="title_template_value" />
+                            <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false"
+                                aria-labelledby="title-template-label title-template-selected-text"
+                                data-mdc-auto-init="MDCRipple">
+                                <span class="mdc-select__ripple"></span>
+                                <span id="title-template-label" class="mdc-floating-label">Template</span>
+                                <span class="mdc-select__selected-text-container">
+                                    <span id="title-template-selected-text" class="mdc-select__selected-text"></span>
+                                </span>
+                                <span class="mdc-select__dropdown-icon">
+                                    <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5"
+                                        focusable="false">
+                                        <polygon class="mdc-select__dropdown-icon-inactive" stroke="none"
+                                            fill-rule="evenodd" points="7 10 12 15 17 10">
+                                        </polygon>
+                                        <polygon class="mdc-select__dropdown-icon-active" stroke="none"
+                                            fill-rule="evenodd" points="7 15 12 10 17 15">
+                                        </polygon>
+                                    </svg>
+                                </span>
+                                <span class="mdc-line-ripple"></span>
+                            </div>
+
+                            <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
+                                data-mdc-auto-init="MDCMenu">
+                                <ul class="mdc-list" role="listbox" aria-label="Title template listbox"
+                                    data-mdc-auto-init="MDCList">
+                                    <li class="mdc-list-item" aria-selected="false" data-value="default"
+                                        role="option" data-mdc-auto-init="MDCRipple">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">[Podfic] Original title</span>
+                                    </li>
+                                    <li class="mdc-list-item" aria-selected="false" data-value="orig"
+                                        role="option" data-mdc-auto-init="MDCRipple">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">Original title</span>
+                                    </li>
+                                    <li class="mdc-list-item" aria-selected="false" data-value="custom"
+                                        role="option" data-mdc-auto-init="MDCRipple">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">Custom (see options page)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <p> You can set custom title template, summary template, and work
                     body text by going to the options (see gear button in top right). 
                 </p>
