@@ -93,11 +93,11 @@
     const blockSummaryText = '<blockquote>' + summary + '</blockquote>';
 
     let newSummary = template;
-    newSummary = newSummary.replace(/[$][{]blocksummary[}]/gi, blockSummaryText);
-    newSummary = newSummary.replace(/[$][{]summary[}]/gi, summary);
-    newSummary = newSummary.replace(/[$][{]title[}]/gi, titleText);
-    newSummary = newSummary.replace(/[$][{]authors[}]/gi, authorsText);
-    newSummary = newSummary.replace(/[$][{]author[}]/gi, authorsText);
+    newSummary = newSummary.replaceAll('${blocksummary}', blockSummaryText);
+    newSummary = newSummary.replaceAll('${summary}', summary);
+    newSummary = newSummary.replaceAll('${title}', titleText);
+    newSummary = newSummary.replaceAll('${authors}', authorsText);
+    newSummary = newSummary.replaceAll('${author}', authorsText);
 
     return newSummary;
   }
@@ -120,9 +120,9 @@
       .join(', ');
 
     let newTitle = template;
-    newTitle = newTitle.replace(/[$][{]title[}]/gi, title);
-    newTitle = newTitle.replace(/[$][{]authors[}]/gi, authorsText);
-    newTitle = newTitle.replace(/[$][{]author[}]/gi, authorsText);
+    newTitle = newTitle.replaceAll('${title}', title);
+    newTitle = newTitle.replaceAll('${authors}', authorsText);
+    newTitle = newTitle.replaceAll('${author}', authorsText);
 
     return newTitle;
   }
