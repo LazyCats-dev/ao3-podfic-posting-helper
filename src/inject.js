@@ -70,22 +70,61 @@
   }
 
   /**
-   * Transform a summary by wrapping it in a <blockquote> and linking the
-   * original work/authors.
+   * Transform a summary according to keywords in the template string.
+   * Keywords must be wrapped by ${} (e.g. ${title}). Keywords are not
+   * case-sensitive, and include:
+   *   * blocksummary
+   *   * summary
+   *   * title
+   *   * author
+   *   * authors
+   * @param template {string}
    * @param summary {string}
    * @param title {string}
    * @param url {string}
    * @param authors {Map<string,string>}
    * @returns
    */
-  function transform(summary, title, url, authors) {
-    const newSummary = '<blockquote>' + summary + '</blockquote>Podfic of ' +
-      link(url, title) + ' by ';
-    const newAuthors =
-      Array.from(authors)
-        .map(([author, authorUrl]) => (link(authorUrl, author)))
-        .join(', ');
-    return newSummary + newAuthors + '.';
+  function transformSummary(template, summary, title, url, authors) {
+    const titleText = link(url, title);
+    const authorsText = Array.from(authors)
+      .map(([author, authorUrl]) => (link(authorUrl, author)))
+      .join(', ');
+    const blockSummaryText = '<blockquote>' + summary + '</blockquote>';
+
+    let newSummary = template;
+    newSummary = newSummary.replace(/[$][{]blocksummary[}]/gi, blockSummaryText);
+    newSummary = newSummary.replace(/[$][{]summary[}]/gi, summary);
+    newSummary = newSummary.replace(/[$][{]title[}]/gi, titleText);
+    newSummary = newSummary.replace(/[$][{]authors[}]/gi, authorsText);
+    newSummary = newSummary.replace(/[$][{]author[}]/gi, authorsText);
+
+    return newSummary;
+  }
+
+  /**
+   * Transform a title according to keywords in the template string.
+   * Keywords must be wrapped by ${} (e.g. ${title}). Keywords are not
+   * case-sensitive, and include:
+   *   * title
+   *   * author
+   *   * authors
+ * @param template {string}
+ * @param title {string}
+ * @param authors {Map<string,string>}
+ * @returns
+ */
+  function transformTitle(template, title, authors) {
+    const authorsText = Array.from(authors)
+      .map(([author, authorUrl]) => (author))
+      .join(', ');
+
+    let newTitle = template;
+    newTitle = newTitle.replace(/[$][{]title[}]/gi, title);
+    newTitle = newTitle.replace(/[$][{]authors[}]/gi, authorsText);
+    newTitle = newTitle.replace(/[$][{]author[}]/gi, authorsText);
+
+    return newTitle;
   }
 
   /**
@@ -420,22 +459,23 @@
     // Set the title.
     const titleInput =
       queryElement(queryElement(newWorkPage, 'dd.title'), 'input');
+    let titleTemplate = '${title}';
     if (options['transform_title']) {
-      titleInput.value = '[Podfic] ' + metadata['title'];
-    } else {
-      titleInput.value = metadata['title'];
+      titleTemplate = '[Podfic] ${title}';
     }
+    titleInput.value = transformTitle(titleTemplate, metadata['title'],
+      new Map(metadata['authors']));
 
     // Set the summary, optionally wrapping it in a block quote.
     const summaryTextArea =
       queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea');
+    let summaryTemplate = "${summary}";
     if (options['transform_summary']) {
-      summaryTextArea.value = transform(
-        metadata['summary'], metadata['title'], metadata['url'],
-        new Map(metadata['authors']));
-    } else {
-      summaryTextArea.value = metadata['summary'];
+      summaryTemplate = "${blocksummary}Podfic of ${title} by ${authors}.";
     }
+    summaryTextArea.value = transformSummary(summaryTemplate,
+      metadata['summary'], metadata['title'], metadata['url'],
+      new Map(metadata['authors']));
 
     // Set the "inspired by" work url.
     const parentCheckmark =
