@@ -80,11 +80,11 @@
    */
   function transform(summary, title, url, authors) {
     const newSummary = '<blockquote>' + summary + '</blockquote>Podfic of ' +
-        link(url, title) + ' by ';
+      link(url, title) + ' by ';
     const newAuthors =
-        Array.from(authors)
-            .map(([author, authorUrl]) => (link(authorUrl, author)))
-            .join(', ');
+      Array.from(authors)
+        .map(([author, authorUrl]) => (link(authorUrl, author)))
+        .join(', ');
     return newSummary + newAuthors + '.';
   }
 
@@ -94,12 +94,12 @@
    * @param value {string}
    */
   function setTagsInputValue(inputElement, value) {
-    const event = new InputEvent('input', {bubbles: true, data: value});
+    const event = new InputEvent('input', { bubbles: true, data: value });
     inputElement.value = value;
     // Replicates the value changing.
     inputElement.dispatchEvent(event);
     // Replicates the user hitting comma.
-    inputElement.dispatchEvent(new KeyboardEvent('keydown', {'key': ','}));
+    inputElement.dispatchEvent(new KeyboardEvent('keydown', { 'key': ',' }));
   }
 
   /**
@@ -117,9 +117,9 @@
     const pClose = /\s*<\/p>\s*/g;
     const atats = /@@@+/g;
     return summary.innerHTML.replace(pOpen, '@@@')
-        .replace(pClose, '@@@')
-        .replace(atats, '\n\n')
-        .trim();
+      .replace(pClose, '@@@')
+      .replace(atats, '\n\n')
+      .trim();
   }
 
   /**
@@ -130,15 +130,19 @@
    */
   function mapAuthors(authors) {
     return Array.from(authors
-                          .reduce(
-                              (total, authorLink) => {
-                                total.set(
-                                    authorLink.innerText.trim(),
-                                    authorLink.getAttribute('href'));
-                                return total;
-                              },
-                              new Map())
-                          .entries());
+      .reduce(
+        (total, authorLink) => {
+          // Check that this is actually a link to an author--it could be a
+          // giftee.
+          if (authorLink.getAttribute('rel') == 'author') {
+            total.set(
+              authorLink.innerText.trim(),
+              authorLink.getAttribute('href'));
+          }
+          return total;
+        },
+        new Map())
+      .entries());
   }
 
   /**
@@ -151,30 +155,30 @@
     const meta = queryElement(doc, '.meta');
     const rating = queryElement(meta, 'dd.rating.tags').innerText.trim();
     const warnings = queryElements(queryElement(meta, 'dd.warning.tags'), 'a')
-                         .map(a => a.innerText.trim());
+      .map(a => a.innerText.trim());
     const relationships =
-        queryElements(queryElement(meta, 'dd.relationship.tags'), 'a')
-            .map(a => a.innerText.trim());
+      queryElements(queryElement(meta, 'dd.relationship.tags'), 'a')
+        .map(a => a.innerText.trim());
     const characters =
-        queryElements(queryElement(meta, 'dd.character.tags'), 'a')
-            .map(a => a.innerText.trim());
+      queryElements(queryElement(meta, 'dd.character.tags'), 'a')
+        .map(a => a.innerText.trim());
     const categories =
-        queryElements(queryElement(meta, 'dd.category.tags'), 'a')
-            .map(a => a.innerText.trim());
+      queryElements(queryElement(meta, 'dd.category.tags'), 'a')
+        .map(a => a.innerText.trim());
     const fandoms = queryElements(queryElement(meta, 'dd.fandom.tags'), 'a')
-                        .map(a => a.innerText.trim());
+      .map(a => a.innerText.trim());
     const freeformTags =
-        queryElements(queryElement(meta, 'dd.freeform.tags'), 'a')
-            .map(a => a.innerText.trim());
+      queryElements(queryElement(meta, 'dd.freeform.tags'), 'a')
+        .map(a => a.innerText.trim());
     const language = queryElement(meta, 'dd.language').innerText.trim();
 
     const work = doc.getElementById('workskin');
     const title = queryElement(work, 'h2.title').innerText.trim();
     const authors =
-        mapAuthors(queryElements(queryElement(work, '.byline'), 'a'));
+      mapAuthors(queryElements(queryElement(work, '.byline'), 'a'));
     // The actual html of the summary, with <p>s replaced.
     const summary = sanitizeSummary(
-        queryElement(queryElement(work, 'div.summary.module'), '.userstuff'));
+      queryElement(queryElement(work, 'div.summary.module'), '.userstuff'));
 
     return {
       title,
@@ -211,25 +215,25 @@
     titleAndAuthors.shift();
     const authors = mapAuthors(titleAndAuthors);
     const fandoms =
-        queryElements(queryElement(headerModule, 'h5.fandoms.heading'), 'a')
-            .map(a => a.innerText.trim());
+      queryElements(queryElement(headerModule, 'h5.fandoms.heading'), 'a')
+        .map(a => a.innerText.trim());
     const requiredTagsEl = queryElement(headerModule, 'ul.required-tags');
     const rating = queryElement(requiredTagsEl, 'span.rating').innerText.trim();
     const categories = queryElement(requiredTagsEl, 'span.category')
-                           .innerText.split(',')
-                           .map(a => a.trim());
+      .innerText.split(',')
+      .map(a => a.trim());
 
     const superTags = queryElement(work, 'ul.tags.commas');
     const warnings =
-        queryElements(superTags, '.warnings').map(a => a.innerText.trim());
+      queryElements(superTags, '.warnings').map(a => a.innerText.trim());
     const relationships =
-        queryElements(superTags, '.relationships').map(a => a.innerText.trim());
+      queryElements(superTags, '.relationships').map(a => a.innerText.trim());
     const characters =
-        queryElements(superTags, '.characters').map(a => a.innerText.trim());
+      queryElements(superTags, '.characters').map(a => a.innerText.trim());
     const freeformTags =
-        queryElements(superTags, '.freeforms').map(a => a.innerText.trim());
+      queryElements(superTags, '.freeforms').map(a => a.innerText.trim());
     const summary =
-        sanitizeSummary(queryElement(work, 'blockquote.userstuff.summary'));
+      sanitizeSummary(queryElement(work, 'blockquote.userstuff.summary'));
     const language = queryElement(work, 'dd.language').innerText.trim();
 
     return {
@@ -273,7 +277,7 @@
     // the user is importing from is only available to logged-in users.
     let result;
     try {
-      result = await fetchFn(url, {credentials: 'omit'});
+      result = await fetchFn(url, { credentials: 'omit' });
     } catch (e) {
       return {
         result: 'error',
@@ -283,8 +287,7 @@
     if (!result.ok) {
       return {
         result: 'error',
-        message: `Failed to fetch the work! Error: ${result.status} ${
-            result.statusText}`
+        message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`
       };
     }
 
@@ -294,7 +297,7 @@
     // then there will be errors later on but these are handled.
     if (result.redirected) {
       try {
-        result = await fetchFn(url, {credentials: 'include'});
+        result = await fetchFn(url, { credentials: 'include' });
       } catch (e) {
         return {
           result: 'error',
@@ -304,8 +307,7 @@
       if (!result.ok) {
         return {
           result: 'error',
-          message: `Failed to fetch the work! Error: ${result.status} ${
-              result.statusText}`
+          message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`
         };
       }
     }
@@ -333,8 +335,8 @@
 
   async function importAndFillMetadata() {
     let showPartialCompletionWarning = false;
-    const {options, workbody} =
-        await browser.storage.sync.get(['options', 'workbody']);
+    const { options, workbody } =
+      await browser.storage.sync.get(['options', 'workbody']);
 
     const importResult = await importMetadata(options['url']);
 
@@ -354,10 +356,10 @@
 
     // Find the warning check boxes, and check all the ones that apply.
     const warningBoxes = mapInputs(
-        queryElements(queryElement(newWorkPage, 'fieldset.warnings'), 'input'));
+      queryElements(queryElement(newWorkPage, 'fieldset.warnings'), 'input'));
     warningBoxes.set(
-        'Creator Chose Not To Use Archive Warnings',
-        warningBoxes.get('Choose Not To Use Archive Warnings'));
+      'Creator Chose Not To Use Archive Warnings',
+      warningBoxes.get('Choose Not To Use Archive Warnings'));
     // Somehow it is possible for the imported metadata to have different
     // warnings than new work form. In this case we just ignore the warning
     // we failed to map.
@@ -372,12 +374,12 @@
     // Find the fandom text input, and insert a comma-separated list of
     // fandoms. Tell ao3 we did so.
     const fandomInput =
-        queryElement(queryElement(newWorkPage, 'dd.fandom'), 'input');
+      queryElement(queryElement(newWorkPage, 'dd.fandom'), 'input');
     setTagsInputValue(fandomInput, metadata['fandoms'].join(', '));
 
     // Find the category check boxes, and check all the ones that apply.
     const categoryBoxes = mapInputs(
-        queryElements(queryElement(newWorkPage, 'dd.category'), 'input'));
+      queryElements(queryElement(newWorkPage, 'dd.category'), 'input'));
     // Somehow it is possible for the imported metadata to have different
     // categories than new work form. In this case we just ignore the warning
     // we failed to map.
@@ -392,32 +394,32 @@
     // Find the relationship text input, and insert a comma-separated list
     // of relationships. Tell ao3 we did so.
     const relationshipInput =
-        queryElement(queryElement(newWorkPage, 'dd.relationship'), 'input');
+      queryElement(queryElement(newWorkPage, 'dd.relationship'), 'input');
     setTagsInputValue(relationshipInput, metadata['relationships'].join(', '));
 
     // Find the character input, and insert a comma-separated list of
     // characters. Tell ao3 we did so.
     const characterInput =
-        queryElement(queryElement(newWorkPage, 'dd.character'), 'input');
+      queryElement(queryElement(newWorkPage, 'dd.character'), 'input');
     setTagsInputValue(characterInput, metadata['characters'].join(', '));
 
     // Find the freeform tags input, and insert a comma-separated list of
     // freeform tags. (potentially auto-adding "Podfic" and "Podfic
     // Length" tags) Tell ao3 we did so.
     const additionalTagsInput =
-        queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input');
+      queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input');
     if (options['podfic_label']) {
       metadata['freeformTags'].push('Podfic');
     }
     if (options['podfic_length_label']) {
       metadata['freeformTags'].push(
-          'Podfic Length: ' + options['podfic_length_value']);
+        'Podfic Length: ' + options['podfic_length_value']);
     }
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
 
     // Set the title.
     const titleInput =
-        queryElement(queryElement(newWorkPage, 'dd.title'), 'input');
+      queryElement(queryElement(newWorkPage, 'dd.title'), 'input');
     if (options['transform_title']) {
       titleInput.value = '[Podfic] ' + metadata['title'];
     } else {
@@ -426,18 +428,18 @@
 
     // Set the summary, optionally wrapping it in a block quote.
     const summaryTextArea =
-        queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea');
+      queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea');
     if (options['transform_summary']) {
       summaryTextArea.value = transform(
-          metadata['summary'], metadata['title'], metadata['url'],
-          new Map(metadata['authors']));
+        metadata['summary'], metadata['title'], metadata['url'],
+        new Map(metadata['authors']));
     } else {
       summaryTextArea.value = metadata['summary'];
     }
 
     // Set the "inspired by" work url.
     const parentCheckmark =
-        queryElement(queryElement(newWorkPage, 'dt.parent'), 'input');
+      queryElement(queryElement(newWorkPage, 'dt.parent'), 'input');
     if (!parentCheckmark.checked) {
       parentCheckmark.click();
     }
@@ -460,8 +462,8 @@
       browser.runtime.sendMessage({
         result: 'error',
         message:
-            'Warning: some data could not be imported, the most likely reason' +
-            'is that you set your AO3 preferences to hide warnings or tags',
+          'Warning: some data could not be imported, the most likely reason' +
+          'is that you set your AO3 preferences to hide warnings or tags',
       });
     } else {
       // Tell the popup that the import worked as expected.
@@ -485,8 +487,7 @@
     browser.runtime.sendMessage({
       result: 'error',
       message:
-          `Unhandled error while importing metadata and filling in the form: ${
-              debugMessage}`,
+        `Unhandled error while importing metadata and filling in the form: ${debugMessage}`,
     });
   }
 })();
