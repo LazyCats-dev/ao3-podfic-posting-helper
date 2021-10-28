@@ -38,8 +38,7 @@
     <main class="mdc-top-app-bar--fixed-adjust page-content">
         <p>
             Fill in the URL of the fic you were inspired by below, click "Import" and watch all the associated
-            metadata get imported for you! You can even set custom default work text by going to this extension's
-            options.
+            metadata get imported for you!
         </p>
         <p>
             Note: this extension assumes it's dealing with an empty form. Anything
@@ -266,41 +265,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-item">
-                    <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-                        <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_title" />
-                            <div class="mdc-checkbox__background">
-                                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                    <path class="mdc-checkbox__checkmark-path" fill="none"
-                                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                </svg>
-                                <div class="mdc-checkbox__mixedmark"></div>
-                            </div>
-                            <div class="mdc-checkbox__ripple"></div>
-                        </div>
-                        <label for="transform_title">
-                            Set title to "[Podfic] " + original title (otherwise just copies the title)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-item">
-                    <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-                        <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                            <input type="checkbox" class="mdc-checkbox__native-control" id="transform_summary" />
-                            <div class="mdc-checkbox__background">
-                                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                    <path class="mdc-checkbox__checkmark-path" fill="none"
-                                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                </svg>
-                                <div class="mdc-checkbox__mixedmark"></div>
-                            </div>
-                            <div class="mdc-checkbox__ripple"></div>
-                        </div>
-                        <label for="transform_summary">Wrap original summary in a blockquote and link to original
-                            work/author(s) (otherwise just copies the summary)</label>
-                    </div>
-                </div>
+                <p> You can set custom title template, summary template, and work
+                    body text by going to the options (see gear button in top right). 
+                </p>
                 <div class="form-item">
                     <button class="mdc-button mdc-button--raised" id="import" type="submit"
                         data-mdc-auto-init="MDCRipple">

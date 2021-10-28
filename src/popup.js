@@ -1,4 +1,4 @@
-import {setCheckboxState, setInputValue} from './utils.js';
+import { setCheckboxState, setInputValue } from './utils.js';
 
 /** @type {HTMLButtonElement} */
 const optionsButton = document.getElementById('options_button');
@@ -26,13 +26,13 @@ const ALLOWED_URL_PATTERNS = [
 
 (async () => {
   const [currentTab] =
-      await browser.tabs.query({active: true, currentWindow: true});
+    await browser.tabs.query({ active: true, currentWindow: true });
   // If no allowed URL matches then we are not on a page we support.
   if (!ALLOWED_URL_PATTERNS.some(
-          allowedUrlPattern =>
-              currentTab.url.match(allowedUrlPattern) !== null)) {
+    allowedUrlPattern =>
+      currentTab.url.match(allowedUrlPattern) !== null)) {
     document.querySelector('.page-content').innerHTML =
-        `This extension can only be used on the AO3 page to create a new work,
+      `This extension can only be used on the AO3 page to create a new work,
         create a new work in a collection, or edit an existing work.
         Please go to a supported URL and click the extension icon again.
         To create a new work go to
@@ -57,10 +57,6 @@ async function setupPopup() {
   const podficLengthLabel = document.getElementById('podfic_length_label');
   /** @type {HTMLInputElement} */
   const podficLengthValue = document.getElementById('podfic_length_value');
-  /** @type {HTMLInputElement} */
-  const transformSummary = document.getElementById('transform_summary');
-  /** @type {HTMLInputElement} */
-  const transformTitle = document.getElementById('transform_title');
   const urlTextField = document.querySelector('.url-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
@@ -79,13 +75,11 @@ async function setupPopup() {
   });
 
   // Import pop-up options from storage.
-  const {options} = await browser.storage.sync.get('options');
+  const { options } = await browser.storage.sync.get('options');
 
   setInputValue(urlInput, options['url']);
   setCheckboxState(podficLabel, options['podfic_label']);
   setCheckboxState(podficLengthLabel, options['podfic_length_label']);
-  setCheckboxState(transformSummary, options['transform_summary']);
-  setCheckboxState(transformTitle, options['transform_title']);
 
   // Podfic length value has special considerations
   const selectElement = document.getElementById('podfic-length-select');
@@ -95,9 +89,9 @@ async function setupPopup() {
   // with the correct text and click it.
   const optionElements = selectElement.querySelectorAll('.mdc-list-item');
   const optionMatchingValue = Array.from(optionElements)
-                                  .find(
-                                      option => option.dataset.value ===
-                                          options['podfic_length_value']);
+    .find(
+      option => option.dataset.value ===
+        options['podfic_length_value']);
   if (optionMatchingValue) {
     optionMatchingValue.click();
   }
@@ -136,15 +130,13 @@ async function setupPopup() {
         'podfic_label': podficLabel.checked,
         'podfic_length_label': podficLengthLabel.checked,
         'podfic_length_value': podficLengthValue.value,
-        'transform_summary': transformSummary.checked,
-        'transform_title': transformTitle.checked
       }
     });
 
-    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
     await browser.tabs.executeScript(
-        tab.id, {file: '/resources/browser-polyfill.min.js'});
-    await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
+      tab.id, { file: '/resources/browser-polyfill.min.js' });
+    await browser.tabs.executeScript(tab.id, { file: '/inject.js' });
   });
 
   // Focus the URL input for a11y.
