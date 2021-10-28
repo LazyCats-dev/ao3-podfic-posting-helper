@@ -42,6 +42,104 @@
             <form id="form">
                 <div class="mdc-card mdc-card--outlined">
                     <header>
+                        <h1 class="mdc-typography--subtitle1">Title template</h1>
+                    </header>
+                    <p>
+                        Set the title template for your work. <strong>${title}</strong> will be
+                        replaced with the original title, while <strong>${author}</strong> or
+                        <strong>${authors}</strong> will be replaced with the author's name, or
+                        a comma-separated list of names if there are multiple authors. 
+                        <strong>${author}</strong> and <strong>${authors}</strong> both do the
+                        same thing, this is just to reduce typo-related frustration.
+                    </p>
+                    <p>
+                        For example, if the original work is called "Super awesome title" and is by
+                        "author1" and "author2":
+                    </p> 
+                    <ul> 
+                        <li>"<strong>${title}</strong>" will give you "Super awesome title"</li>
+                        <li>"[Podfic] <strong>${title}</strong>" will give you "[Podfic] Super awesome title"</li>
+                        <li>"podfic of <strong>${title}</strong> by <strong>${authors}</strong>"
+                            will give you "podfic of Super awesome title by author1, author2"</li>
+                    </ul>
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
+                        data-mdc-auto-init="MDCTextField">
+                        <span class="mdc-text-field__ripple"></span>
+                        <span class="mdc-floating-label" id="default_body_label">Title template</span>
+                        <span class="mdc-text-field__resizer">
+                            <textarea class="mdc-text-field__input" rows="1" cols="100"
+                                aria-labelledby="default_body_label" id="default_body" required></textarea>
+                        </span>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+                    <div class="mdc-card__actions actions">
+                        <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
+                            data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
+                            <span class="mdc-button__label">Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section>
+            <form id="form">
+                <div class="mdc-card mdc-card--outlined">
+                    <header>
+                        <h1 class="mdc-typography--subtitle1">Summary template</h1>
+                    </header>
+                    <p>
+                        Set the summary template for your work. In particular, this allows
+                        the following replacements:
+                    </p>
+                    <ul>
+                        <li><strong>${blocksummary}</strong> will be replaced with the original summary,
+                            wrapped in a blockquote. Because of the way ao3 handles 
+                            block quotes, you should put whatever you want to follow 
+                            this on the same line.</li>
+                        <li><strong>${summary}</strong> will be replaced with the original summary.</li>
+                        <li><strong>${title}</strong> will be replaced with the original title. This will
+                            link to the original work.
+                        </li>
+                        <li><strong>${authors}</strong> will be replaced with the author's name, which will
+                            link to their AO3 page. If there are multiple authors, this
+                            will be a comma-separated list of authors.
+                        </li>
+                        <li><strong>${author}</strong> does the same as <strong>${authors}</strong>, to reduce typo-related
+                            frustration.</li>
+                    </ul>
+                    <p>
+                        The original version of this extension allowed you to pick between
+                        two default options, "<strong>${summary}</strong>" and 
+                        "<strong>${blocksummary}</strong>Podfic of <strong>${title}</strong> by 
+                        <strong>${author}</strong>.".
+                    </p>
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
+                        data-mdc-auto-init="MDCTextField">
+                        <span class="mdc-text-field__ripple"></span>
+                        <span class="mdc-floating-label" id="default_body_label">Summary template</span>
+                        <span class="mdc-text-field__resizer">
+                            <textarea class="mdc-text-field__input" rows="5" cols="100"
+                                aria-labelledby="default_body_label" id="default_body" required></textarea>
+                        </span>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+                    <div class="mdc-card__actions actions">
+                        <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
+                            data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
+                            <span class="mdc-button__label">Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section>
+            <form id="form">
+                <div class="mdc-card mdc-card--outlined">
+                    <header>
                         <h1 class="mdc-typography--subtitle1">Work template</h1>
                     </header>
                     <p>
@@ -56,7 +154,7 @@
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
-                        <span class="mdc-floating-label" id="default_body_label">Template</span>
+                        <span class="mdc-floating-label" id="default_body_label">Work template</span>
                         <span class="mdc-text-field__resizer">
                             <textarea class="mdc-text-field__input" rows="20" cols="100"
                                 aria-labelledby="default_body_label" id="default_body" required></textarea>
