@@ -21,6 +21,19 @@ body {
   display: flex;
 }
 
+.template-controls {
+  display: flex;
+}
+
+.title-template-select {
+  width: 40%;
+  margin-right: 8px;
+}
+
+.summary-template-select {
+  width: 55%;
+}
+
 .length-checkbox {
   margin-right: 8px;
 }

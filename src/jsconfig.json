@@ -5,7 +5,7 @@
         ]
     },
     "compilerOptions": {
-        "target": "es6",
+        "target": "es2021",
         "module": "es6"
     },
     "compileOnSave": true

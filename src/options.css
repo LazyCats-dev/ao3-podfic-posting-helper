@@ -35,3 +35,7 @@ section {
 .header-icon {
     margin-left: 4px;
 }
+
+.mdc-button {
+    margin-right: 10px;
+}
