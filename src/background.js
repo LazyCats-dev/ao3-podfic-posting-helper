@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(() => {
           'title_format': 'default',
           'summary_format': 'default',
         };
-        chrome.storage.sync.set(options);
+        chrome.storage.sync.set({ options });
       } else if (options['title_format'] === undefined
         || options['summary_format'] === undefined) {
         // Preserve behavior for existing extension users.
@@ -31,7 +31,7 @@ chrome.runtime.onInstalled.addListener(() => {
             options['summary_format'] = 'orig';
           }
         }
-        chrome.storage.sync.set(options);
+        chrome.storage.sync.set({ options });
       }
       if (workbody === undefined) {
         chrome.storage.sync.set({
