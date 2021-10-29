@@ -57,6 +57,10 @@ async function setupPopup() {
   const podficLengthLabel = document.getElementById('podfic_length_label');
   /** @type {HTMLInputElement} */
   const podficLengthValue = document.getElementById('podfic_length_value');
+  /** @type {HTMLInputElement} */
+  const titleFormatValue = document.getElementById('title_template_value');
+  /** @type {HTMLInputElement} */
+  const summaryFormatValue = document.getElementById('summary_template_value');
   const urlTextField = document.querySelector('.url-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
@@ -81,20 +85,40 @@ async function setupPopup() {
   setCheckboxState(podficLabel, options['podfic_label']);
   setCheckboxState(podficLengthLabel, options['podfic_length_label']);
 
+  /**
+   * For some reason a select is really stupid so we have to find the option
+   * with the correct text and click it.
+   * @param selectElement {HTMLElement}
+   * @param optionValue {string}
+   */
+  function clickSelectOption(selectElement, optionValue) {
+    const optionElements = selectElement.querySelectorAll('.mdc-list-item');
+    const optionMatchingValue = Array.from(optionElements)
+      .find(
+        option => option.dataset.value ===
+          optionValue);
+    if (optionMatchingValue) {
+      optionMatchingValue.click();
+    }
+  }
+
   // Podfic length value has special considerations
   const selectElement = document.getElementById('podfic-length-select');
   const selectInputElement = selectElement.querySelector('input');
   setInputValue(selectInputElement, options['podfic_length_value']);
-  // For some reason a select is really stupid so we have to find the option
-  // with the correct text and click it.
-  const optionElements = selectElement.querySelectorAll('.mdc-list-item');
-  const optionMatchingValue = Array.from(optionElements)
-    .find(
-      option => option.dataset.value ===
-        options['podfic_length_value']);
-  if (optionMatchingValue) {
-    optionMatchingValue.click();
-  }
+  clickSelectOption(selectElement, options['podfic_length_value']);
+
+  // Now do the same again for the title format
+  const titleSelectElement = document.getElementById('title-template-select');
+  const titleSelectInputElement = titleSelectElement.querySelector('input');
+  setInputValue(titleSelectInputElement, options['title_format']);
+  clickSelectOption(titleSelectElement, options['title_format']);
+
+  // And again for the summary format
+  const summarySelectElement = document.getElementById('summary-template-select');
+  const summarySelectInputElement = summarySelectElement.querySelector('input');
+  setInputValue(summarySelectInputElement, options['summary_format']);
+  clickSelectOption(summarySelectElement, options['summary_format']);
 
   // Used for injected scripts.
   // We can't get a response back from the script because we are using promise
@@ -130,6 +154,8 @@ async function setupPopup() {
         'podfic_label': podficLabel.checked,
         'podfic_length_label': podficLengthLabel.checked,
         'podfic_length_value': podficLengthValue.value,
+        'title_format': titleFormatValue.value,
+        'summary_format': summaryFormatValue.value,
       }
     });
 

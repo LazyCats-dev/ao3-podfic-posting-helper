@@ -128,6 +128,46 @@
   }
 
   /**
+   * Figure out what template to use based on the title options and 
+   * custom template.
+   * @param titleOption {string}
+   * @param customTemplate {string}
+   * @returns 
+   */
+  function getTitleTemplate(titleOption, customTemplate) {
+    switch (titleOption) {
+      case "blank":
+        return "";
+      case "orig":
+        return "${title}";
+      case "custom":
+        return customTemplate;
+      default:
+        return "[Podfic] ${title}";
+    }
+  }
+
+  /**
+   * Figure out what template to use based on the summary options and 
+   * custom template.
+   * @param summaryOption {string}
+   * @param customTemplate {string}
+   * @returns 
+   */
+  function getSummaryTemplate(summaryOption, customTemplate) {
+    switch (summaryOption) {
+      case "blank":
+        return "";
+      case "orig":
+        return "${summary}";
+      case "custom":
+        return customTemplate;
+      default:
+        return "${blocksummary}Podfic of ${title} by ${authors}.";
+    }
+  }
+
+  /**
    * Sets the value of a tag input, triggering all necessary events.
    * @param inputElement {HTMLInputElement}
    * @param value {string}
@@ -459,13 +499,15 @@
     // Set the title.
     const titleInput =
       queryElement(queryElement(newWorkPage, 'dd.title'), 'input');
-    titleInput.value = transformTitle(title_template['default'], metadata['title'],
+    const titleTemplate = getTitleTemplate(options['title_format'], title_template['default']);
+    titleInput.value = transformTitle(titleTemplate, metadata['title'],
       new Map(metadata['authors']));
 
     // Set the summary, optionally wrapping it in a block quote.
     const summaryTextArea =
       queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea');
-    summaryTextArea.value = transformSummary(summary_template['default'],
+    const summaryTemplate = getSummaryTemplate(options['summary_format'], summary_template['default']);
+    summaryTextArea.value = transformSummary(summaryTemplate,
       metadata['summary'], metadata['title'], metadata['url'],
       new Map(metadata['authors']));
 

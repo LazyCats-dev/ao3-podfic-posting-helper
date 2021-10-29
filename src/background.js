@@ -10,7 +10,27 @@ chrome.runtime.onInstalled.addListener(() => {
           'podfic_length_value': '0-10 Minutes',
           'transform_summary': true,
           'transform_title': true,
+          'title_format': 'default',
+          'summary_format': 'default',
         };
+        chrome.storage.sync.set(options);
+      } else if (options['title_format'] === undefined
+        || options['summary_format'] === undefined) {
+        // Preserve behavior for existing extension users.
+        if (options['title_format'] === undefined) {
+          if (options['transform_title']) {
+            options['title_format'] = 'default';
+          } else {
+            options['title_format'] = 'orig';
+          }
+        }
+        if (options['summary_format'] === undefined) {
+          if (options['transform_summary']) {
+            options['summary_format'] = 'default';
+          } else {
+            options['summary_format'] = 'orig';
+          }
+        }
         chrome.storage.sync.set(options);
       }
       if (workbody === undefined) {
@@ -31,41 +51,20 @@ chrome.runtime.onInstalled.addListener(() => {
         });
       }
       if (title_template === undefined) {
-        // Preserve behavior for existing extension users.
-        if (options['transform_title']) {
-          chrome.storage.sync.set({
-            'title_template': {
-              'default':
-                '[Podfic] ${title}'
-            }
-          });
-        } else {
-          chrome.storage.sync.set({
-            'title_template': {
-              'default':
-                '${title}'
-            }
-          });
-
-        }
+        chrome.storage.sync.set({
+          'title_template': {
+            'default':
+              '[Podfic] ${title}'
+          }
+        });
       }
       if (summary_template === undefined) {
-        // Preserve behavior for existing extension users.
-        if (options['transform_summary']) {
-          chrome.storage.sync.set({
-            'summary_template': {
-              'default':
-                '${blocksummary}Podfic of ${title} by ${authors}.'
-            }
-          });
-        } else {
-          chrome.storage.sync.set({
-            'summary_template': {
-              'default':
-                '${summary}'
-            }
-          });
-        }
+        chrome.storage.sync.set({
+          'summary_template': {
+            'default':
+              '${blocksummary}Podfic of ${title} by ${authors}.'
+          }
+        });
       }
     });
 });
