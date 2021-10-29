@@ -20,12 +20,12 @@ const summaryResetButton = document.getElementById('summary_reset');
 
 titleResetButton.addEventListener('click', (async () => {
   const { title_template } = await browser.storage.sync.get('title_template');
-  setInputValue(titleTemplate, title_template['default']);
+  setInputValue(titleTemplate, '[Podfic] ${title}');
 }));
 
 summaryResetButton.addEventListener('click', (async () => {
   const { summary_template } = await browser.storage.sync.get('summary_template');
-  setInputValue(summaryTemplate, summary_template['default']);
+  setInputValue(summaryTemplate, '${blocksummary}Podfic of ${title} by ${authors}.');
 }));
 
 // Import default body text from storage.
