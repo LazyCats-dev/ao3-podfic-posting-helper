@@ -24,6 +24,10 @@ h1 {
     margin-top: 8px;
 }
 
+.actions > .mdc-button {
+    margin-right: 8px;
+}
+
 section {
     padding-top: 8px;
 }
@@ -34,8 +38,4 @@ section {
 
 .header-icon {
     margin-left: 4px;
-}
-
-.mdc-button {
-    margin-right: 10px;
 }
