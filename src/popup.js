@@ -1,5 +1,10 @@
 import {setCheckboxState, setInputValue} from './utils.js';
 
+// Setup for the navbar used in all views.
+/** @type {HTMLAnchorElement} */
+const optionsButton = document.getElementById('options_button');
+optionsButton.href = browser.runtime.getURL('options.html');
+
 /**
  * A list of URL patterns that the popup can operate on.
  * @type {RegExp|string[]}
@@ -54,9 +59,6 @@ async function setupPopup() {
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
-  /** @type {HTMLAnchorElement} */
-  const optionsButton = document.getElementById('options_button');
-  optionsButton.href = browser.runtime.getURL('options.html');
   /** @type {HTMLAnchorElement} */
   const optionsLinkBottom = document.getElementById('options_link_bottom');
   optionsLinkBottom.href = browser.runtime.getURL('options.html');
