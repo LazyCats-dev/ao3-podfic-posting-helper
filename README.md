@@ -14,14 +14,37 @@ You can configure it to:
 
 *   Automatically add the "Podfic" tag
 *   Automatically add a "Podfic Length: X" tag
-*   Add a "[Podfic] " prefix to your title
-*   Wrap the original summary in a blockquote and link to that work and its authors
+*   Apply a transformation to the original title, such as adding the prefix "[Podfic] "
+*   Apply a transformation to the original summary, such as wrapping it in a blockquote and linking to that work and its authors
 
 ![A popup over the new work page, showing the options available to configure importing metadata](images/pop-up-screen-shot.png)
+
+If the default set of title transformations isn't enough, you can configure a custom format on the options page. "**\${title}**" will be replaced with the original title and "**\${authors}**" with the original authors.
+
+For example, if the original work is called "Super awesome title" and is by
+"author1" and "author2":
+
+*   "**\${title}**" will give you "Super awesome title"
+*   "[Podfic] **\${title}**" will give you "[Podfic] Super awesome title"
+*   "podfic of **\${title}** by **\${authors}**"
+    will give you "podfic of Super awesome title by author1, author2"
+
+![An options page where you can configure a custom title transformation](images/title-options-screen-shot.png)
+
+If the default set of summary transformations isn't enough, you can configure a custom format on the options page. The following replacements will be made:
+
+*   **\${blocksummary}**: The summary of the original work wrapped in a blockquote. Because of the way ao3 handles block quotes, you should put whatever you want to follow this on the same line.
+*   **\${summary}**:The summary of the original work.
+*   **\${title}**: The title of the original work. This will be a link to the original work.
+*   **\${authors}**: A comma-separated list of the authors of the original work. Each author is a link to their AO3 page.
+
+![An options page where you can configure a custom summary transformation](images/summary-options-screen-shot.png)
 
 You can also configure a custom default body for your work, instead of a default which demonstrates how to embed audio, images, or links.
 
 ![An options page where you can configure the default body of your new work](images/options-screen-shot.png)
+
+
 
 ## Documentation
 
@@ -37,4 +60,4 @@ The only way to pass information between the form fields in the pop-up and the i
 
 ### Code design
 
-The pop-up and options page are built using [Material Design Components for Web](https://material.io/). We using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
+The pop-up and options page are built using [Material Design Components for Web](https://material.io/). We are using the web components without a framework and with barebones CSS. The JS and CSS files for the components were downloaded from CDN and are packed in source here. We didn't set up any kind of package management with Node or any bundling with tools like Webpack on account of these being more effort than we were willing to invest right now. Code is organized as ES6 modules where possible.
