@@ -27,11 +27,11 @@
                     target="_blank" rel="noopener" data-mdc-auto-init="MDCRipple">
                     <div class="mdc-icon-button__ripple"></div>feedback
                 </a>
-                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                <a class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
                     aria-label="Extension options" title="Extension options" id="options_button"
-                    data-mdc-auto-init="MDCRipple">
+                    data-mdc-auto-init="MDCRipple" target="_blank">
                     <div class="mdc-icon-button__ripple"></div>settings
-                </button>
+                </a>
             </section>
         </div>
     </header>
@@ -374,7 +374,8 @@
                     </div>
                 </div>
                 <p> You can set custom title template, summary template, and work
-                    body text by going to the options (see gear button in top right). 
+                    body text in the <a id="options_link_bottom" target="_blank">options page for
+                    this extension</a> 
                 </p>
                 <div class="form-item">
                     <button class="mdc-button mdc-button--raised" id="import" type="submit"
