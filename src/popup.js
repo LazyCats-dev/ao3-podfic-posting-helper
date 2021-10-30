@@ -1,15 +1,4 @@
-import { setCheckboxState, setInputValue } from './utils.js';
-
-/** @type {HTMLButtonElement} */
-const optionsButton = document.getElementById('options_button');
-
-optionsButton.addEventListener('click', () => {
-  if (browser.runtime.openOptionsPage) {
-    browser.runtime.openOptionsPage();
-  } else {
-    window.open(browser.runtime.getURL('options.html'));
-  }
-});
+import {setCheckboxState, setInputValue} from './utils.js';
 
 /**
  * A list of URL patterns that the popup can operate on.
@@ -26,13 +15,13 @@ const ALLOWED_URL_PATTERNS = [
 
 (async () => {
   const [currentTab] =
-    await browser.tabs.query({ active: true, currentWindow: true });
+      await browser.tabs.query({active: true, currentWindow: true});
   // If no allowed URL matches then we are not on a page we support.
   if (!ALLOWED_URL_PATTERNS.some(
-    allowedUrlPattern =>
-      currentTab.url.match(allowedUrlPattern) !== null)) {
+          allowedUrlPattern =>
+              currentTab.url.match(allowedUrlPattern) !== null)) {
     document.querySelector('.page-content').innerHTML =
-      `This extension can only be used on the AO3 page to create a new work,
+        `This extension can only be used on the AO3 page to create a new work,
         create a new work in a collection, or edit an existing work.
         Please go to a supported URL and click the extension icon again.
         To create a new work go to
@@ -65,6 +54,13 @@ async function setupPopup() {
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
+  /** @type {HTMLAnchorElement} */
+  const optionsButton = document.getElementById('options_button');
+  optionsButton.href = browser.runtime.getURL('options.html');
+  /** @type {HTMLAnchorElement} */
+  const optionsLinkBottom = document.getElementById('options_link_bottom');
+  optionsLinkBottom.href = browser.runtime.getURL('options.html');
+
 
   // Setting this means that we have to update the validity of the text field
   // when native validation shows the field as invalid. This is the only way
@@ -79,7 +75,7 @@ async function setupPopup() {
   });
 
   // Import pop-up options from storage.
-  const { options } = await browser.storage.sync.get('options');
+  const {options} = await browser.storage.sync.get('options');
 
   setInputValue(urlInput, options['url']);
   setCheckboxState(podficLabel, options['podfic_label']);
@@ -93,10 +89,9 @@ async function setupPopup() {
    */
   function clickSelectOption(selectElement, optionValue) {
     const optionElements = selectElement.querySelectorAll('.mdc-list-item');
-    const optionMatchingValue = Array.from(optionElements)
-      .find(
-        option => option.dataset.value ===
-          optionValue);
+    const optionMatchingValue =
+        Array.from(optionElements)
+            .find(option => option.dataset.value === optionValue);
     if (optionMatchingValue) {
       optionMatchingValue.click();
     }
@@ -115,7 +110,8 @@ async function setupPopup() {
   clickSelectOption(titleSelectElement, options['title_format']);
 
   // And again for the summary format
-  const summarySelectElement = document.getElementById('summary-template-select');
+  const summarySelectElement =
+      document.getElementById('summary-template-select');
   const summarySelectInputElement = summarySelectElement.querySelector('input');
   setInputValue(summarySelectInputElement, options['summary_format']);
   clickSelectOption(summarySelectElement, options['summary_format']);
@@ -159,10 +155,10 @@ async function setupPopup() {
       }
     });
 
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
     await browser.tabs.executeScript(
-      tab.id, { file: '/resources/browser-polyfill.min.js' });
-    await browser.tabs.executeScript(tab.id, { file: '/inject.js' });
+        tab.id, {file: '/resources/browser-polyfill.min.js'});
+    await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
   });
 
   // Focus the URL input for a11y.
