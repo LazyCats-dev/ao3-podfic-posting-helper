@@ -7,11 +7,12 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin: auto;
+    max-width: 900px;
 }
 
 .mdc-card {
     padding: 8px;
-    max-width: 900px;
     width: 100%;
     margin: 16px;
 }
@@ -30,6 +31,7 @@ h1 {
 
 section {
     padding-top: 8px;
+    width: 100%;
 }
 
 .about-section section:not(:last-of-type) {
