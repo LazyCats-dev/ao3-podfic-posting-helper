@@ -41,3 +41,7 @@ section {
 .header-icon {
     margin-left: 4px;
 }
+
+textarea.code-editor-textarea {
+    font-family: 'Roboto Mono', Courier, monospace;
+}

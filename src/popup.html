@@ -51,10 +51,10 @@
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
                         <span class="mdc-floating-label" id="url-label">URL of work to import from</span>
-                        <input class="mdc-text-field__input" type="text" aria-labelledby="url-label" id="url-input"
+                        <input class="mdc-text-field__input" type="url" aria-labelledby="url-label" id="url-input"
                             required aria-controls="url-error-hint" aria-describedby="url-error-hint"
                             pattern="https://archiveofourown.org/works/[0-9]+(/chapters/[0-9]+)?(/?)|https://archiveofourown.org/collections/.*/works/[0-9]+(/?)"
-                            title="Must be an AO3 work URL" name="ao3-url">
+                            title="Must be an AO3 work URL" name="ao3-url" spellcheck="false">
                         <span class="mdc-line-ripple"></span>
                     </label>
                     <div class="mdc-text-field-helper-line">

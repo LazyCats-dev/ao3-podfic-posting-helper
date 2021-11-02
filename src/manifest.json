@@ -1,7 +1,7 @@
 {
     "name": "AO3 Podfic Posting Helper",
     "description": "Autofill metadata to match a work you were inspired by",
-    "version": "2.1",
+    "version": "2.2",
     "manifest_version": 2,
     "browser_specific_settings": {
         "gecko": {
