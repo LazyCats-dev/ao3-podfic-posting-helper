@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="theming.css">
     <link rel="stylesheet" href="resources/material-icons.css">
     <link rel="stylesheet" href="resources/roboto.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono">
     <script src="resources/browser-polyfill.min.js"></script>
     <title>AO3 Podfic Posting Helper Extension Options</title>
 </head>
@@ -54,6 +55,9 @@
                         <dt><strong><code>${authors}</code></strong></dt>
                         <dd>A comma-separated list of the authors of the original work.</dd>
                     </dl>
+                    <p>
+                        This template does not support HTML.
+                    </p>
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
@@ -105,13 +109,19 @@
                         <dd>A comma-separated list of the authors of the original work. Each author is a link
                             to their AO3 page.</dd>
                     </dl>
+                    <p>
+                        This template supports HTML.
+                        <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                            target="_blank">Learn more about using HTML on AO3</a>
+                    </p>
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
                         <span class="mdc-floating-label" id="summary_template_label">Summary template</span>
                         <span class="mdc-text-field__resizer">
-                            <textarea class="mdc-text-field__input" rows="5" cols="100"
-                                aria-labelledby="summary_template_label" id="summary_template" required></textarea>
+                            <textarea class="mdc-text-field__input code-editor-textarea" rows="5" cols="100"
+                                aria-labelledby="summary_template_label" id="summary_template" required
+                                spellcheck="false"></textarea>
                         </span>
                         <span class="mdc-line-ripple"></span>
                     </label>
@@ -153,11 +163,17 @@
                         <span class="mdc-text-field__ripple"></span>
                         <span class="mdc-floating-label" id="default_body_label">Work template</span>
                         <span class="mdc-text-field__resizer">
-                            <textarea class="mdc-text-field__input" rows="20" cols="100"
-                                aria-labelledby="default_body_label" id="default_body" required></textarea>
+                            <textarea class="mdc-text-field__input code-editor-textarea" rows="20" cols="100"
+                                aria-labelledby="default_body_label" id="default_body" required
+                                spellcheck="false"></textarea>
                         </span>
                         <span class="mdc-line-ripple"></span>
                     </label>
+                    <p>
+                        This template supports HTML.
+                        <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                            target="_blank">Learn more about using HTML on AO3</a>
+                    </p>
                     <div class="mdc-card__actions actions">
                         <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
                             data-mdc-auto-init="MDCRipple">
