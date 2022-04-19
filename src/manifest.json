@@ -33,5 +33,6 @@
     "options_ui": {
         "page": "options.html",
         "open_in_tab": true
-    }
+    },
+    "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
 }
