@@ -227,10 +227,9 @@
   /**
    * Parse the metadata from a work page.
    * @param doc {Document}
-   * @param url {string}
    * @returns
    */
-  function parseGenMetadata(doc, url) {
+  function parseGenMetadata(doc) {
     const meta = queryElement(doc, '.meta');
     const rating = queryElement(meta, 'dd.rating.tags').innerText.trim();
     const warnings = queryElements(queryElement(meta, 'dd.warning.tags'), 'a')
@@ -271,63 +270,6 @@
       freeformTags,
       language,
       summary,
-      url,
-    };
-  }
-
-  /**
-   * Parse the metadata from an adult work warning page.
-   * @param doc {Document}
-   * @param url {string}
-   * @returns
-   */
-  function parseMatureMetadata(doc, url) {
-    const work = queryElement(doc, '.blurb');
-
-    const headerModule = queryElement(work, 'div.header.module');
-    const heading = queryElement(headerModule, 'h4.heading');
-    // Note: this is a list of elements where the first element
-    // is the title, and the remaining are the authors.
-    const titleAndAuthors = queryElements(heading, 'a');
-    const title = titleAndAuthors[0].innerText.trim();
-    // This removes the title, so the array just contains the authors.
-    titleAndAuthors.shift();
-    const authors = mapAuthors(titleAndAuthors);
-    const fandoms =
-      queryElements(queryElement(headerModule, 'h5.fandoms.heading'), 'a')
-        .map(a => a.innerText.trim());
-    const requiredTagsEl = queryElement(headerModule, 'ul.required-tags');
-    const rating = queryElement(requiredTagsEl, 'span.rating').innerText.trim();
-    const categories = queryElement(requiredTagsEl, 'span.category')
-      .innerText.split(',')
-      .map(a => a.trim());
-
-    const superTags = queryElement(work, 'ul.tags.commas');
-    const warnings =
-      queryElements(superTags, '.warnings').map(a => a.innerText.trim());
-    const relationships =
-      queryElements(superTags, '.relationships').map(a => a.innerText.trim());
-    const characters =
-      queryElements(superTags, '.characters').map(a => a.innerText.trim());
-    const freeformTags =
-      queryElements(superTags, '.freeforms').map(a => a.innerText.trim());
-    const summary =
-      sanitizeSummary(queryElement(work, 'blockquote.userstuff.summary'));
-    const language = queryElement(work, 'dd.language').innerText.trim();
-
-    return {
-      title,
-      authors,
-      rating,
-      warnings,
-      relationships,
-      characters,
-      categories,
-      fandoms,
-      freeformTags,
-      language,
-      summary,
-      url,
     };
   }
 
@@ -351,12 +293,25 @@
    * @param {string} url
    */
   async function importMetadata(url) {
+    // Attempt to parse the URL
+    /** @type {URL} */
+    let fetchUrl;
+    try {
+      fetchUrl = new URL(url);
+    } catch (e) {
+      return {
+        result: 'error',
+        message: `Invalid work URL: ${e.message}`
+      };
+    }
+    // Always consent to seeing "adult content" to simplifying parsing
+    fetchUrl.searchParams.set("view_adult", "true");
     // Initially try to get the work without credentials, this handles cases
     // where the user has tags or warnings hidden but can fail if the work
     // the user is importing from is only available to logged-in users.
     let result;
     try {
-      result = await fetchFn(url, { credentials: 'omit' });
+      result = await fetchFn(fetchUrl, { credentials: 'omit' });
     } catch (e) {
       return {
         result: 'error',
@@ -376,7 +331,7 @@
     // then there will be errors later on but these are handled.
     if (result.redirected) {
       try {
-        result = await fetchFn(url, { credentials: 'include' });
+        result = await fetchFn(fetchUrl, { credentials: 'include' });
       } catch (e) {
         return {
           result: 'error',
@@ -396,20 +351,12 @@
     const doc = domParser.parseFromString(html, 'text/html');
     // The "This work could have adult content. If you proceed...." blurb.
     const caution = queryElements(doc, '.caution');
-    if (caution.length == 0) {
-      // Doc structure for gen pages (or if you're logged in and turned
-      // the warning off).
-      return {
-        result: 'success',
-        metadata: parseGenMetadata(doc, url),
-      };
-    } else {
-      // Doc structure for pages with a warning.
-      return {
-        result: 'success',
-        metadata: parseMatureMetadata(doc, url),
-      };
-    }
+    return {
+      result: 'success',
+      // We return back the original URL so that storage only ever contains the
+      // URL the user input instead of the one we used for fetching.
+      metadata: {...parseGenMetadata(doc), url},
+    };
   }
 
   async function importAndFillMetadata() {
