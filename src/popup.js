@@ -148,7 +148,7 @@ async function setupPopup() {
     // script.
     await browser.storage.sync.set({
       'options': {
-        'url': urlInput.value,
+        'url': urlInput.value.trim(),
         'podfic_label': podficLabel.checked,
         'podfic_length_label': podficLengthLabel.checked,
         'podfic_length_value': podficLengthValue.value,
