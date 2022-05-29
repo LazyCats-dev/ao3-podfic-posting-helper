@@ -1,5 +1,74 @@
 import {setInputValue} from './utils.js';
 
+// Sets up the HTMlSanitizer with the tags that ao3 allows.
+['a',
+ 'abbr',
+ 'acronym',
+ 'address',
+ 'audio',
+ 'b',
+ 'big',
+ 'blockquote',
+ 'br',
+ 'caption',
+ 'center',
+ 'cite',
+ 'code',
+ 'col',
+ 'colgroup',
+ 'dd',
+ 'del',
+ 'dfn',
+ 'div',
+ 'dl',
+ 'dt',
+ 'em',
+ 'h1',
+ 'h2',
+ 'h3',
+ 'h4',
+ 'h5',
+ 'h6',
+ 'hr',
+ 'i',
+ 'img',
+ 'ins',
+ 'kbd',
+ 'li',
+ 'ol',
+ 'p',
+ 'pre',
+ 'q',
+ 's',
+ 'samp',
+ 'small',
+ 'span',
+ 'strike',
+ 'strong',
+ 'sub',
+ 'sup',
+ 'table',
+ 'tbody',
+ 'td',
+ 'tfoot',
+ 'th',
+ 'thead',
+ 'tr',
+ 'tt',
+ 'u',
+ 'ul',
+ 'var',
+].forEach(tag => {
+  HtmlSanitizer.AllowedTags[tag.toLocaleUpperCase('en-US')] = true;
+});
+
+// AO3 does not allow styles
+HtmlSanitizer.AllowedAttributes['style'] = false;
+HtmlSanitizer.AllowedAttributes['rel'] = true;
+HtmlSanitizer.AllowedAttributes['alt'] = true;
+HtmlSanitizer.AllowedAttributes['crossorigin'] = true;
+HtmlSanitizer.AllowedAttributes['preload'] = true;
+
 hljs.highlightAll();
 
 /** @type {HTMLInputElement} */
@@ -71,14 +140,14 @@ function isHtml(str) {
 summaryTemplateTextField.useNativeValidation = false;
 
 summaryTemplate.addEventListener('input', event => {
-  const summaryPreviewHtml =
+  const summaryPreviewHtml = HtmlSanitizer.SanitizeHtml(
       event.target.value
           .replaceAll(
               '${blocksummary}', '<blockquote>BLOCK_SUMMARY_TEXT</blockquote>')
           .replaceAll('${summary}', 'SUMMARY_TEXT')
           .replaceAll('${title}', '<a>TITLE_TEXT</a>')
           .replaceAll('${authors}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
-          .replaceAll('${author}', '<a>AUTHOR_1</a>');
+          .replaceAll('${author}', '<a>AUTHOR_1</a>'));
 
   summaryPreview.textContent = summaryPreviewHtml;
   hljs.highlightElement(summaryPreview);
@@ -96,7 +165,8 @@ summaryTemplate.addEventListener('input', event => {
 defaultBodyTextField.useNativeValidation = false;
 
 defaultBody.addEventListener('input', event => {
-  defaultBodyPreview.textContent = event.target.value;
+  defaultBodyPreview.textContent =
+      HtmlSanitizer.SanitizeHtml(event.target.value);
   hljs.highlightElement(defaultBodyPreview);
 
   if (!isValidAo3ValidHtml(event.target.value)) {
@@ -110,8 +180,9 @@ defaultBody.addEventListener('input', event => {
 });
 
 
-function isValidAo3ValidHtml() {
-  return true;
+function isValidAo3ValidHtml(/** @type{string} */ html) {
+  const sanitized = HtmlSanitizer.SanitizeHtml(html);
+  return html === sanitized;
 }
 
 // Import default body text from storage.
