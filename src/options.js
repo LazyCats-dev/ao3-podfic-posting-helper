@@ -8,6 +8,8 @@ const titleTemplate = document.getElementById('title_template');
 const titleForm = document.getElementById('title_form');
 /** @type {HTMLInputElement} */
 const titlePreview = document.getElementById('title_preview');
+/** @type {MDCTextField} */
+const titleTextField = titleTemplate.closest('.mdc-text-field').MDCTextField;
 /** @type {HTMLInputElement} */
 const summaryTemplate = document.getElementById('summary_template');
 /** @type {HTMLElement} */
@@ -40,13 +42,29 @@ summaryResetButton.addEventListener(
           summaryTemplate, '${blocksummary}Podfic of ${title} by ${authors}.');
     }));
 
+titleTextField.useNativeValidation = false;
+
 titleTemplate.addEventListener('input', event => {
   titlePreview.textContent =
       event.target.value.replaceAll('${title}', 'TITLE_TEXT')
           .replaceAll('${authors}', 'AUTHOR_1, AUTHOR_2')
           .replaceAll('${author}', 'AUTHOR_1');
   hljs.highlightElement(titlePreview);
+  if (isHtml(event.target.value)) {
+    titleTextField.helperTextContent =
+        'This template should not contain HTML but it appears to contain HTML';
+    titleTextField.valid = false;
+  } else {
+    titleTextField.helperTextContent = '';
+    titleTextField.valid = true;
+  }
 });
+
+function isHtml(str) {
+  return /<\/?[a-z][\s\S]*>/i.test(str);
+}
+
+summaryTemplateTextField.useNativeValidation = false;
 
 summaryTemplate.addEventListener('input', event => {
   const summaryPreviewHtml =
@@ -60,13 +78,37 @@ summaryTemplate.addEventListener('input', event => {
 
   summaryPreview.textContent = summaryPreviewHtml;
   hljs.highlightElement(summaryPreview);
+
+  if (!isValidAo3ValidHtml(event.target.value)) {
+    summaryTemplateTextField.helperTextContent =
+        'This template appears to contain HTML tags that cannot be used on AO3';
+    summaryTemplateTextField.valid = false;
+  } else {
+    summaryTemplateTextField.helperTextContent = '';
+    summaryTemplateTextField.valid = true;
+  }
 });
+
+defaultBodyTextField.useNativeValidation = false;
 
 defaultBody.addEventListener('input', event => {
   defaultBodyPreview.textContent = event.target.value;
   hljs.highlightElement(defaultBodyPreview);
+
+  if (!isValidAo3ValidHtml(event.target.value)) {
+    defaultBodyTextField.helperTextContent =
+        'This template appears to contain HTML tags that cannot be used on AO3';
+    defaultBodyTextField.valid = false;
+  } else {
+    defaultBodyTextField.helperTextContent = '';
+    defaultBodyTextField.valid = true;
+  }
 });
 
+
+function isValidAo3ValidHtml() {
+  return true;
+}
 
 // Import default body text from storage.
 (async () => {
