@@ -12,12 +12,16 @@ const titlePreview = document.getElementById('title_preview');
 const titleTextField = titleTemplate.closest('.mdc-text-field').MDCTextField;
 /** @type {HTMLInputElement} */
 const summaryTemplate = document.getElementById('summary_template');
+const summaryTemplateTextField =
+    summaryTemplate.closest('.mdc-text-field').MDCTextField;
 /** @type {HTMLElement} */
 const summaryPreview = document.getElementById('summary_preview');
 /** @type {HTMLFormElement} */
 const summaryForm = document.getElementById('summary_form');
 /** @type {HTMLInputElement} */
 const defaultBody = document.getElementById('default_body');
+const defaultBodyTextField =
+    defaultBody.closest('.mdc-text-field').MDCTextField;
 /** @type {HTMLElement} */
 const defaultBodyPreview = document.getElementById('default_body_preview');
 /** @type {HTMLFormElement} */
