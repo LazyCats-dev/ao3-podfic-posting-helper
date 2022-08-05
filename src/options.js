@@ -183,8 +183,11 @@ defaultBody.addEventListener('input', event => {
 
 
 function isValidAo3ValidHtml(/** @type{string} */ html) {
-  const sanitized = HtmlSanitizer.SanitizeHtml(html);
-  return html === sanitized;
+  const sanitized = HtmlSanitizer.SanitizeHtml(html.trim());
+  const userDocument = DOM_PARSER.parseFromString(html.trim(), 'text/html');
+  const sanitizedDocument = DOM_PARSER.parseFromString(sanitized, 'text/html');
+  return userDocument.documentElement.innerHTML ===
+      sanitizedDocument.documentElement.innerHTML;
 }
 
 // Import default body text from storage.
