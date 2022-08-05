@@ -69,6 +69,8 @@ HtmlSanitizer.AllowedAttributes['alt'] = true;
 HtmlSanitizer.AllowedAttributes['crossorigin'] = true;
 HtmlSanitizer.AllowedAttributes['preload'] = true;
 
+const DOM_PARSER = new DOMParser();
+
 hljs.highlightAll();
 
 /** @type {HTMLInputElement} */
