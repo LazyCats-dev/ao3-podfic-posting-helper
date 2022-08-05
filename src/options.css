@@ -2,6 +2,15 @@ body {
     margin: 0;
 }
 
+code {
+    border: 1px inset rgba(0, 0, 0, 0.12);
+}
+
+pre, code {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
 .page-content {
     margin: 0 8px 8px 8px;
     display: flex;

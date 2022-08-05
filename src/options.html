@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="resources/roboto.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono">
     <script src="resources/browser-polyfill.min.js"></script>
+    <link rel="stylesheet" href="resources/highlight.min.css">
+    <link rel="stylesheet" href="resources/highlight-a11y-light.min.css">
+    <script src="resources/highlight.min.js"></script>
     <title>AO3 Podfic Posting Helper Extension Options</title>
 </head>
 
@@ -56,7 +59,7 @@
                         <dd>A comma-separated list of the authors of the original work.</dd>
                     </dl>
                     <p>
-                        This template does not support HTML.
+                        This template does <strong>not</strong> support HTML.
                     </p>
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
@@ -68,6 +71,15 @@
                         </span>
                         <span class="mdc-line-ripple"></span>
                     </label>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                            aria-hidden="true">
+                        </div>
+                    </div>
+                    <h2 class="mdc-typography--subtitle2">Preview</h2>
+                    <pre>
+                        <code id="title_preview" class="language-plaintext"></code>
+                    </pre>
                     <div class="mdc-card__actions actions">
                         <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
                             data-mdc-auto-init="MDCRipple">
@@ -125,6 +137,15 @@
                         </span>
                         <span class="mdc-line-ripple"></span>
                     </label>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                            aria-hidden="true">
+                        </div>
+                    </div>
+                    <h2 class="mdc-typography--subtitle2">Preview</h2>
+                    <pre>
+                        <code id="summary_preview" class="language-html"></code>
+                    </pre>
                     <div class="mdc-card__actions actions">
                         <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
                             data-mdc-auto-init="MDCRipple">
@@ -158,6 +179,11 @@
                         Note: this will leave the body of your work alone if your draft
                         already has text there.
                     </p>
+                    <p>
+                        This template supports HTML.
+                        <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                            target="_blank">Learn more about using HTML on AO3</a>
+                    </p>
                     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
                         data-mdc-auto-init="MDCTextField">
                         <span class="mdc-text-field__ripple"></span>
@@ -169,11 +195,15 @@
                         </span>
                         <span class="mdc-line-ripple"></span>
                     </label>
-                    <p>
-                        This template supports HTML.
-                        <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                            target="_blank">Learn more about using HTML on AO3</a>
-                    </p>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                            aria-hidden="true">
+                        </div>
+                    </div>
+                    <h2 class="mdc-typography--subtitle2">Preview</h2>
+                    <pre>
+                        <code id="default_body_preview" class="language-html"></code>
+                    </pre>
                     <div class="mdc-card__actions actions">
                         <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
                             data-mdc-auto-init="MDCRipple">
