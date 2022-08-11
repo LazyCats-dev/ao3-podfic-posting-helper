@@ -156,7 +156,8 @@ summaryTemplate.addEventListener('input', event => {
 
   if (!isValidAo3ValidHtml(event.target.value)) {
     summaryTemplateTextField.helperTextContent =
-        'This template appears to contain HTML tags that cannot be used on AO3';
+        'This template appears to contain HTML tags that cannot be used on ' +
+        'AO3, they have been removed from the preview';
     summaryTemplateTextField.valid = false;
   } else {
     summaryTemplateTextField.helperTextContent = '';
@@ -173,7 +174,8 @@ defaultBody.addEventListener('input', event => {
 
   if (!isValidAo3ValidHtml(event.target.value)) {
     defaultBodyTextField.helperTextContent =
-        'This template appears to contain HTML tags that cannot be used on AO3';
+        'This template appears to contain HTML tags that cannot be used on ' +
+        'AO3, they have been removed from the preview';
     defaultBodyTextField.valid = false;
   } else {
     defaultBodyTextField.helperTextContent = '';
