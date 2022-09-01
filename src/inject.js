@@ -489,7 +489,7 @@
     if (!parentCheckmark.checked) {
       parentCheckmark.click();
     }
-    const parentUrl = queryElement(newWorkPage, '#work_parent_attributes_url');
+    const parentUrl = queryElement(newWorkPage, '#work_parent_work_relationships_attributes_0_url');
     parentUrl.value = metadata['url'];
 
     // Set the same language as the original work.
