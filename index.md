@@ -34,3 +34,11 @@ extension to AO3 support.
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo">
     GitHub
 </a>
+
+## Credits
+
+This extension was created and is maintained by:
+
+[irrationalpie](https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie)
+[Jeremy Mowery](https://mowery.dev)
+[lastontheboat](https://archiveofourown.org/users/lastontheboat)
