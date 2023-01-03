@@ -39,6 +39,6 @@ extension to AO3 support.
 
 This extension was created and is maintained by:
 
-[irrationalpie](https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie)
-[Jeremy Mowery](https://mowery.dev)
-[lastontheboat](https://archiveofourown.org/users/lastontheboat)
+* [irrationalpie](https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie)
+* [Jeremy Mowery](https://mowery.dev)
+* [lastontheboat](https://archiveofourown.org/users/lastontheboat)
