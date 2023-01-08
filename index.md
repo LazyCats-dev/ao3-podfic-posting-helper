@@ -24,6 +24,10 @@ extension to AO3 support.
 
 ![Extension demo](https://raw.githubusercontent.com/LazyCats-dev/ao3-podfic-posting-helper/main/images/pop-up-screen-shot.png)
 
+## Community
+
+* [Infomercial: The AO3 Podfic Posting Helper (blackglass, esbielle, LittleRedRobinHood, Ravin, TheLordOfLaMancha)](https://archiveofourown.org/works/44137485)
+
 ## Support
 
 <a href="https://discord.gg/rhynWjrCw2"
