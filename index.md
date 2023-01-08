@@ -10,6 +10,13 @@
     <img alt="" role="presentation" src="/assets/img/firefox-logo.svg" class="logo">
     Firefox Add-ons Store
 </a>
+<div>
+<div class="button">
+    <img alt="" role="presentation" src="/assets/img/edge-logo.svg" class="logo">
+    Microsoft Edge Add-ons Store
+</div>
+Coming soon!
+</div>
 <a href="{{ site.github.zip_url }}" target="_blank" rel="noopener" class="button">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo"> Source
 </a>
