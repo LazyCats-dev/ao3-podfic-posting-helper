@@ -16,7 +16,7 @@
     Coming soon: Microsoft Edge Add-ons Store
 </div>
 </div>
-<a href="{{ site.github.zip_url }}" target="_blank" rel="noopener" class="button">
+<a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/releases" target="_blank" rel="noopener" class="button">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo"> Source
 </a>
 
