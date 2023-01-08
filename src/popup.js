@@ -76,6 +76,55 @@ async function setupPopup() {
     urlTextField.valid = urlInput.validity.valid;
   });
 
+  // When the form is submitted, import metadata from original work.
+  form.addEventListener('submit', async (submitEvent) => {
+    // Need to prevent the default so that the popup doesn't refresh.
+    submitEvent.preventDefault();
+    // Clear any existing errors as they are no longer relevant
+    urlTextField.valid = true;
+    urlTextField.helperTextContent = '';
+    // Disable submitting the form until we get a result back
+    submitButton.disabled = true;
+
+    // Save the options, because we won't be able to access them in the injected
+    // script.
+    await browser.storage.sync.set({
+      'options': {
+        'url': urlInput.value.trim(),
+        'podfic_label': podficLabel.checked,
+        'podfic_length_label': podficLengthLabel.checked,
+        'podfic_length_value': podficLengthValue.value,
+        'title_format': titleFormatValue.value,
+        'summary_format': summaryFormatValue.value,
+      }
+    });
+
+    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    await chrome.scripting.executeScript({
+      target: {tabId: tab.id},
+      files: [
+        '/resources/browser-polyfill.min.js',
+        '/inject.js',
+      ]
+    });
+  });
+
+  // Used for injected scripts.
+  // We can't get a response back from the script because we are using promise
+  // based APIs and chrome doesn't support getting a promise back as a result
+  // so instead we listen for a message we expect to the send from the script.
+  browser.runtime.onMessage.addListener(injectedScriptResult => {
+    // Enable submitting the form again
+    submitButton.disabled = false;
+    if (injectedScriptResult.result === 'error') {
+      urlTextField.valid = false;
+      urlTextField.helperTextContent = injectedScriptResult.message;
+      urlTextField.focus();
+    } else {
+      snackbar.open();
+    }
+  });
+
   // Import pop-up options from storage.
   const {options} = await browser.storage.sync.get('options');
 
@@ -117,51 +166,6 @@ async function setupPopup() {
   const summarySelectInputElement = summarySelectElement.querySelector('input');
   setInputValue(summarySelectInputElement, options['summary_format']);
   clickSelectOption(summarySelectElement, options['summary_format']);
-
-  // Used for injected scripts.
-  // We can't get a response back from the script because we are using promise
-  // based APIs and chrome doesn't support getting a promise back as a result
-  // so instead we listen for a message we expect to the send from the script.
-  browser.runtime.onMessage.addListener(injectedScriptResult => {
-    // Enable submitting the form again
-    submitButton.disabled = false;
-    if (injectedScriptResult.result === 'error') {
-      urlTextField.valid = false;
-      urlTextField.helperTextContent = injectedScriptResult.message;
-      urlTextField.focus();
-    } else {
-      snackbar.open();
-    }
-  });
-
-  // When the form is submitted, import metadata from original work.
-  form.addEventListener('submit', async (submitEvent) => {
-    // Need to prevent the default so that the popup doesn't refresh.
-    submitEvent.preventDefault();
-    // Clear any existing errors as they are no longer relevant
-    urlTextField.valid = true;
-    urlTextField.helperTextContent = '';
-    // Disable submitting the form until we get a result back
-    submitButton.disabled = true;
-
-    // Save the options, because we won't be able to access them in the injected
-    // script.
-    await browser.storage.sync.set({
-      'options': {
-        'url': urlInput.value.trim(),
-        'podfic_label': podficLabel.checked,
-        'podfic_length_label': podficLengthLabel.checked,
-        'podfic_length_value': podficLengthValue.value,
-        'title_format': titleFormatValue.value,
-        'summary_format': summaryFormatValue.value,
-      }
-    });
-
-    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
-    await browser.tabs.executeScript(
-        tab.id, {file: '/resources/browser-polyfill.min.js'});
-    await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
-  });
 
   // Focus the URL input for a11y.
   urlInput.focus();
