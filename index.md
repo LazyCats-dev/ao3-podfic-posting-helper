@@ -55,6 +55,7 @@ You do not need to set a custom template, but if you wish to do so you can do so
 ## Community
 
 * [Infomercial: The AO3 Podfic Posting Helper (blackglass, esbielle, LittleRedRobinHood, Ravin, TheLordOfLaMancha)](https://archiveofourown.org/works/44137485)
+* [Contributing](https://github.com/LazyCats-dev/ao3-podfic-posting-helper/blob/main/CONTRIBUTING.md)
 
 ## Support
 
