@@ -1,4 +1,4 @@
-import {setCheckboxState, setInputValue} from './utils.js';
+import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
 // Setup for the navbar used in all views.
 /** @type {HTMLAnchorElement} */
@@ -69,54 +69,15 @@ async function setupPopup() {
   // we can keep validation in sync with our submit only validity checks.
   urlTextField.useNativeValidation = false;
 
+  // Defensively, we add the listeners first, so even if we fail to read some
+  // information from storage we should be able to recover on submit.
+
   urlInput.addEventListener('input', () => {
     // Always clear the custom error when the user changes the value.
     urlTextField.helperTextContent = '';
     // Keep the text field in sync with the input.
     urlTextField.valid = urlInput.validity.valid;
   });
-
-  // Import pop-up options from storage.
-  const {options} = await browser.storage.sync.get('options');
-
-  setInputValue(urlInput, options['url']);
-  setCheckboxState(podficLabel, options['podfic_label']);
-  setCheckboxState(podficLengthLabel, options['podfic_length_label']);
-
-  /**
-   * For some reason a select is really stupid so we have to find the option
-   * with the correct text and click it.
-   * @param selectElement {HTMLElement}
-   * @param optionValue {string}
-   */
-  function clickSelectOption(selectElement, optionValue) {
-    const optionElements = selectElement.querySelectorAll('.mdc-list-item');
-    const optionMatchingValue =
-        Array.from(optionElements)
-            .find(option => option.dataset.value === optionValue);
-    if (optionMatchingValue) {
-      optionMatchingValue.click();
-    }
-  }
-
-  // Podfic length value has special considerations
-  const selectElement = document.getElementById('podfic-length-select');
-  const selectInputElement = selectElement.querySelector('input');
-  setInputValue(selectInputElement, options['podfic_length_value']);
-  clickSelectOption(selectElement, options['podfic_length_value']);
-
-  // Now do the same again for the title format
-  const titleSelectElement = document.getElementById('title-template-select');
-  const titleSelectInputElement = titleSelectElement.querySelector('input');
-  setInputValue(titleSelectInputElement, options['title_format']);
-  clickSelectOption(titleSelectElement, options['title_format']);
-
-  // And again for the summary format
-  const summarySelectElement =
-      document.getElementById('summary-template-select');
-  const summarySelectInputElement = summarySelectElement.querySelector('input');
-  setInputValue(summarySelectInputElement, options['summary_format']);
-  clickSelectOption(summarySelectElement, options['summary_format']);
 
   // Used for injected scripts.
   // We can't get a response back from the script because we are using promise
@@ -162,6 +123,50 @@ async function setupPopup() {
         tab.id, {file: '/resources/browser-polyfill.min.js'});
     await browser.tabs.executeScript(tab.id, {file: '/inject.js'});
   });
+
+  await setupStorage();
+
+  // Import pop-up options from storage.
+  const {options} = await browser.storage.sync.get('options');
+
+  setInputValue(urlInput, options['url']);
+  setCheckboxState(podficLabel, options['podfic_label']);
+  setCheckboxState(podficLengthLabel, options['podfic_length_label']);
+
+  /**
+   * For some reason a select is really stupid so we have to find the option
+   * with the correct text and click it.
+   * @param selectElement {HTMLElement}
+   * @param optionValue {string}
+   */
+  function clickSelectOption(selectElement, optionValue) {
+    const optionElements = selectElement.querySelectorAll('.mdc-list-item');
+    const optionMatchingValue =
+        Array.from(optionElements)
+            .find(option => option.dataset.value === optionValue);
+    if (optionMatchingValue) {
+      optionMatchingValue.click();
+    }
+  }
+
+  // Podfic length value has special considerations
+  const selectElement = document.getElementById('podfic-length-select');
+  const selectInputElement = selectElement.querySelector('input');
+  setInputValue(selectInputElement, options['podfic_length_value']);
+  clickSelectOption(selectElement, options['podfic_length_value']);
+
+  // Now do the same again for the title format
+  const titleSelectElement = document.getElementById('title-template-select');
+  const titleSelectInputElement = titleSelectElement.querySelector('input');
+  setInputValue(titleSelectInputElement, options['title_format']);
+  clickSelectOption(titleSelectElement, options['title_format']);
+
+  // And again for the summary format
+  const summarySelectElement =
+      document.getElementById('summary-template-select');
+  const summarySelectInputElement = summarySelectElement.querySelector('input');
+  setInputValue(summarySelectInputElement, options['summary_format']);
+  clickSelectOption(summarySelectElement, options['summary_format']);
 
   // Focus the URL input for a11y.
   urlInput.focus();
