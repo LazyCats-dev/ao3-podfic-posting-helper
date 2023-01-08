@@ -30,6 +30,28 @@ extension to AO3 support.
 
 ![Extension demo](https://raw.githubusercontent.com/LazyCats-dev/ao3-podfic-posting-helper/main/images/pop-up-screen-shot.png)
 
+## Usage
+
+### Filling in the New Work form
+
+1. Navigate to the [New Work form](https://archiveofourown.org/works/new)
+2. Click the extension icon
+3. Set the "URL of work to import from" field to the URL of the work you are importing from
+4. Click "Import"
+5. Fields will be filled in the New Work form with the information from the work you selected
+
+### Advanced options
+
+This extensions supports using a custom template for the title, summary, and work fields of the New Work form.
+
+You do not need to set a custom template, but if you wish to do so you can do so by doing the following:
+
+1. Click the extension icon
+2. Click the "gear" in the top right
+3. On the options page set the template for each field
+4. Click the "Save" button on each template
+5. If you set a template for the title or summary be sure to select "Custom" from the corresponding drop-down when importing
+
 ## Community
 
 * [Infomercial: The AO3 Podfic Posting Helper (blackglass, esbielle, LittleRedRobinHood, Ravin, TheLordOfLaMancha)](https://archiveofourown.org/works/44137485)
