@@ -1,4 +1,4 @@
-import {setCheckboxState, setInputValue} from './utils.js';
+import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
 // Setup for the navbar used in all views.
 /** @type {HTMLAnchorElement} */
@@ -69,6 +69,9 @@ async function setupPopup() {
   // we can keep validation in sync with our submit only validity checks.
   urlTextField.useNativeValidation = false;
 
+  // Defensively, we add the listeners first, so even if we fail to read some
+  // information from storage we should be able to recover on submit.
+
   urlInput.addEventListener('input', () => {
     // Always clear the custom error when the user changes the value.
     urlTextField.helperTextContent = '';
@@ -124,6 +127,8 @@ async function setupPopup() {
       snackbar.open();
     }
   });
+
+  await setupStorage();
 
   // Import pop-up options from storage.
   const {options} = await browser.storage.sync.get('options');

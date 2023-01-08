@@ -9,10 +9,7 @@
             "id": "ao3-podfic-helper@github.com"
         }
     },
-    "background": {
-        "service_worker": "background.js"
-      },
-      "permissions": [
+    "permissions": [
         "storage",
         "activeTab",
         "scripting"
