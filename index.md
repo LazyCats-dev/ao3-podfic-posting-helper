@@ -22,7 +22,7 @@ on Archive of Our Own by importing metadata, such as tags and rating, into the n
 _This is an unofficial extension and not supported by AO3._ Please do not raise issues with this
 extension to AO3 support.
 
-![Extension demo](https://github.com/LazyCats-dev/ao3-podfic-posting-helper/blob/main/images/pop-up-screen-shot.png)
+![Extension demo](https://raw.githubusercontent.com/LazyCats-dev/ao3-podfic-posting-helper/main/images/pop-up-screen-shot.png)
 
 ## Support
 
