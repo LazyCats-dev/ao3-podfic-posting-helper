@@ -275,21 +275,6 @@
   }
 
   /**
-   * @callback FetchFn
-   * @param {string} url
-   * @param {RequestInit=} init
-   * @returns {Promise<Response>}
-   */
-
-  /** @type {FetchFn} */
-  let fetchFn;
-  if (!!window.content && typeof content.fetch === 'function') {
-    fetchFn = content.fetch;
-  } else {
-    fetchFn = window.fetch;
-  }
-
-  /**
    * Parse the metadata for the work at this url.
    * @param {string} url
    */
@@ -309,7 +294,7 @@
     // the user is importing from is only available to logged-in users.
     let result;
     try {
-      result = await fetchFn(fetchUrl, {credentials: 'omit'});
+      result = await window.fetch(fetchUrl, {credentials: 'omit'});
     } catch (e) {
       return {
         result: 'error',
@@ -334,7 +319,7 @@
     // then there will be errors later on but these are handled.
     if (result.redirected || looksLikeUnrevealedWork(doc)) {
       try {
-        result = await fetchFn(fetchUrl, {credentials: 'include'});
+        result = await window.fetch(fetchUrl, {credentials: 'include'});
       } catch (e) {
         return {
           result: 'error',
@@ -489,7 +474,8 @@
     if (!parentCheckmark.checked) {
       parentCheckmark.click();
     }
-    const parentUrl = queryElement(newWorkPage, '#work_parent_work_relationships_attributes_0_url');
+    const parentUrl = queryElement(
+        newWorkPage, '#work_parent_work_relationships_attributes_0_url');
     parentUrl.value = metadata['url'];
 
     // Set the same language as the original work.
