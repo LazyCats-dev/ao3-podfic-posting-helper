@@ -10,6 +10,9 @@ _This is an unofficial extension and not supported by AO3_. Please do not raise 
 
 [Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/)
 
+[Available as a Microsoft Edge Extension](https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj
+)
+
 You can configure it to:
 
 *   Automatically add the "Podfic" tag
