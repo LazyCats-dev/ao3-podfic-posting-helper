@@ -10,12 +10,11 @@
     <img alt="" role="presentation" src="/assets/img/firefox-logo.svg" class="logo">
     Firefox Add-ons Store
 </a>
-<div>
-<div class="button">
+<a href="https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj" target="_blank" rel="noopener"
+    class="button">
     <img alt="" role="presentation" src="/assets/img/edge-logo.svg" class="logo">
-    Coming soon: Microsoft Edge Add-ons Store
-</div>
-</div>
+    Microsoft Edge Add-ons Store
+</a>
 <a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/releases" target="_blank" rel="noopener" class="button">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo"> Source
 </a>
