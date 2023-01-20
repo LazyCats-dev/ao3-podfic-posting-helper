@@ -2,8 +2,8 @@
     "$schema": "https://json.schemastore.org/chrome-manifest",
     "name": "AO3 Podfic Posting Helper",
     "description": "Autofill metadata to match a work you were inspired by",
-    "version": "2.9",
-    "manifest_version": 2,
+    "version": "3.0",
+    "manifest_version": 3,
     "browser_specific_settings": {
         "gecko": {
             "id": "ao3-podfic-helper@github.com"
@@ -11,9 +11,10 @@
     },
     "permissions": [
         "storage",
-        "activeTab"
+        "activeTab",
+        "scripting"
     ],
-    "browser_action": {
+    "action": {
         "default_popup": "popup.html",
         "default_icon": {
             "16": "/icons/icon-16.png",
