@@ -100,28 +100,45 @@
             </form>
         </section>
         <section>
+            <div class="mdc-card mdc-card--outlined">
+                <header>
+                    <h1 class="mdc-typography--subtitle1">Common template keywords</h1>
+                </header>
+                <p>
+                    These template keywords are shared between all templates that support html, which means summary, notes, and work body, but not the custom title template.
+                </p>
+                <p>
+                    The following sequences in your templates will be replaced:
+                </p>
+                <dl>
+                    <dt><strong><code>${blocksummary}</code></strong></dt>
+                    <dd>The summary of the original work wrapped in a <code>blockquote</code>, which will indent it. Because of
+                        the way ao3 handles block quotes, you should put whatever you want to
+                        follow this on the same line.</dd>
+                    <dt><strong><code>${summary}</code></strong></dt>
+                    <dd>The summary of the original work.</dd>
+                    <dt><strong><code>${title}</code></strong></dt>
+                    <dd>The title of the original work. This will be a link to the original work.</dd>
+                    <dt><strong><code>${title-unlinked}</code></strong></dt>
+                    <dd>The title of the original work, without a link to the original work.</dd>
+                    <dt><strong><code>${authors}</code></strong></dt>
+                    <dd>A comma-separated list of the authors of the original work. Each author is a link
+                        to their AO3 page.</dd>
+                    <dt><strong><code>${authors-unlinked}</code></strong></dt>
+                    <dd>A comma-separated list of the authors of the original work, without links
+                        to their AO3 page.</dd>
+                </dl>
+            </div>
+        </section>
+        <section>
             <form id="summary_form">
                 <div class="mdc-card mdc-card--outlined">
                     <header>
                         <h1 class="mdc-typography--subtitle1">Custom summary template</h1>
                     </header>
                     <p>
-                        Set the summary template to use with the "Custom" summary format option.<br>
-                        The following sequences in your template will be replaced:
+                        Set the summary template to use with the "Custom" summary format option.
                     </p>
-                    <dl>
-                        <dt><strong><code>${blocksummary}</code></strong></dt>
-                        <dd>The summary of the original work wrapped in a <code>blockquote</code>. Because of
-                            the way ao3 handles block quotes, you should put whatever you want to
-                            follow this on the same line.</dd>
-                        <dt><strong><code>${summary}</code></strong></dt>
-                        <dd>The summary of the original work.</dd>
-                        <dt><strong><code>${title}</code></strong></dt>
-                        <dd>The title of the original work. This will be a link to the original work.</dd>
-                        <dt><strong><code>${authors}</code></strong></dt>
-                        <dd>A comma-separated list of the authors of the original work. Each author is a link
-                            to their AO3 page.</dd>
-                    </dl>
                     <p>
                         This template supports HTML.
                         <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
@@ -166,15 +183,96 @@
             </form>
         </section>
         <section>
+            <form id="notes_form">
+                <div class="mdc-card mdc-card--outlined">
+                    <header>
+                        <h1 class="mdc-typography--subtitle1">Custom notes template</h1>
+                    </header>
+                    <p>
+                        Set the template to use for beginning and/or end notes.
+                    </p>
+                    <p>
+                        This template supports HTML.
+                        <a href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                            target="_blank">Learn more about using HTML on AO3</a>
+                    </p><div class="form-item">
+                        <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
+                            <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
+                                <input type="checkbox" class="mdc-checkbox__native-control" id="beginning_notes" />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path" fill="none"
+                                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                                <div class="mdc-checkbox__ripple"></div>
+                            </div>
+                            <label for="beginning_notes">Use as beginning notes</label>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
+                            <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
+                                <input type="checkbox" class="mdc-checkbox__native-control" id="end_notes" />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path" fill="none"
+                                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                                <div class="mdc-checkbox__ripple"></div>
+                            </div>
+                            <label for="end_notes">Use as end notes</label>
+                        </div>
+                    </div>                                        
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
+                        data-mdc-auto-init="MDCTextField">
+                        <span class="mdc-text-field__ripple"></span>
+                        <span class="mdc-floating-label" id="notes_template_label">Notes template</span>
+                        <span class="mdc-text-field__resizer">
+                            <textarea class="mdc-text-field__input code-editor-textarea" rows="5" cols="100"
+                                aria-labelledby="notes_template_label" id="notes_template" required
+                                spellcheck="false"></textarea>
+                        </span>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                            aria-hidden="true">
+                        </div>
+                    </div>
+                    <h2 class="mdc-typography--subtitle2">Preview of generated HTML</h2>
+                    <pre>
+                        <code id="notes_preview" class="language-html"></code>
+                    </pre>
+                    <div class="mdc-card__actions actions">
+                        <button class="mdc-button mdc-button--raised mdc-card__action" type="submit"
+                            data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
+                            <span class="mdc-button__label">Save</span>
+                        </button>
+                        <button id="notes_reset"
+                            class="mdc-button mdc-button--outlined mdc-button--icon-leading mdc-card__action"
+                            type="reset" data-mdc-auto-init="MDCRipple">
+                            <div class="mdc-button__ripple"></div>
+                            <i class="material-icons mdc-button__icon" aria-hidden="true">restart_alt</i>
+                            <span class="mdc-button__label">Reset to default</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section>
             <form id="work_form">
                 <div class="mdc-card mdc-card--outlined">
                     <header>
                         <h1 class="mdc-typography--subtitle1">Work template</h1>
                     </header>
                     <p>
-                        Set the default work template for your work: (this won't replace
-                        any metadata for you, but at least you won't have to go find
-                        wherever you have this saved for yourself).
+                        Set the default work template for your work.
                     </p>
                     <p>
                         Note: this will leave the body of your work alone if your draft
