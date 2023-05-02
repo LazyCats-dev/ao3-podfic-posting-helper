@@ -47,9 +47,14 @@ const DEFAULT_OPTIONS = {
 };
 
 export async function setupStorage() {
-  const {options, workbody, title_template, summary_template} =
-      await browser.storage.sync.get(
-          ['options', 'workbody', 'title_template', 'summary_template']);
+  const {options, workbody, title_template, summary_template, notes_template} =
+      await browser.storage.sync.get([
+        'options',
+        'workbody',
+        'title_template',
+        'summary_template',
+        'notes_template',
+      ]);
 
   if (options === undefined) {
     await browser.storage.sync.set({options: DEFAULT_OPTIONS});
@@ -88,6 +93,15 @@ export async function setupStorage() {
     await browser.storage.sync.set({
       'summary_template':
           {'default': '${blocksummary}Podfic of ${title} by ${authors}.'}
+    });
+  }
+  if (notes_template === undefined) {
+    await browser.storage.sync.set({
+      'notes_template': {
+        'default': '',
+        'begin': false,
+        'end': false,
+      }
     });
   }
 }
