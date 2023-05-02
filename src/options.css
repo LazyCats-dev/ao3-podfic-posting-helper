@@ -20,7 +20,6 @@ code {
   align-items: center;
   flex-direction: column;
   margin: auto;
-  max-width: 900px;
   overflow: auto;
   height: 100%;
   scroll-behavior: smooth;
@@ -46,6 +45,7 @@ h1 {
 section {
   padding-top: 8px;
   width: 100%;
+  max-width: 900px;
 }
 
 .about-section section:not(:last-of-type) {
@@ -72,4 +72,17 @@ textarea.code-editor-textarea {
 
 .mdc-top-app-bar {
   z-index: 7;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: rgba(0, 0, 0, 0.33);
+  }
+  100% {
+    background-color: revert;
+  }
+}
+
+section:target .mdc-card {
+  animation: highlight 1s ease-out 0.15s;
 }
