@@ -60,9 +60,22 @@ async function setupPopup() {
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
   /** @type {HTMLAnchorElement} */
-  const optionsLinkBottom = document.getElementById('options_link_bottom');
-  optionsLinkBottom.href = browser.runtime.getURL('options.html');
-
+  const titleSectionLink = document.getElementById("title-section-link");
+  titleSectionLink.href = browser.runtime.getURL("options.html#title-section");
+  /** @type {HTMLAnchorElement} */
+  const summarySectionLink = document.getElementById("summary-section-link");
+  summarySectionLink.href = browser.runtime.getURL(
+    "options.html#summary-section"
+  );
+  /** @type {HTMLAnchorElement} */
+  const notesSectionLink = document.getElementById("notes-section-link");
+  notesSectionLink.href = browser.runtime.getURL("options.html#notes-section");
+  /** @type {HTMLAnchorElement} */
+  const workSectionLink = document.getElementById("work-section-link");
+  workSectionLink.href = browser.runtime.getURL("options.html#work-section");
+  /** @type {HTMLAnchorElement} */
+  const optionsLink = document.getElementById("options-link");
+  optionsLink.href = browser.runtime.getURL("options.html");
 
   // Setting this means that we have to update the validity of the text field
   // when native validation shows the field as invalid. This is the only way
