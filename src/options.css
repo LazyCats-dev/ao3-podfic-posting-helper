@@ -1,56 +1,74 @@
 body {
-    margin: 0;
+  margin: 0;
+  display: flex;
+  height: 100vh;
 }
 
 code {
-    border: 1px inset rgba(0, 0, 0, 0.12);
+  border: 1px inset rgba(0, 0, 0, 0.12);
 }
 
-pre, code {
-    margin: 0;
-    white-space: pre-wrap;
+pre,
+code {
+  margin: 0;
+  white-space: pre-wrap;
 }
 
 .page-content {
-    margin: 0 8px 8px 8px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin: auto;
-    max-width: 900px;
+  margin: 0 8px 8px 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  max-width: 900px;
+  overflow: auto;
+  height: 100%;
 }
 
 .mdc-card {
-    padding: 8px;
-    width: 100%;
-    margin: 16px;
+  padding: 8px;
+  margin: 16px;
 }
 
 h1 {
-    margin: 0;
+  margin: 0;
 }
 
 .actions {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .actions > .mdc-button {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 section {
-    padding-top: 8px;
-    width: 100%;
+  padding-top: 8px;
+  width: 100%;
 }
 
 .about-section section:not(:last-of-type) {
-    border-bottom: 1px inset rgba(0, 0, 0, 0.12);
+  border-bottom: 1px inset rgba(0, 0, 0, 0.12);
 }
 
 .header-icon {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 
 textarea.code-editor-textarea {
-    font-family: 'Roboto Mono', Courier, monospace;
+  font-family: "Roboto Mono", Courier, monospace;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+}
+
+.app-bar {
+  position: absolute;
+}
+
+.mdc-top-app-bar {
+  z-index: 7;
 }

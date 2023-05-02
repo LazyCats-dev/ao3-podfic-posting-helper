@@ -121,6 +121,8 @@ import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
   const beginningNotesCheckbox = document.getElementById('beginning_notes');
   /** @type {HTMLInputElement} */
   const endNotesCheckbox = document.getElementById('end_notes');
+  const navList = document.getElementById('nav-list').MDCList;
+  navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {
     const {title_template} = await browser.storage.sync.get('title_template');
