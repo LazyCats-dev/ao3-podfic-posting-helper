@@ -23,6 +23,7 @@ code {
   max-width: 900px;
   overflow: auto;
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 .mdc-card {
