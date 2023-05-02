@@ -144,7 +144,9 @@ async function setupPopup() {
    * @param optionValue {string}
    */
   function clickSelectOption(selectElement, optionValue) {
-    const optionElements = selectElement.querySelectorAll('.mdc-list-item');
+    const optionElements = selectElement.querySelectorAll(
+      ".mdc-deprecated-list-item"
+    );
     const optionMatchingValue =
         Array.from(optionElements)
             .find(option => option.dataset.value === optionValue);
