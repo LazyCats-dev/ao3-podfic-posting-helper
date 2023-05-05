@@ -1,3 +1,5 @@
+/* global HtmlSanitizer, hljs */
+
 import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
 (async () => {
@@ -126,14 +128,10 @@ import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
   navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {
-    const {title_template} = await browser.storage.sync.get('title_template');
     setInputValue(titleTemplate, '[Podfic] ${title}');
   });
 
   summaryResetButton.addEventListener('click', async () => {
-    const {summary_template} = await browser.storage.sync.get(
-      'summary_template'
-    );
     setInputValue(
       summaryTemplate,
       '${blocksummary}Podfic of ${title} by ${authors}.'
@@ -141,8 +139,6 @@ import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
   });
 
   notesResetButton.addEventListener('click', async () => {
-    const {notes_template} = await browser.storage.sync.get('notes_template');
-
     setInputValue(notesTemplate, '');
     setCheckboxState(beginningNotesCheckbox, false);
     setCheckboxState(endNotesCheckbox, false);

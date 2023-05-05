@@ -1,1 +1,3 @@
+/* global mdc */
+
 mdc.autoInit();

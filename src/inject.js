@@ -91,7 +91,7 @@
       .map(([author, authorUrl]) => link(authorUrl, author))
       .join(', ');
     const authorsText = Array.from(authors)
-      .map(([author, authorUrl]) => author)
+      .map(([author]) => author)
       .join(', ');
     const blockSummaryText = '<blockquote>' + summary + '</blockquote>';
 
@@ -122,7 +122,7 @@
    */
   function transformTitle(template, title, authors) {
     const authorsText = Array.from(authors)
-      .map(([author, authorUrl]) => author)
+      .map(([author]) => author)
       .join(', ');
 
     let newTitle = template;
