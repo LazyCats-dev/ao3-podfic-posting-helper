@@ -1,0 +1,6 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
+  "devDependencies": {
+    "prettier": "2.8.8"
+  }
+}

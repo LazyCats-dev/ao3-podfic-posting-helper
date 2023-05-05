@@ -24,43 +24,44 @@ export function setCheckboxState(checkboxElement, isChecked) {
 }
 
 const DEFAULT_WORKBODY =
-    'Here are a few building blocks that that show how you can include an ' +
-    'image, audio, or a link to your podfic in your post. They\'re all ' +
-    'optional, and you can change these defaults to match your own default ' +
-    'posting template by going to the option page for this extension. Happy ' +
-    'posting!\n\n' +
-    '<img src="IMAGE_URL" width="500px" alt="Cover art. COVER_DESCRIPTION." />\n\n' +
-    '<audio src="PODFIC_URL_ENDING_IN_MP3" controls="controls" ' +
-    'crossorigin="anonymous" preload="metadata"> </audio>\n\n' +
-    '<a href="PODFIC_URL" rel="nofollow">Download the podfic here (FILE_SIZE ' +
-    'MB/FILE_MINUTES minutes)</a>.'
+  'Here are a few building blocks that that show how you can include an ' +
+  "image, audio, or a link to your podfic in your post. They're all " +
+  'optional, and you can change these defaults to match your own default ' +
+  'posting template by going to the option page for this extension. Happy ' +
+  'posting!\n\n' +
+  '<img src="IMAGE_URL" width="500px" alt="Cover art. COVER_DESCRIPTION." />\n\n' +
+  '<audio src="PODFIC_URL_ENDING_IN_MP3" controls="controls" ' +
+  'crossorigin="anonymous" preload="metadata"> </audio>\n\n' +
+  '<a href="PODFIC_URL" rel="nofollow">Download the podfic here (FILE_SIZE ' +
+  'MB/FILE_MINUTES minutes)</a>.';
 
 const DEFAULT_OPTIONS = {
-  'url': '',
-  'podfic_label': true,
-  'podfic_length_label': true,
-  'podfic_length_value': '0-10 Minutes',
-  'transform_summary': true,
-  'transform_title': true,
-  'title_format': 'default',
-  'summary_format': 'default',
+  url: '',
+  podfic_label: true,
+  podfic_length_label: true,
+  podfic_length_value: '0-10 Minutes',
+  transform_summary: true,
+  transform_title: true,
+  title_format: 'default',
+  summary_format: 'default',
 };
 
 export async function setupStorage() {
   const {options, workbody, title_template, summary_template, notes_template} =
-      await browser.storage.sync.get([
-        'options',
-        'workbody',
-        'title_template',
-        'summary_template',
-        'notes_template',
-      ]);
+    await browser.storage.sync.get([
+      'options',
+      'workbody',
+      'title_template',
+      'summary_template',
+      'notes_template',
+    ]);
 
   if (options === undefined) {
     await browser.storage.sync.set({options: DEFAULT_OPTIONS});
   } else if (
-      options['title_format'] === undefined ||
-      options['summary_format'] === undefined) {
+    options['title_format'] === undefined ||
+    options['summary_format'] === undefined
+  ) {
     // Preserve behavior for existing extension users.
     if (options['title_format'] === undefined) {
       if (options['transform_title']) {
@@ -80,28 +81,30 @@ export async function setupStorage() {
   }
   if (workbody === undefined) {
     await browser.storage.sync.set({
-      'workbody': {
-        'default': DEFAULT_WORKBODY,
-      }
+      workbody: {
+        default: DEFAULT_WORKBODY,
+      },
     });
   }
   if (title_template === undefined) {
-    await browser.storage.sync.set(
-        {'title_template': {'default': '[Podfic] ${title}'}});
+    await browser.storage.sync.set({
+      title_template: {default: '[Podfic] ${title}'},
+    });
   }
   if (summary_template === undefined) {
     await browser.storage.sync.set({
-      'summary_template':
-          {'default': '${blocksummary}Podfic of ${title} by ${authors}.'}
+      summary_template: {
+        default: '${blocksummary}Podfic of ${title} by ${authors}.',
+      },
     });
   }
   if (notes_template === undefined) {
     await browser.storage.sync.set({
-      'notes_template': {
-        'default': '',
-        'begin': false,
-        'end': false,
-      }
+      notes_template: {
+        default: '',
+        begin: false,
+        end: false,
+      },
     });
   }
 }

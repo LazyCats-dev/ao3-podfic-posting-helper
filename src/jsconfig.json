@@ -1,12 +1,10 @@
 {
-    "typeAcquisition": {
-        "include": [
-            "chrome"
-        ]
-    },
-    "compilerOptions": {
-        "target": "es2021",
-        "module": "es6"
-    },
-    "compileOnSave": true
+  "typeAcquisition": {
+    "include": ["chrome"]
+  },
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "es6"
+  },
+  "compileOnSave": true
 }
