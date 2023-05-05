@@ -185,3 +185,4 @@ const HtmlSanitizer = new (function() {
   this.AllowedCssStyles = _cssWhitelist;
   this.AllowedSchemas = _schemaWhiteList;
 });
+export default HtmlSanitizer;

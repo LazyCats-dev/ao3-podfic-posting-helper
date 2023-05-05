@@ -1,6 +1,6 @@
-/* global HtmlSanitizer, hljs */
-
 import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
+import hljs from './resources/highlight.min.js';
+import HtmlSanitizer from './resources/html-sanitizer.js';
 
 (async () => {
   await setupStorage();

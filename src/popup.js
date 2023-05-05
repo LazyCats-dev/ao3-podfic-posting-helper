@@ -7,7 +7,7 @@ optionsButton.href = browser.runtime.getURL('options.html');
 
 /**
  * A list of URL patterns that the popup can operate on.
- * @type {RegExp|string[]}
+ * @type {Array<RegExp|string>}
  */
 const ALLOWED_URL_PATTERNS = [
   // Standard new work
