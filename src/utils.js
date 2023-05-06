@@ -1,7 +1,7 @@
 /**
  * Sets the value of the input, triggering all necessary events.
- * @param inputElement {HTMLInputElement}
- * @param value {string}
+ * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
+ * @param {string} value
  */
 export function setInputValue(inputElement, value) {
   const event = new InputEvent('input', {bubbles: true, data: value});

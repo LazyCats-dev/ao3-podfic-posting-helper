@@ -82,52 +82,59 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
 
   hljs.highlightAll();
 
-  /** @type {HTMLInputElement} */
-  const titleTemplate = document.getElementById('title_template');
-  /** @type {HTMLFormElement} */
-  const titleForm = document.getElementById('title_form');
-  /** @type {HTMLInputElement} */
-  const titlePreview = document.getElementById('title_preview');
+  const titleTemplate = /** @type {HTMLTextAreaElement} */ (
+    document.getElementById('title_template')
+  );
+  const titleForm = /** @type {HTMLFormElement} */ (
+    document.getElementById('title_form')
+  );
+  const titlePreview = /** @type {HTMLTextAreaElement} */ (
+    document.getElementById('title_preview')
+  );
   /** @type {mdc.textField.MDCTextField} */
   const titleTextField = titleTemplate.closest('.mdc-text-field').MDCTextField;
-  /** @type {HTMLInputElement} */
-  const summaryTemplate = document.getElementById('summary_template');
+  const summaryTemplate = /** @type {HTMLTextAreaElement} */ (
+    document.getElementById('summary_template')
+  );
   /** @type {mdc.textField.MDCTextField} */
   const summaryTemplateTextField =
     summaryTemplate.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
   const summaryPreview = document.getElementById('summary_preview');
-  /** @type {HTMLFormElement} */
-  const summaryForm = document.getElementById('summary_form');
-  const notesTemplate = document.getElementById('notes_template');
+  const summaryForm = /** @type {HTMLFormElement} */ (
+    document.getElementById('summary_form')
+  );
+  const notesTemplate = /** @type {HTMLTextAreaElement} */ (
+    document.getElementById('notes_template')
+  );
   /** @type {mdc.textField.MDCTextField} */
   const notesTemplateTextField =
     notesTemplate.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
   const notesPreview = document.getElementById('notes_preview');
-  /** @type {HTMLFormElement} */
-  const notesForm = document.getElementById('notes_form');
-  /** @type {HTMLInputElement} */
-  const defaultBody = document.getElementById('default_body');
+  const notesForm = /** @type {HTMLFormElement} */ (
+    document.getElementById('notes_form')
+  );
+  const defaultBody = /** @type {HTMLTextAreaElement} */ (
+    document.getElementById('default_body')
+  );
   /** @type {mdc.textField.MDCTextField} */
   const defaultBodyTextField =
     defaultBody.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
   const defaultBodyPreview = document.getElementById('default_body_preview');
-  /** @type {HTMLFormElement} */
   const workForm = document.getElementById('work_form');
   /** @type {mdc.snackbar.MDCSnackbar} */
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
-  /** @type {HTMLButtonElement} */
   const titleResetButton = document.getElementById('title_reset');
-  /** @type {HTMLButtonElement} */
   const summaryResetButton = document.getElementById('summary_reset');
-  /** @type {HTMLButtonElement} */
   const notesResetButton = document.getElementById('notes_reset');
-  /** @type {HTMLInputElement} */
-  const beginningNotesCheckbox = document.getElementById('beginning_notes');
-  /** @type {HTMLInputElement} */
-  const endNotesCheckbox = document.getElementById('end_notes');
+  const beginningNotesCheckbox =
+    /** @type {HTMLInputElement} */
+    (document.getElementById('beginning_notes'));
+  const endNotesCheckbox =
+    /** @type {HTMLInputElement} */
+    (document.getElementById('end_notes'));
   /** @type {mdc.list.MDCList} */
   const navList = document.querySelector('.mdc-deprecated-list').MDCList;
   navList.wrapFocus = true;
@@ -151,8 +158,8 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
 
   titleTextField.useNativeValidation = false;
 
-  titleTemplate.addEventListener('input', event => {
-    titlePreview.textContent = event.target.value
+  titleTemplate.addEventListener('input', () => {
+    titlePreview.textContent = titleTemplate.value
       .replaceAll('${title}', 'TITLE_TEXT')
       .replaceAll('${title-unlinked}', 'TITLE_TEXT')
       .replaceAll('${authors}', 'AUTHOR_1, AUTHOR_2')
@@ -160,7 +167,7 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
       .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
       .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2');
     hljs.highlightElement(titlePreview);
-    if (isHtml(event.target.value)) {
+    if (isHtml(titleTemplate.value)) {
       titleTextField.helperTextContent =
         'This template should not contain HTML but it appears to contain HTML';
       titleTextField.valid = false;
@@ -193,15 +200,15 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   );
 
   function attachHTMLPreviewAndValidateListeners(
-    /** @type{mdc.textField.MDCTextField}*/ templateTextField,
-    /** @type{HTMLInputElement}*/ template,
-    /** @type{HTMLElement}*/ preview
+    /** @type {mdc.textField.MDCTextField}*/ templateTextField,
+    /** @type {HTMLInputElement|HTMLTextAreaElement}*/ template,
+    /** @type {HTMLElement}*/ preview
   ) {
     templateTextField.useNativeValidation = false;
 
-    template.addEventListener('input', event => {
+    template.addEventListener('input', () => {
       const previewHtml = HtmlSanitizer.SanitizeHtml(
-        event.target.value
+        template.value
           .replaceAll(
             '${blocksummary}',
             '<blockquote>BLOCK_SUMMARY_TEXT</blockquote>'
@@ -218,7 +225,7 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
       preview.textContent = previewHtml;
       hljs.highlightElement(preview);
 
-      if (!isValidAo3ValidHtml(event.target.value)) {
+      if (!isValidAo3ValidHtml(template.value)) {
         templateTextField.helperTextContent =
           'This template appears to contain HTML tags that cannot be used on ' +
           'AO3, they have been removed from the preview';

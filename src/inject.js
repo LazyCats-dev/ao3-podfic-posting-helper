@@ -2,8 +2,8 @@
   // Duplicated because they need to exist in the injected script.
   /**
    * Query a (potentially empty) list of HTMLElements
-   * @param parent {HTMLElement}
-   * @param query {string}
+   * @param {ParentNode} parent
+   * @param {string} query
    * @return {HTMLElement[]}
    */
   function queryElements(parent, query) {
@@ -15,8 +15,8 @@
 
   /**
    * Query to get the first matching HTMLElement
-   * @param parent {HTMLElement}
-   * @param query {string}
+   * @param {ParentNode} parent
+   * @param {string} query
    * @return {HTMLElement}
    */
   function queryElement(parent, query) {
@@ -25,20 +25,23 @@
 
   /**
    * Return a map from option text to option value.
-   * @param options {HTMLOptionElement[]}
+   * @param {HTMLSelectElement|undefined} [select]
    * @returns {Map<string,string>}
    */
-  function mapOptions(options) {
-    return queryElements(options, 'option').reduce((total, optionElement) => {
-      total.set(optionElement.innerText.trim(), optionElement.value);
-      return total;
-    }, new Map());
+  function mapOptions(select) {
+    return Array.from(select?.querySelectorAll('option') || []).reduce(
+      (total, optionElement) => {
+        total.set(optionElement.innerText.trim(), optionElement.value);
+        return total;
+      },
+      new Map()
+    );
   }
 
   /**
    * Return a map from input text to input element.
-   * @param inputs {HTMLElement[]}
-   * @returns {Map<string,HTMLElement>}
+   * @param {HTMLInputElement[]} inputs
+   * @returns {Map<string,HTMLInputElement>}
    */
   function mapInputs(inputs) {
     return inputs.reduce((total, inputElement) => {
@@ -61,8 +64,8 @@
 
   /**
    * Format a url and some text as a (string) <a> tag.
-   * @param url {string}
-   * @param text {string}
+   * @param {string} url
+   * @param {string} text
    * @returns {string}
    */
   function link(url, text) {
@@ -78,11 +81,11 @@
    *   * title
    *   * author
    *   * authors
-   * @param template {string}
-   * @param summary {string}
-   * @param title {string}
-   * @param url {string}
-   * @param authors {Map<string,string>}
+   * @param {string} template
+   * @param {string} summary
+   * @param {string} title
+   * @param {string} url
+   * @param {Map<string,string>} authors
    * @returns
    */
   function transformHtmlTemplate(template, summary, title, url, authors) {
@@ -416,13 +419,17 @@
     const newWorkPage = document.getElementById('main');
 
     // Find the rating drop down, and pick the correct value.
-    const ratingSelect = queryElement(newWorkPage, '#work_rating_string');
+    const ratingSelect = /** @type {HTMLSelectElement} */ (
+      queryElement(newWorkPage, '#work_rating_string')
+    );
     const ratingOptions = mapOptions(ratingSelect);
     ratingSelect.value = ratingOptions.get(metadata['rating']);
 
     // Find the warning check boxes, and check all the ones that apply.
     const warningBoxes = mapInputs(
-      queryElements(queryElement(newWorkPage, 'fieldset.warnings'), 'input')
+      /** @type {HTMLInputElement[]} */ (
+        queryElements(queryElement(newWorkPage, 'fieldset.warnings'), 'input')
+      )
     );
     warningBoxes.set(
       'Creator Chose Not To Use Archive Warnings',
@@ -441,15 +448,16 @@
 
     // Find the fandom text input, and insert a comma-separated list of
     // fandoms. Tell ao3 we did so.
-    const fandomInput = queryElement(
-      queryElement(newWorkPage, 'dd.fandom'),
-      'input'
+    const fandomInput = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.fandom'), 'input')
     );
     setTagsInputValue(fandomInput, metadata['fandoms'].join(', '));
 
     // Find the category check boxes, and check all the ones that apply.
     const categoryBoxes = mapInputs(
-      queryElements(queryElement(newWorkPage, 'dd.category'), 'input')
+      /** @type {HTMLInputElement[]} */ (
+        queryElements(queryElement(newWorkPage, 'dd.category'), 'input')
+      )
     );
     // Somehow it is possible for the imported metadata to have different
     // categories than new work form. In this case we just ignore the warning
@@ -464,26 +472,23 @@
 
     // Find the relationship text input, and insert a comma-separated list
     // of relationships. Tell ao3 we did so.
-    const relationshipInput = queryElement(
-      queryElement(newWorkPage, 'dd.relationship'),
-      'input'
+    const relationshipInput = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.relationship'), 'input')
     );
     setTagsInputValue(relationshipInput, metadata['relationships'].join(', '));
 
     // Find the character input, and insert a comma-separated list of
     // characters. Tell ao3 we did so.
-    const characterInput = queryElement(
-      queryElement(newWorkPage, 'dd.character'),
-      'input'
+    const characterInput = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.character'), 'input')
     );
     setTagsInputValue(characterInput, metadata['characters'].join(', '));
 
     // Find the freeform tags input, and insert a comma-separated list of
     // freeform tags. (potentially auto-adding "Podfic" and "Podfic
     // Length" tags) Tell ao3 we did so.
-    const additionalTagsInput = queryElement(
-      queryElement(newWorkPage, 'dd.freeform'),
-      'input'
+    const additionalTagsInput = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input')
     );
     if (options['podfic_label']) {
       metadata['freeformTags'].push('Podfic');
@@ -496,9 +501,8 @@
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
 
     // Set the title.
-    const titleInput = queryElement(
-      queryElement(newWorkPage, 'dd.title'),
-      'input'
+    const titleInput = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.title'), 'input')
     );
     const titleTemplate = getTitleTemplate(
       options['title_format'],
@@ -511,9 +515,8 @@
     );
 
     // Set the summary, optionally wrapping it in a block quote.
-    const summaryTextArea = queryElement(
-      queryElement(newWorkPage, 'dd.summary'),
-      'textarea'
+    const summaryTextArea = /** @type {HTMLTextAreaElement} */ (
+      queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea')
     );
     const summaryTemplate = getSummaryTemplate(
       options['summary_format'],
@@ -536,49 +539,56 @@
       authorMap
     );
     if (notes_template['begin']) {
-      const beginNotesCheckmark = queryElement(
-        newWorkPage,
-        '#front-notes-options-show'
+      const beginNotesCheckmark = /** @type {HTMLInputElement} */ (
+        queryElement(newWorkPage, '#front-notes-options-show')
       );
       if (!beginNotesCheckmark.checked) {
         beginNotesCheckmark.click();
       }
-      const beginNotesTextArea = queryElement(newWorkPage, '#work_notes');
+      const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+        queryElement(newWorkPage, '#work_notes')
+      );
       beginNotesTextArea.value = notesTemplate;
     }
     if (notes_template['end']) {
-      const endNotesCheckmark = queryElement(
-        newWorkPage,
-        '#end-notes-options-show'
+      const endNotesCheckmark = /** @type {HTMLInputElement} */ (
+        queryElement(newWorkPage, '#end-notes-options-show')
       );
       if (!endNotesCheckmark.checked) {
         endNotesCheckmark.click();
       }
-      const endNotesTextArea = queryElement(newWorkPage, '#work_endnotes');
+      const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+        queryElement(newWorkPage, '#work_endnotes')
+      );
       endNotesTextArea.value = notesTemplate;
     }
 
     // Set the "inspired by" work url.
-    const parentCheckmark = queryElement(
-      queryElement(newWorkPage, 'dt.parent'),
-      'input'
+    const parentCheckmark = /** @type {HTMLInputElement} */ (
+      queryElement(queryElement(newWorkPage, 'dt.parent'), 'input')
     );
     if (!parentCheckmark.checked) {
       parentCheckmark.click();
     }
-    const parentUrl = queryElement(
-      newWorkPage,
-      '#work_parent_work_relationships_attributes_0_url'
+    const parentUrl = /** @type {HTMLInputElement} */ (
+      queryElement(
+        newWorkPage,
+        '#work_parent_work_relationships_attributes_0_url'
+      )
     );
     parentUrl.value = metadata['url'];
 
     // Set the same language as the original work.
-    const languageSelect = queryElement(newWorkPage, '#work_language_id');
+    const languageSelect = /** @type {HTMLSelectElement} */ (
+      queryElement(newWorkPage, '#work_language_id')
+    );
     const languageOptions = mapOptions(languageSelect);
     languageSelect.value = languageOptions.get(metadata['language']);
 
     // Set the new work text.
-    const workText = queryElement(newWorkPage, '.mce-editor');
+    const workText = /** @type {HTMLInputElement} */ (
+      queryElement(newWorkPage, '.mce-editor')
+    );
     // If there's nothing here yet, over-write it.
     if (workText.value == '') {
       workText.value = transformHtmlTemplate(
