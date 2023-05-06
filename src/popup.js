@@ -1,8 +1,9 @@
 import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
 // Setup for the navbar used in all views.
-/** @type {HTMLAnchorElement} */
-const optionsButton = document.getElementById('options_button');
+const optionsButton = /** @type {HTMLAnchorElement} */ (
+  document.getElementById('options_button')
+);
 optionsButton.href = browser.runtime.getURL('options.html');
 
 /**
@@ -46,40 +47,52 @@ const ALLOWED_URL_PATTERNS = [
 })();
 
 async function setupPopup() {
-  /** @type {HTMLInputElement} */
-  const urlInput = document.getElementById('url-input');
+  const urlInput = /** @type {HTMLInputElement} */ (
+    document.getElementById('url-input')
+  );
   /** @type {HTMLFormElement} */
-  const form = document.getElementById('form');
-  /** @type {HTMLInputElement} */
-  const podficLabel = document.getElementById('podfic_label');
-  /** @type {HTMLInputElement} */
-  const podficLengthLabel = document.getElementById('podfic_length_label');
-  /** @type {HTMLInputElement} */
-  const podficLengthValue = document.getElementById('podfic_length_value');
-  /** @type {HTMLInputElement} */
-  const titleFormatValue = document.getElementById('title_template_value');
-  /** @type {HTMLInputElement} */
-  const summaryFormatValue = document.getElementById('summary_template_value');
-  const urlTextField = document.querySelector('.url-text-field').MDCTextField;
+  const form = document.getElementsByTagName('form')[0];
+  const podficLabel = /** @type {HTMLInputElement} */ (
+    document.getElementById('podfic_label')
+  );
+  const podficLengthLabel = /** @type {HTMLInputElement} */ (
+    document.getElementById('podfic_length_label')
+  );
+  const podficLengthValue = /** @type {HTMLInputElement} */ (
+    document.getElementById('podfic_length_value')
+  );
+  const titleFormatValue = /** @type {HTMLInputElement} */ (
+    document.getElementById('title_template_value')
+  );
+  const summaryFormatValue = /** @type {HTMLInputElement} */ (
+    document.getElementById('summary_template_value')
+  );
+  /** @type {mdc.textField.MDCTextField} */
+  const urlTextField = document.querySelector('.mdc-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
-  /** @type {HTMLAnchorElement} */
-  const titleSectionLink = document.getElementById('title-section-link');
+  const titleSectionLink = /** @type {HTMLAnchorElement} */ (
+    document.getElementById('title-section-link')
+  );
   titleSectionLink.href = browser.runtime.getURL('options.html#title-section');
-  /** @type {HTMLAnchorElement} */
-  const summarySectionLink = document.getElementById('summary-section-link');
+  const summarySectionLink =
+    /** @type {HTMLAnchorElement} */
+    (document.getElementById('summary-section-link'));
   summarySectionLink.href = browser.runtime.getURL(
     'options.html#summary-section'
   );
-  /** @type {HTMLAnchorElement} */
-  const notesSectionLink = document.getElementById('notes-section-link');
+  const notesSectionLink =
+    /** @type {HTMLAnchorElement} */
+    (document.getElementById('notes-section-link'));
   notesSectionLink.href = browser.runtime.getURL('options.html#notes-section');
-  /** @type {HTMLAnchorElement} */
-  const workSectionLink = document.getElementById('work-section-link');
+  const workSectionLink =
+    /** @type {HTMLAnchorElement} */
+    (document.getElementById('work-section-link'));
   workSectionLink.href = browser.runtime.getURL('options.html#work-section');
-  /** @type {HTMLAnchorElement} */
-  const optionsLink = document.getElementById('options-link');
+  const optionsLink = /** @type {HTMLAnchorElement} */ (
+    document.getElementById('options-link')
+  );
   optionsLink.href = browser.runtime.getURL('options.html');
 
   // Setting this means that we have to update the validity of the text field
@@ -159,9 +172,7 @@ async function setupPopup() {
    * @param optionValue {string}
    */
   function clickSelectOption(selectElement, optionValue) {
-    const optionElements = selectElement.querySelectorAll(
-      '.mdc-deprecated-list-item'
-    );
+    const optionElements = selectElement.querySelectorAll('li');
     const optionMatchingValue = Array.from(optionElements).find(
       option => option.dataset.value === optionValue
     );

@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/jsconfig.json",
   "typeAcquisition": {
     "include": ["chrome", "firefox-webext-browser"]
   },

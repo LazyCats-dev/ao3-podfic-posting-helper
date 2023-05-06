@@ -5,6 +5,7 @@
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
+    "material-components-web": "^14.0.0",
     "prettier": "2.8.8"
   },
   "lint-staged": {

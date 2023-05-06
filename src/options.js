@@ -88,10 +88,11 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   const titleForm = document.getElementById('title_form');
   /** @type {HTMLInputElement} */
   const titlePreview = document.getElementById('title_preview');
-  /** @type {MDCTextField} */
+  /** @type {mdc.textField.MDCTextField} */
   const titleTextField = titleTemplate.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLInputElement} */
   const summaryTemplate = document.getElementById('summary_template');
+  /** @type {mdc.textField.MDCTextField} */
   const summaryTemplateTextField =
     summaryTemplate.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
@@ -99,6 +100,7 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   /** @type {HTMLFormElement} */
   const summaryForm = document.getElementById('summary_form');
   const notesTemplate = document.getElementById('notes_template');
+  /** @type {mdc.textField.MDCTextField} */
   const notesTemplateTextField =
     notesTemplate.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
@@ -107,12 +109,14 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   const notesForm = document.getElementById('notes_form');
   /** @type {HTMLInputElement} */
   const defaultBody = document.getElementById('default_body');
+  /** @type {mdc.textField.MDCTextField} */
   const defaultBodyTextField =
     defaultBody.closest('.mdc-text-field').MDCTextField;
   /** @type {HTMLElement} */
   const defaultBodyPreview = document.getElementById('default_body_preview');
   /** @type {HTMLFormElement} */
   const workForm = document.getElementById('work_form');
+  /** @type {mdc.snackbar.MDCSnackbar} */
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const titleResetButton = document.getElementById('title_reset');
@@ -124,7 +128,8 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   const beginningNotesCheckbox = document.getElementById('beginning_notes');
   /** @type {HTMLInputElement} */
   const endNotesCheckbox = document.getElementById('end_notes');
-  const navList = document.getElementById('nav-list').MDCList;
+  /** @type {mdc.list.MDCList} */
+  const navList = document.querySelector('.mdc-deprecated-list').MDCList;
   navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {
@@ -188,7 +193,7 @@ import HtmlSanitizer from './resources/html-sanitizer.js';
   );
 
   function attachHTMLPreviewAndValidateListeners(
-    /** @type{MDCTextField}*/ templateTextField,
+    /** @type{mdc.textField.MDCTextField}*/ templateTextField,
     /** @type{HTMLInputElement}*/ template,
     /** @type{HTMLElement}*/ preview
   ) {
