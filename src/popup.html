@@ -52,8 +52,9 @@
     </header>
     <main class="mdc-top-app-bar--fixed-adjust page-content">
       <p>
-        Fill in the URL of the fic you were inspired by below then click "Import".
-        Anything already entered into the form may be deleted after clicking "Import"
+        Fill in the URL of the fic you were inspired by below then click
+        "Import". Anything already entered into the form may be deleted after
+        clicking "Import"
       </p>
       <form id="form">
         <div class="list" role="group">
@@ -606,9 +607,159 @@
               </div>
             </div>
           </div>
+          <div class="form-item">
+            <label id="audio-format-tags-label">Audio format tags:</label>
+            <span
+              class="mdc-chip-set"
+              role="listbox"
+              aria-orientation="horizontal"
+              aria-multiselectable="true"
+              aria-labelledby="audio-format-tags-label"
+              data-mdc-auto-init="MDCChipSet"
+              id="audio-format-tags">
+              <span class="mdc-chip-set__chips" role="presentation">
+                <span
+                  class="mdc-chip"
+                  role="presentation"
+                  data-mdc-auto-init="MDCChip">
+                  <span
+                    class="mdc-chip__action mdc-chip__action--primary"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0">
+                    <span
+                      class="mdc-chip__ripple mdc-chip__ripple--primary"
+                      data-mdc-auto-init="MDCRipple"></span>
+                    <span class="mdc-chip__graphic">
+                      <span class="mdc-chip__checkmark">
+                        <svg
+                          class="mdc-chip__checkmark-svg"
+                          viewBox="-2 -3 30 30">
+                          <path
+                            class="mdc-chip__checkmark-path"
+                            fill="none"
+                            stroke="black"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="mdc-chip__text-label">MP3</span>
+                  </span>
+                </span>
+                <span
+                  class="mdc-chip"
+                  role="presentation"
+                  data-mdc-auto-init="MDCChip">
+                  <span
+                    class="mdc-chip__action mdc-chip__action--primary"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0">
+                    <span
+                      class="mdc-chip__ripple mdc-chip__ripple--primary"
+                      data-mdc-auto-init="MDCRipple"></span>
+                    <span class="mdc-chip__graphic">
+                      <span class="mdc-chip__checkmark">
+                        <svg
+                          class="mdc-chip__checkmark-svg"
+                          viewBox="-2 -3 30 30">
+                          <path
+                            class="mdc-chip__checkmark-path"
+                            fill="none"
+                            stroke="black"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="mdc-chip__text-label">M4A</span>
+                  </span>
+                </span>
+                <span
+                  class="mdc-chip"
+                  role="presentation"
+                  data-mdc-auto-init="MDCChip">
+                  <span
+                    class="mdc-chip__action mdc-chip__action--primary"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0">
+                    <span
+                      class="mdc-chip__ripple mdc-chip__ripple--primary"></span>
+                    <span class="mdc-chip__graphic">
+                      <span class="mdc-chip__checkmark">
+                        <svg
+                          class="mdc-chip__checkmark-svg"
+                          viewBox="-2 -3 30 30">
+                          <path
+                            class="mdc-chip__checkmark-path"
+                            fill="none"
+                            stroke="black"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="mdc-chip__text-label">M4B</span>
+                  </span>
+                </span>
+                <span
+                  class="mdc-chip"
+                  role="presentation"
+                  data-mdc-auto-init="MDCChip">
+                  <span
+                    class="mdc-chip__action mdc-chip__action--primary"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0">
+                    <span
+                      class="mdc-chip__ripple mdc-chip__ripple--primary"
+                      data-mdc-auto-init="MDCRipple"></span>
+                    <span class="mdc-chip__graphic">
+                      <span class="mdc-chip__checkmark">
+                        <svg
+                          class="mdc-chip__checkmark-svg"
+                          viewBox="-2 -3 30 30">
+                          <path
+                            class="mdc-chip__checkmark-path"
+                            fill="none"
+                            stroke="black"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="mdc-chip__text-label">Streaming</span>
+                  </span>
+                </span>
+                <span class="mdc-chip" role="presentation" data-mdc-auto-init="MDCChip">
+                  <span
+                    class="mdc-chip__action mdc-chip__action--primary"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0">
+                    <span
+                      class="mdc-chip__ripple mdc-chip__ripple--primary"></span>
+                    <span class="mdc-chip__graphic">
+                      <span class="mdc-chip__checkmark">
+                        <svg
+                          class="mdc-chip__checkmark-svg"
+                          viewBox="-2 -3 30 30">
+                          <path
+                            class="mdc-chip__checkmark-path"
+                            fill="none"
+                            stroke="black"
+                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="mdc-chip__text-label">Download</span>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
           <p>
             You can set up custom templates for sections of the form in the
-            <a id="options-link" target="_blank">options page</a>.
+            <a id="options-link" target="_blank">options page</a>
+            .
           </p>
           <div class="form-item">
             <button

@@ -18,4 +18,7 @@ interface ParentNode {
   querySelector(selector: '.mdc-text-field'): {
     MDCTextField: mdc.textField.MDCTextField;
   };
+  querySelector(selector: '#audio-format-tags'): HTMLElement & {
+    MDCChipSet: mdc.chips.MDCChipSet;
+  };
 }

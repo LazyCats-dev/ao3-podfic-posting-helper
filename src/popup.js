@@ -92,6 +92,12 @@ async function setupPopup() {
     urlTextField.valid = urlInput.validity.valid;
   });
 
+  /** @type {mdc.chips.MDCChipSet} */
+  const audioFormatTagsChipSet =
+    document.querySelector('#audio-format-tags').MDCChipSet;
+  // TODO: make this work.
+  audioFormatTagsChipSet.listen('MDCChipSet:selection', console.error);
+
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
     // Need to prevent the default so that the popup doesn't refresh.

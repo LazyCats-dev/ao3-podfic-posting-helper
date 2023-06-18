@@ -49,3 +49,7 @@ h1 {
 .header-icon {
   margin-left: 4px;
 }
+
+#audio-format-tags {
+  display: inline-flex;
+}
