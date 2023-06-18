@@ -97,6 +97,7 @@ async function setupPopup() {
     document.querySelector('#audio-format-tags').MDCChipSet;
   // TODO: make this work.
   audioFormatTagsChipSet.listen('MDCChipSet:selection', console.error);
+  globalThis.audioFormatTagsChipSet = audioFormatTagsChipSet;
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
