@@ -72,24 +72,6 @@ async function setupPopup() {
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
   const submitButton = document.querySelector('#import');
-  const titleSectionLink = /** @type {HTMLAnchorElement} */ (
-    document.getElementById('title-section-link')
-  );
-  titleSectionLink.href = browser.runtime.getURL('options.html#title-section');
-  const summarySectionLink =
-    /** @type {HTMLAnchorElement} */
-    (document.getElementById('summary-section-link'));
-  summarySectionLink.href = browser.runtime.getURL(
-    'options.html#summary-section'
-  );
-  const notesSectionLink =
-    /** @type {HTMLAnchorElement} */
-    (document.getElementById('notes-section-link'));
-  notesSectionLink.href = browser.runtime.getURL('options.html#notes-section');
-  const workSectionLink =
-    /** @type {HTMLAnchorElement} */
-    (document.getElementById('work-section-link'));
-  workSectionLink.href = browser.runtime.getURL('options.html#work-section');
   const optionsLink = /** @type {HTMLAnchorElement} */ (
     document.getElementById('options-link')
   );
