@@ -1,17 +1,5 @@
 import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
-/**
- * Object representing the data collected by the form.
- * @typedef {Object} FormData
- * @property {string} url
- * @property {boolean} podfic_label
- * @property {boolean} podfic_length_label
- * @property {string} podfic_length_value
- * @property {string} title_format
- * @property {string} summary_format
- * @property {(readonly string[])=} audioFormatTagOptionIds
- */
-
 // Setup for the navbar used in all views.
 const optionsButton = /** @type {HTMLAnchorElement} */ (
   document.getElementById('options_button')
@@ -160,7 +148,7 @@ async function setupPopup() {
   // Import pop-up options from storage.
   const data = await browser.storage.sync.get('options');
 
-  /** @type {FormData} */
+  /** @type {import("./utils.js").PopupFormData} */
   const options = data['options'];
 
   setInputValue(urlInput, options['url']);

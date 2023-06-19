@@ -1,4 +1,16 @@
 /**
+ * Object representing the data collected by the form.
+ * @typedef {Object} PopupFormData
+ * @property {string} url
+ * @property {boolean} podfic_label
+ * @property {boolean} podfic_length_label
+ * @property {string} podfic_length_value
+ * @property {string} title_format
+ * @property {string} summary_format
+ * @property {(readonly string[])=} audioFormatTagOptionIds
+ */
+
+/**
  * Sets the value of the input, triggering all necessary events.
  * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
  * @param {string} value

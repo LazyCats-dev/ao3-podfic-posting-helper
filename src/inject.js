@@ -1,4 +1,14 @@
 (async () => {
+  /**
+   * Object representing the data available to the injected script.
+   * @typedef {Object} InjectedScriptStorageData
+   * @property {import("./utils.js").PopupFormData} options
+   * @property {string} workbody
+   * @property {string} summary_template
+   * @property {string} title_template
+   * @property {string} notes_template
+   */
+
   // Duplicated because they need to exist in the injected script.
   /**
    * Query a (potentially empty) list of HTMLElements
@@ -393,19 +403,22 @@
 
   async function importAndFillMetadata() {
     let showPartialCompletionWarning = false;
+    /** @type {InjectedScriptStorageData} */
     const {
       options,
       workbody,
       summary_template,
       title_template,
       notes_template,
-    } = await browser.storage.sync.get([
-      'options',
-      'workbody',
-      'summary_template',
-      'title_template',
-      'notes_template',
-    ]);
+    } = /** @type {InjectedScriptStorageData} */ (
+      await browser.storage.sync.get([
+        'options',
+        'workbody',
+        'summary_template',
+        'title_template',
+        'notes_template',
+      ])
+    );
 
     const importResult = await importMetadata(options['url']);
 
@@ -496,6 +509,11 @@
     if (options['podfic_length_label']) {
       metadata['freeformTags'].push(
         'Podfic Length: ' + options['podfic_length_value']
+      );
+    }
+    for (const tagId of options.audioFormatTagOptionIds || []) {
+      metadata['freeformTags'].push(
+        `Audio Format: ${tagId.replace('audio-format-tag-', '')}`
       );
     }
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
