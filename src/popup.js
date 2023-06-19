@@ -9,7 +9,7 @@ import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
  * @property {string} podfic_length_value
  * @property {string} title_format
  * @property {string} summary_format
- * @property {readonly string[]} audioFormatTagOptionIds
+ * @property {(readonly string[])=} audioFormatTagOptionIds
  */
 
 // Setup for the navbar used in all views.
@@ -169,7 +169,7 @@ async function setupPopup() {
   setAudioFormatChips();
 
   function setAudioFormatChips() {
-    for (const tagOptionId of options['audioFormatTagOptionIds']) {
+    for (const tagOptionId of options.audioFormatTagOptionIds || []) {
       const chip = audioFormatTagsChipSet.chips.find(
         chip => chip.id === tagOptionId
       );
