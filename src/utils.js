@@ -11,6 +11,12 @@
  */
 
 /**
+ * Object representing the value of a template from the options page.
+ * @typedef {Object} TemplateData
+ * @property {string} default
+ */
+
+/**
  * Sets the value of the input, triggering all necessary events.
  * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
  * @param {string} value

@@ -3,10 +3,10 @@
    * Object representing the data available to the injected script.
    * @typedef {Object} InjectedScriptStorageData
    * @property {import("./utils.js").PopupFormData} options
-   * @property {string} workbody
-   * @property {string} summary_template
-   * @property {string} title_template
-   * @property {string} notes_template
+   * @property {import("./utils.js").TemplateData} workbody
+   * @property {import("./utils.js").TemplateData} summary_template
+   * @property {import("./utils.js").TemplateData} title_template
+   * @property {import("./utils.js").TemplateData} notes_template
    */
 
   // Duplicated because they need to exist in the injected script.
