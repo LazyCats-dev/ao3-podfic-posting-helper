@@ -1,5 +1,17 @@
 import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
 
+/**
+ * Object representing the data collected by the form.
+ * @typedef {Object} FormData
+ * @property {string} url
+ * @property {boolean} podfic_label
+ * @property {boolean} podfic_length_label
+ * @property {string} podfic_length_value
+ * @property {string} title_format
+ * @property {string} summary_format
+ * @property {readonly string[]} audioFormatTagOptionIds
+ */
+
 // Setup for the navbar used in all views.
 const optionsButton = /** @type {HTMLAnchorElement} */ (
   document.getElementById('options_button')
@@ -95,9 +107,6 @@ async function setupPopup() {
   /** @type {mdc.chips.MDCChipSet} */
   const audioFormatTagsChipSet =
     document.querySelector('#audio-format-tags').MDCChipSet;
-  // TODO: make this work.
-  audioFormatTagsChipSet.listen('MDCChipSet:selection', console.error);
-  globalThis.audioFormatTagsChipSet = audioFormatTagsChipSet;
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
@@ -119,6 +128,7 @@ async function setupPopup() {
         podfic_length_value: podficLengthValue.value,
         title_format: titleFormatValue.value,
         summary_format: summaryFormatValue.value,
+        audioFormatTagOptionIds: audioFormatTagsChipSet.selectedChipIds,
       },
     });
 
@@ -148,11 +158,26 @@ async function setupPopup() {
   await setupStorage();
 
   // Import pop-up options from storage.
-  const {options} = await browser.storage.sync.get('options');
+  const data = await browser.storage.sync.get('options');
+
+  /** @type {FormData} */
+  const options = data['options'];
 
   setInputValue(urlInput, options['url']);
   setCheckboxState(podficLabel, options['podfic_label']);
   setCheckboxState(podficLengthLabel, options['podfic_length_label']);
+  setAudioFormatChips();
+
+  function setAudioFormatChips() {
+    for (const tagOptionId of options['audioFormatTagOptionIds']) {
+      const chip = audioFormatTagsChipSet.chips.find(
+        chip => chip.id === tagOptionId
+      );
+      if (chip) {
+        chip.selected = true;
+      }
+    }
+  }
 
   /**
    * For some reason a select is really stupid so we have to find the option
