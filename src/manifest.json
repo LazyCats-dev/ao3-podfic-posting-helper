@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/chrome-manifest",
   "name": "AO3 Podfic Posting Helper",
   "description": "Autofill metadata to match a work you were inspired by",
-  "version": "3.4",
+  "version": "3.5",
   "manifest_version": 3,
   "browser_specific_settings": {
     "gecko": {
@@ -29,5 +29,9 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  }
 }

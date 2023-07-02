@@ -69,7 +69,8 @@
             class="mdc-deprecated-list-item"
             href="#title-section"
             aria-current="page"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="title-template-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -81,7 +82,8 @@
           <a
             class="mdc-deprecated-list-item"
             href="#common-template-keywords-section"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="template-keywords-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -95,7 +97,8 @@
           <a
             class="mdc-deprecated-list-item"
             href="#summary-section"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="summary-template-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -107,7 +110,8 @@
           <a
             class="mdc-deprecated-list-item"
             href="#notes-section"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="notes-template-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -119,7 +123,8 @@
           <a
             class="mdc-deprecated-list-item"
             href="#work-section"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="work-template-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -132,7 +137,8 @@
           <a
             class="mdc-deprecated-list-item"
             href="#about-section"
-            data-mdc-auto-init="MDCRipple">
+            data-mdc-auto-init="MDCRipple"
+            id="about-nav-list-button">
             <span class="mdc-deprecated-list-item__ripple"></span>
             <i
               class="material-icons mdc-deprecated-list-item__graphic"
@@ -211,7 +217,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     save
                   </i>
-                  <span class="mdc-button__label">Save</span>
+                  <span class="mdc-button__label" id="title-template-save">
+                    Save
+                  </span>
                 </button>
                 <button
                   id="title_reset"
@@ -222,7 +230,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     restart_alt
                   </i>
-                  <span class="mdc-button__label">Reset to default</span>
+                  <span class="mdc-button__label" id="title-template-reset">
+                    Reset to default
+                  </span>
                 </button>
               </div>
             </div>
@@ -297,7 +307,9 @@
               </p>
               <p>
                 This template supports keyword substitution.
-                <a href="#common-template-keywords-section">
+                <a
+                  href="#common-template-keywords-section"
+                  id="summary-template-help-keywords">
                   Learn more about keyword substitution
                 </a>
               </p>
@@ -305,7 +317,8 @@
                 This template supports HTML.
                 <a
                   href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                  target="_blank">
+                  target="_blank"
+                  id="summary-template-help-html">
                   Learn more about using HTML on AO3
                 </a>
               </p>
@@ -348,7 +361,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     save
                   </i>
-                  <span class="mdc-button__label">Save</span>
+                  <span class="mdc-button__label" id="summary-template-save">
+                    Save
+                  </span>
                 </button>
                 <button
                   id="summary_reset"
@@ -359,7 +374,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     restart_alt
                   </i>
-                  <span class="mdc-button__label">Reset to default</span>
+                  <span class="mdc-button__label" id="summary-template-reset">
+                    Reset to default
+                  </span>
                 </button>
               </div>
             </div>
@@ -374,7 +391,9 @@
               <p>Set the template to use for beginning and/or end notes.</p>
               <p>
                 This template supports keyword substitution.
-                <a href="#common-template-keywords-section">
+                <a
+                  href="#common-template-keywords-section"
+                  id="notes-template-help-keywords">
                   Learn more about keyword substitution
                 </a>
               </p>
@@ -382,7 +401,8 @@
                 This template supports HTML.
                 <a
                   href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                  target="_blank">
+                  target="_blank"
+                  id="notes-template-help-html">
                   Learn more about using HTML on AO3
                 </a>
               </p>
@@ -467,7 +487,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     save
                   </i>
-                  <span class="mdc-button__label">Save</span>
+                  <span class="mdc-button__label" id="notes-template-save">
+                    Save
+                  </span>
                 </button>
                 <button
                   id="notes_reset"
@@ -478,7 +500,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     restart_alt
                   </i>
-                  <span class="mdc-button__label">Reset to default</span>
+                  <span class="mdc-button__label" id="notes-template-reset">
+                    Reset to default
+                  </span>
                 </button>
               </div>
             </div>
@@ -497,7 +521,9 @@
               </p>
               <p>
                 This template supports keyword substitution.
-                <a href="#common-template-keywords-section">
+                <a
+                  href="#common-template-keywords-section"
+                  id="work-template-help-keywords">
                   Learn more about keyword substitution
                 </a>
               </p>
@@ -505,7 +531,8 @@
                 This template supports HTML.
                 <a
                   href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                  target="_blank">
+                  target="_blank"
+                  id="work-template-help-html">
                   Learn more about using HTML on AO3
                 </a>
               </p>
@@ -548,7 +575,9 @@
                   <i class="material-icons mdc-button__icon" aria-hidden="true">
                     save
                   </i>
-                  <span class="mdc-button__label">Save</span>
+                  <span class="mdc-button__label" id="work-template-save">
+                    Save
+                  </span>
                 </button>
               </div>
             </div>
@@ -573,7 +602,8 @@
                     <a
                       href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="distrubtions-chrome">
                       Google Chrome
                     </a>
                   </li>
@@ -581,7 +611,8 @@
                     <a
                       href="https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="distributions-edge">
                       Microsoft Edge
                     </a>
                   </li>
@@ -589,7 +620,8 @@
                     <a
                       href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="distributions-firefox">
                       Firefox
                     </a>
                   </li>
@@ -606,7 +638,8 @@
                     <a
                       href="https://discord.gg/rhynWjrCw2"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="feedback-discord">
                       Discord server
                     </a>
                   </li>
@@ -615,7 +648,8 @@
                     <a
                       href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="feedback-chrome-web-store">
                       official chrome web store listing
                     </a>
                   </li>
@@ -624,7 +658,8 @@
                     <a
                       href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="feedback-github">
                       submitting an issue on GitHub
                     </a>
                   </li>
@@ -640,7 +675,8 @@
                   <a
                     href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
                     target="_blank"
-                    rel="noopener">
+                    rel="noopener"
+                    id="contributing-github">
                     GitHub
                   </a>
                   . Feel free to send a pull request, we will try our best to
@@ -657,12 +693,17 @@
                     <a
                       href="https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="credits-irrationalpie">
                       irrationalpie
                     </a>
                   </li>
                   <li>
-                    <a href="https://mowery.dev" target="_blank" rel="noopener">
+                    <a
+                      href="https://mowery.dev"
+                      target="_blank"
+                      rel="noopener"
+                      id="credits-jeremy">
                       Jeremy Mowery
                     </a>
                   </li>
@@ -670,7 +711,8 @@
                     <a
                       href="https://archiveofourown.org/users/lastontheboat"
                       target="_blank"
-                      rel="noopener">
+                      rel="noopener"
+                      id="credits-lastontheboat">
                       lastontheboat
                     </a>
                   </li>
@@ -683,7 +725,8 @@
                 <p>
                   <a
                     href="https://lazycats.dev?utm_source=cextension&utm_medium=extension&utm_campaign=options"
-                    target="_blank">
+                    target="_blank"
+                    id="website">
                     https://lazycats.dev
                   </a>
                 </p>
