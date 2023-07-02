@@ -1,6 +1,13 @@
-import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
+import {
+  setCheckboxState,
+  setInputValue,
+  setupStorage,
+  setupGlobalEventLogging,
+} from './utils.js';
 import hljs from './resources/highlight.min.js';
 import HtmlSanitizer from './resources/html-sanitizer.js';
+
+setupGlobalEventLogging();
 
 (async () => {
   await setupStorage();

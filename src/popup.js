@@ -1,4 +1,12 @@
-import {setCheckboxState, setInputValue, setupStorage} from './utils.js';
+import {
+  setCheckboxState,
+  setInputValue,
+  setupStorage,
+  setupGlobalEventLogging,
+} from './utils.js';
+import {ANALYTICS} from './google-analytics.js';
+
+setupGlobalEventLogging();
 
 // Setup for the navbar used in all views.
 const optionsButton = /** @type {HTMLAnchorElement} */ (
@@ -39,9 +47,12 @@ const ALLOWED_URL_PATTERNS = [
         <a
             href="https://archiveofourown.org/works/new"
             target="_blank"
-            rel="noopener">
+            rel="noopener"
+            id="ao3-new-work">
                 https://archiveofourown.org/works/new</a>`;
+    ANALYTICS.firePageViewEvent('Not on new work URL page');
   } else {
+    ANALYTICS.firePageViewEvent('Form');
     await setupPopup();
   }
 })();
@@ -120,24 +131,32 @@ async function setupPopup() {
       },
     });
 
-    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
-    await chrome.scripting.executeScript({
-      target: {tabId: tab.id},
-      files: ['/resources/browser-polyfill.min.js', '/inject.js'],
+    ANALYTICS.fireEvent('popup_form_submit', {
+      podfic_label: String(podficLabel.checked),
+      podfic_length_value: podficLengthValue.value,
+      title_format: titleFormatValue.value,
+      summary_format: summaryFormatValue.value,
+      audio_formats: audioFormatTagsChipSet.selectedChipIds.join(','),
     });
-  });
 
-  // Used for injected scripts.
-  // We can't get a response back from the script because we are using promise
-  // based APIs and chrome doesn't support getting a promise back as a result
-  // so instead we listen for a message we expect to the send from the script.
-  browser.runtime.onMessage.addListener(injectedScriptResult => {
-    // Enable submitting the form again
+    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    let result;
+    try {
+      const injectedScriptResults = await browser.scripting.executeScript({
+        target: {tabId: tab.id},
+        files: ['/resources/browser-polyfill.min.js', '/inject.js'],
+      });
+      // We only have one target so there is only one result.
+      result = injectedScriptResults[0].result;
+    } catch (e) {
+      result = {result: 'error', message: `${e.message}: ${e.stack}`};
+    }
     submitButton.disabled = false;
-    if (injectedScriptResult.result === 'error') {
+    if (result.result === 'error') {
       urlTextField.valid = false;
-      urlTextField.helperTextContent = injectedScriptResult.message;
+      urlTextField.helperTextContent = result.message;
       urlTextField.focus();
+      ANALYTICS.fireErrorEvent(result.message);
     } else {
       snackbar.open();
     }

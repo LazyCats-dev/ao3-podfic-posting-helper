@@ -424,8 +424,7 @@
 
     if (importResult.result === 'error') {
       // Tell the popup that the import failed and the reason why it failed.
-      browser.runtime.sendMessage(importResult);
-      return;
+      return importResult;
     }
     const metadata = importResult.metadata;
 
@@ -619,17 +618,17 @@
     }
 
     if (showPartialCompletionWarning) {
-      browser.runtime.sendMessage({
+      return {
         result: 'error',
         message:
           'Warning: some data could not be imported, the most likely reason' +
           'is that you set your AO3 preferences to hide warnings or tags',
-      });
+      };
     } else {
       // Tell the popup that the import worked as expected.
-      browser.runtime.sendMessage({
+      return {
         result: 'success',
-      });
+      };
     }
   }
 
@@ -644,9 +643,12 @@
       // Not much we can do here besides just try to coerce this to a string.
       debugMessage = `${e}`;
     }
-    browser.runtime.sendMessage({
+    return {
       result: 'error',
       message: `Unhandled error while importing metadata and filling in the form: ${debugMessage}`,
-    });
+    };
   }
+  return {
+    result: 'success',
+  };
 })();

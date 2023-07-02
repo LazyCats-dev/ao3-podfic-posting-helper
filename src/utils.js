@@ -1,3 +1,5 @@
+import {ANALYTICS} from './google-analytics.js';
+
 /**
  * Object representing the data collected by the form.
  * @typedef {Object} PopupFormData
@@ -125,4 +127,25 @@ export async function setupStorage() {
       },
     });
   }
+}
+
+export function setupGlobalEventLogging() {
+  // Fire a page view event on load
+  window.addEventListener('load', () => {
+    ANALYTICS.firePageViewEvent(document.title, document.location.href);
+  });
+
+  // Listen globally for all button events
+  document.addEventListener('click', event => {
+    if ('id' in event.target) {
+      ANALYTICS.fireEvent('click_button', {id: event.target.id});
+    }
+  });
+
+  // Listen globally for all input events
+  document.addEventListener('change', event => {
+    if ('id' in event.target) {
+      ANALYTICS.fireEvent('input_changed', {id: event.target.id});
+    }
+  });
 }
