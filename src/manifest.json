@@ -29,9 +29,5 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
-  "background": {
-    "service_worker": "service-worker.js",
-    "type": "module"
-  }
+  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
 }
