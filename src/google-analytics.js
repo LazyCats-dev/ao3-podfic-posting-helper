@@ -70,6 +70,9 @@ class Analytics {
     if (!params.engagement_time_msec) {
       params.engagement_time_msec = DEFAULT_ENGAGEMENT_TIME_MSEC;
     }
+    if (!params.version) {
+      params.version = browser.runtime.getManifest().version;
+    }
 
     try {
       const response = await fetch(
