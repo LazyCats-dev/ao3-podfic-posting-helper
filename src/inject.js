@@ -336,6 +336,20 @@
         message: `Failed to fetch the work! ${e.message}`,
       };
     }
+    if (result.redirected) {
+      // Add back the view_adult param and try again.
+      fetchUrl = new URL(result.url);
+      fetchUrl.searchParams.set('view_adult', 'true');
+
+      try {
+        result = await window.fetch(fetchUrl, {credentials: 'omit'});
+      } catch (e) {
+        return {
+          result: 'error',
+          message: `Failed to fetch the work! ${e.message}`,
+        };
+      }
+    }
     if (!result.ok) {
       return {
         result: 'error',
@@ -351,7 +365,10 @@
     // logged out users so we will attempt the fetch again but this time we will
     // forward the user's credentials. If the user has warnings or tags hidden
     // then there will be errors later on but these are handled.
-    if (result.redirected || looksLikeUnrevealedWork(doc)) {
+    if (looksLikeUnrevealedWork(doc)) {
+      // Ensure that we are trying to bypass the adult warning.
+      fetchUrl = new URL(result.url);
+      fetchUrl.searchParams.set('view_adult', 'true');
       try {
         result = await window.fetch(fetchUrl, {credentials: 'include'});
       } catch (e) {
@@ -359,6 +376,20 @@
           result: 'error',
           message: `Failed to fetch the work! ${e.message}`,
         };
+      }
+      if (result.redirected) {
+        // Add back the view_adult param and try again.
+        fetchUrl = new URL(result.url);
+        fetchUrl.searchParams.set('view_adult', 'true');
+
+        try {
+          result = await window.fetch(fetchUrl, {credentials: 'omit'});
+        } catch (e) {
+          return {
+            result: 'error',
+            message: `Failed to fetch the work! ${e.message}`,
+          };
+        }
       }
       if (!result.ok) {
         return {
