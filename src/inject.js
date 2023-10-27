@@ -317,16 +317,18 @@
     // Attempt to parse the URL
     /** @type {URL} */
     let fetchUrl;
+    // Initially try to get the work without credentials, this handles cases
+    // where the user has tags or warnings hidden but can fail if the work
+    // the user is importing from is only available to logged-in users.
+    /** @type {RequestCredentials} */
+    let credentials = 'omit';
     try {
       fetchUrl = new URL(url);
     } catch (e) {
       return {result: 'error', message: `Invalid work URL: ${e.message}`};
     }
-    // Always consent to seeing "adult content" to simplifying parsing
+    // Always consent to seeing "adult content" to simplify parsing
     fetchUrl.searchParams.set('view_adult', 'true');
-    // Initially try to get the work without credentials, this handles cases
-    // where the user has tags or warnings hidden but can fail if the work
-    // the user is importing from is only available to logged-in users.
     let result;
     try {
       result = await window.fetch(fetchUrl, {credentials: 'omit'});
@@ -335,20 +337,6 @@
         result: 'error',
         message: `Failed to fetch the work! ${e.message}`,
       };
-    }
-    if (result.redirected) {
-      // Add back the view_adult param and try again.
-      fetchUrl = new URL(result.url);
-      fetchUrl.searchParams.set('view_adult', 'true');
-
-      try {
-        result = await window.fetch(fetchUrl, {credentials: 'omit'});
-      } catch (e) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! ${e.message}`,
-        };
-      }
     }
     if (!result.ok) {
       return {
@@ -365,31 +353,18 @@
     // logged out users so we will attempt the fetch again but this time we will
     // forward the user's credentials. If the user has warnings or tags hidden
     // then there will be errors later on but these are handled.
-    if (looksLikeUnrevealedWork(doc)) {
-      // Ensure that we are trying to bypass the adult warning.
-      fetchUrl = new URL(result.url);
-      fetchUrl.searchParams.set('view_adult', 'true');
+    if (
+      looksLikeUnrevealedWork(doc) ||
+      (result.redirected && result.url.includes('users/login'))
+    ) {
+      credentials = 'include';
       try {
-        result = await window.fetch(fetchUrl, {credentials: 'include'});
+        result = await window.fetch(fetchUrl, {credentials});
       } catch (e) {
         return {
           result: 'error',
           message: `Failed to fetch the work! ${e.message}`,
         };
-      }
-      if (result.redirected) {
-        // Add back the view_adult param and try again.
-        fetchUrl = new URL(result.url);
-        fetchUrl.searchParams.set('view_adult', 'true');
-
-        try {
-          result = await window.fetch(fetchUrl, {credentials: 'omit'});
-        } catch (e) {
-          return {
-            result: 'error',
-            message: `Failed to fetch the work! ${e.message}`,
-          };
-        }
       }
       if (!result.ok) {
         return {
@@ -399,16 +374,40 @@
       }
       html = await result.text();
       doc = domParser.parseFromString(html, 'text/html');
+    }
 
-      if (looksLikeUnrevealedWork(doc)) {
+    // The url for a multi-chapter work may redirect to the first chapter and
+    // forget to propagate the "view_adult" param, so try the new url
+    if (result.redirected && looksLikeAdultWarning(doc)) {
+      // Add back the view_adult param and try again.
+      fetchUrl = new URL(result.url);
+      fetchUrl.searchParams.set('view_adult', 'true');
+
+      try {
+        result = await window.fetch(fetchUrl, {credentials});
+      } catch (e) {
         return {
           result: 'error',
-          message:
-            'The selected work appears to be unrevealed please contact ' +
-            'the work author to get permission to view the work then try ' +
-            'again',
+          message: `Failed to fetch the work! ${e.message}`,
         };
       }
+    }
+    if (!result.ok) {
+      return {
+        result: 'error',
+        message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
+      };
+    }
+    html = await result.text();
+    doc = domParser.parseFromString(html, 'text/html');
+
+    if (looksLikeUnrevealedWork(doc) || looksLikePermissionWarning(doc)) {
+      return {
+        result: 'error',
+        message:
+          'The selected work appears to be unrevealed or a draft, please contact ' +
+          'the work author to get permission to view the work then try again',
+      };
     }
 
     return {
@@ -429,6 +428,24 @@
             'be revealed soon'
         )
       ) && !doc.querySelector('.userstuff')
+    );
+  }
+
+  function looksLikePermissionWarning(/** @type {Document} */ doc) {
+    // The page has a notice saying that the work may contain adult content.
+    return Array.from(doc.querySelectorAll('div.error')).some(notice =>
+      notice.textContent.includes(
+        "Sorry, you don't have permission to access the page you were trying to reach."
+      )
+    );
+  }
+
+  function looksLikeAdultWarning(/** @type {Document} */ doc) {
+    // The page has a notice saying that the work may contain adult content.
+    return Array.from(doc.querySelectorAll('p.caution')).some(notice =>
+      notice.textContent.includes(
+        'This work could have adult content. If you continue, you have agreed that you are willing to see such content.'
+      )
     );
   }
 
