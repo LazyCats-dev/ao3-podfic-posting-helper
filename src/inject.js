@@ -331,7 +331,7 @@
     fetchUrl.searchParams.set('view_adult', 'true');
     let result;
     try {
-      result = await window.fetch(fetchUrl, {credentials: 'omit'});
+      result = await window.fetch(fetchUrl, {credentials});
     } catch (e) {
       return {
         result: 'error',
