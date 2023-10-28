@@ -1,4 +1,9 @@
 (async () => {
+  const ACCESS_ERROR_MESSAGE =
+    'The selected work appears to be unrevealed or a draft, ' +
+    'please contact the work author to get permission to view ' +
+    'the work then try again. Error ';
+
   /**
    * Object representing the data available to the injected script.
    * @typedef {Object} InjectedScriptStorageData
@@ -310,112 +315,141 @@
   }
 
   /**
-   * Parse the metadata for the work at this url.
    * @param {string} url
    */
   async function importMetadata(url) {
-    // Attempt to parse the URL
-    /** @type {URL} */
-    let fetchUrl;
-    // Initially try to get the work without credentials, this handles cases
-    // where the user has tags or warnings hidden but can fail if the work
-    // the user is importing from is only available to logged-in users.
-    /** @type {RequestCredentials} */
-    let credentials = 'omit';
-    try {
-      fetchUrl = new URL(url);
-    } catch (e) {
-      return {result: 'error', message: `Invalid work URL: ${e.message}`};
-    }
-    // Always consent to seeing "adult content" to simplify parsing
-    fetchUrl.searchParams.set('view_adult', 'true');
-    let result;
-    try {
-      result = await window.fetch(fetchUrl, {credentials});
-    } catch (e) {
-      return {
-        result: 'error',
-        message: `Failed to fetch the work! ${e.message}`,
-      };
-    }
-    if (!result.ok) {
-      return {
-        result: 'error',
-        message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
-      };
-    }
+    // Attempt to validate the URL.
+    const fetchUrl = createUrl(url);
+    const response = await fetchWork(fetchUrl, 'omit');
 
-    const domParser = new DOMParser();
-    let html = await result.text();
-    let doc = domParser.parseFromString(html, 'text/html');
-
-    // If we end up in this case it means that the work was not available to
-    // logged out users so we will attempt the fetch again but this time we will
-    // forward the user's credentials. If the user has warnings or tags hidden
-    // then there will be errors later on but these are handled.
-    if (
-      looksLikeUnrevealedWork(doc) ||
-      (result.redirected && result.url.includes('users/login'))
-    ) {
-      credentials = 'include';
-      try {
-        result = await window.fetch(fetchUrl, {credentials});
-      } catch (e) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! ${e.message}`,
-        };
+    if (response.redirected) {
+      if (response.url.includes('users/login')) {
+        return await fetchWithCurrentCreds(fetchUrl, url);
       }
-      if (!result.ok) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
-        };
-      }
-      html = await result.text();
-      doc = domParser.parseFromString(html, 'text/html');
-    }
-
-    // The url for a multi-chapter work may redirect to the first chapter and
-    // forget to propagate the "view_adult" param, so try the new url
-    if (result.redirected && looksLikeAdultWarning(doc)) {
-      // Add back the view_adult param and try again.
-      fetchUrl = new URL(result.url);
-      fetchUrl.searchParams.set('view_adult', 'true');
-
-      try {
-        result = await window.fetch(fetchUrl, {credentials});
-      } catch (e) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! ${e.message}`,
-        };
-      }
-    }
-    if (!result.ok) {
+      // We reach this case if we were redirected to a specific chapter and then
+      // hit the adult warning page.
+      const newUrl = createUrl(response.url);
+      const newResponse = await fetchWork(newUrl, 'omit');
+      // If we've gotten this far, there are no more error cases.
       return {
-        result: 'error',
-        message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
+        result: 'success',
+        // We return back the original URL so that storage only ever contains
+        // the URL the user input instead of the one we used for fetching.
+        metadata: await parseMetadataFromResponse(newResponse, url),
       };
     }
-    html = await result.text();
-    doc = domParser.parseFromString(html, 'text/html');
 
-    if (looksLikeUnrevealedWork(doc) || looksLikePermissionWarning(doc)) {
-      return {
-        result: 'error',
-        message:
-          'The selected work appears to be unrevealed or a draft, please contact ' +
-          'the work author to get permission to view the work then try again',
-      };
+    const doc = await parseDocFromResponse(response);
+
+    if (looksLikeUnrevealedWork(doc)) {
+      return await fetchWithCurrentCreds(fetchUrl, url);
     }
 
     return {
       result: 'success',
       // We return back the original URL so that storage only ever contains
       // the URL the user input instead of the one we used for fetching.
-      metadata: {...parseGenMetadata(doc), url},
+      metadata: {...parseGenMetadata(doc), url: url},
     };
+  }
+
+  /**
+   * @param {URL} url
+   * @param {string} originalUrl
+   **/
+  async function fetchWithCurrentCreds(url, originalUrl) {
+    const response = await fetchWork(url, 'include');
+    const doc = await parseDocFromResponse(response);
+    if (response.redirected) {
+      // If the user doesn't have access they will be redirected to their
+      // profile.
+      if (response.url.includes('users/')) {
+        throw new Error(ACCESS_ERROR_MESSAGE);
+      }
+      if (looksLikeAdultWarning(doc)) {
+        const redirectUrl = createUrl(response.url);
+        const adultWarningBypassResponse = await fetchWork(
+          redirectUrl,
+          'include'
+        );
+        // At this point it is impossible to hit an error case.
+        return {
+          result: 'success',
+          // We return back the original URL so that storage only ever contains
+          // the URL the user input instead of the one we used for fetching.
+          metadata: await parseMetadataFromResponse(
+            adultWarningBypassResponse,
+            originalUrl
+          ),
+        };
+      }
+    }
+    if (looksLikeUnrevealedWork(doc)) {
+      throw new Error(ACCESS_ERROR_MESSAGE);
+    }
+    return {
+      result: 'success',
+      // We return back the original URL so that storage only ever contains
+      // the URL the user input instead of the one we used for fetching.
+      metadata: {...parseGenMetadata(doc), url: originalUrl},
+    };
+  }
+
+  /**
+   * @param {Response} response
+   */
+  async function parseDocFromResponse(response) {
+    const domParser = new DOMParser();
+    const html = await response.text();
+    return domParser.parseFromString(html, 'text/html');
+  }
+
+  /**
+   * @param {Response} response
+   * @param {string} originalUrl
+   */
+  async function parseMetadataFromResponse(response, originalUrl) {
+    // We return back the original URL so that storage only ever contains
+    // the URL the user input instead of the one we used for fetching.
+    const doc = await parseDocFromResponse(response);
+    return {...parseGenMetadata(doc), url: originalUrl};
+  }
+
+  /**
+   * @param {string} url
+   * @returns {URL}
+   */
+  function createUrl(url) {
+    // Attempt to parse the URL
+    /** @type {URL} */
+    let fetchUrl;
+    try {
+      fetchUrl = new URL(url);
+    } catch (e) {
+      throw new Error(`Invalid work URL: ${e.message}: ${e.stack}`);
+    }
+    // Always consent to seeing "adult content" to simplify parsing
+    fetchUrl.searchParams.set('view_adult', 'true');
+    return fetchUrl;
+  }
+
+  /**
+   * @param {URL} url
+   * @param {RequestCredentials} credentials
+   */
+  async function fetchWork(url, credentials) {
+    let result;
+    try {
+      result = await window.fetch(url, {credentials});
+    } catch (e) {
+      throw new Error(`Failed to fetch the work! ${e.message}: ${e.stack}`);
+    }
+    if (!result.ok) {
+      throw new Error(
+        `Failed to fetch the work! Error: ${result.status} ${result.statusText}`
+      );
+    }
+    return result;
   }
 
   function looksLikeUnrevealedWork(/** @type {Document} */ doc) {
@@ -427,25 +461,14 @@
           'This work is part of an ongoing challenge and will ' +
             'be revealed soon'
         )
-      ) && !doc.querySelector('.userstuff')
-    );
-  }
-
-  function looksLikePermissionWarning(/** @type {Document} */ doc) {
-    // The page has a notice saying that the work may contain adult content.
-    return Array.from(doc.querySelectorAll('div.error')).some(notice =>
-      notice.textContent.includes(
-        "Sorry, you don't have permission to access the page you were trying to reach."
-      )
+      ) && !doc.querySelector('#workskin')
     );
   }
 
   function looksLikeAdultWarning(/** @type {Document} */ doc) {
     // The page has a notice saying that the work may contain adult content.
     return Array.from(doc.querySelectorAll('p.caution')).some(notice =>
-      notice.textContent.includes(
-        'This work could have adult content. If you continue, you have agreed that you are willing to see such content.'
-      )
+      notice.textContent.includes('This work could have adult content')
     );
   }
 
@@ -468,7 +491,15 @@
       ])
     );
 
-    const importResult = await importMetadata(options['url']);
+    let importResult;
+    try {
+      importResult = await importMetadata(options['url']);
+    } catch (e) {
+      return {
+        result: 'error',
+        message: `${e.stack}`,
+      };
+    }
 
     if (importResult.result === 'error') {
       // Tell the popup that the import failed and the reason why it failed.
@@ -682,7 +713,7 @@
 
   // A cheap way to get a general unhandled error listener.
   try {
-    await importAndFillMetadata();
+    return await importAndFillMetadata();
   } catch (e) {
     let debugMessage;
     if (e instanceof Error) {
@@ -696,7 +727,4 @@
       message: `Unhandled error while importing metadata and filling in the form: ${debugMessage}`,
     };
   }
-  return {
-    result: 'success',
-  };
 })();
