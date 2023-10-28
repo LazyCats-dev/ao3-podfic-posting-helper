@@ -1,3 +1,4 @@
+// @ts-check
 import {ANALYTICS} from './google-analytics.js';
 
 /**
@@ -137,14 +138,14 @@ export function setupGlobalEventLogging() {
 
   // Listen globally for all button events
   document.addEventListener('click', event => {
-    if ('id' in event.target) {
+    if (event.target && 'id' in event.target) {
       ANALYTICS.fireEvent('click_button', {id: event.target.id});
     }
   });
 
   // Listen globally for all input events
   document.addEventListener('change', event => {
-    if ('id' in event.target) {
+    if (event.target && 'id' in event.target) {
       ANALYTICS.fireEvent('input_changed', {id: event.target.id});
     }
   });

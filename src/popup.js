@@ -1,3 +1,4 @@
+// @ts-check
 import {
   setCheckboxState,
   setInputValue,
@@ -204,13 +205,25 @@ async function setupPopup() {
 
   // Podfic length value has special considerations
   const selectElement = document.getElementById('podfic-length-select');
+  if (!selectElement) {
+    throw new Error('selectElement missing');
+  }
   const selectInputElement = selectElement.querySelector('input');
+  if (!selectInputElement) {
+    throw new Error('selectInputElement missing');
+  }
   setInputValue(selectInputElement, options['podfic_length_value']);
   clickSelectOption(selectElement, options['podfic_length_value']);
 
   // Now do the same again for the title format
   const titleSelectElement = document.getElementById('title-template-select');
-  const titleSelectInputElement = titleSelectElement.querySelector('input');
+  if (!titleSelectElement) {
+    throw new Error('titleSelectElement missing');
+  }
+  const titleSelectInputElement = titleSelectElement?.querySelector('input');
+  if (!titleSelectInputElement) {
+    throw new Error('titleSelectInputElement missing');
+  }
   setInputValue(titleSelectInputElement, options['title_format']);
   clickSelectOption(titleSelectElement, options['title_format']);
 
@@ -218,7 +231,13 @@ async function setupPopup() {
   const summarySelectElement = document.getElementById(
     'summary-template-select'
   );
+  if (!summarySelectElement) {
+    throw new Error('summarySelectElement missing');
+  }
   const summarySelectInputElement = summarySelectElement.querySelector('input');
+  if (!summarySelectInputElement) {
+    throw new Error('summarySelectInputElement missing');
+  }
   setInputValue(summarySelectInputElement, options['summary_format']);
   clickSelectOption(summarySelectElement, options['summary_format']);
 
