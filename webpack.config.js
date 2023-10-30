@@ -22,4 +22,7 @@ module.exports = {
       patterns: [{from: '.', to: '.', context: 'public'}],
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
 };

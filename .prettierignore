@@ -24,4 +24,5 @@
 *.zip
 
 .github/
-src/resources/
+public/resources/
+dist/
