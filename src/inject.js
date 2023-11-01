@@ -1,4 +1,3 @@
-// @ts-check
 (async () => {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
@@ -473,6 +472,7 @@
     );
   }
 
+  /** @returns {Promise<{result: string, metadata: *}} */
   async function importAndFillMetadata() {
     let showPartialCompletionWarning = false;
     /** @type {InjectedScriptStorageData} */

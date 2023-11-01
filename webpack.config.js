@@ -7,12 +7,13 @@ module.exports = {
     popup: path.resolve(__dirname, 'src', 'popup.js'),
     options: path.resolve(__dirname, 'src', 'options.js'),
     'google-analytics': path.resolve(__dirname, 'src', 'google-analytics.js'),
-    'init-components': path.resolve(__dirname, 'src', 'init-components.js'),
+    'init-components': path.resolve(__dirname, 'src', 'init-components.ts'),
     utils: path.resolve(__dirname, 'src', 'utils.js'),
   },
   output: {
     path: path.join(__dirname, 'dist/js'),
     filename: '[name].js',
+    iife: false,
   },
   resolve: {
     extensions: ['.ts', '.js'],
@@ -22,6 +23,15 @@ module.exports = {
       patterns: [{from: '.', to: '.', context: 'public'}],
     }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
   optimization: {
     minimize: false,
   },
