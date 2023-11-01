@@ -1,3 +1,2 @@
 // @ts-check
-/* global mdc */
-mdc.autoInit();
+window.mdc.autoInit();

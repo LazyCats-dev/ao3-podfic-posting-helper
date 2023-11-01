@@ -1,24 +1,25 @@
-declare namespace mdc {
-  export * from 'material-components-web';
-}
+import {MDCChipSet} from '@material/chips';
+import {MDCList} from '@material/list';
+import {MDCSnackbar} from '@material/snackbar';
+import {MDCTextField} from '@material/textfield';
 
 interface Element {
   closest(selector: '.mdc-text-field'): {
-    MDCTextField: mdc.textField.MDCTextField;
+    MDCTextField: MDCTextField;
   };
 }
 
 interface ParentNode {
   querySelector(selector: '.mdc-snackbar'): {
-    MDCSnackbar: mdc.snackbar.MDCSnackbar;
+    MDCSnackbar: MDCSnackbar;
   };
   querySelector(selector: '.mdc-deprecated-list'): {
-    MDCList: mdc.list.MDCList;
+    MDCList: MDCList;
   };
   querySelector(selector: '.mdc-text-field'): {
-    MDCTextField: mdc.textField.MDCTextField;
+    MDCTextField: MDCTextField;
   };
   querySelector(selector: '#audio-format-tags'): HTMLElement & {
-    MDCChipSet: mdc.chips.MDCChipSet;
+    MDCChipSet: MDCChipSet;
   };
 }

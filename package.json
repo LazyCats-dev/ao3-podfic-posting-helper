@@ -8,7 +8,6 @@
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
-    "material-components-web": "^14.0.0",
     "prettier": "2.8.8",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.5.0",
@@ -28,7 +27,14 @@
     "watch": "webpack --watch"
   },
   "dependencies": {
+    "@material/auto-init": "^14.0.0",
+    "@material/chips": "^14.0.0",
+    "@material/list": "^14.0.0",
+    "@material/snackbar": "^14.0.0",
+    "@material/textfield": "^14.0.0",
+    "@material/top-app-bar": "^14.0.0",
     "@types/chrome": "^0.0.248",
-    "@types/firefox-webext-browser": "^111.0.3"
+    "@types/firefox-webext-browser": "^111.0.3",
+    "material-components-web": "^14.0.0"
   }
 }

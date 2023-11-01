@@ -33,16 +33,23 @@ const ALLOWED_URL_PATTERNS = [
     active: true,
     currentWindow: true,
   });
+  if (!currentTab.url) {
+    throw new Error('current tab does not have a URL');
+  }
+  const currentTabUrl = currentTab.url;
   // If no allowed URL matches then we are not on a page we support.
   if (
     !ALLOWED_URL_PATTERNS.some(
-      allowedUrlPattern => currentTab.url.match(allowedUrlPattern) !== null
+      allowedUrlPattern => currentTabUrl.match(allowedUrlPattern) !== null
     )
   ) {
-    document.querySelector(
-      '.page-content'
-    ).innerHTML = `This extension can only be used on the AO3 page to create a new work,
-        create a new work in a collection, or edit an existing work.
+    const pageContentElement = document.querySelector('.page-content');
+    if (!pageContentElement) {
+      throw new Error('.page-content not found');
+    }
+    pageContentElement.innerHTML = `This extension can only be used on the AO3
+        page to create a new work, create a new work in a collection, or edit an
+        existing work.
         Please go to a supported URL and click the extension icon again.
         To create a new work go to
         <a
@@ -79,7 +86,7 @@ async function setupPopup() {
   const summaryFormatValue = /** @type {HTMLInputElement} */ (
     document.getElementById('summary_template_value')
   );
-  /** @type {mdc.textField.MDCTextField} */
+  /** @type {MDCTextField} */
   const urlTextField = document.querySelector('.mdc-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
   /** @type {HTMLButtonElement} */
