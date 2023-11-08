@@ -12,9 +12,7 @@ const DEFAULT_ENGAGEMENT_TIME_MSEC = 100;
 const SESSION_EXPIRATION_IN_MIN = 30;
 
 class Analytics {
-  constructor(debug = false) {
-    this.debug = debug;
-  }
+  constructor(private readonly debug = false) {}
 
   // Returns the client id, or creates a new one if one doesn't exist.
   // Stores client id in local storage to keep the same client id as long as
@@ -31,12 +29,12 @@ class Analytics {
 
   // Returns the current session id, or creates a new one if one doesn't exist or
   // the previous one has expired.
-  async getOrCreateSessionId() {
+  async getOrCreateSessionId(): Promise<string> {
     // Use storage.session because it is only in memory
     let {sessionData} = await chrome.storage.session.get('sessionData');
     const currentTimeInMs = Date.now();
     // Check if session exists and is still valid
-    if (sessionData && sessionData.timestamp) {
+    if (sessionData && typeof sessionData.timestamp === 'number') {
       // Calculate how long ago the session was last updated
       const durationInMin = (currentTimeInMs - sessionData.timestamp) / 60000;
       // Check if last update lays past the session expiration threshold
@@ -61,7 +59,15 @@ class Analytics {
   }
 
   // Fires an event with optional params. Event names must only include letters and underscores.
-  async fireEvent(name, params = {}) {
+  async fireEvent(
+    name: string,
+    params: {
+      session_id?: string;
+      engagement_time_msec?: number;
+      version?: string;
+      [key: string]: any;
+    } = {}
+  ) {
     // Configure session id and engagement time if not present, for more details see:
     // https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events?client_type=gtag#recommended_parameters_for_reports
     if (!params.session_id) {
@@ -102,7 +108,11 @@ class Analytics {
   }
 
   // Fire a page view event.
-  async firePageViewEvent(pageTitle, pageLocation, additionalParams = {}) {
+  async firePageViewEvent(
+    pageTitle: string,
+    pageLocation?: string,
+    additionalParams = {}
+  ) {
     return this.fireEvent('page_view', {
       page_title: pageTitle,
       page_location: pageLocation,
@@ -111,7 +121,7 @@ class Analytics {
   }
 
   // Fire an error event.
-  async fireErrorEvent(error, additionalParams = {}) {
+  async fireErrorEvent(error: {}, additionalParams = {}) {
     // Note: 'error' is a reserved event name and cannot be used
     // see https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_names
     return this.fireEvent('extension_error', {

@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "devDependencies": {
+    "@types/sanitize-html": "^2.9.4",
     "@webpack-cli/generators": "^3.0.7",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
@@ -28,13 +29,20 @@
   },
   "dependencies": {
     "@material/auto-init": "^14.0.0",
+    "@material/checkbox": "^14.0.0",
     "@material/chips": "^14.0.0",
+    "@material/form-field": "^14.0.0",
     "@material/list": "^14.0.0",
+    "@material/menu": "^14.0.0",
+    "@material/ripple": "^14.0.0",
+    "@material/select": "^14.0.0",
     "@material/snackbar": "^14.0.0",
     "@material/textfield": "^14.0.0",
     "@material/top-app-bar": "^14.0.0",
     "@types/chrome": "^0.0.248",
     "@types/firefox-webext-browser": "^111.0.3",
-    "material-components-web": "^14.0.0"
+    "highlight.js": "^11.9.0",
+    "material-components-web": "^14.0.0",
+    "sanitize-html": "^2.11.0"
   }
 }

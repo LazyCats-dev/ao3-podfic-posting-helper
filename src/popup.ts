@@ -1,24 +1,49 @@
+import mdcAutoInit from '@material/auto-init';
+import {MDCCheckbox} from '@material/checkbox';
+import {MDCChipSet} from '@material/chips/deprecated';
+import {MDCFormField} from '@material/form-field';
+import {MDCList} from '@material/list';
+import {MDCMenu} from '@material/menu';
+import {MDCRipple} from '@material/ripple';
+import {MDCSelect} from '@material/select';
+import {MDCSnackbar} from '@material/snackbar';
+import {MDCTextField} from '@material/textfield';
+import {MDCTopAppBar} from '@material/top-app-bar';
+import {ANALYTICS} from './google-analytics';
 import {
+  PopupFormData,
   setCheckboxState,
   setInputValue,
-  setupStorage,
   setupGlobalEventLogging,
-} from './utils.js';
-import {ANALYTICS} from './google-analytics.js';
+  setupStorage,
+} from './utils';
 
 setupGlobalEventLogging();
 
+mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
+mdcAutoInit.register('MDCRipple', MDCRipple);
+mdcAutoInit.register('MDCTextField', MDCTextField);
+mdcAutoInit.register('MDCFormField', MDCFormField);
+mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
+mdcAutoInit.register('MDCSelect', MDCSelect);
+mdcAutoInit.register('MDCMenu', MDCMenu);
+mdcAutoInit.register('MDCList', MDCList);
+mdcAutoInit.register('MDCChipSet', MDCChipSet);
+mdcAutoInit.register('MDCSnackbar', MDCSnackbar);
+
+mdcAutoInit();
+
 // Setup for the navbar used in all views.
-const optionsButton = /** @type {HTMLAnchorElement} */ (
-  document.getElementById('options_button')
-);
+const optionsButton = document.getElementById(
+  'options_button'
+) as HTMLAnchorElement;
 optionsButton.href = browser.runtime.getURL('options.html');
 
 /**
  * A list of URL patterns that the popup can operate on.
  * @type {Array<RegExp|string>}
  */
-const ALLOWED_URL_PATTERNS = [
+const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
   // Standard new work
   'https://archiveofourown.org/works/new',
   // New work added to a collection
@@ -65,34 +90,32 @@ const ALLOWED_URL_PATTERNS = [
 })();
 
 async function setupPopup() {
-  const urlInput = /** @type {HTMLInputElement} */ (
-    document.getElementById('url-input')
-  );
-  /** @type {HTMLFormElement} */
+  const urlInput = /** @type {HTMLInputElement} */ document.getElementById(
+    'url-input'
+  ) as HTMLInputElement;
   const form = document.getElementsByTagName('form')[0];
-  const podficLabel = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_label')
-  );
-  const podficLengthLabel = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_length_label')
-  );
-  const podficLengthValue = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_length_value')
-  );
-  const titleFormatValue = /** @type {HTMLInputElement} */ (
-    document.getElementById('title_template_value')
-  );
-  const summaryFormatValue = /** @type {HTMLInputElement} */ (
-    document.getElementById('summary_template_value')
-  );
-  /** @type {MDCTextField} */
+  const podficLabel = document.getElementById(
+    'podfic_label'
+  ) as HTMLInputElement;
+  const podficLengthLabel = document.getElementById(
+    'podfic_length_label'
+  ) as HTMLInputElement;
+  const podficLengthValue = document.getElementById(
+    'podfic_length_value'
+  ) as HTMLInputElement;
+  const titleFormatValue =
+    /** @type {HTMLInputElement} */ document.getElementById(
+      'title_template_value'
+    ) as HTMLInputElement;
+  const summaryFormatValue = document.getElementById(
+    'summary_template_value'
+  ) as HTMLInputElement;
   const urlTextField = document.querySelector('.mdc-text-field').MDCTextField;
   const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
-  /** @type {HTMLButtonElement} */
-  const submitButton = document.querySelector('#import');
-  const optionsLink = /** @type {HTMLAnchorElement} */ (
-    document.getElementById('options-link')
-  );
+  const submitButton = document.querySelector('#import') as HTMLButtonElement;
+  const optionsLink = document.getElementById(
+    'options-link'
+  ) as HTMLAnchorElement;
   optionsLink.href = browser.runtime.getURL('options.html');
 
   // Setting this means that we have to update the validity of the text field
@@ -110,7 +133,6 @@ async function setupPopup() {
     urlTextField.valid = urlInput.validity.valid;
   });
 
-  /** @type {mdc.chips.MDCChipSet} */
   const audioFormatTagsChipSet =
     document.querySelector('#audio-format-tags').MDCChipSet;
 
@@ -150,13 +172,17 @@ async function setupPopup() {
     let result;
     try {
       const injectedScriptResults = await browser.scripting.executeScript({
-        target: {tabId: tab.id},
+        target: {tabId: tab.id!},
         files: ['/resources/browser-polyfill.min.js', '/inject.js'],
       });
       // We only have one target so there is only one result.
       result = injectedScriptResults[0].result;
-    } catch (e) {
-      result = {result: 'error', message: `${e.message}: ${e.stack}`};
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        result = {result: 'error', message: `${e.message}: ${e.stack}`};
+      } else {
+        result = {result: 'error', message: `{${e}}`};
+      }
     }
     submitButton.disabled = false;
     if (result.result === 'error') {
@@ -174,8 +200,7 @@ async function setupPopup() {
   // Import pop-up options from storage.
   const data = await browser.storage.sync.get('options');
 
-  /** @type {import("./utils.js").PopupFormData} */
-  const options = data['options'];
+  const options: PopupFormData = data['options'];
 
   setInputValue(urlInput, options['url']);
   setCheckboxState(podficLabel, options['podfic_label']);
@@ -199,7 +224,7 @@ async function setupPopup() {
    * @param selectElement {HTMLElement}
    * @param optionValue {string}
    */
-  function clickSelectOption(selectElement, optionValue) {
+  function clickSelectOption(selectElement: HTMLElement, optionValue: string) {
     const optionElements = selectElement.querySelectorAll('li');
     const optionMatchingValue = Array.from(optionElements).find(
       option => option.dataset.value === optionValue
