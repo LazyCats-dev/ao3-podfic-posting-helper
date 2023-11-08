@@ -42,7 +42,6 @@
     "@types/chrome": "^0.0.248",
     "@types/firefox-webext-browser": "^111.0.3",
     "highlight.js": "^11.9.0",
-    "material-components-web": "^14.0.0",
     "sanitize-html": "^2.11.0"
   }
 }
