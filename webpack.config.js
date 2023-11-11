@@ -8,7 +8,7 @@ module.exports = {
     options: path.resolve(__dirname, 'src', 'options.ts'),
   },
   output: {
-    path: path.join(__dirname, 'dist/js'),
+    path: path.join(__dirname, 'dist/'),
     filename: '[name].js',
     iife: false,
   },
@@ -17,7 +17,11 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{from: '.', to: '.', context: 'public'}],
+      patterns: [
+        {from: '.', to: '.', context: 'public'},
+        {from: '*.html', to: '.', context: 'src'},
+        {from: '*.css', to: '.', context: 'src'},
+      ],
     }),
   ],
   module: {
