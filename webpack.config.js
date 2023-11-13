@@ -3,7 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    inject: path.resolve(__dirname, 'src', 'inject.js'),
+    inject: path.resolve(__dirname, 'src', 'inject.ts'),
     popup: path.resolve(__dirname, 'src', 'popup.ts'),
     options: path.resolve(__dirname, 'src', 'options.ts'),
   },
