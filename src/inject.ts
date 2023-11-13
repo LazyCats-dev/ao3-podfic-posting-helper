@@ -389,10 +389,9 @@
 
   /**
    */
-  function createUrl(url: string): URL {
+  function createUrl(url: string) {
     // Attempt to parse the URL
-    /** @type {URL} */
-    let fetchUrl;
+    let fetchUrl: URL;
     try {
       fetchUrl = new URL(url);
     } catch (e: unknown) {
