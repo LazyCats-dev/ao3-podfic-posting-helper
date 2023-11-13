@@ -17,11 +17,8 @@
   // Duplicated because they need to exist in the injected script.
   /**
    * Query a (potentially empty) list of HTMLElements
-   * @param {ParentNode} parent
-   * @param {string} query
-   * @return {HTMLElement[]}
    */
-  function queryElements(parent, query) {
+  function queryElements(parent: ParentNode, query: string): HTMLElement[] {
     if (parent === undefined) {
       return [];
     }
@@ -30,20 +27,17 @@
 
   /**
    * Query to get the first matching HTMLElement
-   * @param {ParentNode} parent
-   * @param {string} query
-   * @return {HTMLElement}
    */
-  function queryElement(parent, query) {
+  function queryElement(parent: ParentNode, query: string): HTMLElement {
     return queryElements(parent, query)[0];
   }
 
   /**
    * Return a map from option text to option value.
-   * @param {HTMLSelectElement|undefined} [select]
-   * @returns {Map<string,string>}
    */
-  function mapOptions(select) {
+  function mapOptions(
+    select: HTMLSelectElement | undefined
+  ): Map<string, string> {
     return Array.from(select?.querySelectorAll('option') || []).reduce(
       (total, optionElement) => {
         total.set(optionElement.innerText.trim(), optionElement.value);
@@ -55,20 +49,17 @@
 
   /**
    * Return a map from input text to input element.
-   * @param {HTMLInputElement[]} inputs
-   * @returns {Map<string,HTMLInputElement>}
    */
-  function mapInputs(inputs) {
+  function mapInputs(
+    inputs: HTMLInputElement[]
+  ): Map<string, HTMLInputElement> {
     return inputs.reduce((total, inputElement) => {
       total.set(inputElement.value.trim(), inputElement);
       return total;
     }, new Map());
   }
 
-  /**
-   * @param url {string}
-   */
-  function canonicalUrl(url) {
+  function canonicalUrl(url: string) {
     // https://archiveofourown.org/
     if (url.startsWith('http')) {
       return url;
@@ -79,11 +70,8 @@
 
   /**
    * Format a url and some text as a (string) <a> tag.
-   * @param {string} url
-   * @param {string} text
-   * @returns {string}
    */
-  function link(url, text) {
+  function link(url: string, text: string) {
     return '<a href="' + canonicalUrl(url) + '">' + text + '</a>';
   }
 
@@ -96,14 +84,14 @@
    *   * title
    *   * author
    *   * authors
-   * @param {string} template
-   * @param {string} summary
-   * @param {string} title
-   * @param {string} url
-   * @param {Map<string,string>} authors
-   * @returns
    */
-  function transformHtmlTemplate(template, summary, title, url, authors) {
+  function transformHtmlTemplate(
+    template: string,
+    summary: string,
+    title: string,
+    url: string,
+    authors: Map<string, string>
+  ) {
     const titleLink = link(url, title);
     const authorsLinks = Array.from(authors)
       .map(([author, authorUrl]) => link(authorUrl, author))
@@ -133,12 +121,12 @@
    *   * title
    *   * author
    *   * authors
-   * @param template {string}
-   * @param title {string}
-   * @param authors {Map<string,string>}
-   * @returns
    */
-  function transformTitle(template, title, authors) {
+  function transformTitle(
+    template: string,
+    title: string,
+    authors: Map<string, string>
+  ) {
     const authorsText = Array.from(authors)
       .map(([author]) => author)
       .join(', ');
@@ -157,11 +145,8 @@
   /**
    * Figure out what template to use based on the title options and
    * custom template.
-   * @param titleOption {string}
-   * @param customTemplate {string}
-   * @returns
    */
-  function getTitleTemplate(titleOption, customTemplate) {
+  function getTitleTemplate(titleOption: string, customTemplate: string) {
     switch (titleOption) {
       case 'blank':
         return '';
@@ -177,11 +162,8 @@
   /**
    * Figure out what template to use based on the summary options and
    * custom template.
-   * @param summaryOption {string}
-   * @param customTemplate {string}
-   * @returns
    */
-  function getSummaryTemplate(summaryOption, customTemplate) {
+  function getSummaryTemplate(summaryOption: string, customTemplate: string) {
     switch (summaryOption) {
       case 'blank':
         return '';
@@ -196,10 +178,8 @@
 
   /**
    * Sets the value of a tag input, triggering all necessary events.
-   * @param inputElement {HTMLInputElement}
-   * @param value {string}
    */
-  function setTagsInputValue(inputElement, value) {
+  function setTagsInputValue(inputElement: HTMLInputElement, value: string) {
     const event = new InputEvent('input', {bubbles: true, data: value});
     inputElement.value = value;
     // Replicates the value changing.
@@ -210,9 +190,8 @@
 
   /**
    * Strip <p> tags, since AO3 doesn't like them in the summary.
-   * @param {HTMLElement|undefined} summary
    */
-  function sanitizeSummary(summary) {
+  function sanitizeSummary(summary: HTMLElement | undefined) {
     if (!summary) {
       return '';
     }
@@ -232,10 +211,8 @@
   /**
    * Transform a list of <a> html elements into a map from link text to link
    * url.
-   * @param authors {HTMLElement[]}
-   * @returns {Array<[string,string]>}
    */
-  function mapAuthors(authors) {
+  function mapAuthors(authors: HTMLElement[]): Array<[string, string]> {
     return Array.from(
       authors
         .reduce((total, authorLink) => {
@@ -255,10 +232,8 @@
 
   /**
    * Parse the metadata from a work page.
-   * @param doc {Document}
-   * @returns
    */
-  function parseGenMetadata(doc) {
+  function parseGenMetadata(doc: Document) {
     const meta = queryElement(doc, '.meta');
     const rating = queryElement(meta, 'dd.rating.tags').innerText.trim();
     const warnings = queryElements(
@@ -289,7 +264,7 @@
       .filter(tag => tag.toLowerCase() !== 'podfic welcome'.toLowerCase());
     const language = queryElement(meta, 'dd.language').innerText.trim();
 
-    const work = doc.getElementById('workskin');
+    const work = doc.getElementById('workskin')!;
     const title = queryElement(work, 'h2.title').innerText.trim();
     const authors = mapAuthors(
       queryElements(queryElement(work, '.byline'), 'a')
@@ -315,9 +290,8 @@
   }
 
   /**
-   * @param {string} url
    */
-  async function importMetadata(url) {
+  async function importMetadata(url: string) {
     // Attempt to validate the URL.
     const fetchUrl = createUrl(url);
     const response = await fetchWork(fetchUrl, 'omit');
@@ -354,10 +328,8 @@
   }
 
   /**
-   * @param {URL} url
-   * @param {string} originalUrl
    **/
-  async function fetchWithCurrentCreds(url, originalUrl) {
+  async function fetchWithCurrentCreds(url: URL, originalUrl: string) {
     const response = await fetchWork(url, 'include');
     const doc = await parseDocFromResponse(response);
     if (response.redirected) {
@@ -396,19 +368,19 @@
   }
 
   /**
-   * @param {Response} response
    */
-  async function parseDocFromResponse(response) {
+  async function parseDocFromResponse(response: Response) {
     const domParser = new DOMParser();
     const html = await response.text();
     return domParser.parseFromString(html, 'text/html');
   }
 
   /**
-   * @param {Response} response
-   * @param {string} originalUrl
    */
-  async function parseMetadataFromResponse(response, originalUrl) {
+  async function parseMetadataFromResponse(
+    response: Response,
+    originalUrl: string
+  ) {
     // We return back the original URL so that storage only ever contains
     // the URL the user input instead of the one we used for fetching.
     const doc = await parseDocFromResponse(response);
@@ -416,17 +388,18 @@
   }
 
   /**
-   * @param {string} url
-   * @returns {URL}
    */
-  function createUrl(url) {
+  function createUrl(url: string): URL {
     // Attempt to parse the URL
     /** @type {URL} */
     let fetchUrl;
     try {
       fetchUrl = new URL(url);
-    } catch (e) {
-      throw new Error(`Invalid work URL: ${e.message}: ${e.stack}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        throw new Error(`Invalid work URL: ${e.message}: ${e.stack}`);
+      }
+      throw new Error(`Invalid work URL: {${e}}`);
     }
     // Always consent to seeing "adult content" to simplify parsing
     fetchUrl.searchParams.set('view_adult', 'true');
@@ -434,15 +407,16 @@
   }
 
   /**
-   * @param {URL} url
-   * @param {RequestCredentials} credentials
    */
-  async function fetchWork(url, credentials) {
+  async function fetchWork(url: URL, credentials: RequestCredentials) {
     let result;
     try {
       result = await window.fetch(url, {credentials});
-    } catch (e) {
-      throw new Error(`Failed to fetch the work! ${e.message}: ${e.stack}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        throw new Error(`Failed to fetch the work! ${e.message}: ${e.stack}`);
+      }
+      throw new Error(`Failed to fetch the work! {${e}}`);
     }
     if (!result.ok) {
       throw new Error(
@@ -452,12 +426,12 @@
     return result;
   }
 
-  function looksLikeUnrevealedWork(/** @type {Document} */ doc) {
+  function looksLikeUnrevealedWork(doc: Document) {
     // The page has a notice saying that the work is yet to be revealed, and
     // there is no user content.
     return (
       Array.from(doc.querySelectorAll('p.notice')).some(notice =>
-        notice.textContent.includes(
+        notice!.textContent!.includes(
           'This work is part of an ongoing challenge and will ' +
             'be revealed soon'
         )
@@ -465,10 +439,10 @@
     );
   }
 
-  function looksLikeAdultWarning(/** @type {Document} */ doc) {
+  function looksLikeAdultWarning(doc: Document) {
     // The page has a notice saying that the work may contain adult content.
     return Array.from(doc.querySelectorAll('p.caution')).some(notice =>
-      notice.textContent.includes('This work could have adult content')
+      notice!.textContent!.includes('This work could have adult content')
     );
   }
 
@@ -482,23 +456,29 @@
       summary_template,
       title_template,
       notes_template,
-    } = /** @type {InjectedScriptStorageData} */ (
-      await browser.storage.sync.get([
+    } = /** @type {InjectedScriptStorageData} */ await browser.storage.sync.get(
+      [
         'options',
         'workbody',
         'summary_template',
         'title_template',
         'notes_template',
-      ])
+      ]
     );
 
     let importResult;
     try {
       importResult = await importMetadata(options['url']);
-    } catch (e) {
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        return {
+          result: 'error',
+          message: `${e.stack}`,
+        };
+      }
       return {
         result: 'error',
-        message: `${e.stack}`,
+        message: `{${e}}`,
       };
     }
 
@@ -508,31 +488,33 @@
     }
     const metadata = importResult.metadata;
 
-    const newWorkPage = document.getElementById('main');
+    const newWorkPage = document.getElementById('main')!;
 
     // Find the rating drop down, and pick the correct value.
-    const ratingSelect = /** @type {HTMLSelectElement} */ (
-      queryElement(newWorkPage, '#work_rating_string')
-    );
+    const ratingSelect = queryElement(
+      newWorkPage,
+      '#work_rating_string'
+    )! as HTMLSelectElement;
     const ratingOptions = mapOptions(ratingSelect);
-    ratingSelect.value = ratingOptions.get(metadata['rating']);
+    ratingSelect.value = ratingOptions.get(metadata['rating'])!;
 
     // Find the warning check boxes, and check all the ones that apply.
     const warningBoxes = mapInputs(
-      /** @type {HTMLInputElement[]} */ (
-        queryElements(queryElement(newWorkPage, 'fieldset.warnings'), 'input')
-      )
+      queryElements(
+        queryElement(newWorkPage, 'fieldset.warnings'),
+        'input'
+      ) as HTMLInputElement[]
     );
     warningBoxes.set(
       'Creator Chose Not To Use Archive Warnings',
-      warningBoxes.get('Choose Not To Use Archive Warnings')
+      warningBoxes.get('Choose Not To Use Archive Warnings')!
     );
     // Somehow it is possible for the imported metadata to have different
     // warnings than new work form. In this case we just ignore the warning
     // we failed to map.
     for (const warning of metadata['warnings']) {
       if (warningBoxes.has(warning)) {
-        warningBoxes.get(warning).checked = true;
+        warningBoxes.get(warning)!.checked = true;
       } else {
         showPartialCompletionWarning = true;
       }
@@ -540,23 +522,25 @@
 
     // Find the fandom text input, and insert a comma-separated list of
     // fandoms. Tell ao3 we did so.
-    const fandomInput = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.fandom'), 'input')
-    );
+    const fandomInput = queryElement(
+      queryElement(newWorkPage, 'dd.fandom'),
+      'input'
+    ) as HTMLInputElement;
     setTagsInputValue(fandomInput, metadata['fandoms'].join(', '));
 
     // Find the category check boxes, and check all the ones that apply.
     const categoryBoxes = mapInputs(
-      /** @type {HTMLInputElement[]} */ (
-        queryElements(queryElement(newWorkPage, 'dd.category'), 'input')
-      )
+      queryElements(
+        queryElement(newWorkPage, 'dd.category'),
+        'input'
+      ) as HTMLInputElement[]
     );
     // Somehow it is possible for the imported metadata to have different
     // categories than new work form. In this case we just ignore the warning
     // we failed to map.
     for (const category of metadata['categories']) {
       if (categoryBoxes.has(category)) {
-        categoryBoxes.get(category).checked = true;
+        categoryBoxes.get(category)!.checked = true;
       } else {
         showPartialCompletionWarning = true;
       }
@@ -564,24 +548,27 @@
 
     // Find the relationship text input, and insert a comma-separated list
     // of relationships. Tell ao3 we did so.
-    const relationshipInput = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.relationship'), 'input')
-    );
+    const relationshipInput = queryElement(
+      queryElement(newWorkPage, 'dd.relationship'),
+      'input'
+    ) as HTMLInputElement;
     setTagsInputValue(relationshipInput, metadata['relationships'].join(', '));
 
     // Find the character input, and insert a comma-separated list of
     // characters. Tell ao3 we did so.
-    const characterInput = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.character'), 'input')
-    );
+    const characterInput = queryElement(
+      queryElement(newWorkPage, 'dd.character'),
+      'input'
+    ) as HTMLInputElement;
     setTagsInputValue(characterInput, metadata['characters'].join(', '));
 
     // Find the freeform tags input, and insert a comma-separated list of
     // freeform tags. (potentially auto-adding "Podfic" and "Podfic
     // Length" tags) Tell ao3 we did so.
-    const additionalTagsInput = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input')
-    );
+    const additionalTagsInput = queryElement(
+      queryElement(newWorkPage, 'dd.freeform'),
+      'input'
+    ) as HTMLInputElement;
     if (options['podfic_label']) {
       metadata['freeformTags'].push('Podfic');
     }
@@ -598,9 +585,10 @@
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
 
     // Set the title.
-    const titleInput = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.title'), 'input')
-    );
+    const titleInput = queryElement(
+      queryElement(newWorkPage, 'dd.title'),
+      'input'
+    ) as HTMLInputElement;
     const titleTemplate = getTitleTemplate(
       options['title_format'],
       title_template['default']
@@ -612,9 +600,10 @@
     );
 
     // Set the summary, optionally wrapping it in a block quote.
-    const summaryTextArea = /** @type {HTMLTextAreaElement} */ (
-      queryElement(queryElement(newWorkPage, 'dd.summary'), 'textarea')
-    );
+    const summaryTextArea = queryElement(
+      queryElement(newWorkPage, 'dd.summary'),
+      'textarea'
+    ) as HTMLTextAreaElement;
     const summaryTemplate = getSummaryTemplate(
       options['summary_format'],
       summary_template['default']
@@ -636,56 +625,61 @@
       authorMap
     );
     if (notes_template['begin']) {
-      const beginNotesCheckmark = /** @type {HTMLInputElement} */ (
-        queryElement(newWorkPage, '#front-notes-options-show')
-      );
+      const beginNotesCheckmark = queryElement(
+        newWorkPage,
+        '#front-notes-options-show'
+      ) as HTMLInputElement;
       if (!beginNotesCheckmark.checked) {
         beginNotesCheckmark.click();
       }
-      const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-        queryElement(newWorkPage, '#work_notes')
-      );
+      const beginNotesTextArea = queryElement(
+        newWorkPage,
+        '#work_notes'
+      ) as HTMLTextAreaElement;
       beginNotesTextArea.value = notesTemplate;
     }
     if (notes_template['end']) {
-      const endNotesCheckmark = /** @type {HTMLInputElement} */ (
-        queryElement(newWorkPage, '#end-notes-options-show')
-      );
+      const endNotesCheckmark = queryElement(
+        newWorkPage,
+        '#end-notes-options-show'
+      ) as HTMLInputElement;
       if (!endNotesCheckmark.checked) {
         endNotesCheckmark.click();
       }
-      const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-        queryElement(newWorkPage, '#work_endnotes')
-      );
+      const endNotesTextArea = queryElement(
+        newWorkPage,
+        '#work_endnotes'
+      ) as HTMLTextAreaElement;
       endNotesTextArea.value = notesTemplate;
     }
 
     // Set the "inspired by" work url.
-    const parentCheckmark = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dt.parent'), 'input')
-    );
+    const parentCheckmark = queryElement(
+      queryElement(newWorkPage, 'dt.parent'),
+      'input'
+    ) as HTMLInputElement;
     if (!parentCheckmark.checked) {
       parentCheckmark.click();
     }
-    const parentUrl = /** @type {HTMLInputElement} */ (
-      queryElement(
-        newWorkPage,
-        '#work_parent_work_relationships_attributes_0_url'
-      )
-    );
+    const parentUrl = queryElement(
+      newWorkPage,
+      '#work_parent_work_relationships_attributes_0_url'
+    ) as HTMLInputElement;
     parentUrl.value = metadata['url'];
 
     // Set the same language as the original work.
-    const languageSelect = /** @type {HTMLSelectElement} */ (
-      queryElement(newWorkPage, '#work_language_id')
-    );
+    const languageSelect = queryElement(
+      newWorkPage,
+      '#work_language_id'
+    ) as HTMLSelectElement;
     const languageOptions = mapOptions(languageSelect);
-    languageSelect.value = languageOptions.get(metadata['language']);
+    languageSelect.value = languageOptions.get(metadata['language'])!;
 
     // Set the new work text.
-    const workText = /** @type {HTMLInputElement} */ (
-      queryElement(newWorkPage, '.mce-editor')
-    );
+    const workText = queryElement(
+      newWorkPage,
+      '.mce-editor'
+    ) as HTMLInputElement;
     // If there's nothing here yet, over-write it.
     if (workText.value == '') {
       workText.value = transformHtmlTemplate(
@@ -715,7 +709,7 @@
   // A cheap way to get a general unhandled error listener.
   try {
     return await importAndFillMetadata();
-  } catch (e) {
+  } catch (e: unknown) {
     let debugMessage;
     if (e instanceof Error) {
       debugMessage = `${e.message}: ${e.stack}`;
