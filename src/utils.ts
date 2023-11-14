@@ -21,6 +21,15 @@ export interface TemplateData {
 }
 
 /**
+ * Object representing the value of a notes template from the options page.
+ */
+export interface NotesTemplateData {
+  readonly default: string;
+  readonly begin: boolean;
+  readonly end: boolean;
+}
+
+/**
  * Sets the value of the input, triggering all necessary events.
  * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
  * @param {string} value

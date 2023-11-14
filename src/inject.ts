@@ -1,3 +1,5 @@
+import {NotesTemplateData, PopupFormData, TemplateData} from './utils';
+
 (async () => {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
@@ -6,13 +8,14 @@
 
   /**
    * Object representing the data available to the injected script.
-   * @typedef {Object} InjectedScriptStorageData
-   * @property {import("./utils.js").PopupFormData} options
-   * @property {import("./utils.js").TemplateData} workbody
-   * @property {import("./utils.js").TemplateData} summary_template
-   * @property {import("./utils.js").TemplateData} title_template
-   * @property {import("./utils.js").TemplateData} notes_template
    */
+  interface InjectedScriptStorageData {
+    readonly options: PopupFormData;
+    readonly workbody: TemplateData;
+    readonly summary_template: TemplateData;
+    readonly title_template: TemplateData;
+    readonly notes_template: NotesTemplateData;
+  }
 
   // Duplicated because they need to exist in the injected script.
   /**
@@ -37,7 +40,7 @@
    */
   function mapOptions(
     select: HTMLSelectElement | undefined
-  ): Map<string, string> {
+  ): ReadonlyMap<string, string> {
     return Array.from(select?.querySelectorAll('option') || []).reduce(
       (total, optionElement) => {
         total.set(optionElement.innerText.trim(), optionElement.value);
@@ -90,7 +93,7 @@
     summary: string,
     title: string,
     url: string,
-    authors: Map<string, string>
+    authors: ReadonlyMap<string, string>
   ) {
     const titleLink = link(url, title);
     const authorsLinks = Array.from(authors)
@@ -125,7 +128,7 @@
   function transformTitle(
     template: string,
     title: string,
-    authors: Map<string, string>
+    authors: ReadonlyMap<string, string>
   ) {
     const authorsText = Array.from(authors)
       .map(([author]) => author)
@@ -209,25 +212,18 @@
   }
 
   /**
-   * Transform a list of <a> html elements into a map from link text to link
-   * url.
+   * Transform a list of <a> html elements into a map from link text (author) to link
+   * url (author's user page).
    */
-  function mapAuthors(authors: HTMLElement[]): Array<[string, string]> {
-    return Array.from(
-      authors
-        .reduce((total, authorLink) => {
-          // Check that this is actually a link to an
-          // author--it could be a giftee.
-          if (authorLink.getAttribute('rel') == 'author') {
-            total.set(
-              authorLink.innerText.trim(),
-              authorLink.getAttribute('href')
-            );
-          }
-          return total;
-        }, new Map())
-        .entries()
-    );
+  function mapAuthors(authors: HTMLElement[]): ReadonlyMap<string, string> {
+    return authors.reduce((total, authorLink) => {
+      // Check that this is actually a link to an
+      // author--it could be a giftee.
+      if (authorLink.getAttribute('rel') == 'author') {
+        total.set(authorLink.innerText.trim(), authorLink.getAttribute('href'));
+      }
+      return total;
+    }, new Map());
   }
 
   /**
@@ -445,25 +441,22 @@
     );
   }
 
-  /** @returns {Promise<{result: string, metadata: *}} */
+  /** */
   async function importAndFillMetadata() {
     let showPartialCompletionWarning = false;
-    /** @type {InjectedScriptStorageData} */
     const {
       options,
       workbody,
       summary_template,
       title_template,
       notes_template,
-    } = /** @type {InjectedScriptStorageData} */ await browser.storage.sync.get(
-      [
-        'options',
-        'workbody',
-        'summary_template',
-        'title_template',
-        'notes_template',
-      ]
-    );
+    }: InjectedScriptStorageData = (await browser.storage.sync.get([
+      'options',
+      'workbody',
+      'summary_template',
+      'title_template',
+      'notes_template',
+    ])) as InjectedScriptStorageData;
 
     let importResult;
     try {
@@ -595,7 +588,7 @@
     titleInput.value = transformTitle(
       titleTemplate,
       metadata['title'],
-      new Map(metadata['authors'])
+      metadata['authors']
     );
 
     // Set the summary, optionally wrapping it in a block quote.
@@ -607,13 +600,12 @@
       options['summary_format'],
       summary_template['default']
     );
-    const authorMap = new Map(metadata['authors']);
     summaryTextArea.value = transformHtmlTemplate(
       summaryTemplate,
       metadata['summary'],
       metadata['title'],
       metadata['url'],
-      authorMap
+      metadata['authors']
     );
 
     const notesTemplate = transformHtmlTemplate(
@@ -621,7 +613,7 @@
       metadata['summary'],
       metadata['title'],
       metadata['url'],
-      authorMap
+      metadata['authors']
     );
     if (notes_template['begin']) {
       const beginNotesCheckmark = queryElement(
@@ -686,7 +678,7 @@
         metadata['summary'],
         metadata['title'],
         metadata['url'],
-        authorMap
+        metadata['authors']
       );
     }
 
