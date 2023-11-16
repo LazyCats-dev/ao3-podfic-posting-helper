@@ -21,6 +21,9 @@ module.exports = [
         patterns: [
           {from: '.', to: '.', context: 'public'},
           {from: '*.html', to: '.', context: 'src'},
+          {
+            from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
+          },
         ],
       }),
     ],

@@ -19,6 +19,7 @@ import {
   setupGlobalEventLogging,
   setupStorage,
 } from './utils';
+import browser from 'webextension-polyfill';
 
 setupGlobalEventLogging();
 
@@ -175,7 +176,7 @@ async function setupPopup() {
     try {
       const injectedScriptResults = await browser.scripting.executeScript({
         target: {tabId: tab.id!},
-        files: ['/resources/browser-polyfill.min.js', '/inject.js'],
+        files: ['/browser-polyfill.min.js', '/inject.js'],
       });
       // We only have one target so there is only one result.
       result = injectedScriptResults[0].result;
