@@ -3,8 +3,6 @@ import {MDCList} from '@material/list';
 import {MDCSnackbar} from '@material/snackbar';
 import {MDCTextField} from '@material/textfield';
 
-declare module HtmlSanitizer {}
-
 declare global {
   interface Element {
     closest(selector: '.mdc-text-field'): {
