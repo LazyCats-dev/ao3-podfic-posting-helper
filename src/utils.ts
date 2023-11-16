@@ -1,29 +1,44 @@
-import {ANALYTICS} from './google-analytics.js';
+import {ANALYTICS} from './google-analytics';
+import browser from 'webextension-polyfill';
 
 /**
  * Object representing the data collected by the form.
- * @typedef {Object} PopupFormData
- * @property {string} url
- * @property {boolean} podfic_label
- * @property {boolean} podfic_length_label
- * @property {string} podfic_length_value
- * @property {string} title_format
- * @property {string} summary_format
- * @property {(readonly string[])=} audioFormatTagOptionIds
  */
+export interface PopupFormData {
+  readonly url: string;
+  readonly podfic_label: boolean;
+  readonly podfic_length_label: boolean;
+  readonly podfic_length_value: string;
+  readonly title_format: string;
+  readonly summary_format: string;
+  readonly audioFormatTagOptionIds: readonly string[];
+}
 
 /**
  * Object representing the value of a template from the options page.
- * @typedef {Object} TemplateData
- * @property {string} default
  */
+export interface TemplateData {
+  readonly default: string;
+}
+
+/**
+ * Object representing the value of a notes template from the options page.
+ */
+export interface NotesTemplateData {
+  readonly default: string;
+  readonly begin: boolean;
+  readonly end: boolean;
+}
 
 /**
  * Sets the value of the input, triggering all necessary events.
  * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
  * @param {string} value
  */
-export function setInputValue(inputElement, value) {
+export function setInputValue(
+  inputElement: HTMLInputElement | HTMLTextAreaElement,
+  value: string
+) {
   const event = new InputEvent('input', {bubbles: true, data: value});
   inputElement.value = value;
   // Replicates the value changing.
@@ -37,7 +52,10 @@ export function setInputValue(inputElement, value) {
  * @param checkboxElement {HTMLInputElement}
  * @param isChecked {boolean}
  */
-export function setCheckboxState(checkboxElement, isChecked) {
+export function setCheckboxState(
+  checkboxElement: HTMLInputElement,
+  isChecked: boolean
+) {
   checkboxElement.checked = isChecked;
   // Replicates the user leaving focus of the input element.
   checkboxElement.dispatchEvent(new Event('change'));
@@ -137,14 +155,14 @@ export function setupGlobalEventLogging() {
 
   // Listen globally for all button events
   document.addEventListener('click', event => {
-    if ('id' in event.target) {
+    if (event.target && 'id' in event.target) {
       ANALYTICS.fireEvent('click_button', {id: event.target.id});
     }
   });
 
   // Listen globally for all input events
   document.addEventListener('change', event => {
-    if ('id' in event.target) {
+    if (event.target && 'id' in event.target) {
       ANALYTICS.fireEvent('input_changed', {id: event.target.id});
     }
   });

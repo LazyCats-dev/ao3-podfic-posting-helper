@@ -1,2 +1,0 @@
-/* global mdc */
-mdc.autoInit();

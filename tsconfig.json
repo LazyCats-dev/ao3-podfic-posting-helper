@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "bundler",
+    "module": "ES6",
+    "target": "ES2021",
+    "allowJs": true,
+    "sourceMap": true,
+    "typeRoots": ["node_modules/@types"],
+    "outDir": "dist/js",
+    "esModuleInterop": true
+  },
+  "compileOnSave": true
+}
