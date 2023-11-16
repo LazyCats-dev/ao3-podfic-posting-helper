@@ -52,6 +52,7 @@
     "@types/chrome": "^0.0.248",
     "@types/firefox-webext-browser": "^111.0.3",
     "highlight.js": "^11.9.0",
+    "material-icons": "^1.13.12",
     "sanitize-html": "^2.11.0"
   }
 }
