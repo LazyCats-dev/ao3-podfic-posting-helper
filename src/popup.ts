@@ -1,3 +1,5 @@
+import './popup.scss';
+
 import mdcAutoInit from '@material/auto-init';
 import {MDCCheckbox} from '@material/checkbox';
 import {MDCChipSet} from '@material/chips/deprecated';

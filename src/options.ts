@@ -1,3 +1,5 @@
+import './options.scss';
+
 import mdcAutoInit from '@material/auto-init';
 import {MDCCheckbox} from '@material/checkbox';
 import {MDCFormField} from '@material/form-field';

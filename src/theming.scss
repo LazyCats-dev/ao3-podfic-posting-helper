@@ -1,0 +1,21 @@
+@use "@material/theme" with (
+  $primary: #900,
+  $secondary: #900,
+  $background: #fff,
+);
+
+@use "@material/button/mdc-button";
+@use "@material/icon-button/mdc-icon-button";
+@use "@material/card/mdc-card";
+@use "@material/checkbox/mdc-checkbox";
+@use "@material/chips/deprecated/mdc-chips";
+@use "@material/form-field/mdc-form-field";
+@use "@material/list/mdc-list";
+@use "@material/menu/mdc-menu";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/ripple/mdc-ripple";
+@use "@material/select/mdc-select";
+@use "@material/snackbar/mdc-snackbar";
+@use "@material/textfield/mdc-text-field";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/typography/mdc-typography";
