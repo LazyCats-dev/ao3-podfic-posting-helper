@@ -25,13 +25,10 @@ setupGlobalEventLogging();
 
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
 mdcAutoInit.register('MDCRipple', MDCRipple);
-mdcAutoInit.register('MDCTextField', MDCTextField);
 mdcAutoInit.register('MDCFormField', MDCFormField);
 mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
 mdcAutoInit.register('MDCSelect', MDCSelect);
 mdcAutoInit.register('MDCMenu', MDCMenu);
-mdcAutoInit.register('MDCList', MDCList);
-mdcAutoInit.register('MDCChipSet', MDCChipSet);
 mdcAutoInit.register('MDCSnackbar', MDCSnackbar);
 
 mdcAutoInit();
@@ -113,8 +110,10 @@ async function setupPopup() {
   const summaryFormatValue = document.getElementById(
     'summary_template_value'
   ) as HTMLInputElement;
-  const urlTextField = document.querySelector('.mdc-text-field').MDCTextField;
-  const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
+  const urlTextField = new MDCTextField(
+    document.querySelector('.mdc-text-field')!
+  );
+  const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar')!);
   const submitButton = document.querySelector('#import') as HTMLButtonElement;
   const optionsLink = document.getElementById(
     'options-link'
@@ -136,8 +135,9 @@ async function setupPopup() {
     urlTextField.valid = urlInput.validity.valid;
   });
 
-  const audioFormatTagsChipSet =
-    document.querySelector('#audio-format-tags').MDCChipSet;
+  const audioFormatTagsChipSet = new MDCChipSet(
+    document.querySelector('#audio-format-tags')!
+  );
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
