@@ -19,7 +19,6 @@ import {
   setupGlobalEventLogging,
   setupStorage,
 } from './utils';
-import browser from 'webextension-polyfill';
 
 setupGlobalEventLogging();
 

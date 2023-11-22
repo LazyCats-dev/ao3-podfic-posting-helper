@@ -23,6 +23,7 @@ module.exports = [
           {from: '*.html', to: '.', context: 'src'},
           {
             from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
+            to: 'resources/.',
           },
         ],
       }),
@@ -51,90 +52,4 @@ module.exports = [
       minimize: false,
     },
   },
-  // {
-  //   entry: {
-  //     popup: path.resolve(__dirname, 'src', 'popup.scss'),
-  //   },
-  //   output: {
-  //     path: path.join(__dirname, 'dist/'),
-  //     filename: '[name]_css.js',
-  //     iife: false,
-  //   },
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.scss$/,
-  //         use: [
-  //           {
-  //             loader: 'file-loader',
-  //             options: {
-  //               name: 'popup.css',
-  //             },
-  //           },
-  //           {loader: 'extract-loader'},
-  //           {loader: 'css-loader'},
-  //           {
-  //             loader: 'sass-loader',
-  //             options: {
-  //               // Prefer Dart Sass
-  //               implementation: require('sass'),
-
-  //               // See https://github.com/webpack-contrib/sass-loader/issues/804
-  //               webpackImporter: false,
-  //               sassOptions: {
-  //                 includePaths: ['./node_modules'],
-  //               },
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   optimization: {
-  //     minimize: false,
-  //   },
-  // },
-  // {
-  //   entry: {
-  //     options: path.resolve(__dirname, 'src', 'options.scss'),
-  //   },
-  //   output: {
-  //     path: path.join(__dirname, 'dist/'),
-  //     filename: '[name]_css.js',
-  //     iife: false,
-  //   },
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.scss$/,
-  //         use: [
-  //           {
-  //             loader: 'file-loader',
-  //             options: {
-  //               name: 'options.css',
-  //             },
-  //           },
-  //           {loader: 'extract-loader'},
-  //           {loader: 'css-loader'},
-  //           {
-  //             loader: 'sass-loader',
-  //             options: {
-  //               // Prefer Dart Sass
-  //               implementation: require('sass'),
-
-  //               // See https://github.com/webpack-contrib/sass-loader/issues/804
-  //               webpackImporter: false,
-  //               sassOptions: {
-  //                 includePaths: ['./node_modules'],
-  //               },
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   optimization: {
-  //     minimize: false,
-  //   },
-  // },
 ];
