@@ -1,9 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@types/sanitize-html": "^2.9.4",
     "@types/webextension-polyfill": "^0.10.6",
+    "@web/test-runner": "^0.18.0",
     "@webpack-cli/generators": "^3.0.7",
+    "concurrently": "^8.2.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "eslint": "^8.39.0",
@@ -31,7 +34,9 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "web-test-runner test/**/*.test.ts",
+    "test:watch": "web-test-runner test/**/*.test.ts --watch"
   },
   "dependencies": {
     "@material/auto-init": "^14.0.0",
