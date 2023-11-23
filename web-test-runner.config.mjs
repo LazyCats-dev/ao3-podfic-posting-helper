@@ -8,7 +8,7 @@ export default {
   groups: [
     {
       name: 'unit-tests-all-browsers',
-      files: 'test/**/*.test.ts',
+      files: 'tests/utils.test.ts',
       browsers: [
         playwrightLauncher({product: 'chromium'}),
         playwrightLauncher({product: 'firefox'}),
