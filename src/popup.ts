@@ -4,7 +4,6 @@ import mdcAutoInit from '@material/auto-init';
 import {MDCCheckbox} from '@material/checkbox';
 import {MDCChipSet} from '@material/chips/deprecated';
 import {MDCFormField} from '@material/form-field';
-import {MDCList} from '@material/list';
 import {MDCMenu} from '@material/menu';
 import {MDCRipple} from '@material/ripple';
 import {MDCSelect} from '@material/select';

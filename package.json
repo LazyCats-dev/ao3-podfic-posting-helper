@@ -42,8 +42,8 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "test": "web-test-runner test/**/*.test.ts --node-resolve --playwright --browsers chromium firefox",
-    "test:watch": "web-test-runner test/**/*.test.ts --node-resolve --watch --playwright --browsers chromium firefox"
+    "test": "web-test-runner --node-resolve",
+    "test:watch": "web-test-runner --node-resolve --watch"
   },
   "dependencies": {
     "@material/auto-init": "^14.0.0",
