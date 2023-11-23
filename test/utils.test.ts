@@ -46,6 +46,7 @@ describe('setupStorage', () => {
 
     (window.browser as unknown) = mockBrowser;
   });
+
   it('sets defaults when no options are set', async () => {
     getSpy.and.returnValue(
       Promise.resolve({
@@ -91,5 +92,38 @@ describe('setupStorage', () => {
         end: false,
       },
     });
+  });
+
+  it('loads all values were set from a modern version', async () => {
+    getSpy.and.returnValue(
+      Promise.resolve({
+        options: {
+          title_format: 'foo',
+          summary_format: 'bar',
+        },
+        workbody: {
+          default: 'shemp',
+        },
+        title_template: {
+          default: 'tango',
+        },
+        summary_template: {
+          default: 'barvo',
+        },
+        notes_template: {
+          default: 'alpha',
+          begin: true,
+          end: true,
+        },
+      })
+    );
+
+    await setupStorage();
+
+    expect(setSpy)
+      .withContext(
+        'setupStorage was called when all data had a value, no set calls were expected'
+      )
+      .not.toHaveBeenCalled();
   });
 });
