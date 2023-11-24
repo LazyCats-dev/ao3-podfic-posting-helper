@@ -18,16 +18,12 @@ import {
   setupGlobalEventLogging,
   setupStorage,
 } from './utils';
-import browser from 'webextension-polyfill';
 
 setupGlobalEventLogging();
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
 mdcAutoInit.register('MDCRipple', MDCRipple);
-mdcAutoInit.register('MDCTextField', MDCTextField);
 mdcAutoInit.register('MDCFormField', MDCFormField);
 mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
-mdcAutoInit.register('MDCList', MDCList);
-mdcAutoInit.register('MDCSnackbar', MDCSnackbar);
 mdcAutoInit();
 
 hljs.registerLanguage('xml', xml);
@@ -111,12 +107,15 @@ hljs.registerLanguage('plaintext', plaintext);
   const titlePreview = document.getElementById(
     'title_preview'
   ) as HTMLTextAreaElement;
-  const titleTextField = titleTemplate.closest('.mdc-text-field').MDCTextField;
+  const titleTextField = new MDCTextField(
+    titleTemplate.closest('.mdc-text-field')!
+  );
   const summaryTemplate = document.getElementById(
     'summary_template'
   ) as HTMLTextAreaElement;
-  const summaryTemplateTextField =
-    summaryTemplate.closest('.mdc-text-field').MDCTextField;
+  const summaryTemplateTextField = new MDCTextField(
+    summaryTemplate.closest('.mdc-text-field')!
+  );
   const summaryPreview = document.getElementById('summary_preview')!;
   const summaryForm = document.getElementById(
     'summary_form'
@@ -124,18 +123,20 @@ hljs.registerLanguage('plaintext', plaintext);
   const notesTemplate = document.getElementById(
     'notes_template'
   ) as HTMLTextAreaElement;
-  const notesTemplateTextField =
-    notesTemplate.closest('.mdc-text-field').MDCTextField;
+  const notesTemplateTextField = new MDCTextField(
+    notesTemplate.closest('.mdc-text-field')!
+  );
   const notesPreview = document.getElementById('notes_preview')!;
   const notesForm = document.getElementById('notes_form') as HTMLFormElement;
   const defaultBody = document.getElementById(
     'default_body'
   ) as HTMLTextAreaElement;
-  const defaultBodyTextField =
-    defaultBody.closest('.mdc-text-field').MDCTextField;
+  const defaultBodyTextField = new MDCTextField(
+    defaultBody.closest('.mdc-text-field')!
+  );
   const defaultBodyPreview = document.getElementById('default_body_preview')!;
   const workForm = document.getElementById('work_form')!;
-  const snackbar = document.querySelector('.mdc-snackbar').MDCSnackbar;
+  const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar')!);
   const titleResetButton = document.getElementById('title_reset')!;
   const summaryResetButton = document.getElementById('summary_reset')!;
   const notesResetButton = document.getElementById('notes_reset')!;
@@ -145,7 +146,7 @@ hljs.registerLanguage('plaintext', plaintext);
   const endNotesCheckbox = document.getElementById(
     'end_notes'
   ) as HTMLInputElement;
-  const navList = document.querySelector('.mdc-deprecated-list').MDCList;
+  const navList = new MDCList(document.querySelector('.mdc-deprecated-list')!);
   navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {

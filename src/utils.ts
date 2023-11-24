@@ -1,5 +1,4 @@
 import {ANALYTICS} from './google-analytics';
-import browser from 'webextension-polyfill';
 
 /**
  * Object representing the data collected by the form.

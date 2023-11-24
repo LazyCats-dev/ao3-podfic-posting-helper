@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="resources/material-icons.css" />
     <link rel="stylesheet" href="resources/roboto.css" />
+    <script src="resources/browser-polyfill.min.js"></script>
     <title>AO3 Podfic Posting Helper</title>
   </head>
 
@@ -56,8 +57,7 @@
         <div class="list" role="group">
           <div class="form-item">
             <label
-              class="mdc-text-field mdc-text-field--filled mdc-theme--primary url-text-field"
-              data-mdc-auto-init="MDCTextField">
+              class="mdc-text-field mdc-text-field--filled mdc-theme--primary url-text-field">
               <span class="mdc-text-field__ripple"></span>
               <span class="mdc-floating-label" id="url-label">
                 URL of work to import from
@@ -179,8 +179,7 @@
                   <ul
                     class="mdc-deprecated-list"
                     role="listbox"
-                    aria-label="Podfic length listbox"
-                    data-mdc-auto-init="MDCList">
+                    aria-label="Podfic length listbox">
                     <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
@@ -484,8 +483,7 @@
                   <ul
                     class="mdc-deprecated-list"
                     role="listbox"
-                    aria-label="Title template listbox"
-                    data-mdc-auto-init="MDCList">
+                    aria-label="Title template listbox">
                     <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
@@ -591,8 +589,7 @@
                   <ul
                     class="mdc-deprecated-list"
                     role="listbox"
-                    aria-label="Summary template listbox"
-                    data-mdc-auto-init="MDCList">
+                    aria-label="Summary template listbox">
                     <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
@@ -655,7 +652,6 @@
             <div
               class="mdc-chip-set mdc-chip-set--filter"
               role="grid"
-              data-mdc-auto-init="MDCChipSet"
               id="audio-format-tags"
               aria-labelledby="audio-format-tags-label"
               aria-multiselectable="true">
@@ -806,7 +802,7 @@
         </div>
       </form>
     </main>
-    <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">
+    <div class="mdc-snackbar">
       <div
         class="mdc-snackbar__surface"
         role="status"

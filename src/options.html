@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css?family=Roboto Mono" />
     <link rel="stylesheet" href="resources/highlight.min.css" />
     <link rel="stylesheet" href="resources/highlight-a11y-light.min.css" />
+    <script src="resources/browser-polyfill.min.js"></script>
     <title>AO3 Podfic Posting Helper Extension Options</title>
   </head>
 
@@ -58,8 +59,7 @@
       <div class="mdc-drawer__content">
         <nav
           class="mdc-deprecated-list"
-          id="nav-list"
-          data-mdc-auto-init="MDCList">
+          id="nav-list">
           <a
             class="mdc-deprecated-list-item"
             href="#title-section"
@@ -177,8 +177,7 @@
                 support HTML.
               </p>
               <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                data-mdc-auto-init="MDCTextField">
+                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
                 <span class="mdc-text-field__ripple"></span>
                 <span class="mdc-floating-label" id="title_template_label">
                   Title template
@@ -318,8 +317,7 @@
                 </a>
               </p>
               <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                data-mdc-auto-init="MDCTextField">
+                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
                 <span class="mdc-text-field__ripple"></span>
                 <span class="mdc-floating-label" id="summary_template_label">
                   Summary template
@@ -444,8 +442,7 @@
                 </div>
               </div>
               <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                data-mdc-auto-init="MDCTextField">
+                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
                 <span class="mdc-text-field__ripple"></span>
                 <span class="mdc-floating-label" id="notes_template_label">
                   Notes template
@@ -532,8 +529,7 @@
                 </a>
               </p>
               <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                data-mdc-auto-init="MDCTextField">
+                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
                 <span class="mdc-text-field__ripple"></span>
                 <span class="mdc-floating-label" id="default_body_label">
                   Work template
@@ -731,7 +727,7 @@
         </section>
       </main>
     </div>
-    <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">
+    <div class="mdc-snackbar">
       <div
         class="mdc-snackbar__surface"
         role="status"
