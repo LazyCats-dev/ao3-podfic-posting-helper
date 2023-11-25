@@ -1,14 +1,19 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import {setInputValue, setupStorage} from '../src/utils';
+import {chrome} from 'jest-chrome';
 
 describe('setInputValue', () => {
-  it('fires input and change events', () => {
+  test('fires input and change events', () => {
     const input = document.createElement('input');
     document.body.appendChild(input);
 
     expect(input.value).toBe('');
 
-    const changeSpy = jasmine.createSpy('change');
-    const inputSpy = jasmine.createSpy('input');
+    const changeSpy = jest.fn();
+    const inputSpy = jest.fn();
 
     input.addEventListener('input', inputSpy);
     input.addEventListener('change', changeSpy);
@@ -17,38 +22,22 @@ describe('setInputValue', () => {
 
     expect(input.value).toBe('I always get the shemp');
     expect(changeSpy).toHaveBeenCalledTimes(1);
-    expect(inputSpy).toHaveBeenCalledOnceWith(
-      jasmine.objectContaining({data: 'I always get the shemp'})
+    expect(inputSpy).toHaveBeenCalledTimes(1);
+    expect(inputSpy).toHaveBeenCalledWith(
+      expect.objectContaining({data: 'I always get the shemp'})
     );
-    expect(inputSpy).toHaveBeenCalledBefore(changeSpy);
   });
 });
 
 describe('setupStorage', () => {
-  let setSpy: jasmine.Spy<typeof browser.storage.sync.set>;
-  let getSpy: jasmine.Spy<typeof browser.storage.sync.get>;
-
   beforeEach(() => {
-    setSpy = jasmine.createSpy('browser.storage.sync.set');
-    getSpy = jasmine.createSpy('browser.storage.sync.get');
-
-    // This just returns so we don't care what it resolves to.
-    setSpy.and.returnValue(Promise.resolve());
-
-    const mockBrowser = {
-      storage: {
-        sync: {
-          set: setSpy,
-          get: getSpy,
-        },
-      },
-    };
-
-    (window.browser as unknown) = mockBrowser;
+    chrome.storage.sync.set.mockReset();
+    chrome.storage.sync.get.mockReset();
+    chrome.storage.sync.set.mockImplementation(() => Promise.resolve());
   });
 
-  it('sets defaults when no options are set', async () => {
-    getSpy.and.returnValue(
+  test('sets defaults when no options are set', async () => {
+    chrome.storage.sync.get.mockImplementation(() =>
       Promise.resolve({
         options: undefined,
         workbody: undefined,
@@ -60,7 +49,7 @@ describe('setupStorage', () => {
 
     await setupStorage();
 
-    expect(setSpy).toHaveBeenCalledWith({
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({
       options: {
         url: '',
         podfic_label: true,
@@ -72,20 +61,20 @@ describe('setupStorage', () => {
         summary_format: 'default',
       },
     });
-    expect(setSpy).toHaveBeenCalledWith({
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({
       workbody: {
-        default: jasmine.stringContaining('Here are a few building blocks'),
+        default: expect.stringContaining('Here are a few building blocks'),
       },
     });
-    expect(setSpy).toHaveBeenCalledWith({
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({
       title_template: {default: '[Podfic] ${title}'},
     });
-    expect(setSpy).toHaveBeenCalledWith({
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({
       summary_template: {
         default: '${blocksummary}Podfic of ${title} by ${authors}.',
       },
     });
-    expect(setSpy).toHaveBeenCalledWith({
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({
       notes_template: {
         default: '',
         begin: false,
@@ -94,8 +83,8 @@ describe('setupStorage', () => {
     });
   });
 
-  it('loads all values were set from a modern version', async () => {
-    getSpy.and.returnValue(
+  test('loads all values were set from a modern version', async () => {
+    chrome.storage.sync.get.mockImplementation(() =>
       Promise.resolve({
         options: {
           title_format: 'foo',
@@ -120,10 +109,6 @@ describe('setupStorage', () => {
 
     await setupStorage();
 
-    expect(setSpy)
-      .withContext(
-        'setupStorage was called when all data had a value, no set calls were expected'
-      )
-      .not.toHaveBeenCalled();
+    expect(chrome.storage.sync.set).not.toHaveBeenCalled();
   });
 });

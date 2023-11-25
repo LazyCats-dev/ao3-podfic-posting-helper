@@ -1,4 +1,8 @@
 import './options.scss';
+import './resources/highlight.min.css';
+import './resources/highlight-a11y-light.min.css';
+import './resources/material-icons.css';
+import './resources/roboto.css';
 
 import mdcAutoInit from '@material/auto-init';
 import {MDCCheckbox} from '@material/checkbox';
@@ -266,7 +270,7 @@ hljs.registerLanguage('plaintext', plaintext);
   // Import default body text from storage.
   (async () => {
     const {title_template, summary_template, notes_template, workbody} =
-      await browser.storage.sync.get([
+      await chrome.storage.sync.get([
         'title_template',
         'summary_template',
         'notes_template',
@@ -284,28 +288,28 @@ hljs.registerLanguage('plaintext', plaintext);
   // other options).
   workForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       workbody: {default: defaultBody.value},
     });
     snackbar.open();
   });
   titleForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       title_template: {default: titleTemplate.value},
     });
     snackbar.open();
   });
   summaryForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       summary_template: {default: summaryTemplate.value},
     });
     snackbar.open();
   });
   notesForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       notes_template: {
         default: notesTemplate.value,
         begin: beginningNotesCheckbox.checked,
@@ -316,7 +320,7 @@ hljs.registerLanguage('plaintext', plaintext);
   });
 
   document.querySelector('.version')!.textContent =
-    browser.runtime.getManifest().version;
+    chrome.runtime.getManifest().version;
 
   // Set focus for a11y.
   titleTemplate.focus();

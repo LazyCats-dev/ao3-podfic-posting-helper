@@ -35,7 +35,7 @@ mdcAutoInit();
 const optionsButton = document.getElementById(
   'options_button'
 ) as HTMLAnchorElement;
-optionsButton.href = browser.runtime.getURL('options.html');
+optionsButton.href = chrome.runtime.getURL('options.html');
 
 /**
  * A list of URL patterns that the popup can operate on.
@@ -51,7 +51,7 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 ];
 
 (async () => {
-  const [currentTab] = await browser.tabs.query({
+  const [currentTab] = await chrome.tabs.query({
     active: true,
     currentWindow: true,
   });
@@ -116,7 +116,7 @@ async function setupPopup() {
   const optionsLink = document.getElementById(
     'options-link'
   ) as HTMLAnchorElement;
-  optionsLink.href = browser.runtime.getURL('options.html');
+  optionsLink.href = chrome.runtime.getURL('options.html');
 
   // Setting this means that we have to update the validity of the text field
   // when native validation shows the field as invalid. This is the only way
@@ -149,7 +149,7 @@ async function setupPopup() {
 
     // Save the options, because we won't be able to access them in the injected
     // script.
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       options: {
         url: urlInput.value.trim(),
         podfic_label: podficLabel.checked,
@@ -169,15 +169,15 @@ async function setupPopup() {
       audio_formats: audioFormatTagsChipSet.selectedChipIds.join(','),
     });
 
-    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
     let result;
     try {
-      const injectedScriptResults = await browser.scripting.executeScript({
+      const injectedScriptResults = await chrome.scripting.executeScript({
         target: {tabId: tab.id!},
-        files: ['/browser-polyfill.min.js', '/inject.js'],
+        files: ['/inject.js'],
       });
       // We only have one target so there is only one result.
-      result = injectedScriptResults[0].result;
+      result = injectedScriptResults[0].result as any;
     } catch (e: unknown) {
       if (e instanceof Error) {
         result = {result: 'error', message: `${e.message}: ${e.stack}`};
@@ -199,7 +199,7 @@ async function setupPopup() {
   await setupStorage();
 
   // Import pop-up options from storage.
-  const data = await browser.storage.sync.get('options');
+  const data = await chrome.storage.sync.get('options');
 
   const options: PopupFormData = data['options'];
 
