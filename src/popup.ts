@@ -2,13 +2,10 @@ import './popup.scss';
 
 import mdcAutoInit from '@material/auto-init';
 import {MDCCheckbox} from '@material/checkbox';
-import {MDCChipSet} from '@material/chips/deprecated';
 import {MDCFormField} from '@material/form-field';
 import {MDCMenu} from '@material/menu';
 import {MDCRipple} from '@material/ripple';
-import {MDCSelect} from '@material/select';
 import {MDCSnackbar} from '@material/snackbar';
-import {MDCTextField} from '@material/textfield';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {ANALYTICS} from './google-analytics';
 import {
@@ -18,15 +15,25 @@ import {
   setupGlobalEventLogging,
   setupStorage,
 } from './utils';
+import '@material/web/icon/icon.js';
+import '@material/web/button/filled-button.js';
+import '@material/web/iconbutton/icon-button.js';
+import '@material/web/textfield/filled-text-field.js';
+import '@material/web/checkbox/checkbox.js';
+import '@material/web/select/filled-select.js';
+import '@material/web/select/select-option.js';
+import '@material/web/chips/chip-set';
+import '@material/web/chips/filter-chip';
+
+import {type MdFilledSelect} from '@material/web/select/filled-select.js';
+import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
+import {type MdCheckbox} from '@material/web/checkbox/checkbox.js';
+import {type MdChipSet} from '@material/web/chips/chip-set';
+import type {MdFilterChip} from '@material/web/chips/filter-chip';
 
 setupGlobalEventLogging();
 
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
-mdcAutoInit.register('MDCRipple', MDCRipple);
-mdcAutoInit.register('MDCFormField', MDCFormField);
-mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
-mdcAutoInit.register('MDCSelect', MDCSelect);
-mdcAutoInit.register('MDCMenu', MDCMenu);
 mdcAutoInit.register('MDCSnackbar', MDCSnackbar);
 
 mdcAutoInit();
@@ -90,27 +97,22 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 async function setupPopup() {
   const urlInput = /** @type {HTMLInputElement} */ document.getElementById(
     'url-input'
-  ) as HTMLInputElement;
+  ) as MdFilledTextField;
   const form = document.getElementsByTagName('form')[0];
-  const podficLabel = document.getElementById(
-    'podfic_label'
-  ) as HTMLInputElement;
+  const podficLabel = document.getElementById('podfic_label') as MdCheckbox;
   const podficLengthLabel = document.getElementById(
     'podfic_length_label'
-  ) as HTMLInputElement;
+  ) as MdCheckbox;
   const podficLengthValue = document.getElementById(
     'podfic_length_value'
-  ) as HTMLInputElement;
+  ) as MdFilledSelect;
   const titleFormatValue =
     /** @type {HTMLInputElement} */ document.getElementById(
       'title_template_value'
-    ) as HTMLInputElement;
+    ) as MdFilledSelect;
   const summaryFormatValue = document.getElementById(
     'summary_template_value'
-  ) as HTMLInputElement;
-  const urlTextField = new MDCTextField(
-    document.querySelector('.mdc-text-field')!
-  );
+  ) as MdFilledSelect;
   const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar')!);
   const submitButton = document.querySelector('#import') as HTMLButtonElement;
   const optionsLink = document.getElementById(
@@ -118,32 +120,20 @@ async function setupPopup() {
   ) as HTMLAnchorElement;
   optionsLink.href = browser.runtime.getURL('options.html');
 
-  // Setting this means that we have to update the validity of the text field
-  // when native validation shows the field as invalid. This is the only way
-  // we can keep validation in sync with our submit only validity checks.
-  urlTextField.useNativeValidation = false;
-
   // Defensively, we add the listeners first, so even if we fail to read some
   // information from storage we should be able to recover on submit.
 
-  urlInput.addEventListener('input', () => {
-    // Always clear the custom error when the user changes the value.
-    urlTextField.helperTextContent = '';
-    // Keep the text field in sync with the input.
-    urlTextField.valid = urlInput.validity.valid;
-  });
-
-  const audioFormatTagsChipSet = new MDCChipSet(
-    document.querySelector('#audio-format-tags')!
-  );
+  const audioFormatTagsChipSet = document.querySelector(
+    '#audio-format-tags'
+  ) as MdChipSet;
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
     // Need to prevent the default so that the popup doesn't refresh.
     submitEvent.preventDefault();
     // Clear any existing errors as they are no longer relevant
-    urlTextField.valid = true;
-    urlTextField.helperTextContent = '';
+    urlInput.error = false;
+    urlInput.errorText = '';
     // Disable submitting the form until we get a result back
     submitButton.disabled = true;
 
@@ -157,7 +147,7 @@ async function setupPopup() {
         podfic_length_value: podficLengthValue.value,
         title_format: titleFormatValue.value,
         summary_format: summaryFormatValue.value,
-        audioFormatTagOptionIds: audioFormatTagsChipSet.selectedChipIds,
+        audioFormatTagOptionIds: getChipSetValues(),
       },
     });
 
@@ -166,7 +156,7 @@ async function setupPopup() {
       podfic_length_value: podficLengthValue.value,
       title_format: titleFormatValue.value,
       summary_format: summaryFormatValue.value,
-      audio_formats: audioFormatTagsChipSet.selectedChipIds.join(','),
+      audio_formats: getChipSetValues().join(','),
     });
 
     const [tab] = await browser.tabs.query({active: true, currentWindow: true});
@@ -174,7 +164,7 @@ async function setupPopup() {
     try {
       const injectedScriptResults = await browser.scripting.executeScript({
         target: {tabId: tab.id!},
-        files: ['/browser-polyfill.min.js', '/inject.js'],
+        files: ['/resources/browser-polyfill.min.js', '/inject.js'],
       });
       // We only have one target so there is only one result.
       result = injectedScriptResults[0].result;
@@ -187,9 +177,9 @@ async function setupPopup() {
     }
     submitButton.disabled = false;
     if (result.result === 'error') {
-      urlTextField.valid = false;
-      urlTextField.helperTextContent = result.message;
-      urlTextField.focus();
+      urlInput.error = true;
+      urlInput.errorText = result.message;
+      urlInput.focus();
       ANALYTICS.fireErrorEvent(result.message);
     } else {
       snackbar.open();
@@ -214,65 +204,35 @@ async function setupPopup() {
         chip => chip.id === tagOptionId
       );
       if (chip) {
-        chip.selected = true;
+        (chip as MdFilterChip).selected = true;
       }
     }
   }
 
-  /**
-   * For some reason a select is really stupid so we have to find the option
-   * with the correct text and click it.
-   * @param selectElement {HTMLElement}
-   * @param optionValue {string}
-   */
-  function clickSelectOption(selectElement: HTMLElement, optionValue: string) {
-    const optionElements = selectElement.querySelectorAll('li');
-    const optionMatchingValue = Array.from(optionElements).find(
-      option => option.dataset.value === optionValue
-    );
-    if (optionMatchingValue) {
-      optionMatchingValue.click();
-    }
-  }
-
   // Podfic length value has special considerations
-  const selectElement = document.getElementById('podfic-length-select');
-  if (!selectElement) {
-    throw new Error('selectElement missing');
-  }
-  const selectInputElement = selectElement.querySelector('input');
-  if (!selectInputElement) {
-    throw new Error('selectInputElement missing');
-  }
-  setInputValue(selectInputElement, options['podfic_length_value']);
-  clickSelectOption(selectElement, options['podfic_length_value']);
+  const podficLengthSelect = document.getElementById(
+    'podfic_length_value'
+  ) as MdFilledSelect;
+  podficLengthSelect.value = options['podfic_length_value'];
 
-  // Now do the same again for the title format
-  const titleSelectElement = document.getElementById('title-template-select');
-  if (!titleSelectElement) {
-    throw new Error('titleSelectElement missing');
-  }
-  const titleSelectInputElement = titleSelectElement?.querySelector('input');
-  if (!titleSelectInputElement) {
-    throw new Error('titleSelectInputElement missing');
-  }
-  setInputValue(titleSelectInputElement, options['title_format']);
-  clickSelectOption(titleSelectElement, options['title_format']);
+  const titleFormatSelect = document.getElementById(
+    'title_template_value'
+  ) as MdFilledSelect;
 
-  // And again for the summary format
-  const summarySelectElement = document.getElementById(
-    'summary-template-select'
-  );
-  if (!summarySelectElement) {
-    throw new Error('summarySelectElement missing');
-  }
-  const summarySelectInputElement = summarySelectElement.querySelector('input');
-  if (!summarySelectInputElement) {
-    throw new Error('summarySelectInputElement missing');
-  }
-  setInputValue(summarySelectInputElement, options['summary_format']);
-  clickSelectOption(summarySelectElement, options['summary_format']);
+  titleFormatSelect.value = options['title_format'];
+
+  const summaryFormatSelect = document.getElementById(
+    'summary_template_value'
+  ) as MdFilledSelect;
+
+  summaryFormatSelect.value = options['summary_format'];
 
   // Focus the URL input for a11y.
   urlInput.focus();
+
+  function getChipSetValues() {
+    return audioFormatTagsChipSet.chips
+      .filter(chip => (chip as MdFilterChip).selected)
+      .map(chip => chip.id);
+  }
 }
