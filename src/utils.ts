@@ -1,4 +1,6 @@
+import {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import {ANALYTICS} from './google-analytics';
+import type {MdCheckbox} from '@material/web/checkbox/checkbox';
 
 /**
  * Object representing the data collected by the form.
@@ -31,11 +33,9 @@ export interface NotesTemplateData {
 
 /**
  * Sets the value of the input, triggering all necessary events.
- * @param {HTMLInputElement|HTMLTextAreaElement} inputElement
- * @param {string} value
  */
 export function setInputValue(
-  inputElement: HTMLInputElement | HTMLTextAreaElement,
+  inputElement: HTMLInputElement | HTMLTextAreaElement | MdFilledTextField,
   value: string
 ) {
   const event = new InputEvent('input', {bubbles: true, data: value});
@@ -48,11 +48,9 @@ export function setInputValue(
 
 /**
  * Sets the state of a checkbox, triggering all necessary events.
- * @param checkboxElement {HTMLInputElement}
- * @param isChecked {boolean}
  */
 export function setCheckboxState(
-  checkboxElement: HTMLInputElement,
+  checkboxElement: HTMLInputElement | MdCheckbox,
   isChecked: boolean
 ) {
   checkboxElement.checked = isChecked;

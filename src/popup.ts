@@ -12,7 +12,7 @@ import {MDCTextField} from '@material/textfield';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {ANALYTICS} from './google-analytics';
 import {
-  PopupFormData,
+  type PopupFormData,
   setCheckboxState,
   setInputValue,
   setupGlobalEventLogging,

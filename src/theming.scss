@@ -19,3 +19,20 @@
 @use "@material/textfield/mdc-text-field";
 @use "@material/top-app-bar/mdc-top-app-bar";
 @use "@material/typography/mdc-typography";
+
+@use '@material/web/color/color';
+
+:root {
+  --md-sys-color-primary: #900;
+  --md-sys-color-secondary: #900;
+  --md-sys-color-background: #fff;
+  --md-sys-color-on-surface-variant: #fff;
+  --md-sys-color-surface-container-highest: whitesmoke;
+  --md-filled-text-field-label-text-color: rgba(0, 0, 0, 0.6);
+  --md-filled-text-field-hover-label-text-color: var(--md-filled-text-field-label-text-color);
+  --md-checkbox-outline-color: rgba(0, 0, 0, 0.87);
+}
+
+md-icon {
+  --md-icon-font: 'Material Icons';
+}
