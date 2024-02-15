@@ -1,6 +1,6 @@
+import type {MdCheckbox} from '@material/web/checkbox/checkbox';
 import {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import {ANALYTICS} from './google-analytics';
-import type {MdCheckbox} from '@material/web/checkbox/checkbox';
 
 /**
  * Object representing the data collected by the form.
@@ -83,7 +83,7 @@ const DEFAULT_OPTIONS = {
 
 export async function setupStorage() {
   const {options, workbody, title_template, summary_template, notes_template} =
-    await browser.storage.sync.get([
+    await chrome.storage.sync.get([
       'options',
       'workbody',
       'title_template',
@@ -92,7 +92,7 @@ export async function setupStorage() {
     ]);
 
   if (options === undefined) {
-    await browser.storage.sync.set({options: DEFAULT_OPTIONS});
+    await chrome.storage.sync.set({options: DEFAULT_OPTIONS});
   } else if (
     options['title_format'] === undefined ||
     options['summary_format'] === undefined
@@ -112,29 +112,29 @@ export async function setupStorage() {
         options['summary_format'] = 'orig';
       }
     }
-    await browser.storage.sync.set({options});
+    await chrome.storage.sync.set({options});
   }
   if (workbody === undefined) {
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       workbody: {
         default: DEFAULT_WORKBODY,
       },
     });
   }
   if (title_template === undefined) {
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       title_template: {default: '[Podfic] ${title}'},
     });
   }
   if (summary_template === undefined) {
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       summary_template: {
         default: '${blocksummary}Podfic of ${title} by ${authors}.',
       },
     });
   }
   if (notes_template === undefined) {
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       notes_template: {
         default: '',
         begin: false,

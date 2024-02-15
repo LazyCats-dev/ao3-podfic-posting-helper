@@ -4,5 +4,6 @@
   "bracketSpacing": false,
   "bracketSameLine": true,
   "arrowParens": "avoid",
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "plugins": ["prettier-plugin-organize-imports"]
 }

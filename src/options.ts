@@ -5,6 +5,14 @@ import {MDCList} from '@material/list';
 import {MDCRipple} from '@material/ripple';
 import {MDCSnackbar} from '@material/snackbar';
 import {MDCTopAppBar} from '@material/top-app-bar';
+import '@material/web/button/filled-button.js';
+import '@material/web/button/outlined-button.js';
+import '@material/web/checkbox/checkbox.js';
+import {type MdCheckbox} from '@material/web/checkbox/checkbox.js';
+import '@material/web/icon/icon.js';
+import '@material/web/iconbutton/icon-button.js';
+import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
+import '@material/web/textfield/filled-text-field.js';
 import hljs from 'highlight.js/lib/core';
 import plaintext from 'highlight.js/lib/languages/plaintext';
 import xml from 'highlight.js/lib/languages/xml';
@@ -15,14 +23,6 @@ import {
   setupGlobalEventLogging,
   setupStorage,
 } from './utils';
-import '@material/web/icon/icon.js';
-import '@material/web/button/filled-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/iconbutton/icon-button.js';
-import '@material/web/textfield/filled-text-field.js';
-import '@material/web/checkbox/checkbox.js';
-import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
-import {type MdCheckbox} from '@material/web/checkbox/checkbox.js';
 
 setupGlobalEventLogging();
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
@@ -240,7 +240,7 @@ hljs.registerLanguage('plaintext', plaintext);
   // Import default body text from storage.
   (async () => {
     const {title_template, summary_template, notes_template, workbody} =
-      await browser.storage.sync.get([
+      await chrome.storage.sync.get([
         'title_template',
         'summary_template',
         'notes_template',
@@ -258,7 +258,7 @@ hljs.registerLanguage('plaintext', plaintext);
   // other options).
   workForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       workbody: {default: defaultBody.value},
     });
     snackbar.labelText = 'Work template saved';
@@ -266,7 +266,7 @@ hljs.registerLanguage('plaintext', plaintext);
   });
   titleForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       title_template: {default: titleTemplate.value},
     });
     snackbar.labelText = 'Title template saved';
@@ -274,7 +274,7 @@ hljs.registerLanguage('plaintext', plaintext);
   });
   summaryForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       summary_template: {default: summaryTemplate.value},
     });
     snackbar.labelText = 'Summary template saved';
@@ -282,7 +282,7 @@ hljs.registerLanguage('plaintext', plaintext);
   });
   notesForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       notes_template: {
         default: notesTemplate.value,
         begin: beginningNotesCheckbox.checked,
@@ -294,7 +294,7 @@ hljs.registerLanguage('plaintext', plaintext);
   });
 
   document.querySelector('.version')!.textContent =
-    browser.runtime.getManifest().version;
+    chrome.runtime.getManifest().version;
 
   // Set focus for a11y.
   titleTemplate.focus();

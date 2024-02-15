@@ -77,7 +77,7 @@ class Analytics {
       params.engagement_time_msec = DEFAULT_ENGAGEMENT_TIME_MSEC;
     }
     if (!params.version) {
-      params.version = browser.runtime.getManifest().version;
+      params.version = chrome.runtime.getManifest().version;
     }
 
     try {

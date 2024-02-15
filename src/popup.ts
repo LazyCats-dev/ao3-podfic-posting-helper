@@ -1,31 +1,33 @@
 import './popup.scss';
+import './resources/material-icons.css';
+import './resources/roboto.css';
 
 import mdcAutoInit from '@material/auto-init';
 import {MDCSnackbar} from '@material/snackbar';
 import {MDCTopAppBar} from '@material/top-app-bar';
+import '@material/web/button/filled-button.js';
+import '@material/web/checkbox/checkbox.js';
+import '@material/web/chips/chip-set';
+import '@material/web/chips/filter-chip';
+import '@material/web/icon/icon.js';
+import '@material/web/iconbutton/icon-button.js';
+import '@material/web/select/filled-select.js';
+import '@material/web/select/select-option.js';
+import '@material/web/textfield/filled-text-field.js';
 import {ANALYTICS} from './google-analytics';
 import {
-  type PopupFormData,
   setCheckboxState,
   setInputValue,
   setupGlobalEventLogging,
   setupStorage,
+  type PopupFormData,
 } from './utils';
-import '@material/web/icon/icon.js';
-import '@material/web/button/filled-button.js';
-import '@material/web/iconbutton/icon-button.js';
-import '@material/web/textfield/filled-text-field.js';
-import '@material/web/checkbox/checkbox.js';
-import '@material/web/select/filled-select.js';
-import '@material/web/select/select-option.js';
-import '@material/web/chips/chip-set';
-import '@material/web/chips/filter-chip';
 
-import {type MdFilledSelect} from '@material/web/select/filled-select.js';
-import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import {type MdCheckbox} from '@material/web/checkbox/checkbox.js';
 import {type MdChipSet} from '@material/web/chips/chip-set';
 import {type MdFilterChip} from '@material/web/chips/filter-chip';
+import {type MdFilledSelect} from '@material/web/select/filled-select.js';
+import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
 
 setupGlobalEventLogging();
 
@@ -38,7 +40,7 @@ mdcAutoInit();
 const optionsButton = document.getElementById(
   'options_button'
 ) as HTMLAnchorElement;
-optionsButton.href = browser.runtime.getURL('options.html');
+optionsButton.href = chrome.runtime.getURL('options.html');
 
 /**
  * A list of URL patterns that the popup can operate on.
@@ -54,7 +56,7 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 ];
 
 (async () => {
-  const [currentTab] = await browser.tabs.query({
+  const [currentTab] = await chrome.tabs.query({
     active: true,
     currentWindow: true,
   });
@@ -114,7 +116,7 @@ async function setupPopup() {
   const optionsLink = document.getElementById(
     'options-link'
   ) as HTMLAnchorElement;
-  optionsLink.href = browser.runtime.getURL('options.html');
+  optionsLink.href = chrome.runtime.getURL('options.html');
 
   // Defensively, we add the listeners first, so even if we fail to read some
   // information from storage we should be able to recover on submit.
@@ -145,7 +147,7 @@ async function setupPopup() {
 
     // Save the options, because we won't be able to access them in the injected
     // script.
-    await browser.storage.sync.set({
+    await chrome.storage.sync.set({
       options: {
         url: urlInput.value.trim(),
         podfic_label: podficLabel.checked,
@@ -165,15 +167,15 @@ async function setupPopup() {
       audio_formats: getChipSetValues().join(','),
     });
 
-    const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
     let result;
     try {
-      const injectedScriptResults = await browser.scripting.executeScript({
+      const injectedScriptResults = await chrome.scripting.executeScript({
         target: {tabId: tab.id!},
-        files: ['/resources/browser-polyfill.min.js', '/inject.js'],
+        files: ['/inject.js'],
       });
       // We only have one target so there is only one result.
-      result = injectedScriptResults[0].result;
+      result = injectedScriptResults[0].result as any;
     } catch (e: unknown) {
       if (e instanceof Error) {
         result = {result: 'error', message: `${e.message}: ${e.stack}`};
@@ -195,7 +197,7 @@ async function setupPopup() {
   await setupStorage();
 
   // Import pop-up options from storage.
-  const data = await browser.storage.sync.get('options');
+  const data = await chrome.storage.sync.get('options');
 
   const options: PopupFormData = data['options'];
 

@@ -450,7 +450,7 @@ import type {NotesTemplateData, PopupFormData, TemplateData} from './utils';
       summary_template,
       title_template,
       notes_template,
-    }: InjectedScriptStorageData = (await browser.storage.sync.get([
+    }: InjectedScriptStorageData = (await chrome.storage.sync.get([
       'options',
       'workbody',
       'summary_template',

@@ -29,5 +29,11 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.ts"],
+      "matches": ["https://archiveofourown.org/*"]
+    }
+  ]
 }

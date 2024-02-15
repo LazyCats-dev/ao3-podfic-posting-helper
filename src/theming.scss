@@ -31,9 +31,10 @@
   --md-filled-text-field-label-text-color: rgba(0, 0, 0, 0.6);
   --md-filled-text-field-hover-label-text-color: var(--md-filled-text-field-label-text-color);
   --md-sys-color-secondary-container: var(--md-sys-color-surface-container-highest);
+  --md-outlined-button-icon-color: var(--md-sys-color-primary);
+  --md-icon-font: 'Material Icons';
 }
 
-md-icon {
-  color: #fff;
-  --md-icon-font: 'Material Icons';
+.app-bar {
+  --md-icon-button-icon-color: #fff;
 }
