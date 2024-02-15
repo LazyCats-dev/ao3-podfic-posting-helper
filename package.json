@@ -66,6 +66,7 @@
     "@material/theme": "^14.0.0",
     "@material/top-app-bar": "^14.0.0",
     "@material/typography": "^14.0.0",
+    "@material/web": "^1.2.0",
     "@types/chrome": "^0.0.248",
     "@types/firefox-webext-browser": "^111.0.3",
     "highlight.js": "^11.9.0",

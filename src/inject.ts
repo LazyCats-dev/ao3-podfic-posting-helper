@@ -1,4 +1,4 @@
-import {NotesTemplateData, PopupFormData, TemplateData} from './utils';
+import type {NotesTemplateData, PopupFormData, TemplateData} from './utils';
 
 (async () => {
   const ACCESS_ERROR_MESSAGE =

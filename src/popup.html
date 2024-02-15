@@ -22,28 +22,22 @@
         <section
           class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"
           role="toolbar">
-          <a
-            class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-            aria-label="Submit feedback"
-            title="Submit feedback"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BPopup%5D%3A%20"
-            target="_blank"
-            rel="noopener"
-            data-mdc-auto-init="MDCRipple"
-            id="popup-navbar-feedback-button">
-            <div class="mdc-icon-button__ripple"></div>
-            feedback
-          </a>
-          <a
-            class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-            aria-label="Extension options"
-            title="Extension options"
-            id="options_button"
-            data-mdc-auto-init="MDCRipple"
-            target="_blank">
-            <div class="mdc-icon-button__ripple"></div>
-            settings
-          </a>
+          <md-icon-button
+              class="mdc-top-app-bar__action-item"
+              aria-label="Submit feedback"
+              href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+              target="_blank"
+              rel="noopener">
+            <md-icon>feedback</md-icon>
+          </md-icon-button>
+          <md-icon-button
+              class="mdc-top-app-bar__action-item"
+              aria-label="Extension options"
+              id="options_button"
+              target="_blank"
+              rel="noopener">
+            <md-icon>settings</md-icon>
+          </md-icon-button>
         </section>
       </div>
     </header>
@@ -56,723 +50,124 @@
       <form id="form">
         <div class="list" role="group">
           <div class="form-item">
-            <label
-              class="mdc-text-field mdc-text-field--filled mdc-theme--primary url-text-field">
-              <span class="mdc-text-field__ripple"></span>
-              <span class="mdc-floating-label" id="url-label">
-                URL of work to import from
-              </span>
-              <input
-                class="mdc-text-field__input"
-                type="url"
-                aria-labelledby="url-label"
-                id="url-input"
-                required
-                aria-controls="url-error-hint"
-                aria-describedby="url-error-hint"
-                pattern="https://archiveofourown.org/(.*/)?works/[0-9]+.*"
-                title="Must be an AO3 work URL"
-                name="ao3-url"
-                spellcheck="false" />
-              <span class="mdc-line-ripple"></span>
-            </label>
-            <div class="mdc-text-field-helper-line">
-              <div
-                class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                id="url-error-hint"
-                aria-hidden="true"></div>
-            </div>
+            <md-filled-text-field
+              id="url-input"
+              required
+              label="URL of work to import from"
+              type="url"
+              pattern="https://archiveofourown.org/(.*/)?works/[0-9]+.*"
+              class="url-text-field">
+            </md-filled-text-field>
           </div>
           <div class="form-item">
-            <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-              <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                <input
-                  type="checkbox"
-                  class="mdc-checkbox__native-control"
-                  id="podfic_label" />
-                <div class="mdc-checkbox__background">
-                  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                    <path
-                      class="mdc-checkbox__checkmark-path"
-                      fill="none"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                  <div class="mdc-checkbox__mixedmark"></div>
-                </div>
-                <div class="mdc-checkbox__ripple"></div>
-              </div>
-              <label for="podfic_label">Add the tag "Podfic"</label>
-            </div>
-          </div>
+            <label class="checkbox-container">
+              <md-checkbox touch-target="wrapper" id="podfic_label"></md-checkbox>
+              Add the tag "Podfic"
+            </label>
           <div class="form-item">
             <div class="podfic-length-controls" role="group">
-              <div
-                class="mdc-form-field length-checkbox"
-                data-mdc-auto-init="MDCFormField">
-                <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                  <input
-                    type="checkbox"
-                    class="mdc-checkbox__native-control"
-                    id="podfic_length_label" />
-                  <div class="mdc-checkbox__background">
-                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                      <path
-                        class="mdc-checkbox__checkmark-path"
-                        fill="none"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                    </svg>
-                    <div class="mdc-checkbox__mixedmark"></div>
-                  </div>
-                  <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="podfic_length_label">
-                  Add a "Podfic Length" tag
-                </label>
-              </div>
-              <div
-                class="mdc-select mdc-select--filled"
-                id="podfic-length-select"
-                data-mdc-auto-init="MDCSelect">
-                <input
-                  type="hidden"
-                  name="podfic_length_value"
-                  id="podfic_length_value" />
-                <div
-                  class="mdc-select__anchor"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                  aria-labelledby="podfic-length-label podfic-length-selected-text"
-                  data-mdc-auto-init="MDCRipple">
-                  <span class="mdc-select__ripple"></span>
-                  <span id="podfic-length-label" class="mdc-floating-label">
-                    Length
-                  </span>
-                  <span class="mdc-select__selected-text-container">
-                    <span
-                      id="podfic-length-selected-text"
-                      class="mdc-select__selected-text"></span>
-                  </span>
-                  <span class="mdc-select__dropdown-icon">
-                    <svg
-                      class="mdc-select__dropdown-icon-graphic"
-                      viewBox="7 10 10 5"
-                      focusable="false">
-                      <polygon
-                        class="mdc-select__dropdown-icon-inactive"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 10 12 15 17 10"></polygon>
-                      <polygon
-                        class="mdc-select__dropdown-icon-active"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 15 12 10 17 15"></polygon>
-                    </svg>
-                  </span>
-                  <span class="mdc-line-ripple"></span>
-                </div>
-
-                <div
-                  class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
-                  data-mdc-auto-init="MDCMenu">
-                  <ul
-                    class="mdc-deprecated-list"
-                    role="listbox"
-                    aria-label="Podfic length listbox">
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="0-10 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-0-10-minutes">
-                        0-10 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="10-20 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-10-20-minutes">
-                        10-20 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="20-30 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-20-30-minutes">
-                        20-30 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="30-45 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-30-45-minutes">
-                        30-45 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="45-60 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-45-60-minutes">
-                        45-60 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="1-1.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-1-1.5-hours">
-                        1-1.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="1.5-2 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-1.5-2-hours">
-                        1.5-2 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="2-2.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-2-2.5-hours">
-                        2-2.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="2.5-3 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-2.5-3-hours">
-                        2.5-3 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="3-3.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-3-3.5-hours">
-                        3-3.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="3.5-4 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-3.5-4-hours">
-                        3.5-4 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="4-4.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-4-4.5-hours">
-                        4-4.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="4.5-5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-4.5-5-hours">
-                        4.5-5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="5-6 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-5-6-hours">
-                        5-6 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="6-7 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-6-7-hours">
-                        6-7 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="7-10 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-7-10-hours">
-                        7-10 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="10-15 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-10-15-hours">
-                        10-15 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="15-20 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-15-20-hours">
-                        15-20 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="Over 20 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-over-20-hours">
-                        Over 20 Hours
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <label class="checkbox-container length-checkbox">
+                <md-checkbox touch-target="wrapper" id="podfic_length_label"></md-checkbox>
+                Add a "Podfic Length" tag
+              </label>
+              <md-filled-select id="podfic_length_value" label="Podfic Length">
+                <md-select-option value="0-10 Minutes">
+                  <div slot="headline">0-10 Minutes</div>
+                </md-select-option>
+                <md-select-option value="10-20 Minutes">
+                  <div slot="headline">10-20 Minutes</div>
+                </md-select-option>
+                <md-select-option value="20-30 Minutes">
+                  <div slot="headline">20-30 Minutes</div>
+                </md-select-option>
+                <md-select-option value="30-45 Minutes">
+                  <div slot="headline">30-45 Minutes</div>
+                </md-select-option>
+                <md-select-option value="45-60 Minutes">
+                  <div slot="headline">45-60 Minutes</div>
+                </md-select-option>
+                <md-select-option value="1-1.5 Hours">
+                  <div slot="headline">1-1.5 Hours</div>
+                </md-select-option>
+                <md-select-option value="1.5-2 Hours">
+                  <div slot="headline">1.5-2 Hours</div>
+                </md-select-option>
+                <md-select-option value="2-2.5 Hours">
+                  <div slot="headline">2-2.5 Hours</div>
+                </md-select-option>
+                <md-select-option value="2.5-3 Hours">
+                  <div slot="headline">2.5-3 Hours</div>
+                </md-select-option>
+                <md-select-option value="3-3.5 Hours">
+                  <div slot="headline">3-3.5 Hours</div>
+                </md-select-option>
+                <md-select-option value="3.5-4 Hours">
+                  <div slot="headline">3.5-4 Hours</div>
+                </md-select-option>
+                <md-select-option value="4-4.5 Hours">
+                  <div slot="headline">4-4.5 Hours</div>
+                </md-select-option>
+                <md-select-option value="4.5-5 Hours">
+                  <div slot="headline">4.5-5 Hours</div>
+                </md-select-option>
+                <md-select-option value="5-6 Hours">
+                  <div slot="headline">5-6 Hours</div>
+                </md-select-option>
+                <md-select-option value="6-7 Hours">
+                  <div slot="headline">6-7 Hours</div>
+                </md-select-option>
+                <md-select-option value="7-10 Hours">
+                  <div slot="headline">7-10 Hours</div>
+                </md-select-option>
+                <md-select-option value="10-15 Hours">
+                  <div slot="headline">10-15 Hours</div>
+                </md-select-option>
+                <md-select-option value="15-20 Hours">
+                  <div slot="headline">15-20 Hours</div>
+                </md-select-option>
+                <md-select-option value="Over 20 Hours">
+                  <div slot="headline">Over 20 Hours</div>
+                </md-select-option>
+              </md-filled-select>
             </div>
           </div>
           <div class="form-item">
             <div class="template-controls">
-              <div
-                class="mdc-select mdc-select--filled title-template-select"
-                id="title-template-select"
-                data-mdc-auto-init="MDCSelect">
-                <input
-                  type="hidden"
-                  name="title_template_value"
-                  id="title_template_value" />
-                <div
-                  class="mdc-select__anchor"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                  aria-labelledby="title-template-label title-template-selected-text"
-                  data-mdc-auto-init="MDCRipple">
-                  <span class="mdc-select__ripple"></span>
-                  <span id="title-template-label" class="mdc-floating-label">
-                    Title format
-                  </span>
-                  <span class="mdc-select__selected-text-container">
-                    <span
-                      id="title-template-selected-text"
-                      class="mdc-select__selected-text"></span>
-                  </span>
-                  <span class="mdc-select__dropdown-icon">
-                    <svg
-                      class="mdc-select__dropdown-icon-graphic"
-                      viewBox="7 10 10 5"
-                      focusable="false">
-                      <polygon
-                        class="mdc-select__dropdown-icon-inactive"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 10 12 15 17 10"></polygon>
-                      <polygon
-                        class="mdc-select__dropdown-icon-active"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 15 12 10 17 15"></polygon>
-                    </svg>
-                  </span>
-                  <span class="mdc-line-ripple"></span>
-                </div>
-                <div
-                  class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
-                  data-mdc-auto-init="MDCMenu">
-                  <ul
-                    class="mdc-deprecated-list"
-                    role="listbox"
-                    aria-label="Title template listbox">
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="default"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="title-format-podfic-and-title">
-                        "[Podfic] " + title
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="orig"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="title-format-original-title">
-                        Original title
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="blank"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="title-format-none">
-                        Leave blank
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="custom"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="title-format-custom">
-                        Custom
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                class="mdc-select mdc-select--filled summary-template-select"
-                id="summary-template-select"
-                data-mdc-auto-init="MDCSelect">
-                <input
-                  type="hidden"
-                  name="summary_template_value"
-                  id="summary_template_value" />
-                <div
-                  class="mdc-select__anchor"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                  aria-labelledby="summary-template-label summary-template-selected-text"
-                  data-mdc-auto-init="MDCRipple">
-                  <span class="mdc-select__ripple"></span>
-                  <span id="summary-template-label" class="mdc-floating-label">
-                    Summary format
-                  </span>
-                  <span class="mdc-select__selected-text-container">
-                    <span
-                      id="summary-template-selected-text"
-                      class="mdc-select__selected-text"></span>
-                  </span>
-                  <span class="mdc-select__dropdown-icon">
-                    <svg
-                      class="mdc-select__dropdown-icon-graphic"
-                      viewBox="7 10 10 5"
-                      focusable="false">
-                      <polygon
-                        class="mdc-select__dropdown-icon-inactive"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 10 12 15 17 10"></polygon>
-                      <polygon
-                        class="mdc-select__dropdown-icon-active"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 15 12 10 17 15"></polygon>
-                    </svg>
-                  </span>
-                  <span class="mdc-line-ripple"></span>
-                </div>
-
-                <div
-                  class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
-                  data-mdc-auto-init="MDCMenu">
-                  <ul
-                    class="mdc-deprecated-list"
-                    role="listbox"
-                    aria-label="Summary template listbox">
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="default"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="summary-format-summary-and-credits">
-                        Summary + credits
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="orig"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="summary-format-original-summary">
-                        Original summary
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="blank"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="summary-format-none">
-                        Leave blank
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="custom"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="summary-format-custom">
-                        Custom
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <md-filled-select
+                label="Title format"
+                id="title_template_value"
+                class="title-template-select">
+                <md-select-option value="default">
+                  "[Podfic] " + title
+                </md-select-option>
+                <md-select-option value="orig">Original title</md-select-option>
+                <md-select-option value="blank">Leave blank</md-select-option>
+                <md-select-option value="custom">Custom</md-select-option>
+              </md-filled-select>
+              <md-filled-select
+                label="Summary format"
+                id="summary_template_value"
+                class="summary-template-select">
+                <md-select-option value="default">
+                  Summary + credits
+                </md-select-option>
+                <md-select-option value="orig">
+                  Original summary
+                </md-select-option>
+                <md-select-option value="blank">Leave blank</md-select-option>
+                <md-select-option value="custom">Custom</md-select-option>
+              </md-filled-select>
             </div>
           </div>
           <div class="form-item audio-format-tags-container">
             <label id="audio-format-tags-label">Add "Audio Format" tags:</label>
-            <div
-              class="mdc-chip-set mdc-chip-set--filter"
-              role="grid"
-              id="audio-format-tags"
-              aria-labelledby="audio-format-tags-label"
-              aria-multiselectable="true">
-              <div class="mdc-chip" role="row" id="audio-format-tag-MP3">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-mp3">
-                      MP3
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-M4A">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-m4a">
-                      M4A
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-M4B">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-m4b">
-                      M4B
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-Streaming">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span
-                      class="mdc-chip__text"
-                      id="audio-format-tag-streaming">
-                      Streaming
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-Download">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-download">
-                      Download
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
+            <md-chip-set aria-labelledby="audio-format-tags-label" id="audio-format-tags">
+              <md-filter-chip label="MP3" id="audio-format-tag-MP3"></md-filter-chip>
+              <md-filter-chip label="M4A" id="audio-format-tag-MP4"></md-filter-chip>
+              <md-filter-chip label="M4B" id="audio-format-tag-M4B"></md-filter-chip>
+              <md-filter-chip label="Streaming" id="audio-format-tag-Streaming"></md-filter-chip>
+              <md-filter-chip label="Download" id="audio-format-tag-Download"></md-filter-chip>
+            </md-chip-set>
           </div>
           <p>
             You can set up custom templates for sections of the form in the
@@ -785,19 +180,10 @@
             .
           </p>
           <div class="form-item">
-            <button
-              class="mdc-button mdc-button--raised"
-              id="import"
-              type="submit"
-              data-mdc-auto-init="MDCRipple">
-              <div class="mdc-button__ripple"></div>
-              <i class="material-icons mdc-button__icon" aria-hidden="true">
-                import_export
-              </i>
-              <span class="mdc-button__label" id="popup-form-import">
-                Import
-              </span>
-            </button>
+            <md-filled-button type="submit" has-icon id="import">
+              <md-icon slot="icon">import_export</md-icon>
+              Import
+            </md-filled-button>
           </div>
         </div>
       </form>

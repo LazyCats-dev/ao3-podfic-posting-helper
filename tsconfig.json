@@ -10,7 +10,8 @@
     "typeRoots": ["node_modules/@types"],
     "outDir": "dist/js",
     "esModuleInterop": true,
-    "sourceRoot": "src"
+    "sourceRoot": "src",
+    "verbatimModuleSyntax": true
   },
   "compileOnSave": true
 }

@@ -29,29 +29,22 @@
         <section
           class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"
           role="toolbar">
-          <a
-            class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-            aria-label="Github"
-            title="Github"
-            id="github_button"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
-            target="_blank"
-            rel="noopener"
-            data-mdc-auto-init="MDCRipple">
-            <div class="mdc-icon-button__ripple"></div>
-            code
-          </a>
-          <a
-            class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-            aria-label="Submit feedback"
-            title="Submit feedback"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
-            target="_blank"
-            rel="noopener"
-            data-mdc-auto-init="MDCRipple">
-            <div class="mdc-icon-button__ripple"></div>
-            feedback
-          </a>
+          <md-icon-button
+              class="mdc-top-app-bar__action-item"
+              aria-label="View code for this extension on Github"
+              href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+              target="_blank"
+              rel="noopener">
+            <md-icon>code</md-icon>
+          </md-icon-button>
+          <md-icon-button
+              class="mdc-top-app-bar__action-item"
+              aria-label="Submit feedback"
+              href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+              target="_blank"
+              rel="noopener">
+            <md-icon>feedback</md-icon>
+          </md-icon-button>
         </section>
       </div>
     </header>
@@ -176,58 +169,26 @@
                 <strong>not</strong>
                 support HTML.
               </p>
-              <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
-                <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="title_template_label">
-                  Title template
-                </span>
-                <span class="mdc-text-field__resizer">
-                  <textarea
-                    class="mdc-text-field__input"
-                    rows="1"
-                    cols="100"
-                    aria-labelledby="title_template_label"
-                    id="title_template"
-                    required></textarea>
-                </span>
-                <span class="mdc-line-ripple"></span>
-              </label>
-              <div class="mdc-text-field-helper-line">
-                <div
-                  class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                  aria-hidden="true"></div>
-              </div>
+              <md-filled-text-field
+                  type="textarea"
+                  label="Title template"
+                  rows="1"
+                  cols="100"
+                  id="title_template">
+              </md-filled-text-field>
               <h2 class="mdc-typography--subtitle2">Preview</h2>
               <pre>
                   <code id="title_preview" class="language-plaintext"></code>
               </pre>
               <div class="mdc-card__actions actions">
-                <button
-                  class="mdc-button mdc-button--raised mdc-card__action"
-                  type="submit"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    save
-                  </i>
-                  <span class="mdc-button__label" id="title-template-save">
-                    Save
-                  </span>
-                </button>
-                <button
-                  id="title_reset"
-                  class="mdc-button mdc-button--outlined mdc-button--icon-leading mdc-card__action"
-                  type="reset"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    restart_alt
-                  </i>
-                  <span class="mdc-button__label" id="title-template-reset">
-                    Reset to default
-                  </span>
-                </button>
+                <md-filled-button id="title-template-save" type="submit" has-icon>
+                  <md-icon slot="icon">save</md-icon>
+                  Save
+                </md-filled-button>
+                <md-outlined-button id="title_reset" type="reset">
+                  <md-icon slot="icon">restart_alt</md-icon>
+                  Reset to default
+                </md-outlined-button>
               </div>
             </div>
           </form>
@@ -316,29 +277,13 @@
                   Learn more about using HTML on AO3
                 </a>
               </p>
-              <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
-                <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="summary_template_label">
-                  Summary template
-                </span>
-                <span class="mdc-text-field__resizer">
-                  <textarea
-                    class="mdc-text-field__input code-editor-textarea"
-                    rows="5"
-                    cols="100"
-                    aria-labelledby="summary_template_label"
-                    id="summary_template"
-                    required
-                    spellcheck="false"></textarea>
-                </span>
-                <span class="mdc-line-ripple"></span>
-              </label>
-              <div class="mdc-text-field-helper-line">
-                <div
-                  class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                  aria-hidden="true"></div>
-              </div>
+              <md-filled-text-field
+                  type="textarea"
+                  label="Summary template"
+                  rows="5"
+                  cols="100"
+                  id="summary_template">
+              </md-filled-text-field>
               <h2 class="mdc-typography--subtitle2">
                 Preview of generated HTML
               </h2>
@@ -346,31 +291,14 @@
                   <code id="summary_preview" class="language-xml"></code>
               </pre>
               <div class="mdc-card__actions actions">
-                <button
-                  class="mdc-button mdc-button--raised mdc-card__action"
-                  type="submit"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    save
-                  </i>
-                  <span class="mdc-button__label" id="summary-template-save">
-                    Save
-                  </span>
-                </button>
-                <button
-                  id="summary_reset"
-                  class="mdc-button mdc-button--outlined mdc-button--icon-leading mdc-card__action"
-                  type="reset"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    restart_alt
-                  </i>
-                  <span class="mdc-button__label" id="summary-template-reset">
-                    Reset to default
-                  </span>
-                </button>
+                <md-filled-button type="submit" has-icon>
+                  <md-icon slot="icon">save</md-icon>
+                  Save
+                </md-filled-button>
+                <md-outlined-button id="summary_reset" type="reset">
+                  <md-icon slot="icon">restart_alt</md-icon>
+                  Reset to default
+                </md-outlined-button>
               </div>
             </div>
           </form>
@@ -400,102 +328,40 @@
                 </a>
               </p>
               <div class="form-item">
-                <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-                  <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                    <input
-                      type="checkbox"
-                      class="mdc-checkbox__native-control"
-                      id="beginning_notes" />
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                        <path
-                          class="mdc-checkbox__checkmark-path"
-                          fill="none"
-                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                  </div>
-                  <label for="beginning_notes">Use as beginning notes</label>
-                </div>
+                <label class="checkbox-container">
+                  <md-checkbox touch-target="wrapper" id="beginning_notes"></md-checkbox>
+                  Use as beginning notes
+                </label>
               </div>
               <div class="form-item">
-                <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-                  <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                    <input
-                      type="checkbox"
-                      class="mdc-checkbox__native-control"
-                      id="end_notes" />
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                        <path
-                          class="mdc-checkbox__checkmark-path"
-                          fill="none"
-                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                  </div>
-                  <label for="end_notes">Use as end notes</label>
-                </div>
+                <label class="checkbox-container">
+                  <md-checkbox touch-target="wrapper" id="end_notes"></md-checkbox>
+                  Use as end notes
+                </label>
               </div>
-              <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
-                <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="notes_template_label">
-                  Notes template
-                </span>
-                <span class="mdc-text-field__resizer">
-                  <textarea
-                    class="mdc-text-field__input code-editor-textarea"
-                    rows="5"
-                    cols="100"
-                    aria-labelledby="notes_template_label"
-                    id="notes_template"
-                    required
-                    spellcheck="false"></textarea>
-                </span>
-                <span class="mdc-line-ripple"></span>
-              </label>
-              <div class="mdc-text-field-helper-line">
-                <div
-                  class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                  aria-hidden="true"></div>
-              </div>
+              <md-filled-text-field
+                  type="textarea"
+                  label="Notes template"
+                  rows="5"
+                  cols="100"
+                  class="code-editor-textarea"
+                  id="notes_template">
+              </md-filled-text-field>
               <h2 class="mdc-typography--subtitle2">
                 Preview of generated HTML
               </h2>
               <pre>
-                        <code id="notes_preview" class="language-html"></code>
-                    </pre>
+                  <code id="notes_preview" class="language-html"></code>
+              </pre>
               <div class="mdc-card__actions actions">
-                <button
-                  class="mdc-button mdc-button--raised mdc-card__action"
-                  type="submit"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    save
-                  </i>
-                  <span class="mdc-button__label" id="notes-template-save">
-                    Save
-                  </span>
-                </button>
-                <button
-                  id="notes_reset"
-                  class="mdc-button mdc-button--outlined mdc-button--icon-leading mdc-card__action"
-                  type="reset"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    restart_alt
-                  </i>
-                  <span class="mdc-button__label" id="notes-template-reset">
-                    Reset to default
-                  </span>
-                </button>
+                <md-filled-button type="submit" has-icon>
+                  <md-icon slot="icon">save</md-icon>
+                  Save
+                </md-filled-button>
+                <md-outlined-button id="notes_reset" type="reset">
+                  <md-icon slot="icon">restart_alt</md-icon>
+                  Reset to default
+                </md-outlined-button>
               </div>
             </div>
           </form>
@@ -528,29 +394,14 @@
                   Learn more about using HTML on AO3
                 </a>
               </p>
-              <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea">
-                <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="default_body_label">
-                  Work template
-                </span>
-                <span class="mdc-text-field__resizer">
-                  <textarea
-                    class="mdc-text-field__input code-editor-textarea"
-                    rows="20"
-                    cols="100"
-                    aria-labelledby="default_body_label"
-                    id="default_body"
-                    required
-                    spellcheck="false"></textarea>
-                </span>
-                <span class="mdc-line-ripple"></span>
-              </label>
-              <div class="mdc-text-field-helper-line">
-                <div
-                  class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                  aria-hidden="true"></div>
-              </div>
+              <md-filled-text-field
+                  type="textarea"
+                  label="Work template"
+                  rows="5"
+                  cols="100"
+                  class="code-editor-textarea"
+                  id="default_body">
+              </md-filled-text-field>
               <h2 class="mdc-typography--subtitle2">
                 Preview of generated HTML
               </h2>
@@ -558,18 +409,10 @@
                   <code id="default_body_preview" class="language-html"></code>
               </pre>
               <div class="mdc-card__actions actions">
-                <button
-                  class="mdc-button mdc-button--raised mdc-card__action"
-                  type="submit"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    save
-                  </i>
-                  <span class="mdc-button__label" id="work-template-save">
-                    Save
-                  </span>
-                </button>
+                <md-filled-button type="submit" has-icon>
+                  <md-icon slot="icon">save</md-icon>
+                  Save
+                </md-filled-button>
               </div>
             </div>
           </form>
