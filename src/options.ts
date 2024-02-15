@@ -99,7 +99,9 @@ hljs.registerLanguage('plaintext', plaintext);
       'ul',
       'var',
     ],
-    allowedAttributes: {'*': ['rel', 'alt', 'crossorigin', 'preload', 'href']},
+    allowedAttributes: {
+      '*': ['rel', 'alt', 'crossorigin', 'preload', 'href', 'src'],
+    },
   };
 
   const DOM_PARSER = new DOMParser();

@@ -1,10 +1,6 @@
 import './popup.scss';
 
 import mdcAutoInit from '@material/auto-init';
-import {MDCCheckbox} from '@material/checkbox';
-import {MDCFormField} from '@material/form-field';
-import {MDCMenu} from '@material/menu';
-import {MDCRipple} from '@material/ripple';
 import {MDCSnackbar} from '@material/snackbar';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {ANALYTICS} from './google-analytics';
@@ -29,7 +25,7 @@ import {type MdFilledSelect} from '@material/web/select/filled-select.js';
 import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import {type MdCheckbox} from '@material/web/checkbox/checkbox.js';
 import {type MdChipSet} from '@material/web/chips/chip-set';
-import type {MdFilterChip} from '@material/web/chips/filter-chip';
+import {type MdFilterChip} from '@material/web/chips/filter-chip';
 
 setupGlobalEventLogging();
 
@@ -126,6 +122,16 @@ async function setupPopup() {
   const audioFormatTagsChipSet = document.querySelector(
     '#audio-format-tags'
   ) as MdChipSet;
+
+  urlInput.addEventListener('blur', () => {
+    const validityState = urlInput.validity;
+
+    if (validityState.patternMismatch || validityState.valueMissing) {
+      urlInput.setCustomValidity('Must be an AO3 work URL');
+    }
+
+    urlInput.reportValidity();
+  });
 
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
