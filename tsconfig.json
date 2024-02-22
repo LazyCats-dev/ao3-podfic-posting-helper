@@ -10,7 +10,10 @@
     "outDir": "dist/js",
     "esModuleInterop": true,
     "sourceRoot": "src",
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "noImplicitOverride": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
   },
   "compileOnSave": true
 }

@@ -35,7 +35,7 @@
     "rollup-plugin-scss": "^4.0.0",
     "rollup-plugin-styler": "^1.8.0",
     "rollup-plugin-zip": "^1.0.3",
-    "sass": "^1.70.0",
+    "sass": "^1.71.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.5.0",
@@ -55,10 +55,12 @@
     "start": "rollup -c -w"
   },
   "dependencies": {
+    "@lit/context": "^1.1.0",
     "@material/auto-init": "^14.0.0",
     "@material/card": "^14.0.0",
     "@material/checkbox": "^14.0.0",
     "@material/chips": "^14.0.0",
+    "@material/drawer": "^14.0.0",
     "@material/form-field": "^14.0.0",
     "@material/icon-button": "^14.0.0",
     "@material/list": "^14.0.0",
@@ -75,6 +77,7 @@
     "@types/chrome": "^0.0.248",
     "@types/firefox-webext-browser": "^111.0.3",
     "highlight.js": "^11.9.0",
+    "lit": "^3.1.2",
     "material-icons": "^1.13.12",
     "sanitize-html": "^2.11.0",
     "webextension-polyfill": "^0.10.0"
