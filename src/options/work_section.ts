@@ -1,43 +1,43 @@
-import type {MdCheckbox} from '@material/web/checkbox/checkbox';
 import type {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import {LitElement, html} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
+import {DEFAULT_WORKBODY} from '../utils';
 import {SectionMixin, updatePreviewAndErrorState} from './utils';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'notes-section': NotesSection;
+    'work-section': WorkSection;
   }
 }
 
-@customElement('notes-section')
-export class NotesSection extends SectionMixin(LitElement) {
-  override readonly sectionId = 'notes-section';
+@customElement('work-section')
+export class WorkSection extends SectionMixin(LitElement) {
+  override readonly sectionId = 'work-section';
 
   private textFieldRef: Ref<MdFilledTextField> = createRef();
-  private beginningNotesCheckbox: Ref<MdCheckbox> = createRef();
-  private endNotesCheckbox: Ref<MdCheckbox> = createRef();
   private preview: Ref<HTMLElement> = createRef();
-  private form: Ref<HTMLFormElement> = createRef();
 
   override render() {
     return html`
-      <section id="notes-section" class="main-section">
-        <form
-          ${ref(this.form)}
-          @reset="${this.reset}"
-          @submit="${this.updateStoredValue}">
+      <section class="main-section">
+        <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
-              <h1 class="mdc-typography--headline5">Notes template</h1>
+              <h1 class="mdc-typography--headline5">Work template</h1>
             </header>
-            <p>Set the template to use for beginning and/or end notes.</p>
+            <p>Set the default work template for your work.</p>
+            <p>
+              Note: this will leave the body of your work alone if your draft
+              already has text there.
+            </p>
             <p>
               This template supports keyword substitution.
-              <a href="#common-template-keywords-section">
+              <a
+                href="#common-template-keywords-section"
+                id="work-template-help-keywords">
                 Learn more about keyword substitution
               </a>
             </p>
@@ -45,40 +45,23 @@ export class NotesSection extends SectionMixin(LitElement) {
               This template supports HTML.
               <a
                 href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                target="_blank">
+                target="_blank"
+                id="work-template-help-html">
                 Learn more about using HTML on AO3
               </a>
             </p>
-            <div class="form-item">
-              <label class="checkbox-container">
-                <md-checkbox
-                  ${ref(this.beginningNotesCheckbox)}
-                  touch-target="wrapper"
-                  name="beginning-notes"></md-checkbox>
-                Use as beginning notes
-              </label>
-            </div>
-            <div class="form-item">
-              <label class="checkbox-container">
-                <md-checkbox
-                  ${ref(this.endNotesCheckbox)}
-                  touch-target="wrapper"
-                  name="end-notes"></md-checkbox>
-                Use as end notes
-              </label>
-            </div>
             <md-filled-text-field
               ${ref(this.textFieldRef)}
               @input="${this.updatePreview}"
               type="textarea"
-              label="Notes template"
+              label="Work template"
               rows="5"
               cols="100"
               class="code-editor-textarea"
-              name="template"></md-filled-text-field>
+              id="default_body"></md-filled-text-field>
             <h2 class="mdc-typography--subtitle2">Preview of generated HTML</h2>
             <pre>
-                <code ${ref(this.preview)} class="language-html"></code>
+                <code ${ref(this.preview)} class="language-xml"></code>
             </pre>
             <div class="mdc-card__actions actions">
               <md-filled-button type="submit" has-icon>
@@ -98,27 +81,12 @@ export class NotesSection extends SectionMixin(LitElement) {
 
   override async firstUpdated() {
     hljs.registerLanguage('xml', xml);
-    const {notes_template} = await chrome.storage.sync.get('notes_template');
-
+    const {workbody} = await chrome.storage.sync.get('workbody');
     const textField = this.textFieldRef.value;
     if (!textField) {
       return;
     }
-
-    const beginningNotes = this.beginningNotesCheckbox.value;
-    if (!beginningNotes) {
-      return;
-    }
-
-    const endNotes = this.endNotesCheckbox.value;
-    if (!endNotes) {
-      return;
-    }
-
-    textField.value = notes_template['default'];
-    beginningNotes.checked = notes_template['begin'];
-    endNotes.checked = notes_template['end'];
-
+    textField.value = workbody['default'];
     this.updatePreview();
   }
 
@@ -129,23 +97,22 @@ export class NotesSection extends SectionMixin(LitElement) {
     if (!textField) {
       return;
     }
-    textField.value = '';
+    textField.value = DEFAULT_WORKBODY;
     this.updatePreview();
   }
 
   private async updateStoredValue(e: SubmitEvent) {
     e.preventDefault();
 
-    const formData = new FormData(this.form.value);
+    const textField = this.textFieldRef.value;
+    if (!textField) {
+      return;
+    }
 
     await chrome.storage.sync.set({
-      notes_template: {
-        default: formData.get('template'),
-        begin: formData.get('beginning-notes'),
-        end: formData.get('end-notes'),
-      },
+      workbody: {default: textField.value},
     });
-    this.snackbar.labelText = 'Notes template saved';
+    this.snackbar.labelText = 'Work template saved';
     this.snackbar.open();
   }
 

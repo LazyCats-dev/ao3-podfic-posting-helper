@@ -4,9 +4,8 @@ import plaintext from 'highlight.js/lib/languages/plaintext';
 import {LitElement, html, unsafeCSS} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
-import hljsAllyStyles from '../resources/highlight-a11y-light.min.css';
-import hljsStyles from '../resources/highlight.min.css';
 import styles from './options.scss';
+import {SectionMixin} from './utils';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -15,19 +14,15 @@ declare global {
 }
 
 @customElement('title-section')
-export class TitleSection extends LitElement {
-  static override styles = [
-    unsafeCSS(hljsAllyStyles),
-    unsafeCSS(hljsStyles),
-    unsafeCSS(styles),
-  ];
+export class TitleSection extends SectionMixin(LitElement) {
+  override readonly sectionId = 'title-section';
 
   private textFieldRef: Ref<MdFilledTextField> = createRef();
   private preview: Ref<HTMLElement> = createRef();
 
   override render() {
     return html`
-      <section id="title-section" class="main-section">
+      <section class="main-section">
         <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
@@ -92,7 +87,6 @@ export class TitleSection extends LitElement {
     }
     textField.value = title_template['default'];
     this.updatePreview();
-    textField.focus();
   }
 
   private reset(e: Event) {
@@ -103,6 +97,7 @@ export class TitleSection extends LitElement {
       return;
     }
     textField.value = '[Podfic] ${title}';
+    this.updatePreview();
   }
 
   private async updateStoredValue(e: SubmitEvent) {
@@ -116,8 +111,8 @@ export class TitleSection extends LitElement {
     await chrome.storage.sync.set({
       title_template: {default: textField.value},
     });
-    // snackbar.labelText = 'Title template saved';
-    // snackbar.open();
+    this.snackbar.labelText = 'Title template saved';
+    this.snackbar.open();
   }
 
   private updatePreview() {

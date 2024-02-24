@@ -40,7 +40,7 @@ mdcAutoInit();
 const optionsButton = document.getElementById(
   'options_button'
 ) as HTMLAnchorElement;
-optionsButton.href = chrome.runtime.getURL('options/options.html');
+optionsButton.href = chrome.runtime.getURL('options/index.html');
 
 /**
  * A list of URL patterns that the popup can operate on.

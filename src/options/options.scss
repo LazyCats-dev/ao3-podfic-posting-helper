@@ -1,4 +1,4 @@
-@use "../theming";
+@use '../theming';
 
 body {
   margin: 0;
@@ -6,7 +6,7 @@ body {
   height: 100vh;
 }
 
-md-filled-text-field[type="textarea"] {
+md-filled-text-field[type='textarea'] {
   resize: vertical;
 }
 
@@ -17,6 +17,7 @@ md-filled-text-field[type="textarea"] {
 
 code {
   border: 1px inset rgba(0, 0, 0, 0.12);
+  font-family: 'Roboto Mono', Courier, monospace;
 }
 
 pre,
@@ -49,7 +50,8 @@ h1 {
   margin-top: 8px;
 }
 
-.actions > .mdc-button, md-filled-button {
+.actions > .mdc-button,
+md-filled-button {
   margin-right: 8px;
 }
 
@@ -67,8 +69,8 @@ h1 {
   margin-left: 4px;
 }
 
-.code-editor-textarea, code {
-  --md-filled-text-field-input-text-font: 'Roboto Mono', Courier, monospace
+.code-editor-textarea {
+  --md-filled-text-field-input-text-font: 'Roboto Mono', Courier, monospace;
 }
 
 .mdc-drawer-app-content {
@@ -94,6 +96,10 @@ h1 {
   }
 }
 
-section:target .mdc-card {
-  animation: highlight 1s ease-out 0.15s;
+section.highlight .mdc-card {
+  animation: highlight 2s ease-out 0.15s;
+}
+
+:host {
+  display: contents;
 }

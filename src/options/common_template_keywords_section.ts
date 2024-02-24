@@ -1,7 +1,6 @@
-import styles from './options.scss';
-
-import {LitElement, html, unsafeCSS} from 'lit';
+import {LitElement, html} from 'lit';
 import {customElement} from 'lit/decorators.js';
+import {SectionMixin} from './utils';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -10,8 +9,9 @@ declare global {
 }
 
 @customElement('common-template-keywords-section')
-export class CommonTemplateKeywordsSection extends LitElement {
-  static override styles = unsafeCSS(styles);
+export class CommonTemplateKeywordsSection extends SectionMixin(LitElement) {
+  override readonly sectionId = 'common-template-keywords-section';
+
   override render() {
     return html`
       <section class="main-section">

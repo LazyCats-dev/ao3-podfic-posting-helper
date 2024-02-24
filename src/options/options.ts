@@ -1,188 +1,77 @@
-import './options.scss';
-
-import '../resources/highlight-a11y-light.min.css';
-import '../resources/highlight.min.css';
-import '../resources/roboto-mono.css';
-import '../resources/roboto.css';
-
-import './common_template_keywords_section.js';
-import './drawer';
-import './top_app_bar.js';
-
 import mdcAutoInit from '@material/auto-init';
-import {MDCSnackbar} from '@material/snackbar';
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/checkbox/checkbox.js';
 import '@material/web/icon/icon.js';
 import '@material/web/iconbutton/icon-button.js';
-import {type MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import '@material/web/textfield/filled-text-field.js';
-import hljs from 'highlight.js/lib/core';
-import xml from 'highlight.js/lib/languages/xml';
-import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
-import {setInputValue, setupGlobalEventLogging, setupStorage} from '../utils';
+import {setupGlobalEventLogging, setupStorage} from '../utils';
+import './about_section.js';
+import './common_template_keywords_section.js';
+import './drawer';
 import './notes_section.js';
+import './options.scss';
 import './summary_section.js';
 import './title_section.js';
+import './top_app_bar.js';
+import './work_section.js';
 
-setupGlobalEventLogging();
-mdcAutoInit();
+import {provide} from '@lit/context';
+import {MDCSnackbar} from '@material/snackbar';
+import {LitElement, html, unsafeCSS} from 'lit';
+import {customElement, state} from 'lit/decorators.js';
+import {createRef, ref, type Ref} from 'lit/directives/ref.js';
+import styles from './options.scss';
+import {snackbarContext} from './utils';
 
-hljs.registerLanguage('xml', xml);
+declare global {
+  interface HTMLElementTagNameMap {
+    'options-page': OptionsPage;
+  }
+}
 
-(async () => {
-  await setupStorage();
+@customElement('options-page')
+export class OptionsPage extends LitElement {
+  static override styles = [unsafeCSS(styles)];
 
-  /** @see {@link https://archiveofourown.org/faq/formatting-content-on-ao3-with-html} */
-  const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
-    allowedTags: [
-      'a',
-      'abbr',
-      'acronym',
-      'address',
-      'audio',
-      'b',
-      'big',
-      'blockquote',
-      'br',
-      'caption',
-      'center',
-      'cite',
-      'code',
-      'col',
-      'colgroup',
-      'dd',
-      'del',
-      'details',
-      'dfn',
-      'div',
-      'dl',
-      'dt',
-      'em',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'hr',
-      'i',
-      'iframe',
-      'img',
-      'ins',
-      'kbd',
-      'li',
-      'ol',
-      'p',
-      'pre',
-      'q',
-      's',
-      'samp',
-      'small',
-      'span',
-      'strike',
-      'strong',
-      'sub',
-      'summary',
-      'sup',
-      'table',
-      'tbody',
-      'td',
-      'tfoot',
-      'th',
-      'thead',
-      'tr',
-      'tt',
-      'u',
-      'ul',
-      'var',
-    ],
-    allowedAttributes: {
-      '*': ['rel', 'alt', 'crossorigin', 'preload', 'href', 'src'],
-    },
-  };
+  @provide({context: snackbarContext})
+  @state()
+  private snackbar!: MDCSnackbar;
 
-  const DOM_PARSER = new DOMParser();
-  const notesTemplate = document.getElementById(
-    'notes_template'
-  ) as MdFilledTextField;
-  const defaultBody = document.getElementById(
-    'default_body'
-  ) as MdFilledTextField;
-  const defaultBodyPreview = document.getElementById('default_body_preview')!;
-  const workForm = document.getElementById('work_form')!;
-  const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar')!);
+  private snackBarRef: Ref<HTMLElement> = createRef();
 
-  attachHTMLPreviewAndValidateListeners(defaultBody, defaultBodyPreview);
-
-  function attachHTMLPreviewAndValidateListeners(
-    templateTextField: MdFilledTextField,
-    preview: HTMLElement
-  ) {
-    templateTextField.addEventListener('input', () => {
-      const previewHtml = sanitizeHtml(
-        templateTextField.value
-          .replaceAll(
-            '${blocksummary}',
-            '<blockquote>BLOCK_SUMMARY_TEXT</blockquote>'
-          )
-          .replaceAll('${summary}', 'SUMMARY_TEXT')
-          .replaceAll('${title}', '<a>TITLE_TEXT</a>')
-          .replaceAll('${title-unlinked}', 'TITLE_TEXT')
-          .replaceAll('${authors}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
-          .replaceAll('${author}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
-          .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
-          .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2'),
-        SANITIZE_HTML_OPTIONS
-      );
-
-      preview.textContent = previewHtml;
-      preview.dataset.highlighted = '';
-      hljs.highlightElement(preview);
-
-      if (!isValidAo3ValidHtml(templateTextField.value)) {
-        templateTextField.errorText =
-          'This template appears to contain HTML tags that cannot be used on ' +
-          'AO3, they have been removed from the preview';
-        templateTextField.error = true;
-      } else {
-        templateTextField.errorText = '';
-        templateTextField.error = false;
-      }
-    });
+  override render() {
+    return html`
+      <options-top-app-bar></options-top-app-bar>
+      <options-drawer></options-drawer>
+      <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+        <main class="page-content">
+          <title-section></title-section>
+          <common-template-keywords-section></common-template-keywords-section>
+          <summary-section></summary-section>
+          <notes-section></notes-section>
+          <work-section></work-section>
+          <about-section></about-section>
+        </main>
+      </div>
+      <div class="mdc-snackbar" ${ref(this.snackBarRef)}>
+        <div
+          class="mdc-snackbar__surface"
+          role="status"
+          aria-relevant="additions">
+          <div class="mdc-snackbar__label" aria-atomic="false">
+            Options saved
+          </div>
+          <div class="mdc-snackbar__actions" aria-atomic="true"></div>
+        </div>
+      </div>
+    `;
   }
 
-  function isValidAo3ValidHtml(html: string) {
-    const sanitized = sanitizeHtml(html.trim(), SANITIZE_HTML_OPTIONS);
-    const userDocument = DOM_PARSER.parseFromString(html.trim(), 'text/html');
-    const sanitizedDocument = DOM_PARSER.parseFromString(
-      sanitized,
-      'text/html'
-    );
-    return (
-      userDocument.documentElement.innerHTML ===
-      sanitizedDocument.documentElement.innerHTML
-    );
+  override async firstUpdated() {
+    setupGlobalEventLogging();
+    mdcAutoInit();
+    await setupStorage();
+    this.snackbar = new MDCSnackbar(this.snackBarRef.value!);
   }
-
-  // Import default body text from storage.
-  (async () => {
-    const {workbody} = await chrome.storage.sync.get(['workbody']);
-    setInputValue(defaultBody, workbody['default']);
-  })();
-
-  // When the form is submitted, save the default body text (without overriding
-  // other options).
-  workForm.addEventListener('submit', async submitEvent => {
-    submitEvent.preventDefault();
-    await chrome.storage.sync.set({
-      workbody: {default: defaultBody.value},
-    });
-    snackbar.labelText = 'Work template saved';
-    snackbar.open();
-  });
-
-  document.querySelector('.version')!.textContent =
-    chrome.runtime.getManifest().version;
-})();
+}

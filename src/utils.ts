@@ -58,7 +58,8 @@ export function setCheckboxState(
   checkboxElement.dispatchEvent(new Event('change'));
 }
 
-const DEFAULT_WORKBODY =
+/** The default workbody to use on the options page. */
+export const DEFAULT_WORKBODY =
   'Here are a few building blocks that that show how you can include an ' +
   "image, audio, or a link to your podfic in your post. They're all " +
   'optional, and you can change these defaults to match your own default ' +

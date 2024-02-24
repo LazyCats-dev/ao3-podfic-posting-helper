@@ -1,24 +1,16 @@
-@use "@material/theme" with (
+@use '@material/theme' with (
   $primary: #900,
   $secondary: #900,
-  $background: #fff,
+  $background: #fff
 );
 
-@use "@material/button/mdc-button";
-@use "@material/icon-button/mdc-icon-button";
-@use "@material/card/mdc-card";
-@use "@material/checkbox/mdc-checkbox";
-@use "@material/chips/deprecated/mdc-chips";
-@use "@material/form-field/mdc-form-field";
-@use "@material/list/mdc-list";
-@use "@material/menu/mdc-menu";
-@use "@material/menu-surface/mdc-menu-surface";
-@use "@material/ripple/mdc-ripple";
-@use "@material/select/mdc-select";
-@use "@material/snackbar/mdc-snackbar";
-@use "@material/textfield/mdc-text-field";
-@use "@material/top-app-bar/mdc-top-app-bar";
-@use "@material/typography/mdc-typography";
+@use '@material/button/mdc-button';
+@use '@material/card/mdc-card';
+@use '@material/list/mdc-list';
+@use '@material/ripple/mdc-ripple';
+@use '@material/snackbar/mdc-snackbar';
+@use '@material/top-app-bar/mdc-top-app-bar';
+@use '@material/typography/mdc-typography';
 
 @use '@material/web/color/color';
 
@@ -29,8 +21,12 @@
   --md-sys-color-surface-container: #fff;
   --md-sys-color-surface-container-highest: whitesmoke;
   --md-filled-text-field-label-text-color: rgba(0, 0, 0, 0.6);
-  --md-filled-text-field-hover-label-text-color: var(--md-filled-text-field-label-text-color);
-  --md-sys-color-secondary-container: var(--md-sys-color-surface-container-highest);
+  --md-filled-text-field-hover-label-text-color: var(
+    --md-filled-text-field-label-text-color
+  );
+  --md-sys-color-secondary-container: var(
+    --md-sys-color-surface-container-highest
+  );
   --md-outlined-button-icon-color: var(--md-sys-color-primary);
   --md-icon-font: 'Material Icons';
 }

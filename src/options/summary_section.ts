@@ -1,13 +1,11 @@
 import type {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import hljs from 'highlight.js/lib/core';
-import plaintext from 'highlight.js/lib/languages/plaintext';
+import xml from 'highlight.js/lib/languages/xml';
 import {LitElement, html, unsafeCSS} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
-import hljsAllyStyles from '../resources/highlight-a11y-light.min.css';
-import hljsStyles from '../resources/highlight.min.css';
 import styles from './options.scss';
-import {updatePreviewAndErrorState} from './utils';
+import {SectionMixin, updatePreviewAndErrorState} from './utils';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -16,19 +14,15 @@ declare global {
 }
 
 @customElement('summary-section')
-export class SummarySection extends LitElement {
-  static override styles = [
-    unsafeCSS(hljsAllyStyles),
-    unsafeCSS(hljsStyles),
-    unsafeCSS(styles),
-  ];
+export class SummarySection extends SectionMixin(LitElement) {
+  override readonly sectionId = 'summary-section';
 
   private textFieldRef: Ref<MdFilledTextField> = createRef();
   private preview: Ref<HTMLElement> = createRef();
 
   override render() {
     return html`
-      <section id="summary-section" class="main-section">
+      <section class="main-section" part="section">
         <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
@@ -81,7 +75,7 @@ export class SummarySection extends LitElement {
   }
 
   override async firstUpdated() {
-    hljs.registerLanguage('plaintext', plaintext);
+    hljs.registerLanguage('xml', xml);
     const {summary_template} = await chrome.storage.sync.get(
       'summary_template'
     );
@@ -91,7 +85,6 @@ export class SummarySection extends LitElement {
     }
     textField.value = summary_template['default'];
     this.updatePreview();
-    textField.focus();
   }
 
   private reset(e: Event) {
@@ -102,6 +95,7 @@ export class SummarySection extends LitElement {
       return;
     }
     textField.value = '${blocksummary}Podfic of ${title} by ${authors}.';
+    this.updatePreview();
   }
 
   private async updateStoredValue(e: SubmitEvent) {
@@ -115,8 +109,8 @@ export class SummarySection extends LitElement {
     await chrome.storage.sync.set({
       summary_template: {default: textField.value},
     });
-    // snackbar.labelText = 'Summary template saved';
-    // snackbar.open();
+    this.snackbar.labelText = 'Summary template saved';
+    this.snackbar.open();
   }
 
   private updatePreview() {
