@@ -1,24 +1,4 @@
 @use '../theming';
 
 @use '@material/top-app-bar/mdc-top-app-bar';
-
-.page-content {
-  margin: 0 8px 8px 8px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: auto;
-  overflow: auto;
-  height: 100%;
-  scroll-behavior: smooth;
-}
-
-.mdc-drawer-app-content {
-  flex: auto;
-  overflow: auto;
-  position: relative;
-}
-
-:host {
-  display: contents;
-}
+@use '@material/typography/mdc-typography';

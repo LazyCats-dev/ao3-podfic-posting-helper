@@ -18,12 +18,11 @@ import './work_section.js';
 
 import {provide} from '@lit/context';
 import {MDCSnackbar} from '@material/snackbar';
-import {LitElement, html, unsafeCSS} from 'lit';
+import {LitElement, css, html, unsafeCSS} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
 import styles from './options.scss';
 import {snackbarContext} from './utils';
-import './index.scss';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -33,7 +32,31 @@ declare global {
 
 @customElement('options-page')
 export class OptionsPage extends LitElement {
-  static override styles = [unsafeCSS(styles)];
+  static override styles = [
+    unsafeCSS(styles),
+    css`
+      .page-content {
+        margin: 0 8px 8px 8px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: auto;
+        overflow: auto;
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+
+      .mdc-drawer-app-content {
+        flex: auto;
+        overflow: auto;
+        position: relative;
+      }
+
+      :host {
+        display: contents;
+      }
+    `,
+  ];
 
   @provide({context: snackbarContext})
   @state()

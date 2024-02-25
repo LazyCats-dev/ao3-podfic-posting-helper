@@ -4,7 +4,6 @@ import xml from 'highlight.js/lib/languages/xml';
 import {LitElement, html, unsafeCSS} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
-import styles from './options.scss';
 import {SectionMixin, updatePreviewAndErrorState} from './utils';
 
 declare global {
@@ -26,7 +25,7 @@ export class SummarySection extends SectionMixin(LitElement) {
         <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
-              <h1 class="mdc-typography--headline5">Summary template</h1>
+              <h1 class="headline-small">Summary template</h1>
             </header>
             <p>
               Set the summary template to use with the "Custom" summary format
@@ -54,7 +53,7 @@ export class SummarySection extends SectionMixin(LitElement) {
               rows="5"
               cols="100"
               class="code-editor-textarea"></md-filled-text-field>
-            <h2 class="mdc-typography--subtitle2">Preview of generated HTML</h2>
+            <h2 class="title-small">Preview of generated HTML</h2>
             <pre>
                 <code ${ref(this.preview)} class="language-xml"></code>
             </pre>

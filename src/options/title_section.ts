@@ -26,7 +26,7 @@ export class TitleSection extends SectionMixin(LitElement) {
         <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
-              <h1 class="mdc-typography--headline5">Title template</h1>
+              <h1 class="headline-small">Title template</h1>
             </header>
             <p>
               Set the title template to use with the "Custom" title format
@@ -58,7 +58,7 @@ export class TitleSection extends SectionMixin(LitElement) {
               label="Title template"
               rows="1"
               cols="100"></md-filled-text-field>
-            <h2 class="mdc-typography--subtitle2">Preview</h2>
+            <h2 class="title-small">Preview</h2>
             <pre>
                 <code ${ref(this.preview)} class="language-plaintext"></code>
             </pre>

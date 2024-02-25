@@ -26,7 +26,7 @@ export default {
     chromeExtension(),
     typescript({sourceMap: true}),
     styles({
-      mode: 'inject',
+      mode: 'extract',
       sass: {
         includePaths: ['node_modules/'],
       },

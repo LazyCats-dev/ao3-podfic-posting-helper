@@ -30,17 +30,17 @@ export class AboutSection extends SectionLitElement {
       <section class="main-section">
         <div class="mdc-card mdc-card--outlined">
           <header id="about">
-            <h1 class="mdc-typography--headline5">About</h1>
+            <h1 class="headline-small">About</h1>
           </header>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Version</h2>
+              <h2 class="title-small">Version</h2>
               <p class="version">${this.version}</p>
             </header>
           </section>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Distributions</h2>
+              <h2 class="title-small">Distributions</h2>
               <ul>
                 <li>
                   <a
@@ -74,7 +74,7 @@ export class AboutSection extends SectionLitElement {
           </section>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Feedback and bugs</h2>
+              <h2 class="title-small">Feedback and bugs</h2>
               <p>There are a few ways to submit feedback or report bugs:</p>
               <ul>
                 <li>
@@ -113,7 +113,7 @@ export class AboutSection extends SectionLitElement {
           </section>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Contributing</h2>
+              <h2 class="title-small">Contributing</h2>
               <p>
                 This extension is open source. Source code is available on
                 <a
@@ -130,7 +130,7 @@ export class AboutSection extends SectionLitElement {
           </section>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Credits</h2>
+              <h2 class="title-small">Credits</h2>
               <p>This extension was created by:</p>
               <ul>
                 <li>
@@ -165,7 +165,7 @@ export class AboutSection extends SectionLitElement {
           </section>
           <section>
             <header>
-              <h2 class="mdc-typography--headline6">Website</h2>
+              <h2 class="title-small">Website</h2>
               <p>
                 <a
                   href="https://lazycats.dev?utm_source=cextension&utm_medium=extension&utm_campaign=options"

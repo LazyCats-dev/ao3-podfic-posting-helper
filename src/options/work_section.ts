@@ -26,7 +26,7 @@ export class WorkSection extends SectionMixin(LitElement) {
         <form @reset="${this.reset}" @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
-              <h1 class="mdc-typography--headline5">Work template</h1>
+              <h1 class="headline-small">Work template</h1>
             </header>
             <p>Set the default work template for your work.</p>
             <p>
@@ -59,7 +59,7 @@ export class WorkSection extends SectionMixin(LitElement) {
               cols="100"
               class="code-editor-textarea"
               id="default_body"></md-filled-text-field>
-            <h2 class="mdc-typography--subtitle2">Preview of generated HTML</h2>
+            <h2 class="title-small">Preview of generated HTML</h2>
             <pre>
                 <code ${ref(this.preview)} class="language-xml"></code>
             </pre>

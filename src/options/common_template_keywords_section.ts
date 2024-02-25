@@ -17,7 +17,7 @@ export class CommonTemplateKeywordsSection extends SectionMixin(LitElement) {
       <section class="main-section">
         <div class="mdc-card mdc-card--outlined">
           <header id="common-template-keywords">
-            <h1 class="mdc-typography--headline5">Template keywords</h1>
+            <h1 class="headline-small">Template keywords</h1>
           </header>
           <p>
             These template keywords are shared between all templates that

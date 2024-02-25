@@ -6,8 +6,8 @@ import {unsafeCSS, type LitElement, css} from 'lit';
 import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
 import hljsAllyStyles from '../resources/highlight-a11y-light.min.css';
 import hljsStyles from '../resources/highlight.min.css';
-import styles from './options.scss';
 import sectionStyles from './section.scss';
+import {TYPOGRAPHY_STYLES} from '../typography';
 
 /** @see {@link https://archiveofourown.org/faq/formatting-content-on-ao3-with-html} */
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
@@ -156,8 +156,8 @@ export const SectionMixin = <T extends Constructor<LitElement>>(
       (superClass as unknown as typeof LitElement).styles ?? [],
       unsafeCSS(hljsAllyStyles),
       unsafeCSS(hljsStyles),
-      unsafeCSS(styles),
       unsafeCSS(sectionStyles),
+      TYPOGRAPHY_STYLES,
       css`
         code {
           border: 1px inset rgba(0, 0, 0, 0.12);

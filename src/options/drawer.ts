@@ -1,6 +1,6 @@
 import {MDCList} from '@material/list';
 import iconsStyles from '../resources/material-icons.css';
-import styles from './options.scss';
+import styles from './drawer.scss';
 
 import {LitElement, html, unsafeCSS} from 'lit';
 import {customElement} from 'lit/decorators.js';

@@ -44,7 +44,7 @@ export class NotesSection extends SectionLitElement {
           @submit="${this.updateStoredValue}">
           <div class="mdc-card mdc-card--outlined">
             <header>
-              <h1 class="mdc-typography--headline5">Notes template</h1>
+              <h1 class="headline-small">Notes template</h1>
             </header>
             <p>Set the template to use for beginning and/or end notes.</p>
             <p>
@@ -88,7 +88,7 @@ export class NotesSection extends SectionLitElement {
               cols="100"
               class="code-editor-textarea"
               name="template"></md-filled-text-field>
-            <h2 class="mdc-typography--subtitle2">Preview of generated HTML</h2>
+            <h2 class="title-small">Preview of generated HTML</h2>
             <pre>
                 <code ${ref(this.preview)} class="language-html"></code>
             </pre>
