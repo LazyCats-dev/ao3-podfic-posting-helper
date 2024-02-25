@@ -1,5 +1,3 @@
 @use '../../theming';
 
-.app-bar {
-  --md-icon-button-icon-color: #fff;
-}
+@use '@material/top-app-bar/mdc-top-app-bar';

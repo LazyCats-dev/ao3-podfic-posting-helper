@@ -2,11 +2,12 @@ import {consume, createContext} from '@lit/context';
 import {type MDCSnackbar} from '@material/snackbar';
 import type {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import hljs from 'highlight.js/lib/core';
-import {unsafeCSS, type LitElement} from 'lit';
+import {unsafeCSS, type LitElement, css} from 'lit';
 import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
 import hljsAllyStyles from '../resources/highlight-a11y-light.min.css';
 import hljsStyles from '../resources/highlight.min.css';
 import styles from './options.scss';
+import sectionStyles from './section.scss';
 
 /** @see {@link https://archiveofourown.org/faq/formatting-content-on-ao3-with-html} */
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
@@ -156,6 +157,64 @@ export const SectionMixin = <T extends Constructor<LitElement>>(
       unsafeCSS(hljsAllyStyles),
       unsafeCSS(hljsStyles),
       unsafeCSS(styles),
+      unsafeCSS(sectionStyles),
+      css`
+        code {
+          border: 1px inset rgba(0, 0, 0, 0.12);
+          font-family: 'Roboto Mono', Courier, monospace;
+        }
+
+        pre,
+        code {
+          margin: 0;
+          white-space: pre-wrap;
+        }
+
+        .mdc-card {
+          padding: 16px;
+          margin: 16px;
+        }
+
+        h1 {
+          margin: 0;
+        }
+
+        .actions {
+          margin-top: 8px;
+        }
+
+        md-filled-button {
+          margin-right: 8px;
+        }
+
+        .code-editor-textarea {
+          --md-filled-text-field-input-text-font: 'Roboto Mono', Courier,
+            monospace;
+        }
+
+        @keyframes highlight {
+          0% {
+            background-color: rgba(0, 0, 0, 0.33);
+          }
+          100% {
+            background-color: revert;
+          }
+        }
+
+        section.highlight .mdc-card {
+          animation: highlight 2s ease-out 0.15s;
+        }
+
+        md-filled-text-field[type='textarea'] {
+          resize: vertical;
+        }
+
+        .main-section {
+          padding-top: 8px;
+          width: 100%;
+          max-width: 900px;
+        }
+      `,
     ];
 
     @consume({context: snackbarContext, subscribe: true})

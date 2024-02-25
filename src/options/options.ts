@@ -23,6 +23,7 @@ import {customElement, state} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
 import styles from './options.scss';
 import {snackbarContext} from './utils';
+import './index.scss';
 
 declare global {
   interface HTMLElementTagNameMap {

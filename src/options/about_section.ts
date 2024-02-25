@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {SectionMixin} from './utils';
 
@@ -8,15 +8,26 @@ declare global {
   }
 }
 
+const SectionLitElement = SectionMixin(LitElement);
+
 @customElement('about-section')
-export class AboutSection extends SectionMixin(LitElement) {
+export class AboutSection extends SectionLitElement {
+  static override styles = [
+    SectionLitElement.styles || [],
+    css`
+      .main-section section:not(:last-of-type) {
+        border-bottom: 1px inset rgba(0, 0, 0, 0.12);
+      }
+    `,
+  ];
+
   override readonly sectionId = 'about-section';
 
   private version = chrome.runtime.getManifest().version;
 
   override render() {
     return html`
-      <section class="main-section" id="about-section">
+      <section class="main-section">
         <div class="mdc-card mdc-card--outlined">
           <header id="about">
             <h1 class="mdc-typography--headline5">About</h1>

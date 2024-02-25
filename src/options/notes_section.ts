@@ -2,7 +2,7 @@ import type {MdCheckbox} from '@material/web/checkbox/checkbox';
 import type {MdFilledTextField} from '@material/web/textfield/filled-text-field';
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
-import {LitElement, html} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {createRef, ref, type Ref} from 'lit/directives/ref.js';
 import {SectionMixin, updatePreviewAndErrorState} from './utils';
@@ -13,8 +13,20 @@ declare global {
   }
 }
 
+const SectionLitElement = SectionMixin(LitElement);
+
 @customElement('notes-section')
-export class NotesSection extends SectionMixin(LitElement) {
+export class NotesSection extends SectionLitElement {
+  static override styles = [
+    SectionLitElement.styles || [],
+    css`
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+      }
+    `,
+  ];
+
   override readonly sectionId = 'notes-section';
 
   private textFieldRef: Ref<MdFilledTextField> = createRef();
@@ -25,7 +37,7 @@ export class NotesSection extends SectionMixin(LitElement) {
 
   override render() {
     return html`
-      <section id="notes-section" class="main-section">
+      <section class="main-section">
         <form
           ${ref(this.form)}
           @reset="${this.reset}"
