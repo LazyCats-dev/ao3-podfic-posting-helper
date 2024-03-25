@@ -5,10 +5,38 @@
     "es2021": true,
     "webextensions": true
   },
-  "extends": ["eslint:recommended", "prettier"],
-  "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  }
+  "root": true,
+  "ignorePatterns": ["projects/**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        /**
+         * Any TypeScript source code (NOT TEMPLATE) related rules you wish to use/reconfigure over and above the
+         * recommended set provided by the @angular-eslint project would go here.
+         */
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        /**
+         * Any template/HTML related rules you wish to use/reconfigure over and above the
+         * recommended set provided by the @angular-eslint project would go here.
+         */
+      }
+    }
+  ]
 }

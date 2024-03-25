@@ -4,5 +4,13 @@
   "bracketSpacing": false,
   "bracketSameLine": true,
   "arrowParens": "avoid",
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ]
 }
