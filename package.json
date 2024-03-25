@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "lint-staged": {
     "*.{js,scss,md,html,json,ts}": "prettier --write",
-    "*.{html,ts,scss}": "eslint --cache --fix"
+    "*.{html,ts}": "eslint --cache --fix",
+    "*.{scss}": "stylelint --fix"
   },
   "scripts": {
     "ng": "ng",
