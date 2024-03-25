@@ -1,0 +1,573 @@
+<mat-toolbar role="heading" color="primary">
+  <mat-toolbar-row>
+    <a mat-icon-button href="index.html">
+      <mat-icon svgIcon="logo"></mat-icon>
+    </a>
+    <span>AO3 Podfic Posting Helper Extension Options</span>
+    <span class="spacer"></span>
+    <a
+      mat-icon-button
+      aria-label="View code for this extension on Github"
+      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+      target="_blank"
+      rel="noopener">
+      <mat-icon>code</mat-icon>
+    </a>
+    <a
+      mat-icon-button
+      aria-label="Submit feedback"
+      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+      target="_blank"
+      rel="noopener">
+      <mat-icon>feedback</mat-icon>
+    </a>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav opened="true" disableClose="true" mode="side">
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon matListItemIcon>title</mat-icon>
+        <a matListItemTitle href="index.html#title-section">Title template</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>vpn_key</mat-icon>
+        <a matListItemTitle href="index.html#common-template-keywords-section">
+          Template keywords
+        </a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>summarize</mat-icon>
+        <a matListItemTitle href="index.html#summary-section">
+          Summary template
+        </a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>notes</mat-icon>
+        <a matListItemTitle href="index.html#notes-section">Notes template</a>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>work</mat-icon>
+        <a matListItemTitle href="index.html#work-section">Work template</a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon matListItemIcon>info</mat-icon>
+        <a matListItemTitle href="index.html#about-section">About and help</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main class="page-content">
+      <section id="title-section" class="main-section">
+        <form
+          [formGroup]="titleTemplateFormGroup"
+          (reset)="resetTitleTemplate($event)"
+          (ngSubmit)="saveTitleTemplate()">
+          <mat-card>
+            <mat-card-header role="heading">
+              <mat-card-title>Title template</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>
+                Set the title template to use with the "Custom" title format
+                option.
+                <br />
+                The following sequences in your template will be replaced:
+              </p>
+              <dl>
+                <dt>
+                  <strong><code>$&#123;title&#125;</code></strong>
+                </dt>
+                <dd>The title of the original work.</dd>
+                <dt>
+                  <strong><code>$&#123;authors&#125;</code></strong>
+                </dt>
+                <dd>
+                  A comma-separated list of the authors of the original work.
+                </dd>
+              </dl>
+              <p>
+                This template does
+                <strong>not</strong>
+                support HTML.
+              </p>
+              <mat-form-field>
+                <mat-label>Title template</mat-label>
+                <textarea
+                  matInput
+                  rows="1"
+                  cols="100"
+                  [formControl]="
+                    titleTemplateFormGroup.controls.template
+                  "></textarea>
+                @if (
+                  titleTemplateFormGroup.controls.template.hasError('html')
+                ) {
+                  <mat-error>
+                    This template should not contain HTML but it appears to
+                    contain HTML
+                  </mat-error>
+                }
+              </mat-form-field>
+              <h3 class="mat-subtitle-2">Preview</h3>
+              <pre>
+                <code
+                  [highlight]="titleTemplatePreview | async"
+                  [languages]="['plaintext']">
+                </code>
+              </pre>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit">
+                <mat-icon>save</mat-icon>
+                Save
+              </button>
+              <button mat-stroked-button color="primary" type="reset">
+                <mat-icon>restart_alt</mat-icon>
+                Reset to default
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </section>
+      <section id="common-template-keywords-section" class="main-section">
+        <mat-card>
+          <mat-card-header role="heading">
+            <mat-card-title>Template keywords</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              These template keywords are shared between all templates that
+              support html, which means summary, notes, and work body, but not
+              the custom title template.
+            </p>
+            <p>The following sequences in your templates will be replaced:</p>
+            <dl>
+              <dt>
+                <strong><code>$&#123;blocksummary&#125;</code></strong>
+              </dt>
+              <dd>
+                The summary of the original work wrapped in a
+                <code>blockquote</code>
+                , which will indent it. Because of the way ao3 handles block
+                quotes, you should put whatever you want to follow this on the
+                same line.
+              </dd>
+              <dt>
+                <strong><code>$&#123;summary&#125;</code></strong>
+              </dt>
+              <dd>The summary of the original work.</dd>
+              <dt>
+                <strong><code>$&#123;title&#125;</code></strong>
+              </dt>
+              <dd>
+                The title of the original work. This will be a link to the
+                original work.
+              </dd>
+              <dt>
+                <strong><code>$&#123;title-unlinked&#125;</code></strong>
+              </dt>
+              <dd>
+                The title of the original work, without a link to the original
+                work.
+              </dd>
+              <dt>
+                <strong><code>$&#123;authors&#125;</code></strong>
+              </dt>
+              <dd>
+                A comma-separated list of the authors of the original work. Each
+                author is a link to their AO3 page.
+              </dd>
+              <dt>
+                <strong><code>$&#123;authors-unlinked&#125;</code></strong>
+              </dt>
+              <dd>
+                A comma-separated list of the authors of the original work,
+                without links to their AO3 page.
+              </dd>
+            </dl>
+          </mat-card-content>
+        </mat-card>
+      </section>
+      <section id="summary-section" class="main-section">
+        <form
+          [formGroup]="summaryTemplateFormGroup"
+          (reset)="resetSummaryTemplate($event)"
+          (ngSubmit)="saveSummaryTemplate()">
+          <mat-card>
+            <mat-card-header role="heading">
+              <mat-card-title>Summary template</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>
+                Set the summary template to use with the "Custom" summary format
+                option.
+              </p>
+              <p>
+                This template supports keyword substitution.
+                <a
+                  href="index.html#common-template-keywords-section"
+                  id="summary-template-help-keywords">
+                  Learn more about keyword substitution
+                </a>
+              </p>
+              <p>
+                This template supports HTML.
+                <a
+                  href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                  target="_blank"
+                  id="summary-template-help-html">
+                  Learn more about using HTML on AO3
+                </a>
+              </p>
+              <mat-form-field>
+                <mat-label>Summary template</mat-label>
+                <textarea
+                  matInput
+                  rows="5"
+                  cols="100"
+                  [formControl]="
+                    summaryTemplateFormGroup.controls.template
+                  "></textarea>
+                @if (
+                  summaryTemplateFormGroup.controls.template.hasError(
+                    'invalidAo3Html'
+                  )
+                ) {
+                  <mat-error>
+                    This template appears to contain HTML tags that cannot be
+                    used on AO3, they have been removed from the preview
+                  </mat-error>
+                }
+              </mat-form-field>
+              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <pre>
+                <code
+                  [highlight]="summaryTemplatePreview | async"
+                  [languages]="['xml']">
+                </code>
+              </pre>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit">
+                <mat-icon>save</mat-icon>
+                Save
+              </button>
+              <button mat-stroked-button color="primary" type="reset">
+                <mat-icon>restart_alt</mat-icon>
+                Reset to default
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </section>
+      <section id="notes-section" class="main-section">
+        <form
+          [formGroup]="notesTemplateFormGroup"
+          (reset)="resetNotesTemplate($event)"
+          (ngSubmit)="saveNotesTemplate()">
+          <mat-card>
+            <mat-card-header role="heading">
+              <mat-card-title>Notes template</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Set the template to use for beginning and/or end notes.</p>
+              <p>
+                This template supports keyword substitution.
+                <a
+                  href="index.html#common-template-keywords-section"
+                  id="notes-template-help-keywords">
+                  Learn more about keyword substitution
+                </a>
+              </p>
+              <p>
+                This template supports HTML.
+                <a
+                  href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                  target="_blank"
+                  id="notes-template-help-html">
+                  Learn more about using HTML on AO3
+                </a>
+              </p>
+              <div class="form-item">
+                <mat-checkbox
+                  [formControl]="
+                    notesTemplateFormGroup.controls.beginningNotes
+                  ">
+                  Use as beginning notes
+                </mat-checkbox>
+              </div>
+              <div class="form-item">
+                <mat-checkbox
+                  [formControl]="notesTemplateFormGroup.controls.endNotes">
+                  Use as end notes
+                </mat-checkbox>
+              </div>
+              <mat-form-field>
+                <mat-label>Notes template</mat-label>
+                <textarea
+                  matInput
+                  rows="5"
+                  cols="100"
+                  class="code-editor-textarea"
+                  [formControl]="
+                    notesTemplateFormGroup.controls.template
+                  "></textarea>
+                @if (
+                  notesTemplateFormGroup.controls.template.hasError(
+                    'invalidAo3Html'
+                  )
+                ) {
+                  <mat-error>
+                    This template appears to contain HTML tags that cannot be
+                    used on AO3, they have been removed from the preview
+                  </mat-error>
+                }
+              </mat-form-field>
+              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <pre>
+                <code
+                  [highlight]="notesTemplatePreview | async"
+                  [languages]="['xml']">
+                </code>
+              </pre>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit">
+                <mat-icon>save</mat-icon>
+                Save
+              </button>
+              <button mat-stroked-button color="primary" type="reset">
+                <mat-icon>restart_alt</mat-icon>
+                Reset to default
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </section>
+      <section id="work-section" class="main-section">
+        <form
+          [formGroup]="workTemplateFormGroup"
+          (ngSubmit)="saveWorkTemplate()">
+          <mat-card>
+            <mat-card-header role="heading">
+              <mat-card-title>Work template</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Set the default work template for your work.</p>
+              <p>
+                Note: this will leave the body of your work alone if your draft
+                already has text there.
+              </p>
+              <p>
+                This template supports keyword substitution.
+                <a
+                  href="index.html#common-template-keywords-section"
+                  id="work-template-help-keywords">
+                  Learn more about keyword substitution
+                </a>
+              </p>
+              <p>
+                This template supports HTML.
+                <a
+                  href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
+                  target="_blank"
+                  id="work-template-help-html">
+                  Learn more about using HTML on AO3
+                </a>
+              </p>
+              <mat-form-field>
+                <mat-label>Work template</mat-label>
+                <textarea
+                  matInput
+                  rows="10"
+                  cols="100"
+                  class="code-editor-textarea"
+                  [formControl]="
+                    workTemplateFormGroup.controls.template
+                  "></textarea>
+                @if (
+                  workTemplateFormGroup.controls.template.hasError(
+                    'invalidAo3Html'
+                  )
+                ) {
+                  <mat-error>
+                    This template appears to contain HTML tags that cannot be
+                    used on AO3, they have been removed from the preview
+                  </mat-error>
+                }
+              </mat-form-field>
+              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <pre>
+                <code
+                  [highlight]="workTemplatePreview | async"
+                  [languages]="['xml']">
+                </code>
+              </pre>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit">
+                <mat-icon>save</mat-icon>
+                Save
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </section>
+      <section class="about-section main-section" id="about-section">
+        <mat-card>
+          <mat-card-header role="heading">
+            <mat-card-title>About</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <section>
+              <header>
+                <h3>Version</h3>
+                <p class="version">{{ version }}</p>
+              </header>
+            </section>
+            <section>
+              <header>
+                <h3>Distributions</h3>
+                <ul>
+                  <li>
+                    <a
+                      href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
+                      target="_blank"
+                      rel="noopener"
+                      id="distrubtions-chrome">
+                      Google Chrome
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj"
+                      target="_blank"
+                      rel="noopener"
+                      id="distributions-edge">
+                      Microsoft Edge
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/"
+                      target="_blank"
+                      rel="noopener"
+                      id="distributions-firefox">
+                      Firefox
+                    </a>
+                  </li>
+                </ul>
+              </header>
+            </section>
+            <section>
+              <header>
+                <h3>Feedback and bugs</h3>
+                <p>There are a few ways to submit feedback or report bugs:</p>
+                <ul>
+                  <li>
+                    By asking a question in our
+                    <a
+                      href="https://discord.gg/rhynWjrCw2"
+                      target="_blank"
+                      rel="noopener"
+                      id="feedback-discord">
+                      Discord server
+                    </a>
+                  </li>
+                  <li>
+                    From the "Support" tab of the
+                    <a
+                      href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
+                      target="_blank"
+                      rel="noopener"
+                      id="feedback-chrome-web-store">
+                      official chrome web store listing
+                    </a>
+                  </li>
+                  <li>
+                    By
+                    <a
+                      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new"
+                      target="_blank"
+                      rel="noopener"
+                      id="feedback-github">
+                      submitting an issue on GitHub
+                    </a>
+                  </li>
+                </ul>
+                <p>We will try to respond to any issue as soon as possible.</p>
+              </header>
+            </section>
+            <section>
+              <header>
+                <h3>Contributing</h3>
+                <p>
+                  This extension is open source. Source code is available on
+                  <a
+                    href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+                    target="_blank"
+                    rel="noopener"
+                    id="contributing-github">
+                    GitHub
+                  </a>
+                  . Feel free to send a pull request, we will try our best to
+                  review it in a timely manner.
+                </p>
+              </header>
+            </section>
+            <section>
+              <header>
+                <h3>Credits</h3>
+                <p>This extension was created by:</p>
+                <ul>
+                  <li>
+                    <a
+                      href="https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie"
+                      target="_blank"
+                      rel="noopener"
+                      id="credits-irrationalpie">
+                      irrationalpie
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://mowery.dev"
+                      target="_blank"
+                      rel="noopener"
+                      id="credits-jeremy">
+                      Jeremy Mowery
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://archiveofourown.org/users/lastontheboat"
+                      target="_blank"
+                      rel="noopener"
+                      id="credits-lastontheboat">
+                      lastontheboat
+                    </a>
+                  </li>
+                </ul>
+              </header>
+            </section>
+            <section>
+              <header>
+                <h3>Website</h3>
+                <p>
+                  <a
+                    href="https://lazycats.dev?utm_source=cextension&utm_medium=extension&utm_campaign=options"
+                    target="_blank"
+                    id="website">
+                    https://lazycats.dev
+                  </a>
+                </p>
+              </header>
+            </section>
+          </mat-card-content>
+        </mat-card>
+      </section>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

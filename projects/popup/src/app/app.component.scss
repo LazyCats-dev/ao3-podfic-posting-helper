@@ -1,0 +1,55 @@
+.page-content {
+  padding: 8px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+}
+
+.form-item {
+  margin-bottom: 8px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+}
+
+.podfic-length-controls {
+  display: flex;
+}
+
+.template-controls {
+  display: flex;
+  width: 100%;
+}
+
+.title-template-select {
+  width: 40%;
+  margin-right: 8px;
+}
+
+.summary-template-select {
+  width: 55%;
+}
+
+.length-checkbox {
+  margin-right: 8px;
+}
+
+.url-text-field {
+  width: 100%;
+}
+
+.audio-format-tags-container {
+  display: flex;
+  align-items: center;
+}
+
+.audio-format-tags-label {
+  margin-inline-end: 8px;
+}

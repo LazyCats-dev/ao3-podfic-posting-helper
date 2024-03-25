@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest",
+  "name": "AO3 Podfic Posting Helper",
+  "description": "Autofill metadata to match a work you were inspired by",
+  "version": "4.0",
+  "manifest_version": 3,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ao3-podfic-helper@github.com"
+    }
+  },
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "/common/assets/icon-16.png",
+      "32": "/common/assets/icon-32.png",
+      "48": "/common/assets/icon-48.png",
+      "128": "/common/assets/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "/common/assets/icon-16.png",
+    "32": "/common/assets/icon-32.png",
+    "48": "/common/assets/icon-48.png",
+    "128": "/common/assets/icon-128.png"
+  },
+  "options_ui": {
+    "page": "options/index.html",
+    "open_in_tab": true
+  },
+  "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+}

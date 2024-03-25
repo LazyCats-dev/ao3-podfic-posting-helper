@@ -1,0 +1,105 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+code {
+  border: 1px inset rgba(0, 0, 0, 0.12);
+}
+
+pre,
+code {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.page-content {
+  margin: 0 8px 8px 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  overflow: auto;
+  height: 100%;
+}
+
+h1 {
+  margin: 0;
+}
+
+.main-section {
+  padding-top: 8px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.about-section section:not(:last-of-type) {
+  border-bottom: 1px inset rgba(0, 0, 0, 0.12);
+}
+
+.header-icon {
+  margin-left: 4px;
+}
+
+textarea.code-editor-textarea {
+  font-family: 'Roboto Mono', Courier, monospace;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: rgba(0, 0, 0, 0.33);
+  }
+  100% {
+    background-color: revert;
+  }
+}
+
+section:target mat-card {
+  animation: highlight 1s ease-out 0.15s;
+}
+
+mat-card-actions > button {
+  margin-right: 8px;
+}
+
+mat-sidenav {
+  a {
+    text-decoration: none;
+  }
+}
+
+mat-sidenav-container {
+  flex: 1;
+  // Show everything below the toolbar.
+  margin-top: 64px;
+}
+
+mat-sidenav-content {
+  scroll-behavior: smooth;
+}
+
+mat-toolbar {
+  position: fixed;
+  z-index: 1000;
+}
+
+h3 {
+  margin-top: 16px;
+}
