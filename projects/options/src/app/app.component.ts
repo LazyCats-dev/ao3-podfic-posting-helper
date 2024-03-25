@@ -17,7 +17,6 @@ import {MatDivider} from '@angular/material/divider';
 import {
   MatCard,
   MatCardActions,
-  MatCardAvatar,
   MatCardContent,
   MatCardHeader,
   MatCardTitle,
