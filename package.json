@@ -1,11 +1,15 @@
 {
   "name": "test3",
   "version": "0.0.0",
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,scss,md,html,json,ts}": "prettier --write"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "rm -rf dist/ && ng build common && ng build popup && ng build options && cp manifest.json dist/",
-    "release": "rm -rf dist/ && ng build common --configuration=production && ng build popup --configuration=production && ng build options --configuration=production && cp manifest.json dist/ && zip -r dist.zip dist/",
+    "release": "rm -rf dist/ && rm dist.zip && ng build common --configuration=production && ng build popup --configuration=production && ng build options --configuration=production && cp manifest.json dist/ && zip -r dist.zip dist/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
