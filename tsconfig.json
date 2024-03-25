@@ -1,17 +1,34 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/tsconfig.json",
+  "compileOnSave": true,
   "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "moduleResolution": "bundler",
-    "module": "ES6",
-    "target": "ES2021",
-    "allowJs": true,
-    "sourceMap": true,
-    "typeRoots": ["node_modules/@types"],
-    "outDir": "dist/js",
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "sourceRoot": "src",
-    "verbatimModuleSyntax": true
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "common": ["./dist/common"]
+    }
   },
-  "compileOnSave": true
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@use '@angular/cdk';
+
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: white;
+
+$ao3-red-palette: (
+  50: #fae7e9,
+  100: #f3c4c6,
+  200: #da8c88,
+  300: #c8615c,
+  400: #cb3f36,
+  500: #ca2c17,
+  600: #bc2218,
+  700: #ac1714,
+  800: #9f0f0d,
+  900: #900000,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  ),
+);
+
+$primary: mat.define-palette($ao3-red-palette, 900);
+$accent: mat.define-palette($ao3-red-palette, 900);
+$warn: mat.define-palette(mat.$red-palette);
+
+$typography: mat.define-typography-config();
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+    typography: $typography,
+    density: 0,
+  )
+);
+
+@mixin apply-base-theme {
+  @include mat.core();
+  @include mat.core-theme($theme);
+  @include mat.all-component-themes($theme);
+  @include mat.typography-hierarchy($typography);
+
+  @include cdk.text-field-autofill();
+
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+  }
+}
