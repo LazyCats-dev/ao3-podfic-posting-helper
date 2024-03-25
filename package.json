@@ -10,7 +10,8 @@
     "build": "rm -rf dist/ && ng build common && ng build popup && ng build options && cp manifest.json dist/",
     "release": "rm -rf dist/ && rm -f dist.zip && ng build common --configuration=production && ng build popup --configuration=production && ng build options --configuration=production && cp manifest.json dist/ && cd dist && zip -r ../dist.zip . * && cd ../",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint && npm run lint:styles",
+    "lint:styles": "stylelint --fix \"projects/**/*.scss\""
   },
   "private": true,
   "dependencies": {
@@ -57,6 +58,9 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^17.3.0",
     "prettier": "^3.2.5",
+    "stylelint": "^16.3.0",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
     "typescript": "~5.4.2"
   }
 }

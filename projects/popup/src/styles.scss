@@ -1,6 +1,6 @@
 @use '../../common/src/lib/common' as common;
 
-@include common.apply-base-theme();
+@include common.apply-base-theme;
 
 body {
   /* Max width allowed by any chrome extension */

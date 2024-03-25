@@ -2,10 +2,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
 }
 
 .spacer {
@@ -21,7 +18,7 @@ textarea {
 }
 
 code {
-  border: 1px inset rgba(0, 0, 0, 0.12);
+  border: 1px inset rgb(0 0 0 / 12%);
 }
 
 pre,
@@ -31,7 +28,6 @@ code {
 }
 
 .page-content {
-  margin: 0 8px 8px 8px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -51,7 +47,7 @@ h1 {
 }
 
 .about-section section:not(:last-of-type) {
-  border-bottom: 1px inset rgba(0, 0, 0, 0.12);
+  border-bottom: 1px inset rgb(0 0 0 / 12%);
 }
 
 .header-icon {
@@ -64,8 +60,9 @@ textarea.code-editor-textarea {
 
 @keyframes highlight {
   0% {
-    background-color: rgba(0, 0, 0, 0.33);
+    background-color: rgb(0 0 0 / 33%);
   }
+
   100% {
     background-color: revert;
   }
@@ -87,6 +84,7 @@ mat-sidenav {
 
 mat-sidenav-container {
   flex: 1;
+
   // Show everything below the toolbar.
   margin-top: 64px;
 }

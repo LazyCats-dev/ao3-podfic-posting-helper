@@ -1,9 +1,8 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
 
-$dark-primary-text: rgba(black, 0.87);
+$dark-primary-text: rgb(black 0.87);
 $light-primary-text: white;
-
 $ao3-red-palette: (
   50: #fae7e9,
   100: #f3c4c6,
@@ -28,13 +27,10 @@ $ao3-red-palette: (
     900: $light-primary-text,
   ),
 );
-
 $primary: mat.define-palette($ao3-red-palette, 900);
 $accent: mat.define-palette($ao3-red-palette, 900);
 $warn: mat.define-palette(mat.$red-palette);
-
 $typography: mat.define-typography-config();
-
 $theme: mat.define-light-theme(
   (
     color: (
@@ -48,17 +44,18 @@ $theme: mat.define-light-theme(
 );
 
 @mixin apply-base-theme {
-  @include mat.core();
+  @include mat.core;
   @include mat.core-theme($theme);
   @include mat.all-component-themes($theme);
   @include mat.typography-hierarchy($typography);
 
-  @include cdk.text-field-autofill();
+  @include cdk.text-field-autofill;
 
   html,
   body {
     height: 100%;
   }
+
   body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
