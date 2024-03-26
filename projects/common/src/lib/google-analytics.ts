@@ -66,6 +66,7 @@ class Analytics {
       engagement_time_msec?: number;
       version?: string;
       [key: string]: unknown;
+      [key: string]: unknown;
     } = {},
   ) {
     // Configure session id and engagement time if not present, for more details see:
