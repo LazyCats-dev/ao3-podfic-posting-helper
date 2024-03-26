@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
 
-$dark-primary-text: rgb(black 0.87);
+$dark-primary-text: rgb(0 0 0 / 87%);
 $light-primary-text: white;
 $ao3-red-palette: (
   50: #fae7e9,
@@ -45,10 +45,12 @@ $theme: mat.define-light-theme(
 
 @mixin apply-base-theme {
   @include mat.core;
+  @include mat.core;
   @include mat.core-theme($theme);
   @include mat.all-component-themes($theme);
   @include mat.typography-hierarchy($typography);
 
+  @include cdk.text-field-autofill;
   @include cdk.text-field-autofill;
 
   html,
