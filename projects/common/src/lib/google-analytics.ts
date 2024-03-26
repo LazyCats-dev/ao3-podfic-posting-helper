@@ -65,7 +65,7 @@ class Analytics {
       session_id?: string;
       engagement_time_msec?: number;
       version?: string;
-      [key: string]: any;
+      [key: string]: unknown;
     } = {},
   ) {
     // Configure session id and engagement time if not present, for more details see:
@@ -121,7 +121,7 @@ class Analytics {
   }
 
   // Fire an error event.
-  async fireErrorEvent(error: {}, additionalParams = {}) {
+  async fireErrorEvent(error: object, additionalParams = {}) {
     // Note: 'error' is a reserved event name and cannot be used
     // see https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_names
     return this.fireEvent('extension_error', {

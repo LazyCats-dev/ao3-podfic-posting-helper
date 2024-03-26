@@ -1,5 +1,3 @@
 @use '../../common/src/lib/common' as common;
-
-@include common.apply-base-theme();
-
 @import '~highlight.js/styles/a11y-light.css';
+@include common.apply-base-theme;

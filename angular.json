@@ -75,6 +75,15 @@
             "styles": ["projects/popup/src/styles.scss"],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/popup/**/*.ts",
+              "projects/popup/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -151,6 +160,15 @@
             "styles": ["projects/options/src/styles.scss"],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/options/**/*.ts",
+              "projects/options/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -181,11 +199,21 @@
             "tsConfig": "projects/common/tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing"]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/common/**/*.ts",
+              "projects/common/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "370f6e11-d0c3-462f-8d45-c34e97c038f9"
+    "analytics": "370f6e11-d0c3-462f-8d45-c34e97c038f9",
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }
