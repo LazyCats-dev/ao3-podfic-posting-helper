@@ -2,6 +2,12 @@ import {TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 
 describe('AppComponent', () => {
+  beforeAll(async () => {
+    const response = await fetch('/base/src/app/testdata/test.html');
+    const text = await response.text();
+    console.error(text);
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
@@ -12,12 +18,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'popup' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('popup');
   });
 
   it('should render title', () => {

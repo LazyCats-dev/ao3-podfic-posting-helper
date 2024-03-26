@@ -73,7 +73,8 @@
               "projects/popup/src/assets"
             ],
             "styles": ["projects/popup/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "karmaConfig": "projects/popup/karma.conf.js"
           }
         },
         "lint": {
