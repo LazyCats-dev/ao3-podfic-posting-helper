@@ -4,7 +4,7 @@
   "lint-staged": {
     "*.{js,scss,md,html,json,ts}": "prettier --write",
     "*.{html,ts}": "eslint --cache --fix",
-    "*.{scss}": "stylelint --fix"
+    "*.scss": "stylelint --fix"
   },
   "scripts": {
     "ng": "ng",
