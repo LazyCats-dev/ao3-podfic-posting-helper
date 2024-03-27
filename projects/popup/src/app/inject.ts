@@ -331,7 +331,7 @@ export function injectImportAndFillMetadata(
 
   /**
    **/
-  function fetchWithCurrentCreds(url: URL, originalUrl: string) {
+  function fetchWithCurrentCreds(url: string, originalUrl: string) {
     const responsePromise = fetchWork(url, 'include');
     const docPromise = responsePromise.then(parseDocFromResponse);
 
@@ -396,24 +396,12 @@ export function injectImportAndFillMetadata(
   /**
    */
   function createUrl(url: string) {
-    // Attempt to parse the URL
-    let fetchUrl: URL;
-    try {
-      fetchUrl = new URL(url);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        throw new Error(`Invalid work URL "${url}": ${e.message}: ${e.stack}`);
-      }
-      throw new Error(`Invalid work URL "${url}": {${e}}`);
-    }
-    // Always consent to seeing "adult content" to simplify parsing
-    fetchUrl.searchParams.set('view_adult', 'true');
-    return fetchUrl;
+    return `${url}?view_adult=true`;
   }
 
   /**
    */
-  function fetchWork(url: URL, credentials: RequestCredentials) {
+  function fetchWork(url: string, credentials: RequestCredentials) {
     return window
       .fetch(url, {credentials})
       .catch(e => {

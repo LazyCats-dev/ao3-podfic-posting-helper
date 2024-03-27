@@ -21,6 +21,9 @@ module.exports = function (config) {
         served: true,
       },
     ],
+    proxies: {
+      'https://archiveofourown.org/works/': '/base/src/app/testdata/',
+    },
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
