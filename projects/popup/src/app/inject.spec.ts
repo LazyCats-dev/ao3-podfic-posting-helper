@@ -16,25 +16,74 @@ describe('injectImportAndFillMetadata', () => {
     document.body.removeChild(testContent);
   });
 
-  it('shows the new work page', () => {
-    const header = testContent.querySelector('h2');
+  it('fills the metadata for a work with minimal metadata', async () => {
+    const response = await injectImportAndFillMetadata(
+      '/base/src/app/testdata/work_with_min_metadata.html',
+      /* podficLabel= */ false,
+      /* podficLengthLabel= */ false,
+      /* podficLengthValue= */ '',
+      /* titleFormat= */ 'blank',
+      /* summaryFormat= */ 'blank',
+      /* audioFormatTagOptionIds= */ [],
+      /* workTemplate= */ '',
+      /* userSummaryTemplate= */ '',
+      /* userTitleTemplate= */ '',
+      /* userNotesTemplate= */ '',
+      /* beginNotes= */ false,
+      /* endNotes= */ false,
+    );
 
-    expect(header?.textContent).toBe('Post New Work');
+    expect(response).toEqual({result: 'success'});
+    expect(getImportedWorkMetadata()).toEqual({
+      rating: 'Not Rated',
+      archiveWarnings: ['Choose Not To Use Archive Warnings'],
+      fandoms: ['Testing'],
+      categories: [],
+      relationships: [],
+      characters: [],
+      additionalTags: [],
+      workTitle: '',
+      coCreators: [],
+      summary: '',
+      useBeginNotes: false,
+      beginNotes: '',
+      useEndNotes: false,
+      endNotes: '',
+      collections: [],
+      workRecipients: [],
+      isPodifc: true,
+      parentWorkUrl: '/base/src/app/testdata/work_with_min_metadata.html',
+      parentWorkTitle: '',
+      parentWorkAuthor: '',
+      parentWorkLanguage: '',
+      isTranslation: false,
+      isPartOfSeries: false,
+      hasMultipleChapters: false,
+      hasDifferentPublicationDate: false,
+      language: '1', // English
+      workSkin: '',
+      isRestricted: false,
+      moderationEnabled: false,
+      commentPermissions: 'enable_all',
+      workText: '',
+    });
   });
 
-  it('fills the metadata for a work with all metadata', async () => {
+  it('fills the metadata for a work with max metadata', async () => {
+    const fullTemplate =
+      '${blocksummary} ${summary} ${title} ${title-unlinked} ${authors} ${authors-unlinked}';
     const response = await injectImportAndFillMetadata(
-      '/base/src/app/testdata/test_work.html',
+      '/base/src/app/testdata/work_with_max_metadata.html',
       /* podficLabel= */ true,
       /* podficLengthLabel- */ true,
       /* podficLengthValue= */ '20-30 Minutes',
-      /* titleFormat= */ 'Title',
-      /* summaryFormat= */ 'Summary',
+      /* titleFormat= */ 'custom',
+      /* summaryFormat= */ 'custom',
       /* audioFormatTagOptionIds= */ ['1', '2'],
-      /* workTemplate= */ 'Work',
-      /* userSummaryTemplate= */ 'User Summary',
-      /* userTitleTemplate= */ 'User Title',
-      /* userNotesTemplate= */ 'User Notes',
+      /* workTemplate= */ 'Work: ' + fullTemplate,
+      /* userSummaryTemplate= */ 'Summary: ' + fullTemplate,
+      /* userTitleTemplate= */ '${title} ${authors} ${title-unlinked} ${author} ${authors-unlinked} ${author-unlinked}',
+      /* userNotesTemplate= */ 'Notes: ' + fullTemplate,
       /* beginNotes= */ true,
       /* endNotes= */ true,
     );
@@ -59,12 +108,39 @@ describe('injectImportAndFillMetadata', () => {
         'Audio Format: 1',
         'Audio Format: 2',
       ],
-      workTitle: '[Podfic] Testing: simple case',
-      coCreators: [''],
+      workTitle:
+        'Testing: simple case jermowery Testing: simple case jermowery jermowery jermowery',
+      coCreators: [],
       summary: jasmine.stringContaining(
-        '<blockquote>Work for testing ao3 podfic posting helper',
+        'Summary: <blockquote>Work for testing ao3 podfic posting helper',
       ),
-      beginNotes: true,
+      useBeginNotes: true,
+      beginNotes: jasmine.stringContaining(
+        'Notes: <blockquote>Work for testing ao3 podfic posting helper',
+      ),
+      useEndNotes: true,
+      endNotes: jasmine.stringContaining(
+        'Notes: <blockquote>Work for testing ao3 podfic posting helper',
+      ),
+      collections: [],
+      workRecipients: [],
+      isPodifc: true,
+      parentWorkUrl: '/base/src/app/testdata/work_with_max_metadata.html',
+      parentWorkTitle: '',
+      parentWorkAuthor: '',
+      parentWorkLanguage: '',
+      isTranslation: false,
+      isPartOfSeries: false,
+      hasMultipleChapters: false,
+      hasDifferentPublicationDate: false,
+      language: '7', // Deutsch
+      workSkin: '',
+      isRestricted: false,
+      moderationEnabled: false,
+      commentPermissions: 'enable_all',
+      workText: jasmine.stringContaining(
+        'Work: <blockquote>Work for testing ao3 podfic posting helper',
+      ),
     });
   });
 
@@ -93,9 +169,60 @@ describe('injectImportAndFillMetadata', () => {
       'pseud_byline_autocomplete',
     );
     const summary = getInputByName('work[summary]').value;
-    const beginNotes = (
+    const useBeginNotes = (
       getInputByName('front-notes-options-show') as HTMLInputElement
     ).checked;
+    const beginNotes = getInputByName('work[notes]').value;
+    const useEndNotes = (
+      getInputByName('end-notes-options-show') as HTMLInputElement
+    ).checked;
+    const endNotes = getInputByName('work[endnotes]').value;
+    const collections = getAutocompleteInputValuesById(
+      'work_collection_names_autocomplete',
+    );
+    const workRecipients = getAutocompleteInputValuesById(
+      'work_recipients_autocomplete',
+    );
+    const isPodifc = (getInputByName('parent-options-show') as HTMLInputElement)
+      .checked;
+    const parentWorkUrl = getInputByName(
+      'work[parent_work_relationships_attributes][0][url]',
+    ).value;
+    const parentWorkTitle = getInputByName(
+      'work[parent_work_relationships_attributes][0][title]',
+    ).value;
+    const parentWorkAuthor = getInputByName(
+      'work[parent_work_relationships_attributes][0][author]',
+    ).value;
+    const parentWorkLanguage = getInputByName(
+      'work[parent_work_relationships_attributes][0][language_id]',
+    ).value;
+    const isTranslation = (
+      getInputByName(
+        'work[parent_work_relationships_attributes][0][translation]',
+      ) as HTMLInputElement
+    ).checked;
+    const isPartOfSeries = (
+      getInputByName('series-options-show') as HTMLInputElement
+    ).checked;
+    const hasMultipleChapters = (
+      getInputByName('chapters-options-show') as HTMLInputElement
+    ).checked;
+    const hasDifferentPublicationDate = (
+      getInputByName('work[backdate]') as HTMLInputElement
+    ).checked;
+    const language = getInputByName('work[language_id]').value;
+    const workSkin = getInputByName('work[work_skin_id]').value;
+    const isRestricted = (
+      getInputByName('work[restricted]') as HTMLInputElement
+    ).checked;
+    const moderationEnabled = (
+      getInputByName('work[moderated_commenting_enabled]') as HTMLInputElement
+    ).checked;
+    const commentPermissions = getInputByName(
+      'work[comment_permissions]',
+    ).value;
+    const workText = getInputByName('work[chapter_attributes][content]').value;
 
     return {
       rating,
@@ -108,14 +235,41 @@ describe('injectImportAndFillMetadata', () => {
       workTitle,
       coCreators,
       summary,
+      useBeginNotes,
       beginNotes,
+      useEndNotes,
+      endNotes,
+      collections,
+      workRecipients,
+      isPodifc,
+      parentWorkUrl,
+      parentWorkTitle,
+      parentWorkAuthor,
+      parentWorkLanguage,
+      isTranslation,
+      isPartOfSeries,
+      hasMultipleChapters,
+      hasDifferentPublicationDate,
+      language,
+      workSkin,
+      isRestricted,
+      moderationEnabled,
+      commentPermissions,
+      workText,
     };
   }
 
-  function getAutocompleteInputValuesById(id: string) {
-    return (
+  function getAutocompleteInputValuesById(
+    id: string,
+  ): undefined | readonly string[] {
+    const valueString = (
       testContent.querySelector(`#${id}`) as HTMLInputElement
-    ).value.split(', ');
+    ).value;
+
+    if (!valueString) {
+      return [];
+    }
+    return valueString.split(', ');
   }
 
   function getInputByName(name: string) {
