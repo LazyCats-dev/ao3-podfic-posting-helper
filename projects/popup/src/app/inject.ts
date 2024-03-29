@@ -313,6 +313,7 @@ export function injectImportAndFillMetadata({
         }
         // We reach this case if we were redirected to a specific chapter and then
         // hit the adult warning page.
+        // Example: https://archiveofourown.org/works/35775538/chapters?view_adult=true
         const newUrl = createUrl(response.url);
 
         return fetchWork(newUrl, 'omit')
@@ -321,8 +322,6 @@ export function injectImportAndFillMetadata({
             // If we've gotten this far, there are no more error cases.
             return {
               result: 'success',
-              // We return back the original URL so that storage only ever contains
-              // the URL the user input instead of the one we used for fetching.
               metadata: metadata,
             };
           });
@@ -357,6 +356,9 @@ export function injectImportAndFillMetadata({
           if (response.url.includes('users/')) {
             throw new Error(ACCESS_ERROR_MESSAGE);
           }
+          // We reach this case if we were redirected to a specific chapter and then
+          // hit the adult warning page.
+          // Example: https://archiveofourown.org/works/35775538/chapters?view_adult=true
           if (looksLikeAdultWarning(doc)) {
             const redirectUrl = createUrl(response.url);
             return fetchWork(redirectUrl, 'include')
@@ -470,11 +472,11 @@ export function injectImportAndFillMetadata({
       })
       .then(importResult => {
         if (importResult.result === 'error') {
-          // Tell the popup that the import failed and the reason why it failed.
-          return importResult;
+          const message = 'message' in importResult ? importResult.message : '';
+          return {result: 'error', message};
         }
         if (!('metadata' in importResult)) {
-          return importResult;
+          return {result: 'error', message: importResult.message};
         }
         const metadata = importResult.metadata;
 

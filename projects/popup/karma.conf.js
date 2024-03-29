@@ -15,7 +15,7 @@ module.exports = function (config) {
     files: [
       {
         pattern: './src/**/testdata/**',
-        watched: false,
+        watched: true,
         included: false,
         nocache: false,
         served: true,
