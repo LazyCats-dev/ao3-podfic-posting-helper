@@ -1,18 +1,32 @@
-export function injectImportAndFillMetadata(
-  url: string,
-  podficLabel: boolean,
-  podficLengthLabel: boolean,
-  podficLengthValue: string,
-  titleFormat: string,
-  summaryFormat: string,
-  audioFormatTagOptionIds: readonly string[],
-  workTemplate: string,
-  userSummaryTemplate: string,
-  userTitleTemplate: string,
-  userNotesTemplate: string,
-  beginNotes: boolean,
-  endNotes: boolean,
-) {
+export function injectImportAndFillMetadata({
+  url,
+  podficLabel,
+  podficLengthLabel,
+  podficLengthValue,
+  titleFormat,
+  summaryFormat,
+  audioFormatTagOptionIds,
+  workTemplate,
+  userSummaryTemplate,
+  userTitleTemplate,
+  userNotesTemplate,
+  beginNotes,
+  endNotes,
+}: {
+  url: string;
+  podficLabel: boolean;
+  podficLengthLabel: boolean;
+  podficLengthValue: string;
+  titleFormat: string;
+  summaryFormat: string;
+  audioFormatTagOptionIds: readonly string[];
+  workTemplate: string;
+  userSummaryTemplate: string;
+  userTitleTemplate: string;
+  userNotesTemplate: string;
+  beginNotes: boolean;
+  endNotes: boolean;
+}) {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
     'please contact the work author to get permission to view ' +

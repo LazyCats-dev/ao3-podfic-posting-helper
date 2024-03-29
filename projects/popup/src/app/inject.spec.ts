@@ -18,19 +18,7 @@ describe('injectImportAndFillMetadata', () => {
 
   it('fills the metadata for a work with minimal metadata', async () => {
     const response = await injectImportAndFillMetadata(
-      '/base/src/app/testdata/work_with_min_metadata.html',
-      /* podficLabel= */ false,
-      /* podficLengthLabel= */ false,
-      /* podficLengthValue= */ '',
-      /* titleFormat= */ 'blank',
-      /* summaryFormat= */ 'blank',
-      /* audioFormatTagOptionIds= */ [],
-      /* workTemplate= */ '',
-      /* userSummaryTemplate= */ '',
-      /* userTitleTemplate= */ '',
-      /* userNotesTemplate= */ '',
-      /* beginNotes= */ false,
-      /* endNotes= */ false,
+      minimalArgs('/base/src/app/testdata/work_with_min_metadata.html'),
     );
 
     expect(response).toEqual({result: 'success'});
@@ -72,21 +60,22 @@ describe('injectImportAndFillMetadata', () => {
   it('fills the metadata for a work with max metadata', async () => {
     const fullTemplate =
       '${blocksummary} ${summary} ${title} ${title-unlinked} ${authors} ${authors-unlinked}';
-    const response = await injectImportAndFillMetadata(
-      '/base/src/app/testdata/work_with_max_metadata.html',
-      /* podficLabel= */ true,
-      /* podficLengthLabel- */ true,
-      /* podficLengthValue= */ '20-30 Minutes',
-      /* titleFormat= */ 'custom',
-      /* summaryFormat= */ 'custom',
-      /* audioFormatTagOptionIds= */ ['1', '2'],
-      /* workTemplate= */ 'Work: ' + fullTemplate,
-      /* userSummaryTemplate= */ 'Summary: ' + fullTemplate,
-      /* userTitleTemplate= */ '${title} ${authors} ${title-unlinked} ${author} ${authors-unlinked} ${author-unlinked}',
-      /* userNotesTemplate= */ 'Notes: ' + fullTemplate,
-      /* beginNotes= */ true,
-      /* endNotes= */ true,
-    );
+    const response = await injectImportAndFillMetadata({
+      url: '/base/src/app/testdata/work_with_max_metadata.html',
+      podficLabel: true,
+      podficLengthLabel: true,
+      podficLengthValue: '20-30 Minutes',
+      titleFormat: 'custom',
+      summaryFormat: 'custom',
+      audioFormatTagOptionIds: ['1', '2'],
+      workTemplate: 'Work: ' + fullTemplate,
+      userSummaryTemplate: 'Summary: ' + fullTemplate,
+      userTitleTemplate:
+        '${title} ${authors} ${title-unlinked} ${author} ${authors-unlinked} ${author-unlinked}',
+      userNotesTemplate: 'Notes: ' + fullTemplate,
+      beginNotes: true,
+      endNotes: true,
+    });
 
     expect(response).toEqual({result: 'success'});
     expect(getImportedWorkMetadata()).toEqual({
@@ -143,6 +132,38 @@ describe('injectImportAndFillMetadata', () => {
       ),
     });
   });
+
+  it('returns an error if the work does not exist', async () => {
+    const response = await injectImportAndFillMetadata(
+      minimalArgs('/does/not/exist'),
+    );
+    expect(response).toEqual({
+      result: 'error',
+      message: jasmine.stringContaining(
+        'Error: Failed to fetch the work! Error: 404 Not Found',
+      ),
+    });
+  });
+
+  it('tries again when the work requires the user to be logged in', async () => {});
+
+  function minimalArgs(url: string) {
+    return {
+      url,
+      podficLabel: false,
+      podficLengthLabel: false,
+      podficLengthValue: '',
+      titleFormat: 'blank',
+      summaryFormat: 'blank',
+      audioFormatTagOptionIds: [],
+      workTemplate: '',
+      userSummaryTemplate: '',
+      userTitleTemplate: '',
+      userNotesTemplate: '',
+      beginNotes: false,
+      endNotes: false,
+    };
+  }
 
   function getImportedWorkMetadata() {
     const rating = getInputByName('work[rating_string]').value;
