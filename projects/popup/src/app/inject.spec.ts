@@ -216,14 +216,15 @@ describe('injectImportAndFillMetadata', () => {
     );
   });
 
-  it('returns and error if fetch throws', async () => {
-    testContent.innerHTML = '<marquee>I always get the shemp</marquee>';
+  it('returns an error if fetch throws', async () => {
+    fetchSpy.and.rejectWith(new Error('I always get the shemp'));
+
     const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
 
     expect(response).toEqual({
       result: 'error',
       message: jasmine.stringContaining(
-        'Unhandled error while importing metadata',
+        'Error: Failed to fetch the work! I always get the shemp',
       ),
     });
     expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
@@ -248,7 +249,20 @@ describe('injectImportAndFillMetadata', () => {
     );
   });
 
-  it('returns an error if the new work page is broken', async () => {});
+  it('returns an error if the new work page is broken', async () => {
+    testContent.innerHTML = '<marquee>I always get the shemp</marquee>';
+    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+
+    expect(response).toEqual({
+      result: 'error',
+      message: jasmine.stringContaining(
+        'Unhandled error while importing metadata',
+      ),
+    });
+    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+      credentials: 'omit',
+    });
+  });
 
   it('partially fills the form and returns an error if user is hiding tags and categories', async () => {
     const url =

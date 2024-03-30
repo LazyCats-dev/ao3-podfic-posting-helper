@@ -1,5 +1,5 @@
 import {APP_INITIALIZER, FactoryProvider, Provider} from '@angular/core';
-import {ANALYTICS} from './google-analytics';
+import {ANALYTICS, Analytics} from './google-analytics';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -147,23 +147,23 @@ export async function setupStorage() {
   }
 }
 
-export function setupGlobalEventLogging() {
+export function setupGlobalEventLogging(analytics: Analytics) {
   // Fire a page view event on load
   window.addEventListener('load', () => {
-    ANALYTICS.firePageViewEvent(document.title, document.location.href);
+    analytics.firePageViewEvent(document.title, document.location.href);
   });
 
   // Listen globally for all button events
   document.addEventListener('click', event => {
     if (event.target && 'id' in event.target) {
-      ANALYTICS.fireEvent('click_button', {id: event.target.id});
+      analytics.fireEvent('click_button', {id: event.target.id});
     }
   });
 
   // Listen globally for all input events
   document.addEventListener('change', event => {
     if (event.target && 'id' in event.target) {
-      ANALYTICS.fireEvent('input_changed', {id: event.target.id});
+      analytics.fireEvent('input_changed', {id: event.target.id});
     }
   });
 }
@@ -172,6 +172,7 @@ export function provideGlobalEventLogging(): FactoryProvider {
   return {
     provide: APP_INITIALIZER,
     useFactory: () => setupGlobalEventLogging,
+    deps: [ANALYTICS],
     multi: true,
   };
 }

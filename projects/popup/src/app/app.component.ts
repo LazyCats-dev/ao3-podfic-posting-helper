@@ -1,5 +1,5 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, ViewChild, inject, signal} from '@angular/core';
+import {AsyncPipe, NgIf} from '@angular/common';
+import {Component, ViewChild, inject, signal, ElementRef} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,7 +20,7 @@ import {INITIAL_FORM_VALUES} from '../utils';
 import {injectImportAndFillMetadata} from './inject';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {from} from 'rxjs';
-import {map, tap, take} from 'rxjs/operators';
+import {map, tap, take, shareReplay} from 'rxjs/operators';
 
 const AUDIO_FORMAT_TAG_PREFIX = 'audio-format-tag-';
 
@@ -54,6 +54,7 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
     MatSnackBarModule,
     MatToolbar,
     MatToolbarRow,
+    NgIf,
     ReactiveFormsModule,
   ],
   templateUrl: './app.component.html',
@@ -62,18 +63,24 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 export class AppComponent {
   private readonly initialFormValues = inject(INITIAL_FORM_VALUES);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly analytics = inject(ANALYTICS);
 
   protected readonly optionsPageUrl =
     chrome.runtime.getURL('options/index.html');
 
-  protected readonly onAo3NewWorkPage = from(
+  protected readonly tab = from(
     chrome.tabs.query({
       active: true,
       currentWindow: true,
     }),
   ).pipe(
     take(1),
-    map(([currentTab]) => {
+    map(([currentTab]) => currentTab),
+    shareReplay({bufferSize: 1, refCount: true}),
+  );
+
+  protected readonly onAo3NewWorkPage = this.tab.pipe(
+    map(currentTab => {
       const currentTabUrl = currentTab.url || '';
       return ALLOWED_URL_PATTERNS.some(
         allowedUrlPattern => currentTabUrl.match(allowedUrlPattern) !== null,
@@ -81,9 +88,9 @@ export class AppComponent {
     }),
     tap(onAo3NewWorkPage => {
       if (onAo3NewWorkPage) {
-        ANALYTICS.firePageViewEvent('Form');
+        this.analytics.firePageViewEvent('Form');
       } else {
-        ANALYTICS.firePageViewEvent('Not on new work URL page');
+        this.analytics.firePageViewEvent('Not on new work URL page');
       }
     }),
   );
@@ -158,8 +165,12 @@ export class AppComponent {
   @ViewChild(MatChipListbox)
   audioFormatTagListbox!: MatChipListbox;
 
-  protected async fillNewWorkForm(): Promise<void> {
+  @ViewChild('urlInput')
+  urlInput!: ElementRef<HTMLInputElement>;
+
+  protected async fillNewWorkForm(tab: chrome.tabs.Tab): Promise<void> {
     if (this.formGroup.invalid) {
+      this.urlInput.nativeElement.focus();
       return;
     }
 
@@ -205,7 +216,7 @@ export class AppComponent {
         'notes_template',
       ]);
 
-    ANALYTICS.fireEvent('popup_form_submit', {
+    this.analytics.fireEvent('popup_form_submit', {
       podfic_label: String(podficLabel),
       podfic_length_value: podficLength,
       title_format: titleFormat,
@@ -213,10 +224,6 @@ export class AppComponent {
       audio_formats: audioFormatTagOptionIds.join(','),
     });
 
-    const [tab] = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
     let result: {result: string; message?: string} | undefined;
     try {
       const injectedScriptResults = await chrome.scripting.executeScript({
@@ -254,8 +261,9 @@ export class AppComponent {
       this.formGroup.controls.url.setErrors({
         injectedScriptError: result?.message,
       });
-      ANALYTICS.fireErrorEvent(result?.message || '');
+      this.analytics.fireErrorEvent(result?.message || '');
       this.snackBar.open('Failed to import metadata');
+      this.urlInput.nativeElement.focus();
     } else {
       this.snackBar.open('Import finished');
     }
