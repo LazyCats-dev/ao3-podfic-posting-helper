@@ -10,8 +10,23 @@ const defaultFormValuesFromStorage = {
   audioFormatTagOptionIds: [] as readonly string[],
 };
 
+function resetDefaultFormValuesForTest() {
+  defaultFormValuesFromStorage.url = '';
+  defaultFormValuesFromStorage.podficLabel = false;
+  defaultFormValuesFromStorage.podficLengthLabel = false;
+  defaultFormValuesFromStorage.podficLengthValue = '';
+  defaultFormValuesFromStorage.titleFormat = '';
+  defaultFormValuesFromStorage.summaryFormat = '';
+  defaultFormValuesFromStorage.audioFormatTagOptionIds =
+    [] as readonly string[];
+}
+
 async function setInitialFormValues() {
   const {options} = await chrome.storage.sync.get('options');
+  if (!options) {
+    return;
+  }
+
   const {
     url,
     podfic_label,
@@ -46,3 +61,5 @@ export const INITIAL_FORM_VALUES = new InjectionToken<
   providedIn: 'root',
   factory: () => defaultFormValuesFromStorage,
 });
+
+export const TEST_ONLY = {resetDefaultFormValuesForTest};

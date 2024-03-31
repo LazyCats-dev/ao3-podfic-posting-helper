@@ -1,18 +1,32 @@
-export function injectImportAndFillMetadata(
-  url: string,
-  podficLabel: boolean,
-  podficLengthLabel: boolean,
-  podficLengthValue: string,
-  titleFormat: string,
-  summaryFormat: string,
-  audioFormatTagOptionIds: readonly string[],
-  workTemplate: string,
-  userSummaryTemplate: string,
-  userTitleTemplate: string,
-  userNotesTemplate: string,
-  beginNotes: boolean,
-  endNotes: boolean,
-) {
+export function injectImportAndFillMetadata({
+  url,
+  podficLabel,
+  podficLengthLabel,
+  podficLengthValue,
+  titleFormat,
+  summaryFormat,
+  audioFormatTagOptionIds,
+  workTemplate,
+  userSummaryTemplate,
+  userTitleTemplate,
+  userNotesTemplate,
+  beginNotes,
+  endNotes,
+}: {
+  url: string;
+  podficLabel: boolean;
+  podficLengthLabel: boolean;
+  podficLengthValue: string;
+  titleFormat: string;
+  summaryFormat: string;
+  audioFormatTagOptionIds: readonly string[];
+  workTemplate: string;
+  userSummaryTemplate: string;
+  userTitleTemplate: string;
+  userNotesTemplate: string;
+  beginNotes: boolean;
+  endNotes: boolean;
+}) {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
     'please contact the work author to get permission to view ' +
@@ -299,6 +313,7 @@ export function injectImportAndFillMetadata(
         }
         // We reach this case if we were redirected to a specific chapter and then
         // hit the adult warning page.
+        // Example: https://archiveofourown.org/works/35775538/chapters?view_adult=true
         const newUrl = createUrl(response.url);
 
         return fetchWork(newUrl, 'omit')
@@ -307,8 +322,6 @@ export function injectImportAndFillMetadata(
             // If we've gotten this far, there are no more error cases.
             return {
               result: 'success',
-              // We return back the original URL so that storage only ever contains
-              // the URL the user input instead of the one we used for fetching.
               metadata: metadata,
             };
           });
@@ -331,7 +344,7 @@ export function injectImportAndFillMetadata(
 
   /**
    **/
-  function fetchWithCurrentCreds(url: URL, originalUrl: string) {
+  function fetchWithCurrentCreds(url: string, originalUrl: string) {
     const responsePromise = fetchWork(url, 'include');
     const docPromise = responsePromise.then(parseDocFromResponse);
 
@@ -343,6 +356,9 @@ export function injectImportAndFillMetadata(
           if (response.url.includes('users/')) {
             throw new Error(ACCESS_ERROR_MESSAGE);
           }
+          // We reach this case if we were redirected to a specific chapter and then
+          // hit the adult warning page.
+          // Example: https://archiveofourown.org/works/35775538/chapters?view_adult=true
           if (looksLikeAdultWarning(doc)) {
             const redirectUrl = createUrl(response.url);
             return fetchWork(redirectUrl, 'include')
@@ -396,24 +412,12 @@ export function injectImportAndFillMetadata(
   /**
    */
   function createUrl(url: string) {
-    // Attempt to parse the URL
-    let fetchUrl: URL;
-    try {
-      fetchUrl = new URL(url);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        throw new Error(`Invalid work URL "${url}": ${e.message}: ${e.stack}`);
-      }
-      throw new Error(`Invalid work URL "${url}": {${e}}`);
-    }
-    // Always consent to seeing "adult content" to simplify parsing
-    fetchUrl.searchParams.set('view_adult', 'true');
-    return fetchUrl;
+    return `${url}?view_adult=true`;
   }
 
   /**
    */
-  function fetchWork(url: URL, credentials: RequestCredentials) {
+  function fetchWork(url: string, credentials: RequestCredentials) {
     return window
       .fetch(url, {credentials})
       .catch(e => {
@@ -468,11 +472,11 @@ export function injectImportAndFillMetadata(
       })
       .then(importResult => {
         if (importResult.result === 'error') {
-          // Tell the popup that the import failed and the reason why it failed.
-          return importResult;
+          const message = 'message' in importResult ? importResult.message : '';
+          return {result: 'error', message};
         }
         if (!('metadata' in importResult)) {
-          return importResult;
+          return {result: 'error', message: importResult.message};
         }
         const metadata = importResult.metadata;
 

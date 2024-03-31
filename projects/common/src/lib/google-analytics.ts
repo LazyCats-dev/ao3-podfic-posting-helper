@@ -1,3 +1,5 @@
+import {InjectionToken} from '@angular/core';
+
 const GA_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
 const GA_DEBUG_ENDPOINT = 'https://www.google-analytics.com/debug/mp/collect';
 
@@ -11,7 +13,7 @@ const DEFAULT_ENGAGEMENT_TIME_MSEC = 100;
 // Duration of inactivity after which a new session is created
 const SESSION_EXPIRATION_IN_MIN = 30;
 
-class Analytics {
+export class Analytics {
   constructor(private readonly debug = false) {}
 
   // Returns the client id, or creates a new one if one doesn't exist.
@@ -131,4 +133,7 @@ class Analytics {
   }
 }
 
-export const ANALYTICS = new Analytics();
+export const ANALYTICS = new InjectionToken('ANALYTICS', {
+  providedIn: 'root',
+  factory: () => new Analytics(),
+});
