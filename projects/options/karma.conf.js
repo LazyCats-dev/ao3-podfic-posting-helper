@@ -12,18 +12,6 @@ module.exports = function (config) {
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
-    files: [
-      {
-        pattern: './src/**/testdata/**',
-        watched: true,
-        included: false,
-        nocache: false,
-        served: true,
-      },
-    ],
-    proxies: {
-      'https://archiveofourown.org/works/': '/base/src/app/testdata/',
-    },
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -37,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../coverage/popup'),
+      dir: require('path').join(__dirname, '../../coverage/options'),
       subdir: '.',
       reporters: [{type: 'html'}, {type: 'text-summary'}],
     },

@@ -9,6 +9,15 @@ const defaultFormValuesFromStorage = {
   endNotes: false,
 };
 
+function resetDefaultFormValuesForTest() {
+  defaultFormValuesFromStorage.titleTemplate = '';
+  defaultFormValuesFromStorage.workTemplate = '';
+  defaultFormValuesFromStorage.summaryTemplate = '';
+  defaultFormValuesFromStorage.notesTemplate = '';
+  defaultFormValuesFromStorage.beginningNotes = false;
+  defaultFormValuesFromStorage.endNotes = false;
+}
+
 async function setInitialFormValues() {
   const {title_template, workbody, summary_template, notes_template} =
     await chrome.storage.sync.get([
@@ -41,3 +50,5 @@ export const INITIAL_FORM_VALUES = new InjectionToken<
   providedIn: 'root',
   factory: () => defaultFormValuesFromStorage,
 });
+
+export const TEST_ONLY = {resetDefaultFormValuesForTest};

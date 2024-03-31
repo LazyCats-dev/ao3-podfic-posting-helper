@@ -1,14 +1,10 @@
-/**
- * @fileoverview These tests depend on global state that they both change, so these must remain in
- * this order otherwise the tests will be 50% flaky.
- */
-
 import {TestBed, waitForAsync} from '@angular/core/testing';
 
 import {ApplicationInitStatus} from '@angular/core';
 import {
   INITIAL_FORM_VALUES,
   provideInitialFormValuesFromStorage,
+  TEST_ONLY,
 } from './utils';
 
 describe('INITIAL_FORM_VALUES', () => {
@@ -27,6 +23,8 @@ describe('INITIAL_FORM_VALUES', () => {
     storageSpy.sync = syncSpy;
     chrome.storage = storageSpy;
   });
+
+  afterEach(TEST_ONLY.resetDefaultFormValuesForTest);
 
   describe('with no initial values in storage', () => {
     beforeEach(waitForAsync(async () => {
