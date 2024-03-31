@@ -12,6 +12,10 @@ const defaultFormValuesFromStorage = {
 
 async function setInitialFormValues() {
   const {options} = await chrome.storage.sync.get('options');
+  if (!options) {
+    return;
+  }
+
   const {
     url,
     podfic_label,
