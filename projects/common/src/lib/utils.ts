@@ -5,62 +5,6 @@ import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
 
-/**
- * Object representing the data collected by the form.
- */
-export interface PopupFormData {
-  readonly url: string;
-  readonly podfic_label: boolean;
-  readonly podfic_length_label: boolean;
-  readonly podfic_length_value: string;
-  readonly title_format: string;
-  readonly summary_format: string;
-  readonly audioFormatTagOptionIds: readonly string[];
-}
-
-/**
- * Object representing the value of a template from the options page.
- */
-export interface TemplateData {
-  readonly default: string;
-}
-
-/**
- * Object representing the value of a notes template from the options page.
- */
-export interface NotesTemplateData {
-  readonly default: string;
-  readonly begin: boolean;
-  readonly end: boolean;
-}
-
-/**
- * Sets the value of the input, triggering all necessary events.
- */
-export function setInputValue(
-  inputElement: HTMLInputElement | HTMLTextAreaElement,
-  value: string,
-) {
-  const event = new InputEvent('input', {bubbles: true, data: value});
-  inputElement.value = value;
-  // Replicates the value changing.
-  inputElement.dispatchEvent(event);
-  // Replicates the user leaving focus of the input element.
-  inputElement.dispatchEvent(new Event('change'));
-}
-
-/**
- * Sets the state of a checkbox, triggering all necessary events.
- */
-export function setCheckboxState(
-  checkboxElement: HTMLInputElement,
-  isChecked: boolean,
-) {
-  checkboxElement.checked = isChecked;
-  // Replicates the user leaving focus of the input element.
-  checkboxElement.dispatchEvent(new Event('change'));
-}
-
 const DEFAULT_WORKBODY =
   'Here are a few building blocks that that show how you can include an ' +
   "image, audio, or a link to your podfic in your post. They're all " +
@@ -78,11 +22,41 @@ const DEFAULT_OPTIONS = {
   podfic_label: true,
   podfic_length_label: true,
   podfic_length_value: '0-10 Minutes',
-  transform_summary: true,
-  transform_title: true,
   title_format: 'default',
   summary_format: 'default',
 };
+
+export function setupGlobalEventLoggingFactory(analytics: Analytics) {
+  return () => {
+    // Fire a page view event on load
+    window.addEventListener('load', () => {
+      analytics.firePageViewEvent(document.title, document.location.href);
+    });
+
+    // Listen globally for all button events
+    document.addEventListener('click', event => {
+      if (event.target && 'id' in event.target) {
+        analytics.fireEvent('click_button', {id: event.target.id});
+      }
+    });
+
+    // Listen globally for all input events
+    document.addEventListener('change', event => {
+      if (event.target && 'id' in event.target) {
+        analytics.fireEvent('input_changed', {id: event.target.id});
+      }
+    });
+  };
+}
+
+export function provideGlobalEventLogging(): FactoryProvider {
+  return {
+    provide: APP_INITIALIZER,
+    useFactory: setupGlobalEventLoggingFactory,
+    deps: [ANALYTICS],
+    multi: true,
+  };
+}
 
 export async function setupStorage() {
   const {options, workbody, title_template, summary_template, notes_template} =
@@ -94,28 +68,33 @@ export async function setupStorage() {
       'notes_template',
     ]);
 
-  if (options === undefined) {
-    await chrome.storage.sync.set({options: DEFAULT_OPTIONS});
-  } else if (
-    options['title_format'] === undefined ||
-    options['summary_format'] === undefined
-  ) {
-    // Preserve behavior for existing extension users.
-    if (options['title_format'] === undefined) {
-      if (options['transform_title']) {
-        options['title_format'] = 'default';
-      } else {
-        options['title_format'] = 'orig';
-      }
+  const optionsToSave = {...DEFAULT_OPTIONS, ...options};
+
+  // Preserve behavior for existing extension users.
+  if ('transform_title' in optionsToSave) {
+    const transformTitle = optionsToSave['transform_title'];
+    if (transformTitle) {
+      optionsToSave['title_format'] = 'default';
+    } else {
+      optionsToSave['title_format'] = 'orig';
     }
-    if (options['summary_format'] === undefined) {
-      if (options['transform_summary']) {
-        options['summary_format'] = 'default';
-      } else {
-        options['summary_format'] = 'orig';
-      }
+
+    // Do not perpetuate the old options.
+    delete optionsToSave['transform_title'];
+  }
+  if ('transform_summary' in optionsToSave) {
+    const transformSumamry = optionsToSave['transform_summary'];
+    if (transformSumamry) {
+      optionsToSave['summary_format'] = 'default';
+    } else {
+      optionsToSave['summary_format'] = 'orig';
     }
-    await chrome.storage.sync.set({options});
+
+    // Do not perpetuate the old options.
+    delete optionsToSave['transform_summary'];
+  }
+  if (JSON.stringify(options) !== JSON.stringify(optionsToSave)) {
+    await chrome.storage.sync.set({options: optionsToSave});
   }
   if (workbody === undefined) {
     await chrome.storage.sync.set({
@@ -145,36 +124,6 @@ export async function setupStorage() {
       },
     });
   }
-}
-
-export function setupGlobalEventLogging(analytics: Analytics) {
-  // Fire a page view event on load
-  window.addEventListener('load', () => {
-    analytics.firePageViewEvent(document.title, document.location.href);
-  });
-
-  // Listen globally for all button events
-  document.addEventListener('click', event => {
-    if (event.target && 'id' in event.target) {
-      analytics.fireEvent('click_button', {id: event.target.id});
-    }
-  });
-
-  // Listen globally for all input events
-  document.addEventListener('change', event => {
-    if (event.target && 'id' in event.target) {
-      analytics.fireEvent('input_changed', {id: event.target.id});
-    }
-  });
-}
-
-export function provideGlobalEventLogging(): FactoryProvider {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: () => setupGlobalEventLogging,
-    deps: [ANALYTICS],
-    multi: true,
-  };
 }
 
 export function provideStorageSetup(): FactoryProvider {

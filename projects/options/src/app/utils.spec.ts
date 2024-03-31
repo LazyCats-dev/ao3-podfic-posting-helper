@@ -1,8 +1,3 @@
-/**
- * @fileoverview These tests depend on global state that they both change, so these must remain in
- * this order otherwise the tests will be 50% flaky.
- */
-
 import {TestBed, waitForAsync} from '@angular/core/testing';
 
 import {ApplicationInitStatus} from '@angular/core';
