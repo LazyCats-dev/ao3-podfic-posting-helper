@@ -121,7 +121,10 @@
           </p>
           <div class="form-item">
             @if (loading()) {
-              <mat-spinner mode="indeterminate" diameter="36"></mat-spinner>
+              <mat-spinner
+                mode="indeterminate"
+                diameter="36"
+                aria-label="Importing please wait"></mat-spinner>
               Importing...
             } @else {
               <button type="submit" mat-raised-button color="primary">
@@ -149,7 +152,9 @@
       </p>
     }
     @case (null) {
-      <mat-spinner mode="indeterminate"></mat-spinner>
+      <mat-spinner
+        mode="indeterminate"
+        aria-label="Loading extension"></mat-spinner>
     }
   }
 </main>
