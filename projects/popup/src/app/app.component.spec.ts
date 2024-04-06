@@ -19,7 +19,6 @@ import {MatFormFieldHarness} from '@angular/material/form-field/testing';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
 import {MatSelectHarness} from '@angular/material/select/testing';
-import {MatChipListboxHarness} from '@angular/material/chips/testing';
 import {injectImportAndFillMetadata} from './inject';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 
@@ -133,17 +132,15 @@ describe('AppComponent', () => {
 
       expect(await summaryFormatSelect.getValueText()).toBe('Original summary');
 
-      const audioFormatTagsListbox = await loader.getHarness(
-        MatChipListboxHarness,
+      const audioFormatTagsFormField = await loader.getHarness(
+        MatFormFieldHarness.with({floatingLabelText: '"Audio Format" tags'}),
       );
-      const selectedChips = await audioFormatTagsListbox.getChips({
-        selected: true,
-      });
+      const audioFormatTagsSelect =
+        (await audioFormatTagsFormField.getControl(MatSelectHarness))!;
 
-      expect(selectedChips.length).toBe(3);
-      expect(await selectedChips[0].getText()).toBe('MP3');
-      expect(await selectedChips[1].getText()).toBe('Streaming');
-      expect(await selectedChips[2].getText()).toBe('Download');
+      expect(await audioFormatTagsSelect.getValueText()).toBe(
+        'MP3, Streaming, Download',
+      );
     });
   });
 
@@ -381,11 +378,15 @@ describe('AppComponent', () => {
             (await summaryFormatFormField.getControl(MatSelectHarness))!;
           await summaryFormatSelect.clickOptions({text: 'Original summary'});
 
-          const audioFormatTagsListbox = await loader.getHarness(
-            MatChipListboxHarness,
+          const audioFormatTagsFormField = await loader.getHarness(
+            MatFormFieldHarness.with({
+              floatingLabelText: '"Audio Format" tags',
+            }),
           );
-          await audioFormatTagsListbox.selectChips({text: 'MP3'});
-          await audioFormatTagsListbox.selectChips({text: 'Streaming'});
+          const audioFormatTagsSelect =
+            (await audioFormatTagsFormField.getControl(MatSelectHarness))!;
+          await audioFormatTagsSelect.clickOptions({text: 'MP3'});
+          await audioFormatTagsSelect.clickOptions({text: 'Streaming'});
 
           await submitButton.click();
           fixture.detectChanges();

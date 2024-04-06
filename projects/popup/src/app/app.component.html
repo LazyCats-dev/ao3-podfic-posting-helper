@@ -100,19 +100,19 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="form-item audio-format-tags-container">
-            <span class="audio-format-tags-label">
-              Add "Audio Format" tags:
-            </span>
-            <mat-chip-listbox #autoFormatChips multiple>
-              @for (format of podficFormatTagOptions; track format) {
-                <mat-chip-option
-                  [value]="format"
-                  [selected]="initialAudioFormatTagValues.has(format)">
-                  {{ format }}
-                </mat-chip-option>
-              }
-            </mat-chip-listbox>
+          <div class="form-item">
+            <mat-form-field class="audio-format-tags">
+              <mat-label>"Audio Format" tags</mat-label>
+              <mat-select
+                multiple
+                [formControl]="formGroup.controls.audioFormatTags">
+                @for (format of podficFormatTagOptions; track format) {
+                  <mat-option [value]="format">
+                    {{ format }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
           </div>
           <p>
             You can set up custom templates for sections of the form in the
