@@ -15,7 +15,6 @@ import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {ANALYTICS} from 'common';
-import {MatChipListbox, MatChipOption} from '@angular/material/chips';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {injectImportAndFillMetadata} from './inject';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -40,8 +39,6 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
     AsyncPipe,
     MatButton,
     MatCheckbox,
-    MatChipListbox,
-    MatChipOption,
     MatError,
     MatFormField,
     MatIcon,
@@ -125,11 +122,9 @@ export class AppComponent {
     'Download',
   ];
 
-  protected readonly initialAudioFormatTagValues: ReadonlySet<string> =
-    new Set<string>(
-      this.initialFormValues.audioFormatTagOptionIds.map(id =>
-        id.replace(AUDIO_FORMAT_TAG_PREFIX, ''),
-      ),
+  protected readonly initialAudioFormatTagValues: readonly string[] =
+    this.initialFormValues.audioFormatTagOptionIds.map(id =>
+      id.replace(AUDIO_FORMAT_TAG_PREFIX, ''),
     );
 
   protected readonly formGroup = new FormGroup({
@@ -158,12 +153,13 @@ export class AppComponent {
       this.initialFormValues.summaryFormat,
       {nonNullable: true},
     ),
+    audioFormatTags: new FormControl<readonly string[]>(
+      this.initialAudioFormatTagValues,
+      {nonNullable: true},
+    ),
   });
 
   protected readonly loading = signal<boolean>(false);
-
-  @ViewChild(MatChipListbox)
-  audioFormatTagListbox!: MatChipListbox;
 
   @ViewChild('urlInput')
   urlInput!: ElementRef<HTMLInputElement>;
@@ -176,15 +172,10 @@ export class AppComponent {
 
     this.loading.set(true);
 
-    const selectedListOptions = Array.isArray(
-      this.audioFormatTagListbox.selected,
-    )
-      ? this.audioFormatTagListbox.selected
-      : [this.audioFormatTagListbox.selected];
-
-    const audioFormatTagOptionIds: readonly string[] = selectedListOptions
-      .map(option => option.value)
-      .map(value => `${AUDIO_FORMAT_TAG_PREFIX}${value}`);
+    const audioFormatTagOptionIds: readonly string[] =
+      this.formGroup.controls.audioFormatTags.value.map(
+        value => `${AUDIO_FORMAT_TAG_PREFIX}${value}`,
+      );
 
     const {
       url,
