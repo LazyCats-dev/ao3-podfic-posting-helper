@@ -27,9 +27,33 @@ $ao3-red-palette: (
     900: $light-primary-text,
   ),
 );
+$accent-palette: (
+  50: #e0f1f3,
+  100: #b2dddf,
+  200: #7fc7ca,
+  300: #4cb1b4,
+  400: #25a1a2,
+  500: #009090,
+  600: #018382,
+  700: #037472,
+  800: #076461,
+  900: #094844,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  ),
+);
 $primary: mat.define-palette($ao3-red-palette, 900);
-$accent: mat.define-palette($ao3-red-palette, 900);
-$warn: mat.define-palette(mat.$red-palette);
+$accent: mat.define-palette($accent-palette, 500);
+$warn: mat.define-palette($ao3-red-palette, 700);
 $typography: mat.define-typography-config();
 $theme: mat.define-light-theme(
   (
@@ -44,14 +68,14 @@ $theme: mat.define-light-theme(
 );
 
 @mixin apply-base-theme {
-  @include mat.core;
-  @include mat.core;
-  @include mat.core-theme($theme);
-  @include mat.all-component-themes($theme);
-  @include mat.typography-hierarchy($typography);
-
-  @include cdk.text-field-autofill;
-  @include cdk.text-field-autofill;
+  html {
+    @include mat.core;
+    @include mat.strong-focus-indicators;
+    @include mat.typography-hierarchy($typography);
+    @include mat.all-component-themes($theme);
+    @include mat.strong-focus-indicators-theme($theme);
+    @include cdk.text-field-autofill;
+  }
 
   html,
   body {
@@ -60,6 +84,9 @@ $theme: mat.define-light-theme(
 
   body {
     margin: 0;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+  }
+
+  a {
+    color: mat.get-theme-color($theme, primary, default);
   }
 }
