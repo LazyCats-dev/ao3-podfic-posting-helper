@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ErrorHandler,
   OnInit,
   computed,
   effect,
+  inject,
   signal,
 } from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
@@ -23,10 +25,16 @@ type ThemePreference = (typeof THEME_PREFERENCES)[number];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSelectorComponent implements OnInit {
+  private readonly errorHandler = inject(ErrorHandler);
+
   private readonly manualThemePreference = signal<ThemePreference>('none');
   private readonly systemThemePreference = signal<
     Exclude<ThemePreference, 'none'>
-  >(window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light');
+  >(
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
+  );
   private readonly storageThemePreference = signal<ThemePreference>('none');
 
   protected readonly themePreference = computed(() => {
@@ -64,6 +72,9 @@ export class ThemeSelectorComponent implements OnInit {
   constructor() {
     effect(async () => {
       const themePreference = this.manualThemePreference();
+      if (themePreference === 'none') {
+        return;
+      }
       await chrome.storage.sync.set({themePreference});
     });
     effect(async () => {
@@ -80,7 +91,13 @@ export class ThemeSelectorComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const {themePreference} = await chrome.storage.sync.get('themePreference');
+    let themePreference = 'none';
+    try {
+      const results = await chrome.storage.sync.get('themePreference');
+      themePreference = results['themePreference'];
+    } catch (e) {
+      this.errorHandler.handleError(e);
+    }
     if (!isThemePreference(themePreference)) {
       return;
     }
