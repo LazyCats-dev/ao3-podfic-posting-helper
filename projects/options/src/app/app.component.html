@@ -5,22 +5,25 @@
     </a>
     <span>AO3 Podfic Posting Helper Extension Options</span>
     <span class="spacer"></span>
-    <a
-      mat-icon-button
-      aria-label="View code for this extension on Github"
-      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
-      target="_blank"
-      rel="noopener">
-      <mat-icon>code</mat-icon>
-    </a>
-    <a
-      mat-icon-button
-      aria-label="Submit feedback"
-      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
-      target="_blank"
-      rel="noopener">
-      <mat-icon>feedback</mat-icon>
-    </a>
+    <div class="toolbar-actions">
+      <lib-theme-selector></lib-theme-selector>
+      <a
+        mat-icon-button
+        aria-label="View code for this extension on Github"
+        href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+        target="_blank"
+        rel="noopener">
+        <mat-icon>code</mat-icon>
+      </a>
+      <a
+        mat-icon-button
+        aria-label="Submit feedback"
+        href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+        target="_blank"
+        rel="noopener">
+        <mat-icon>feedback</mat-icon>
+      </a>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container>
@@ -96,7 +99,7 @@
                 <mat-label>Title template</mat-label>
                 <textarea
                   matInput
-                  rows="1"
+                  rows="2"
                   cols="100"
                   [formControl]="
                     titleTemplateFormGroup.controls.template
@@ -381,7 +384,7 @@
                 <mat-label>Work template</mat-label>
                 <textarea
                   matInput
-                  rows="10"
+                  rows="15"
                   cols="100"
                   class="code-editor-textarea"
                   [formControl]="

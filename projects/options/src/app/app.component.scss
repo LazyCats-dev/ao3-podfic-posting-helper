@@ -98,6 +98,11 @@ mat-toolbar {
   z-index: 1000;
 }
 
-h3 {
+:host h3 {
   margin-top: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
 }

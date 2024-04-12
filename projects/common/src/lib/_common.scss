@@ -3,7 +3,9 @@
 
 $dark-primary-text: rgb(0 0 0 / 87%);
 $light-primary-text: white;
-$ao3-red-palette: (
+
+// Based on AO3 red color.
+$light-primary-palette: (
   50: #fae7e9,
   100: #f3c4c6,
   200: #da8c88,
@@ -27,16 +29,105 @@ $ao3-red-palette: (
     900: $light-primary-text,
   ),
 );
-$primary: mat.define-palette($ao3-red-palette, 900);
-$accent: mat.define-palette($ao3-red-palette, 900);
-$warn: mat.define-palette(mat.$red-palette);
-$typography: mat.define-typography-config();
-$theme: mat.define-light-theme(
+$light-accent-palette: (
+  50: #e0f1f3,
+  100: #b2dddf,
+  200: #7fc7ca,
+  300: #4cb1b4,
+  400: #25a1a2,
+  500: #009090,
+  600: #018382,
+  700: #037472,
+  800: #076461,
+  900: #094844,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  ),
+);
+$dark-primary-palette: (
+  50: #e6f2fa,
+  100: #c2def3,
+  200: #9ecaeb,
+  300: #7eb5e2,
+  400: #69a6dc,
+  500: #5998d6,
+  600: #518ac9,
+  700: #4778b7,
+  800: #4068a4,
+  900: #324b84,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  ),
+);
+$dark-accent-palette: (
+  50: #faf3e7,
+  100: #f3e1c3,
+  200: #edce9e,
+  300: #e6bb7c,
+  400: #e1ad68,
+  500: #dba15f,
+  600: #d69859,
+  700: #ce8b53,
+  800: #c47f4e,
+  900: #b36e4a,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+  ),
+);
+$light-primary: mat.define-palette($light-primary-palette, 900);
+$light-accent: mat.define-palette($light-accent-palette, 500);
+$dark-primary: mat.define-palette($dark-primary-palette, 500);
+$dark-accent: mat.define-palette($dark-accent-palette, 600);
+$light-warn: mat.define-palette($light-primary-palette, 700);
+$dark-warn: mat.define-palette($light-primary-palette, 900);
+$typography: mat.define-typography-config(
+  $font-family:
+    "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'",
+);
+$light-theme: mat.define-light-theme(
   (
     color: (
-      primary: $primary,
-      accent: $accent,
-      warn: $warn,
+      primary: $light-primary,
+      accent: $light-accent,
+      warn: $light-warn,
+    ),
+    typography: $typography,
+    density: 0,
+  )
+);
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $light-warn,
     ),
     typography: $typography,
     density: 0,
@@ -44,14 +135,12 @@ $theme: mat.define-light-theme(
 );
 
 @mixin apply-base-theme {
-  @include mat.core;
-  @include mat.core;
-  @include mat.core-theme($theme);
-  @include mat.all-component-themes($theme);
-  @include mat.typography-hierarchy($typography);
-
-  @include cdk.text-field-autofill;
-  @include cdk.text-field-autofill;
+  html {
+    @include mat.core;
+    @include mat.strong-focus-indicators;
+    @include mat.typography-hierarchy($typography);
+    @include cdk.text-field-autofill;
+  }
 
   html,
   body {
@@ -60,6 +149,21 @@ $theme: mat.define-light-theme(
 
   body {
     margin: 0;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    @include mat.all-component-themes($light-theme);
+    @include mat.strong-focus-indicators-theme($light-theme);
+
+    a {
+      color: mat.get-theme-color($light-theme, primary, default);
+    }
+
+    &.dark-mode {
+      @include mat.all-component-colors($dark-theme);
+      @include mat.strong-focus-indicators-color($dark-theme);
+
+      // Avoid overwriting material styles.
+      a:not([class^='mdc-'], [class^='mat-']) {
+        color: mat.get-theme-color($dark-theme, primary, default);
+      }
+    }
   }
 }

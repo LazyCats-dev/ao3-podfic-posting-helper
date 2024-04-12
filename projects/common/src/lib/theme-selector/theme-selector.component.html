@@ -1,0 +1,9 @@
+<button
+  mat-icon-button
+  (click)="toggleManualThemePreference()"
+  [matTooltip]="tooltipText()"
+  [attr.aria-label]="tooltipText()">
+  <mat-icon>
+    {{ icon() }}
+  </mat-icon>
+</button>
