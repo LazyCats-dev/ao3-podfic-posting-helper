@@ -1,3 +1,13 @@
 @use '../../common/src/lib/common' as common;
-@import '~highlight.js/styles/a11y-light.css';
+
 @include common.apply-base-theme;
+
+body {
+  /* stylelint-disable-next-line no-invalid-position-at-import-rule */
+  @import '../../../node_modules/highlight.js/styles/a11y-light';
+
+  &.dark-mode {
+    /* stylelint-disable-next-line no-invalid-position-at-import-rule */
+    @import '../../../node_modules/highlight.js/styles/a11y-dark';
+  }
+}
