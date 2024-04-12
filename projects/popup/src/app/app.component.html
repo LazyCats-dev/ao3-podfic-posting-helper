@@ -5,22 +5,25 @@
     </a>
     <span>AO3 Podfic Posting Helper</span>
     <span class="spacer"></span>
-    <a
-      mat-icon-button
-      aria-label="Submit feedback"
-      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
-      target="_blank"
-      rel="noopener">
-      <mat-icon>feedback</mat-icon>
-    </a>
-    <a
-      mat-icon-button
-      aria-label="Extension options"
-      [href]="optionsPageUrl"
-      target="_blank"
-      rel="noopener">
-      <mat-icon>settings</mat-icon>
-    </a>
+    <div class="toolbar-actions">
+      <lib-theme-selector></lib-theme-selector>
+      <a
+        mat-icon-button
+        aria-label="Submit feedback"
+        href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+        target="_blank"
+        rel="noopener">
+        <mat-icon>feedback</mat-icon>
+      </a>
+      <a
+        mat-icon-button
+        aria-label="Extension options"
+        [href]="optionsPageUrl"
+        target="_blank"
+        rel="noopener">
+        <mat-icon>settings</mat-icon>
+      </a>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>
 

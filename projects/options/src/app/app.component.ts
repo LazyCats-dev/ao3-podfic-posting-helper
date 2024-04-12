@@ -37,6 +37,7 @@ import {HighlightModule} from 'ngx-highlightjs';
 import {MonoTypeOperatorFunction, pipe} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {INITIAL_FORM_VALUES} from './utils';
+import {ThemeSelectorComponent} from 'common';
 
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   allowedTags: [
@@ -144,10 +145,11 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
     MatSidenavContainer,
     MatSidenavContent,
     MatSnackBarModule,
+    MatSnackBarModule,
     MatToolbar,
     MatToolbarRow,
     ReactiveFormsModule,
-    MatSnackBarModule,
+    ThemeSelectorComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

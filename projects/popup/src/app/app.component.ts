@@ -14,7 +14,7 @@ import {MatInput} from '@angular/material/input';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {ANALYTICS} from 'common';
+import {ANALYTICS, ThemeSelectorComponent} from 'common';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {injectImportAndFillMetadata} from './inject';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -53,6 +53,7 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
     MatToolbarRow,
     NgIf,
     ReactiveFormsModule,
+    ThemeSelectorComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
