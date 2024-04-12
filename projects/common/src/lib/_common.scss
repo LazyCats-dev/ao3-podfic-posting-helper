@@ -105,14 +105,18 @@ $light-primary: mat.define-palette($light-primary-palette, 900);
 $light-accent: mat.define-palette($light-accent-palette, 500);
 $dark-primary: mat.define-palette($dark-primary-palette, 500);
 $dark-accent: mat.define-palette($dark-accent-palette, 600);
-$warn: mat.define-palette($light-primary-palette, 700);
-$typography: mat.define-typography-config();
+$light-warn: mat.define-palette($light-primary-palette, 700);
+$dark-warn: mat.define-palette($light-primary-palette, 900);
+$typography: mat.define-typography-config(
+  $font-family:
+    "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'",
+);
 $light-theme: mat.define-light-theme(
   (
     color: (
       primary: $light-primary,
       accent: $light-accent,
-      warn: $warn,
+      warn: $light-warn,
     ),
     typography: $typography,
     density: 0,
@@ -123,7 +127,7 @@ $dark-theme: mat.define-dark-theme(
     color: (
       primary: $dark-primary,
       accent: $dark-accent,
-      warn: $warn,
+      warn: $light-warn,
     ),
     typography: $typography,
     density: 0,
