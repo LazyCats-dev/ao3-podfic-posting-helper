@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
+@use '@angular/material-experimental' as matx;
 
 $dark-primary-text: rgb(0 0 0 / 87%);
 $light-primary-text: white;
@@ -133,12 +134,127 @@ $dark-theme: mat.define-dark-theme(
     density: 0,
   )
 );
+$light-primary-palette: (
+  100: rgb(255 255 255),
+  99: rgb(255 251 255),
+  98: rgb(255 248 246),
+  95: rgb(255 237 234),
+  90: rgb(255 218 212),
+  80: rgb(255 180 168),
+  70: rgb(255 138 120),
+  60: rgb(253 87 67),
+  50: rgb(217 62 45),
+  40: rgb(182 36 23),
+  35: rgb(164 21 12),
+  30: rgb(147 3 1),
+  25: rgb(126 0 0),
+  20: rgb(105 0 0),
+  10: rgb(65 0 0),
+  0: rgb(0 0 0),
+  secondary: (
+    100: rgb(255 255 255),
+    99: rgb(255 251 255),
+    98: rgb(255 248 246),
+    95: rgb(255 237 234),
+    90: rgb(255 218 212),
+    80: rgb(231 189 182),
+    70: rgb(202 162 156),
+    60: rgb(174 136 130),
+    50: rgb(146 111 105),
+    40: rgb(119 86 81),
+    35: rgb(106 75 70),
+    30: rgb(93 63 59),
+    25: rgb(81 52 48),
+    20: rgb(68 41 37),
+    10: rgb(44 21 18),
+    0: rgb(0 0 0),
+  ),
+  error: (
+    100: rgb(255 255 255),
+    99: rgb(255 251 255),
+    98: rgb(255 248 247),
+    95: rgb(255 237 234),
+    90: rgb(255 218 214),
+    80: rgb(255 180 171),
+    70: rgb(255 137 125),
+    60: rgb(255 84 73),
+    50: rgb(222 55 48),
+    40: rgb(186 26 26),
+    35: rgb(168 7 16),
+    30: rgb(147 0 10),
+    25: rgb(126 0 7),
+    20: rgb(105 0 5),
+    10: rgb(65 0 2),
+    0: rgb(0 0 0),
+  ),
+  neutral: (
+    100: rgb(255 255 255),
+    99: rgb(255 251 255),
+    98: rgb(255 248 246),
+    95: rgb(251 238 236),
+    90: rgb(237 224 221),
+    80: rgb(208 196 194),
+    70: rgb(180 169 167),
+    60: rgb(153 142 141),
+    50: rgb(127 117 115),
+    40: rgb(101 92 91),
+    35: rgb(89 80 79),
+    30: rgb(77 69 68),
+    25: rgb(65 58 56),
+    20: rgb(54 47 46),
+    10: rgb(32 26 25),
+    0: rgb(0 0 0),
+  ),
+  neutral-variant: (
+    100: rgb(255 255 255),
+    99: rgb(255 251 255),
+    98: rgb(255 248 246),
+    95: rgb(255 237 234),
+    90: rgb(245 221 218),
+    80: rgb(216 194 190),
+    70: rgb(188 167 163),
+    60: rgb(160 140 137),
+    50: rgb(133 115 112),
+    40: rgb(107 90 88),
+    35: rgb(95 79 76),
+    30: rgb(83 67 65),
+    25: rgb(71 56 54),
+    20: rgb(59 45 43),
+    10: rgb(37 25 23),
+    0: rgb(0 0 0),
+  ),
+);
+$font-family: "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'";
+$light-theme: matx.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: $light-primary-palette,
+    ),
+    typography: (
+      plain-family: $font-family,
+      brand-family: $font-family,
+    ),
+  )
+);
+$dark-theme: matx.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: $light-primary-palette,
+    ),
+    typography: (
+      plain-family: $font-family,
+      brand-family: $font-family,
+    ),
+  )
+);
 
 @mixin apply-base-theme {
   html {
     @include mat.core;
     @include mat.strong-focus-indicators;
-    @include mat.typography-hierarchy($typography);
+    @include mat.typography-hierarchy($light-theme);
     @include cdk.text-field-autofill;
   }
 
@@ -153,7 +269,7 @@ $dark-theme: mat.define-dark-theme(
     @include mat.strong-focus-indicators-theme($light-theme);
 
     a {
-      color: mat.get-theme-color($light-theme, primary, default);
+      color: mat.get-theme-color($light-theme, primary);
     }
 
     &.dark-mode {
@@ -162,7 +278,7 @@ $dark-theme: mat.define-dark-theme(
 
       // Avoid overwriting material styles.
       a:not([class^='mdc-'], [class^='mat-']) {
-        color: mat.get-theme-color($dark-theme, primary, default);
+        color: mat.get-theme-color($dark-theme, primary);
       }
     }
   }
