@@ -93,7 +93,8 @@
               <p>
                 This template does
                 <strong>not</strong>
-                support HTML.
+                support
+                <abbr title="Hypertext markup language">HTML</abbr>.
               </p>
               <mat-form-field>
                 <mat-label>Title template</mat-label>
@@ -113,7 +114,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview</h3>
+              <h3 class="mat-title-large">Preview</h3>
               <pre>
                 <code
                   [highlight]="titleTemplatePreview | async"
@@ -122,7 +123,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -244,7 +245,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="summaryTemplatePreview | async"
@@ -253,7 +254,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -328,7 +329,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="notesTemplatePreview | async"
@@ -337,7 +338,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -401,7 +402,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="workTemplatePreview | async"
@@ -410,7 +411,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -426,13 +427,13 @@
           <mat-card-content>
             <section>
               <header>
-                <h3>Version</h3>
+                <h3 class="mat-title-large">Version</h3>
                 <p class="version">{{ version }}</p>
               </header>
             </section>
             <section>
               <header>
-                <h3>Distributions</h3>
+                <h3 class="mat-title-large">Distributions</h3>
                 <ul>
                   <li>
                     <a
@@ -466,7 +467,7 @@
             </section>
             <section>
               <header>
-                <h3>Feedback and bugs</h3>
+                <h3 class="mat-title-large">Feedback and bugs</h3>
                 <p>There are a few ways to submit feedback or report bugs:</p>
                 <ul>
                   <li>
@@ -505,7 +506,7 @@
             </section>
             <section>
               <header>
-                <h3>Contributing</h3>
+                <h3 class="mat-title-large">Contributing</h3>
                 <p>
                   This extension is open source. Source code is available on
                   <a
@@ -513,16 +514,15 @@
                     target="_blank"
                     rel="noopener"
                     id="contributing-github">
-                    GitHub
-                  </a>
-                  . Feel free to send a pull request, we will try our best to
+                    GitHub </a
+                  >. Feel free to send a pull request, we will try our best to
                   review it in a timely manner.
                 </p>
               </header>
             </section>
             <section>
               <header>
-                <h3>Credits</h3>
+                <h3 class="mat-title-large">Credits</h3>
                 <p>This extension was created by:</p>
                 <ul>
                   <li>
@@ -557,7 +557,7 @@
             </section>
             <section>
               <header>
-                <h3>Website</h3>
+                <h3 class="mat-title-large">Website</h3>
                 <p>
                   <a
                     href="https://lazycats.dev?utm_source=cextension&utm_medium=extension&utm_campaign=options"

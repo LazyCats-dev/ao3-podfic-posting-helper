@@ -1,5 +1,12 @@
 import {AsyncPipe, NgIf} from '@angular/common';
-import {Component, ViewChild, inject, signal, ElementRef} from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  inject,
+  signal,
+  ElementRef,
+  effect,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,6 +27,7 @@ import {injectImportAndFillMetadata} from './inject';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {from} from 'rxjs';
 import {map, tap, take, shareReplay} from 'rxjs/operators';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 const AUDIO_FORMAT_TAG_PREFIX = 'audio-format-tag-';
 
@@ -161,9 +169,23 @@ export class AppComponent {
   });
 
   protected readonly loading = signal<boolean>(false);
+  protected readonly podifcLengthSelectEnabled = toSignal(
+    this.formGroup.controls.podficLengthLabel.valueChanges,
+    {initialValue: this.formGroup.controls.podficLengthLabel.value},
+  );
 
   @ViewChild('urlInput')
   urlInput!: ElementRef<HTMLInputElement>;
+
+  constructor() {
+    effect(() => {
+      if (this.podifcLengthSelectEnabled()) {
+        this.formGroup.controls.podficLength.enable();
+      } else {
+        this.formGroup.controls.podficLength.disable();
+      }
+    });
+  }
 
   protected async fillNewWorkForm(tab: chrome.tabs.Tab): Promise<void> {
     if (this.formGroup.invalid) {

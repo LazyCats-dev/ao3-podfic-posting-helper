@@ -18,7 +18,7 @@ textarea {
 }
 
 code {
-  border: 1px inset rgb(0 0 0 / 12%);
+  border: 1px inset var(--common-color-outline-variant);
 }
 
 pre,
@@ -34,6 +34,7 @@ code {
   margin: auto;
   overflow: auto;
   height: 100%;
+  padding-inline: 16px 16px;
 }
 
 h1 {
@@ -46,8 +47,12 @@ h1 {
   max-width: 900px;
 }
 
-.about-section section:not(:last-of-type) {
-  border-bottom: 1px inset rgb(0 0 0 / 12%);
+.about-section {
+  margin-bottom: 50px;
+
+  section:not(:last-of-type) {
+    border-bottom: 1px inset var(--common-color-outline-variant);
+  }
 }
 
 .header-icon {
@@ -60,7 +65,7 @@ textarea.code-editor-textarea {
 
 @keyframes highlight {
   0% {
-    background-color: rgb(0 0 0 / 33%);
+    background-color: var(--common-color-secondary-container);
   }
 
   100% {

@@ -1,6 +1,9 @@
 import {APP_INITIALIZER, FactoryProvider, Provider} from '@angular/core';
 import {ANALYTICS, Analytics} from './google-analytics';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from '@angular/material/form-field';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
@@ -135,9 +138,13 @@ export function provideStorageSetup(): FactoryProvider {
 }
 
 export function provideMatFormFieldDefaultOptions() {
+  const options: MatFormFieldDefaultOptions = {
+    subscriptSizing: 'dynamic',
+    appearance: 'outline',
+  };
   return {
     provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-    useValue: {subscriptSizing: 'dynamic'},
+    useValue: options,
   };
 }
 

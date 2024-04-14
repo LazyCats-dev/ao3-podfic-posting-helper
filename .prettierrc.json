@@ -4,7 +4,7 @@
   "bracketSpacing": false,
   "bracketSameLine": true,
   "arrowParens": "avoid",
-  "htmlWhitespaceSensitivity": "ignore",
+  "htmlWhitespaceSensitivity": "css",
   "overrides": [
     {
       "files": "*.html",

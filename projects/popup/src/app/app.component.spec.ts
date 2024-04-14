@@ -97,6 +97,14 @@ describe('AppComponent', () => {
       fixture.detectChanges();
     }));
 
+    it('enables the podfic length select because a length is being added', async () => {
+      const podficLengthFormField = await loader.getHarness(
+        MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),
+      );
+
+      expect(await podficLengthFormField.isDisabled()).toBeFalse();
+    });
+
     it('sets the input values to the intial values', async () => {
       const podficTagCheckbox = await loader.getHarness(
         MatCheckboxHarness.with({label: 'Add the tag "Podfic"'}),
@@ -288,6 +296,26 @@ describe('AppComponent', () => {
         expect(await urlInputFormField.getTextErrors()).toContain(
           'Must be an AO3 work URL',
         );
+      });
+
+      it('disables the podfic length select when a podfic length will not be added', async () => {
+        const podficLengthFormField = await loader.getHarness(
+          MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),
+        );
+
+        expect(await podficLengthFormField.isDisabled()).toBeTrue();
+
+        const podficLengthCheckbox = await loader.getHarness(
+          MatCheckboxHarness.with({label: 'Add a "Podfic Length" tag'}),
+        );
+
+        await podficLengthCheckbox.check();
+
+        expect(await podficLengthFormField.isDisabled()).toBeFalse();
+
+        await podficLengthCheckbox.uncheck();
+
+        expect(await podficLengthFormField.isDisabled()).toBeTrue();
       });
 
       describe('when the form is filled with valid values and submitted', () => {

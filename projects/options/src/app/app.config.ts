@@ -10,6 +10,7 @@ import {
 } from 'common';
 import {HIGHLIGHT_OPTIONS} from 'ngx-highlightjs';
 import {provideInitialFormValuesFromStorage} from './utils';
+import {MAT_CARD_CONFIG, MatCardConfig} from '@angular/material/card';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,10 @@ export const appConfig: ApplicationConfig = {
     provideMatFormFieldDefaultOptions(),
     provideMatIconRegistry(),
     provideMatSnackBarDefaultOptions(),
+    {
+      provide: MAT_CARD_CONFIG,
+      useValue: {appearance: 'outlined'} as MatCardConfig,
+    },
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {
