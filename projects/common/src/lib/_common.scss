@@ -2,138 +2,6 @@
 @use '@angular/cdk';
 @use '@angular/material-experimental' as matx;
 
-$dark-primary-text: rgb(0 0 0 / 87%);
-$light-primary-text: white;
-
-// Based on AO3 red color.
-$light-primary-palette: (
-  50: #fae7e9,
-  100: #f3c4c6,
-  200: #da8c88,
-  300: #c8615c,
-  400: #cb3f36,
-  500: #ca2c17,
-  600: #bc2218,
-  700: #ac1714,
-  800: #9f0f0d,
-  900: #900000,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $dark-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-  ),
-);
-$light-accent-palette: (
-  50: #e0f1f3,
-  100: #b2dddf,
-  200: #7fc7ca,
-  300: #4cb1b4,
-  400: #25a1a2,
-  500: #009090,
-  600: #018382,
-  700: #037472,
-  800: #076461,
-  900: #094844,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $dark-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-  ),
-);
-$dark-primary-palette: (
-  50: #e6f2fa,
-  100: #c2def3,
-  200: #9ecaeb,
-  300: #7eb5e2,
-  400: #69a6dc,
-  500: #5998d6,
-  600: #518ac9,
-  700: #4778b7,
-  800: #4068a4,
-  900: #324b84,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $dark-primary-text,
-    500: $dark-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-  ),
-);
-$dark-accent-palette: (
-  50: #faf3e7,
-  100: #f3e1c3,
-  200: #edce9e,
-  300: #e6bb7c,
-  400: #e1ad68,
-  500: #dba15f,
-  600: #d69859,
-  700: #ce8b53,
-  800: #c47f4e,
-  900: #b36e4a,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $dark-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-  ),
-);
-$light-primary: mat.define-palette($light-primary-palette, 900);
-$light-accent: mat.define-palette($light-accent-palette, 500);
-$dark-primary: mat.define-palette($dark-primary-palette, 500);
-$dark-accent: mat.define-palette($dark-accent-palette, 600);
-$light-warn: mat.define-palette($light-primary-palette, 700);
-$dark-warn: mat.define-palette($light-primary-palette, 900);
-$typography: mat.define-typography-config(
-  $font-family:
-    "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'",
-);
-$light-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $light-primary,
-      accent: $light-accent,
-      warn: $light-warn,
-    ),
-    typography: $typography,
-    density: 0,
-  )
-);
-$dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: $dark-primary,
-      accent: $dark-accent,
-      warn: $light-warn,
-    ),
-    typography: $typography,
-    density: 0,
-  )
-);
 $light-primary-palette: (
   100: rgb(255 255 255),
   99: rgb(255 251 255),
@@ -204,6 +72,16 @@ $light-primary-palette: (
     20: rgb(54 47 46),
     10: rgb(32 26 25),
     0: rgb(0 0 0),
+    4: #0d0a0a,
+    6: #13100f,
+    12: #241e1d,
+    17: #2f2928,
+    22: #3a3332,
+    24: #3f3836,
+    87: #e4d8d5,
+    92: #f3e6e3,
+    94: #f8ebe9,
+    96: #fcf1ef,
   ),
   neutral-variant: (
     100: rgb(255 255 255),
@@ -224,29 +102,127 @@ $light-primary-palette: (
     0: rgb(0 0 0),
   ),
 );
+$dark-primary-palette: (
+  100: rgb(255 255 255),
+  99: rgb(253 252 255),
+  98: rgb(248 249 255),
+  95: rgb(233 241 255),
+  90: rgb(208 228 255),
+  80: rgb(155 202 255),
+  70: rgb(106 176 245),
+  60: rgb(77 149 217),
+  50: rgb(45 123 189),
+  40: rgb(0 98 160),
+  35: rgb(0 86 141),
+  30: rgb(0 73 122),
+  25: rgb(0 62 104),
+  20: rgb(0 50 86),
+  10: rgb(0 29 53),
+  0: rgb(0 0 0),
+  secondary: (
+    100: rgb(255 255 255),
+    99: rgb(253 252 255),
+    98: rgb(248 249 255),
+    95: rgb(233 241 255),
+    90: rgb(214 228 247),
+    80: rgb(186 200 219),
+    70: rgb(159 172 191),
+    60: rgb(132 146 164),
+    50: rgb(107 120 137),
+    40: rgb(82 96 112),
+    35: rgb(70 84 99),
+    30: rgb(59 72 87),
+    25: rgb(47 61 76),
+    20: rgb(36 49 64),
+    10: rgb(15 29 42),
+    0: rgb(0 0 0),
+  ),
+  error: (
+    100: rgb(255 255 255),
+    99: rgb(255 251 255),
+    98: rgb(255 248 247),
+    95: rgb(255 237 234),
+    90: rgb(255 218 214),
+    80: rgb(255 180 171),
+    70: rgb(255 137 125),
+    60: rgb(255 84 73),
+    50: rgb(222 55 48),
+    40: rgb(186 26 26),
+    35: rgb(168 7 16),
+    30: rgb(147 0 10),
+    25: rgb(126 0 7),
+    20: rgb(105 0 5),
+    10: rgb(65 0 2),
+    0: rgb(0 0 0),
+  ),
+  neutral: (
+    100: rgb(255 255 255),
+    99: rgb(253 252 255),
+    98: rgb(249 249 252),
+    95: rgb(241 240 244),
+    90: rgb(226 226 230),
+    80: rgb(198 198 202),
+    70: rgb(171 171 174),
+    60: rgb(144 144 148),
+    50: rgb(118 119 122),
+    40: rgb(93 94 97),
+    35: rgb(81 82 85),
+    30: rgb(69 71 74),
+    25: rgb(58 59 62),
+    20: rgb(47 48 51),
+    10: rgb(26 28 30),
+    0: rgb(0 0 0),
+    4: #0b0b0c,
+    6: #101013,
+    12: #1f1f23,
+    17: #2a2a2e,
+    22: #353438,
+    24: #3a393d,
+    87: #dcd9de,
+    92: #ebe7ec,
+    94: #f0ecf1,
+    96: #f6f2f7,
+  ),
+  neutral-variant: (
+    100: rgb(255 255 255),
+    99: rgb(253 252 255),
+    98: rgb(248 249 255),
+    95: rgb(237 241 249),
+    90: rgb(223 227 235),
+    80: rgb(194 199 207),
+    70: rgb(167 171 179),
+    60: rgb(140 145 153),
+    50: rgb(115 119 127),
+    40: rgb(90 95 102),
+    35: rgb(78 83 90),
+    30: rgb(66 71 78),
+    25: rgb(55 60 66),
+    20: rgb(44 49 55),
+    10: rgb(23 28 34),
+    0: rgb(0 0 0),
+  ),
+);
 $font-family: "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'";
+$typography: (
+  plain-family: $font-family,
+  brand-family: $font-family,
+);
 $light-theme: matx.define-theme(
   (
     color: (
       theme-type: light,
       primary: $light-primary-palette,
     ),
-    typography: (
-      plain-family: $font-family,
-      brand-family: $font-family,
-    ),
+    typography: $typography,
   )
 );
 $dark-theme: matx.define-theme(
   (
     color: (
       theme-type: dark,
-      primary: $light-primary-palette,
+      primary: $dark-primary-palette,
     ),
-    typography: (
-      plain-family: $font-family,
-      brand-family: $font-family,
-    ),
+    typography: $typography,
   )
 );
 
@@ -256,6 +232,15 @@ $dark-theme: matx.define-theme(
     @include mat.strong-focus-indicators;
     @include mat.typography-hierarchy($light-theme);
     @include cdk.text-field-autofill;
+
+    --common-color-outline-variant: #{mat.get-theme-color(
+        $light-theme,
+        outline-variant
+      )};
+    --common-color-secondary-container: #{mat.get-theme-color(
+        $light-theme,
+        secondary-container
+      )};
   }
 
   html,
@@ -272,13 +257,66 @@ $dark-theme: matx.define-theme(
       color: mat.get-theme-color($light-theme, primary);
     }
 
+    .mat-toolbar {
+      --mat-toolbar-container-background-color: #{mat.get-theme-color(
+          $light-theme,
+          primary
+        )};
+      --mat-toolbar-container-text-color: #{mat.get-theme-color(
+          $light-theme,
+          on-primary
+        )};
+      --mdc-icon-button-icon-color: #{mat.get-theme-color(
+          $light-theme,
+          on-primary
+        )};
+    }
+
+    mat-sidenav-content {
+      background-color: mat.get-theme-color(
+        $light-theme,
+        surface-container-low
+      );
+    }
+
     &.dark-mode {
       @include mat.all-component-colors($dark-theme);
       @include mat.strong-focus-indicators-color($dark-theme);
 
+      --common-color-outline-variant: #{mat.get-theme-color(
+          $dark-theme,
+          outline-variant
+        )};
+      --common-color-secondary-container: #{mat.get-theme-color(
+          $dark-theme,
+          secondary-container
+        )};
+
       // Avoid overwriting material styles.
       a:not([class^='mdc-'], [class^='mat-']) {
         color: mat.get-theme-color($dark-theme, primary);
+      }
+
+      .mat-toolbar {
+        --mat-toolbar-container-background-color: #{mat.get-theme-color(
+            $dark-theme,
+            primary
+          )};
+        --mat-toolbar-container-text-color: #{mat.get-theme-color(
+            $dark-theme,
+            on-primary
+          )};
+        --mdc-icon-button-icon-color: #{mat.get-theme-color(
+            $dark-theme,
+            on-primary
+          )};
+      }
+
+      mat-sidenav-content {
+        background-color: mat.get-theme-color(
+          $dark-theme,
+          surface-container-low
+        );
       }
     }
   }

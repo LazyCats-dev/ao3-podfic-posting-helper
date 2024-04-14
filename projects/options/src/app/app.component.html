@@ -67,7 +67,7 @@
           [formGroup]="titleTemplateFormGroup"
           (reset)="resetTitleTemplate($event)"
           (ngSubmit)="saveTitleTemplate()">
-          <mat-card>
+          <mat-card appearance="outlined">
             <mat-card-header role="heading">
               <mat-card-title>Title template</mat-card-title>
             </mat-card-header>
@@ -113,7 +113,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview</h3>
+              <h3 class="mat-title-large">Preview</h3>
               <pre>
                 <code
                   [highlight]="titleTemplatePreview | async"
@@ -122,7 +122,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -135,7 +135,7 @@
         </form>
       </section>
       <section id="common-template-keywords-section" class="main-section">
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-card-header role="heading">
             <mat-card-title>Template keywords</mat-card-title>
           </mat-card-header>
@@ -198,7 +198,7 @@
           [formGroup]="summaryTemplateFormGroup"
           (reset)="resetSummaryTemplate($event)"
           (ngSubmit)="saveSummaryTemplate()">
-          <mat-card>
+          <mat-card appearance="outlined">
             <mat-card-header role="heading">
               <mat-card-title>Summary template</mat-card-title>
             </mat-card-header>
@@ -244,7 +244,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="summaryTemplatePreview | async"
@@ -253,7 +253,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -270,7 +270,7 @@
           [formGroup]="notesTemplateFormGroup"
           (reset)="resetNotesTemplate($event)"
           (ngSubmit)="saveNotesTemplate()">
-          <mat-card>
+          <mat-card appearance="outlined">
             <mat-card-header role="heading">
               <mat-card-title>Notes template</mat-card-title>
             </mat-card-header>
@@ -328,7 +328,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="notesTemplatePreview | async"
@@ -337,7 +337,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -353,7 +353,7 @@
         <form
           [formGroup]="workTemplateFormGroup"
           (ngSubmit)="saveWorkTemplate()">
-          <mat-card>
+          <mat-card appearance="outlined">
             <mat-card-header role="heading">
               <mat-card-title>Work template</mat-card-title>
             </mat-card-header>
@@ -401,7 +401,7 @@
                   </mat-error>
                 }
               </mat-form-field>
-              <h3 class="mat-subtitle-2">Preview of generated HTML</h3>
+              <h3 class="mat-title-large">Preview of generated HTML</h3>
               <pre>
                 <code
                   [highlight]="workTemplatePreview | async"
@@ -410,7 +410,7 @@
               </pre>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="primary" type="submit">
+              <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
               </button>
@@ -419,20 +419,20 @@
         </form>
       </section>
       <section class="about-section main-section" id="about-section">
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-card-header role="heading">
             <mat-card-title>About</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <section>
               <header>
-                <h3>Version</h3>
+                <h3 class="mat-title-large">Version</h3>
                 <p class="version">{{ version }}</p>
               </header>
             </section>
             <section>
               <header>
-                <h3>Distributions</h3>
+                <h3 class="mat-title-large">Distributions</h3>
                 <ul>
                   <li>
                     <a
@@ -466,7 +466,7 @@
             </section>
             <section>
               <header>
-                <h3>Feedback and bugs</h3>
+                <h3 class="mat-title-large">Feedback and bugs</h3>
                 <p>There are a few ways to submit feedback or report bugs:</p>
                 <ul>
                   <li>
@@ -505,7 +505,7 @@
             </section>
             <section>
               <header>
-                <h3>Contributing</h3>
+                <h3 class="mat-title-large">Contributing</h3>
                 <p>
                   This extension is open source. Source code is available on
                   <a
@@ -522,7 +522,7 @@
             </section>
             <section>
               <header>
-                <h3>Credits</h3>
+                <h3 class="mat-title-large">Credits</h3>
                 <p>This extension was created by:</p>
                 <ul>
                   <li>
@@ -557,7 +557,7 @@
             </section>
             <section>
               <header>
-                <h3>Website</h3>
+                <h3 class="mat-title-large">Website</h3>
                 <p>
                   <a
                     href="https://lazycats.dev?utm_source=cextension&utm_medium=extension&utm_campaign=options"
