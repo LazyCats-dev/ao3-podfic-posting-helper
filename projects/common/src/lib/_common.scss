@@ -264,7 +264,8 @@ $dark-theme: matx.define-theme(
     .mat-toolbar {
       --mat-toolbar-container-background-color: #{mat.get-theme-color(
           $light-theme,
-          primary
+          primary,
+          30
         )};
       --mat-toolbar-container-text-color: #{mat.get-theme-color(
           $light-theme,
