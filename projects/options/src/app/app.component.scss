@@ -34,6 +34,7 @@ code {
   margin: auto;
   overflow: auto;
   height: 100%;
+  padding-inline: 16px 16px;
 }
 
 h1 {
@@ -46,8 +47,12 @@ h1 {
   max-width: 900px;
 }
 
-.about-section section:not(:last-of-type) {
-  border-bottom: 1px inset var(--common-color-outline-variant);
+.about-section {
+  margin-bottom: 50px;
+
+  section:not(:last-of-type) {
+    border-bottom: 1px inset var(--common-color-outline-variant);
+  }
 }
 
 .header-icon {

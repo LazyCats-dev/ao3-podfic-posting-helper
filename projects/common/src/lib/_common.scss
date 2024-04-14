@@ -253,6 +253,10 @@ $dark-theme: matx.define-theme(
     @include mat.all-component-themes($light-theme);
     @include mat.strong-focus-indicators-theme($light-theme);
 
+    --mat-sidenav-container-divider-color: var(--common-color-outline-variant);
+    --mat-sidenav-container-shape: 0;
+    --mat-sidenav-container-width: 250px;
+
     a {
       color: mat.get-theme-color($light-theme, primary);
     }
@@ -272,13 +276,6 @@ $dark-theme: matx.define-theme(
         )};
     }
 
-    mat-sidenav-content {
-      background-color: mat.get-theme-color(
-        $light-theme,
-        surface-container-low
-      );
-    }
-
     &.dark-mode {
       @include mat.all-component-colors($dark-theme);
       @include mat.strong-focus-indicators-color($dark-theme);
@@ -291,6 +288,9 @@ $dark-theme: matx.define-theme(
           $dark-theme,
           secondary-container
         )};
+      --mat-sidenav-container-divider-color: var(
+        --common-color-outline-variant
+      );
 
       // Avoid overwriting material styles.
       a:not([class^='mdc-'], [class^='mat-']) {
@@ -310,13 +310,6 @@ $dark-theme: matx.define-theme(
             $dark-theme,
             on-primary
           )};
-      }
-
-      mat-sidenav-content {
-        background-color: mat.get-theme-color(
-          $dark-theme,
-          surface-container-low
-        );
       }
     }
   }
