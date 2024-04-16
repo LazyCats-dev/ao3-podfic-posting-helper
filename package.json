@@ -10,7 +10,7 @@
     "ng": "ng",
     "build": "rm -rf dist/ && ng build common && ng build popup && ng build options && cp manifest.json dist/",
     "release": "rm -rf dist/ && rm -f dist.zip && ng build common --configuration=production && ng build popup --configuration=production && ng build options --configuration=production && cp manifest.json dist/ && cd dist && zip -r ../dist.zip . * && cd ../",
-    "test": "ng test",
+    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "lint": "ng lint && npm run lint:styles",
     "lint:styles": "stylelint --fix \"projects/**/*.scss\""
   },
