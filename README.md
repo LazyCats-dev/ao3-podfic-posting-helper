@@ -1,5 +1,7 @@
 # AO3 Podfic Posting Helper
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/9fS5upmdAHChMhnM4uW2Am/7XzTBf3G6LDyt6Hgk24jgP/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/9fS5upmdAHChMhnM4uW2Am/7XzTBf3G6LDyt6Hgk24jgP/tree/main)
+
 ![Logo: A platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true)
 
 When you post a new work, this extension can help you by importing metadata such as tags and rating to match the work that inspired you.
