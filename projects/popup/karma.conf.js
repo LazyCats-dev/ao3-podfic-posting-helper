@@ -13,6 +13,7 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
     files: [
+      './init.js',
       {
         pattern: './src/**/testdata/**',
         watched: true,
