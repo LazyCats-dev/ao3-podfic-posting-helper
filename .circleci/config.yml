@@ -21,7 +21,9 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run tests
-          command: npm test --passWithNoTests
+          command: |
+            npm run build
+            npm test --passWithNoTests
   build-node:
     # Build node project
     executor: node/default
