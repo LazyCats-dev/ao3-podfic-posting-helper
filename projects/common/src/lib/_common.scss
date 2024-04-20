@@ -229,6 +229,8 @@ $dark-theme: matx.define-theme(
 @mixin apply-base-theme {
   html {
     @include mat.core;
+    @include mat.all-component-themes($light-theme);
+    @include mat.strong-focus-indicators-theme($light-theme);
     @include mat.strong-focus-indicators;
     @include mat.typography-hierarchy($light-theme);
     @include cdk.text-field-autofill;
@@ -241,43 +243,26 @@ $dark-theme: matx.define-theme(
         $light-theme,
         secondary-container
       )};
-  }
-
-  html,
-  body {
-    height: 100%;
-  }
-
-  body {
-    margin: 0;
-    @include mat.all-component-themes($light-theme);
-    @include mat.strong-focus-indicators-theme($light-theme);
-
-    --mat-sidenav-container-divider-color: var(--common-color-outline-variant);
+    --common-color-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
+    --common-toolbar-background-color: #{mat.get-theme-color(
+        $light-theme,
+        primary,
+        30
+      )};
+    --common-color-primary: #{mat.get-theme-color($light-theme, primary)};
+    --mat-toolbar-container-background-color: var(
+      --common-toolbar-background-color
+    );
+    --mat-toolbar-container-text-color: var(--common-color-on-primary);
     --mat-sidenav-container-shape: 0;
     --mat-sidenav-container-width: 250px;
-
-    a {
-      color: mat.get-theme-color($light-theme, primary);
-    }
+    --mat-sidenav-container-divider-color: var(--common-color-outline-variant);
 
     .mat-toolbar {
-      --mat-toolbar-container-background-color: #{mat.get-theme-color(
-          $light-theme,
-          primary,
-          30
-        )};
-      --mat-toolbar-container-text-color: #{mat.get-theme-color(
-          $light-theme,
-          on-primary
-        )};
-      --mdc-icon-button-icon-color: #{mat.get-theme-color(
-          $light-theme,
-          on-primary
-        )};
+      --mdc-icon-button-icon-color: var(--common-color-on-primary);
     }
 
-    &.dark-mode {
+    .dark-mode {
       @include mat.all-component-colors($dark-theme);
       @include mat.strong-focus-indicators-color($dark-theme);
 
@@ -289,29 +274,33 @@ $dark-theme: matx.define-theme(
           $dark-theme,
           secondary-container
         )};
+      --common-color-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
+      --common-color-primary: #{mat.get-theme-color($dark-theme, primary)};
+      --common-toolbar-background-color: var(--common-color-primary);
+      --mat-toolbar-container-background-color: var(
+        --common-toolbar-background-color
+      );
+      --mat-toolbar-container-text-color: var(--common-color-on-primary);
       --mat-sidenav-container-divider-color: var(
         --common-color-outline-variant
       );
 
-      // Avoid overwriting material styles.
-      a:not([class^='mdc-'], [class^='mat-']) {
-        color: mat.get-theme-color($dark-theme, primary);
-      }
-
       .mat-toolbar {
-        --mat-toolbar-container-background-color: #{mat.get-theme-color(
-            $dark-theme,
-            primary
-          )};
-        --mat-toolbar-container-text-color: #{mat.get-theme-color(
-            $dark-theme,
-            on-primary
-          )};
-        --mdc-icon-button-icon-color: #{mat.get-theme-color(
-            $dark-theme,
-            on-primary
-          )};
+        --mdc-icon-button-icon-color: var(--common-color-on-primary);
       }
+    }
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+
+    a {
+      color: var(--common-color-primary);
     }
   }
 }
