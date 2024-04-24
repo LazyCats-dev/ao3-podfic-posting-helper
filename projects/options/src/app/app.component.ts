@@ -38,6 +38,7 @@ import {MonoTypeOperatorFunction, pipe} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {INITIAL_FORM_VALUES} from './utils';
 import {ThemeSelectorComponent} from 'common';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   allowedTags: [
@@ -122,6 +123,7 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   standalone: true,
   imports: [
     AsyncPipe,
+    CdkTextareaAutosize,
     HighlightModule,
     MatButton,
     MatCard,

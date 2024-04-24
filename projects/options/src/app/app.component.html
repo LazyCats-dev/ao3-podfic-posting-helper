@@ -100,8 +100,9 @@
                 <mat-label>Title template</mat-label>
                 <textarea
                   matInput
-                  rows="2"
+                  cdkAutosizeMinRows="2"
                   cols="100"
+                  cdkTextareaAutosize
                   [formControl]="
                     titleTemplateFormGroup.controls.template
                   "></textarea>
@@ -229,8 +230,9 @@
                 <mat-label>Summary template</mat-label>
                 <textarea
                   matInput
-                  rows="5"
+                  cdkAutosizeMinRows="5"
                   cols="100"
+                  cdkTextareaAutosize
                   [formControl]="
                     summaryTemplateFormGroup.controls.template
                   "></textarea>
@@ -312,8 +314,9 @@
                 <mat-label>Notes template</mat-label>
                 <textarea
                   matInput
-                  rows="5"
+                  cdkAutosizeMinRows="5"
                   cols="100"
+                  cdkTextareaAutosize
                   class="code-editor-textarea"
                   [formControl]="
                     notesTemplateFormGroup.controls.template
@@ -385,9 +388,10 @@
                 <mat-label>Work template</mat-label>
                 <textarea
                   matInput
-                  rows="15"
+                  cdkAutosizeMinRows="15"
                   cols="100"
                   class="code-editor-textarea"
+                  cdkTextareaAutosize
                   [formControl]="
                     workTemplateFormGroup.controls.template
                   "></textarea>

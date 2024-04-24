@@ -123,13 +123,17 @@
           </p>
           <div class="form-item">
             @if (loading()) {
-              <mat-spinner
-                mode="indeterminate"
-                diameter="36"
-                aria-label="Importing please wait"></mat-spinner>
-              Importing...
+              <button
+                mat-flat-button
+                disabled
+                [attr.role]="loading() ? 'generic' : 'button'">
+                <mat-progress-spinner
+                  diameter="24"
+                  mode="indeterminate"
+                  aria-label="Importing please wait"></mat-progress-spinner>
+              </button>
             } @else {
-              <button type="submit" mat-flat-button color="primary">
+              <button type="submit" mat-flat-button>
                 <mat-icon>import_export</mat-icon>
                 Import
               </button>
