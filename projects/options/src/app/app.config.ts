@@ -1,4 +1,7 @@
-import {ApplicationConfig} from '@angular/core';
+import {
+  ApplicationConfig,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideHttpClient} from '@angular/common/http';
 import {
@@ -22,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideMatFormFieldDefaultOptions(),
     provideMatIconRegistry(),
     provideMatSnackBarDefaultOptions(),
+    provideExperimentalZonelessChangeDetection(),
     {
       provide: MAT_CARD_CONFIG,
       useValue: {appearance: 'outlined'} as MatCardConfig,
