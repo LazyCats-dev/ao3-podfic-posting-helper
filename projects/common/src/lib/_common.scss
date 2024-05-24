@@ -1,255 +1,38 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
-@use '@angular/material-experimental' as matx;
-
-$light-primary-palette: (
-  100: rgb(255 255 255),
-  99: rgb(255 251 255),
-  98: rgb(255 248 246),
-  95: rgb(255 237 234),
-  90: rgb(255 218 212),
-  80: rgb(255 180 168),
-  70: rgb(255 138 120),
-  60: rgb(253 87 67),
-  50: rgb(217 62 45),
-  40: rgb(182 36 23),
-  35: rgb(164 21 12),
-  30: rgb(147 3 1),
-  25: rgb(126 0 0),
-  20: rgb(105 0 0),
-  10: rgb(65 0 0),
-  0: rgb(0 0 0),
-  secondary: (
-    100: rgb(255 255 255),
-    99: rgb(255 251 255),
-    98: rgb(255 248 246),
-    95: rgb(255 237 234),
-    90: rgb(255 218 212),
-    80: rgb(231 189 182),
-    70: rgb(202 162 156),
-    60: rgb(174 136 130),
-    50: rgb(146 111 105),
-    40: rgb(119 86 81),
-    35: rgb(106 75 70),
-    30: rgb(93 63 59),
-    25: rgb(81 52 48),
-    20: rgb(68 41 37),
-    10: rgb(44 21 18),
-    0: rgb(0 0 0),
-  ),
-  error: (
-    100: rgb(255 255 255),
-    99: rgb(255 251 255),
-    98: rgb(255 248 247),
-    95: rgb(255 237 234),
-    90: rgb(255 218 214),
-    80: rgb(255 180 171),
-    70: rgb(255 137 125),
-    60: rgb(255 84 73),
-    50: rgb(222 55 48),
-    40: rgb(186 26 26),
-    35: rgb(168 7 16),
-    30: rgb(147 0 10),
-    25: rgb(126 0 7),
-    20: rgb(105 0 5),
-    10: rgb(65 0 2),
-    0: rgb(0 0 0),
-  ),
-  neutral: (
-    100: rgb(255 255 255),
-    99: rgb(255 251 255),
-    98: rgb(255 248 246),
-    95: rgb(251 238 236),
-    90: rgb(237 224 221),
-    80: rgb(208 196 194),
-    70: rgb(180 169 167),
-    60: rgb(153 142 141),
-    50: rgb(127 117 115),
-    40: rgb(101 92 91),
-    35: rgb(89 80 79),
-    30: rgb(77 69 68),
-    25: rgb(65 58 56),
-    20: rgb(54 47 46),
-    10: rgb(32 26 25),
-    0: rgb(0 0 0),
-    4: #0d0a0a,
-    6: #13100f,
-    12: #241e1d,
-    17: #2f2928,
-    22: #3a3332,
-    24: #3f3836,
-    87: #e4d8d5,
-    92: #f3e6e3,
-    94: #f8ebe9,
-    96: #fcf1ef,
-  ),
-  neutral-variant: (
-    100: rgb(255 255 255),
-    99: rgb(255 251 255),
-    98: rgb(255 248 246),
-    95: rgb(255 237 234),
-    90: rgb(245 221 218),
-    80: rgb(216 194 190),
-    70: rgb(188 167 163),
-    60: rgb(160 140 137),
-    50: rgb(133 115 112),
-    40: rgb(107 90 88),
-    35: rgb(95 79 76),
-    30: rgb(83 67 65),
-    25: rgb(71 56 54),
-    20: rgb(59 45 43),
-    10: rgb(37 25 23),
-    0: rgb(0 0 0),
-  ),
-);
-$dark-primary-palette: (
-  100: rgb(255 255 255),
-  99: rgb(253 252 255),
-  98: rgb(248 249 255),
-  95: rgb(233 241 255),
-  90: rgb(208 228 255),
-  80: rgb(155 202 255),
-  70: rgb(106 176 245),
-  60: rgb(77 149 217),
-  50: rgb(45 123 189),
-  40: rgb(0 98 160),
-  35: rgb(0 86 141),
-  30: rgb(0 73 122),
-  25: rgb(0 62 104),
-  20: rgb(0 50 86),
-  10: rgb(0 29 53),
-  0: rgb(0 0 0),
-  secondary: (
-    100: rgb(255 255 255),
-    99: rgb(253 252 255),
-    98: rgb(248 249 255),
-    95: rgb(233 241 255),
-    90: rgb(214 228 247),
-    80: rgb(186 200 219),
-    70: rgb(159 172 191),
-    60: rgb(132 146 164),
-    50: rgb(107 120 137),
-    40: rgb(82 96 112),
-    35: rgb(70 84 99),
-    30: rgb(59 72 87),
-    25: rgb(47 61 76),
-    20: rgb(36 49 64),
-    10: rgb(15 29 42),
-    0: rgb(0 0 0),
-  ),
-  error: (
-    100: rgb(255 255 255),
-    99: rgb(255 251 255),
-    98: rgb(255 248 247),
-    95: rgb(255 237 234),
-    90: rgb(255 218 214),
-    80: rgb(255 180 171),
-    70: rgb(255 137 125),
-    60: rgb(255 84 73),
-    50: rgb(222 55 48),
-    40: rgb(186 26 26),
-    35: rgb(168 7 16),
-    30: rgb(147 0 10),
-    25: rgb(126 0 7),
-    20: rgb(105 0 5),
-    10: rgb(65 0 2),
-    0: rgb(0 0 0),
-  ),
-  neutral: (
-    100: rgb(255 255 255),
-    99: rgb(253 252 255),
-    98: rgb(249 249 252),
-    95: rgb(241 240 244),
-    90: rgb(226 226 230),
-    80: rgb(198 198 202),
-    70: rgb(171 171 174),
-    60: rgb(144 144 148),
-    50: rgb(118 119 122),
-    40: rgb(93 94 97),
-    35: rgb(81 82 85),
-    30: rgb(69 71 74),
-    25: rgb(58 59 62),
-    20: rgb(47 48 51),
-    10: rgb(26 28 30),
-    0: rgb(0 0 0),
-    4: #0b0b0c,
-    6: #101013,
-    12: #1f1f23,
-    17: #2a2a2e,
-    22: #353438,
-    24: #3a393d,
-    87: #dcd9de,
-    92: #ebe7ec,
-    94: #f0ecf1,
-    96: #f6f2f7,
-  ),
-  neutral-variant: (
-    100: rgb(255 255 255),
-    99: rgb(253 252 255),
-    98: rgb(248 249 255),
-    95: rgb(237 241 249),
-    90: rgb(223 227 235),
-    80: rgb(194 199 207),
-    70: rgb(167 171 179),
-    60: rgb(140 145 153),
-    50: rgb(115 119 127),
-    40: rgb(90 95 102),
-    35: rgb(78 83 90),
-    30: rgb(66 71 78),
-    25: rgb(55 60 66),
-    20: rgb(44 49 55),
-    10: rgb(23 28 34),
-    0: rgb(0 0 0),
-  ),
-);
-$font-family: "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'";
-$typography: (
-  plain-family: $font-family,
-  brand-family: $font-family,
-);
-$light-theme: matx.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: $light-primary-palette,
-    ),
-    typography: $typography,
-  )
-);
-$dark-theme: matx.define-theme(
-  (
-    color: (
-      theme-type: dark,
-      primary: $dark-primary-palette,
-    ),
-    typography: $typography,
-  )
-);
+@use './light-theme';
+@use './dark-theme';
 
 @mixin apply-base-theme {
   html {
     @include mat.core;
-    @include mat.all-component-themes($light-theme);
-    @include mat.strong-focus-indicators-theme($light-theme);
+    @include mat.all-component-themes(light-theme.$light-theme);
+    @include mat.strong-focus-indicators-theme(light-theme.$light-theme);
     @include mat.strong-focus-indicators;
-    @include mat.typography-hierarchy($light-theme);
+    @include mat.typography-hierarchy(light-theme.$light-theme);
     @include cdk.text-field-autofill;
 
     --common-color-outline-variant: #{mat.get-theme-color(
-        $light-theme,
+        light-theme.$light-theme,
         outline-variant
       )};
     --common-color-secondary-container: #{mat.get-theme-color(
-        $light-theme,
+        light-theme.$light-theme,
         secondary-container
       )};
-    --common-color-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
+    --common-color-on-primary: #{mat.get-theme-color(
+        light-theme.$light-theme,
+        on-primary
+      )};
     --common-toolbar-background-color: #{mat.get-theme-color(
-        $light-theme,
+        light-theme.$light-theme,
         primary,
         30
       )};
-    --common-color-primary: #{mat.get-theme-color($light-theme, primary)};
+    --common-color-primary: #{mat.get-theme-color(
+        light-theme.$light-theme,
+        primary
+      )};
     --mat-toolbar-container-background-color: var(
       --common-toolbar-background-color
     );
@@ -263,19 +46,25 @@ $dark-theme: matx.define-theme(
     }
 
     .dark-mode {
-      @include mat.all-component-colors($dark-theme);
-      @include mat.strong-focus-indicators-color($dark-theme);
+      @include mat.all-component-colors(dark-theme.$dark-theme);
+      @include mat.strong-focus-indicators-color(dark-theme.$dark-theme);
 
       --common-color-outline-variant: #{mat.get-theme-color(
-          $dark-theme,
+          dark-theme.$dark-theme,
           outline-variant
         )};
       --common-color-secondary-container: #{mat.get-theme-color(
-          $dark-theme,
+          dark-theme.$dark-theme,
           secondary-container
         )};
-      --common-color-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
-      --common-color-primary: #{mat.get-theme-color($dark-theme, primary)};
+      --common-color-on-primary: #{mat.get-theme-color(
+          dark-theme.$dark-theme,
+          on-primary
+        )};
+      --common-color-primary: #{mat.get-theme-color(
+          dark-theme.$dark-theme,
+          primary
+        )};
       --common-toolbar-background-color: var(--common-color-primary);
       --mat-toolbar-container-background-color: var(
         --common-toolbar-background-color

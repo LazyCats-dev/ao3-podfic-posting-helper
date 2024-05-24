@@ -20,7 +20,6 @@
             "outputPath": "dist/popup",
             "index": "projects/popup/src/index.html",
             "main": "projects/popup/src/main.ts",
-            "polyfills": ["zone.js"],
             "tsConfig": "projects/popup/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -105,7 +104,6 @@
             "outputPath": "dist/options",
             "index": "projects/options/src/index.html",
             "main": "projects/options/src/main.ts",
-            "polyfills": ["zone.js"],
             "tsConfig": "projects/options/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
