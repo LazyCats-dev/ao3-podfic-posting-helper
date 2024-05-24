@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
-@use '@angular/material-experimental' as matx;
 
 $light-primary-palette: (
   100: rgb(255 255 255),
@@ -207,7 +206,7 @@ $typography: (
   plain-family: $font-family,
   brand-family: $font-family,
 );
-$light-theme: matx.define-theme(
+$light-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
@@ -216,7 +215,7 @@ $light-theme: matx.define-theme(
     typography: $typography,
   )
 );
-$dark-theme: matx.define-theme(
+$dark-theme: mat.define-theme(
   (
     color: (
       theme-type: dark,
