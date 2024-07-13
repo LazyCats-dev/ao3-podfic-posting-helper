@@ -7,6 +7,7 @@ import {
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 const DEFAULT_WORKBODY =
   'Here are a few building blocks that that show how you can include an ' +
@@ -175,4 +176,12 @@ export function provideMatSnackBarDefaultOptions() {
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
     useValue: {duration: 5000},
   };
+}
+
+export function provideAnimationsRespectingMotionPreferences() {
+  return provideAnimationsAsync(
+    window.matchMedia(`(prefers-reduced-motion: reduce)`).matches
+      ? 'noop'
+      : 'animations',
+  );
 }

@@ -2,7 +2,6 @@ import {
   ApplicationConfig,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideHttpClient} from '@angular/common/http';
 import {
   provideGlobalEventLogging,
@@ -10,6 +9,7 @@ import {
   provideMatFormFieldDefaultOptions,
   provideMatIconRegistry,
   provideMatSnackBarDefaultOptions,
+  provideAnimationsRespectingMotionPreferences,
 } from 'common';
 import {HIGHLIGHT_OPTIONS} from 'ngx-highlightjs';
 import {provideInitialFormValuesFromStorage} from './utils';
@@ -18,7 +18,7 @@ import {MAT_CARD_CONFIG, MatCardConfig} from '@angular/material/card';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
-    provideAnimationsAsync(),
+    provideAnimationsRespectingMotionPreferences(),
     provideGlobalEventLogging(),
     provideStorageSetup(),
     provideInitialFormValuesFromStorage(),

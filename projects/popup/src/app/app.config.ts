@@ -2,7 +2,6 @@ import {
   ApplicationConfig,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideHttpClient} from '@angular/common/http';
 import {
   provideGlobalEventLogging,
@@ -10,12 +9,13 @@ import {
   provideMatFormFieldDefaultOptions,
   provideMatIconRegistry,
   provideMatSnackBarDefaultOptions,
+  provideAnimationsRespectingMotionPreferences,
 } from 'common';
 import {provideInitialFormValuesFromStorage} from '../utils';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimationsAsync(),
+    provideAnimationsRespectingMotionPreferences(),
     provideHttpClient(),
     provideGlobalEventLogging(),
     provideStorageSetup(),
