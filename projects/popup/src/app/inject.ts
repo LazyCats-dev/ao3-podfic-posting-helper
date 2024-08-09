@@ -317,12 +317,17 @@ export function injectImportAndFillMetadata({
         const newUrl = createUrl(response.url);
 
         return fetchWork(newUrl, 'omit')
-          .then(newResponse => parseMetadataFromResponse(newResponse, url))
-          .then(metadata => {
-            // If we've gotten this far, there are no more error cases.
+          .then(newResponse => parseDocFromResponse(newResponse))
+          .then(doc => {
+            if (looksLikeUnrevealedWork(doc)) {
+              return fetchWithCurrentCreds(newUrl, url);
+            }
+
             return {
               result: 'success',
-              metadata: metadata,
+              // We return back the original URL so that storage only ever contains
+              // the URL the user input instead of the one we used for fetching.
+              metadata: {...parseGenMetadata(doc), url},
             };
           });
       }

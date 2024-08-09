@@ -435,6 +435,42 @@ describe('injectImportAndFillMetadata', () => {
       expect(getImportedWorkMetadata()).toEqual(MIN_IMPORTED_METADATA);
     });
 
+    it('returns an error if the work has not been revealed after a redirect', async () => {
+      fetchSpy
+        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
+        .and.callFake(() => {
+          // This is a terrible thing to do but we don't have a good way let the next call get
+          // the real text.
+          fetchSpy
+            .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
+            .and.callThrough();
+          return Promise.resolve({
+            redirected: true,
+            url: MIN_URL,
+            ok: true,
+            text: () =>
+              fetch('/base/src/app/testdata/unrevealed_work.html').then(
+                response => response.text(),
+              ),
+          } as Response);
+        });
+
+      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      expect(response).toEqual({
+        result: 'error',
+        message: jasmine.stringContaining('please contact the work author'),
+      });
+      expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
+      // 2 times because we call it once.
+      expect(fetchSpy).toHaveBeenCalledTimes(3);
+      expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
+        credentials: 'omit',
+      });
+      expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
+        credentials: 'include',
+      });
+    });
+
     it('imports the metadata if the redirection leads to a real work', async () => {
       fetchSpy
         .withArgs(MIN_URL_FETCHED, {credentials: 'include'})

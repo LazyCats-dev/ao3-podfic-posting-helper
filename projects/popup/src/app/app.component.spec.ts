@@ -458,6 +458,7 @@ describe('AppComponent', () => {
           expect(executeScriptSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
             target: {tabId: 666},
             func: injectImportAndFillMetadata,
+            world: 'MAIN',
             args: [
               {
                 url: 'https://archiveofourown.org/works/12345',
