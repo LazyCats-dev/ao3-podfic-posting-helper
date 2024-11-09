@@ -88,11 +88,10 @@ jobs:
         uses: wdzeng/firefox-addon@v1
         with:
           addon-guid: ao3-podfic-helper@github.com
-          xpi-path: ${{ github.sha }}.zip
+          xpi-path: extension-${{ github.sha }}.zip
           self-hosted: false
           jwt-issuer: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_ISSUER }}
           jwt-secret: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_SECRET }}
-          approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
           source-file-path: source-${{ github.sha }}.zip
 
   upload-and-publish-to-microsoft-edge-addons:
@@ -110,6 +109,6 @@ jobs:
         uses: wdzeng/edge-addon@v2
         with:
           product-id: 36cbee63-3b81-4f9e-94f8-ea9585396e41
-          zip-path: ${{ github.sha }}.zip
+          zip-path: extension-${{ github.sha }}.zip
           api-key: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_API_KEY }}
           client-id: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_CLIENT_ID }}
