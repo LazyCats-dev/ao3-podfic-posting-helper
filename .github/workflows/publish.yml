@@ -22,7 +22,7 @@ jobs:
           zip -r extension-${{ github.sha }}.zip dist
 
       - name: Archive chrome-extension artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: extension-${{ github.sha }}
           path: extension-${{ github.sha }}.zip
@@ -39,7 +39,7 @@ jobs:
           node-version: '16.10'
 
       - name: Download bundle artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: extension-${{ github.sha }}
 
