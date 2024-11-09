@@ -109,9 +109,7 @@ jobs:
       - name: Upload and publish
         uses: wdzeng/edge-addon@v2
         with:
-          product-id: ao3-podfic-helper@github.com
+          product-id: 36cbee63-3b81-4f9e-94f8-ea9585396e41
           zip-path: ${{ github.sha }}.zip
           api-key: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_API_KEY }}
           client-id: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_CLIENT_ID }}
-          approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
-          source-file-path: source-${{ github.sha }}.zip
