@@ -54,9 +54,8 @@ jobs:
 
       - name: Upload and publish
         run: |-
-          chrome-webstore-upload \\
-            --source extension-${{ github.sha }}.zip \\
-            --extension-id ${{ env.EXTENSION_ID }} \\
-            --client-id ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_ID }} \\
-            --client-secret ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_SECRET }} \\
+          chrome-webstore-upload --source extension-${{ github.sha }}.zip \
+            --extension-id ${{ env.EXTENSION_ID }} \
+            --client-id ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_ID }} \
+            --client-secret ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_SECRET }} \
             --refresh-token ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_REFRESH_TOKEN }}
