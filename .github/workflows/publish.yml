@@ -19,8 +19,8 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: Build release
+        run: npm run release
 
       - name: Create archive
         run: zip -r extension-${{ github.sha }}.zip dist
