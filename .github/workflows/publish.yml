@@ -16,16 +16,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
-        run: |-
-          npm run build
-          zip -r extension-${{ github.sha }}.zip dist
+      - name: Install
+        run: npm install
 
-      - name: Archive chrome-extension artifact
+      - name: Build
+        run: npm run build
+
+      - name: Create archive
+        run: zip -r extension-${{ github.sha }}.zip dist
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: extension-${{ github.sha }}
           path: extension-${{ github.sha }}.zip
+
   upload-and-publish-to-google-chrome-webstore:
     name: Upload and publish to Google Chrome Webstore
     runs-on: ubuntu-latest
