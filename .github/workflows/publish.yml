@@ -9,9 +9,9 @@ jobs:
     name: Build extension artifact
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16.10'
+          node-version: '20'
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,9 +39,9 @@ jobs:
       EXTENSION_ID: liceoplaldpcfdkndimfppgdcbophgma
 
     steps:
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16.10'
+          node-version: '20'
 
       - name: Download bundle artifact
         uses: actions/download-artifact@v4
