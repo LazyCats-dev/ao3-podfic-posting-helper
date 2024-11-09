@@ -18,7 +18,7 @@ jobs:
 
       - name: Build
         run: |-
-          npm build
+          npm run build
           zip -r extension-${{ github.sha }}.zip dist
 
       - name: Archive chrome-extension artifact
