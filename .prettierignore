@@ -23,6 +23,5 @@
 *.xpi
 *.zip
 
-.github/
 public/resources/
 dist/
