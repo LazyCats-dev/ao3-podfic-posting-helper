@@ -23,13 +23,21 @@ jobs:
         run: npm run release
 
       - name: Create archive
-        run: zip -r extension-${{ github.sha }}.zip dist
+        run: |-
+          zip -r source-${{ github.sha }}.zip .
+          zip -r extension-${{ github.sha }}.zip dist
 
-      - name: Upload artifact
+      - name: Upload extension artifact
         uses: actions/upload-artifact@v4
         with:
           name: extension-${{ github.sha }}
           path: extension-${{ github.sha }}.zip
+
+      - name: Upload source artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-${{ github.sha }}
+          path: source-${{ github.sha }}.zip
 
   upload-and-publish-to-google-chrome-webstore:
     name: Upload and publish to Google Chrome Webstore
@@ -59,3 +67,51 @@ jobs:
             --client-id ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_ID }} \
             --client-secret ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_SECRET }} \
             --refresh-token ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_REFRESH_TOKEN }}
+
+  upload-and-publish-to-mozilla-firefox-addons:
+    name: Upload and publish to Mozilla Firefox Addons
+    runs-on: ubuntu-latest
+    needs: build-extension
+
+    steps:
+      - name: Download bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-${{ github.sha }}
+
+      - name: Download source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: source-${{ github.sha }}
+
+      - name: Upload and publish
+        uses: wdzeng/firefox-addon@v1
+        with:
+          addon-guid: ao3-podfic-helper@github.com
+          xpi-path: ${{ github.sha }}.zip
+          self-hosted: false
+          jwt-issuer: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_ISSUER }}
+          jwt-secret: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_SECRET }}
+          approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
+          source-file-path: source-${{ github.sha }}.zip
+
+  upload-and-publish-to-microsoft-edge-addons:
+    name: Upload and publish to Microsoft Edge Addons
+    runs-on: ubuntu-latest
+    needs: build-extension
+
+    steps:
+      - name: Download bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-${{ github.sha }}
+
+      - name: Upload and publish
+        uses: wdzeng/edge-addon@v2
+        with:
+          product-id: ao3-podfic-helper@github.com
+          zip-path: ${{ github.sha }}.zip
+          api-key: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_API_KEY }}
+          client-id: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_CLIENT_ID }}
+          approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
+          source-file-path: source-${{ github.sha }}.zip
