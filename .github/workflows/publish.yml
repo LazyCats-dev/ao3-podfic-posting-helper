@@ -16,6 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create source archive
+        run: zip -r source-${{ github.sha }}.zip .
+
       - name: Install
         run: npm install
 
@@ -24,7 +27,6 @@ jobs:
 
       - name: Create archive
         run: |-
-          zip -r source-${{ github.sha }}.zip . -x dist/**\*
           (cd dist && zip -r ../extension-${{ github.sha }}.zip .)
 
       - name: Upload extension artifact
