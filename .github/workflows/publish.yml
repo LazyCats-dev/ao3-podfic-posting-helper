@@ -25,7 +25,7 @@ jobs:
       - name: Create archive
         run: |-
           zip -r source-${{ github.sha }}.zip .
-          zip -r extension-${{ github.sha }}.zip dist
+          (cd dist && zip -r ../extension-${{ github.sha }}.zip .)
 
       - name: Upload extension artifact
         uses: actions/upload-artifact@v4
