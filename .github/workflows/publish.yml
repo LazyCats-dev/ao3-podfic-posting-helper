@@ -49,26 +49,19 @@ jobs:
       EXTENSION_ID: liceoplaldpcfdkndimfppgdcbophgma
 
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Download bundle artifact
         uses: actions/download-artifact@v4
         with:
           name: extension-${{ github.sha }}
 
-      - name: Install webstore cli
-        run: |-
-          npm install -g chrome-webstore-upload-cli
-
       - name: Upload and publish
-        run: |-
-          chrome-webstore-upload --source extension-${{ github.sha }}.zip \
-            --extension-id ${{ env.EXTENSION_ID }} \
-            --client-id ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_ID }} \
-            --client-secret ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_SECRET }} \
-            --refresh-token ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_REFRESH_TOKEN }}
+        uses: wdzeng/chrome-extension@v1
+        with:
+          extension-id: liceoplaldpcfdkndimfppgdcbophgma
+          zip-path: extension-${{ github.sha }}.zip
+          client-id: ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_ID }}
+          client-secret: ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.GOOGLE_CHROME_WEBSTORE_API_OAUTH_REFRESH_TOKEN }}
 
   upload-and-publish-to-mozilla-firefox-addons:
     name: Upload and publish to Mozilla Firefox Addons
@@ -95,6 +88,7 @@ jobs:
           jwt-issuer: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_ISSUER }}
           jwt-secret: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_SECRET }}
           source-file-path: source-${{ github.sha }}.zip
+          approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
 
   upload-and-publish-to-microsoft-edge-addons:
     name: Upload and publish to Microsoft Edge Addons
