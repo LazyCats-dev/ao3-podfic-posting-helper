@@ -108,3 +108,4 @@ jobs:
           zip-path: extension-${{ github.sha }}.zip
           api-key: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_API_KEY }}
           client-id: ${{ secrets.MICROSOFT_EDGE_PUBLISH_API_CLIENT_ID }}
+          notes-for-certification: ${{ secrets.EXTENSION_INSTRUCTIONS }}
