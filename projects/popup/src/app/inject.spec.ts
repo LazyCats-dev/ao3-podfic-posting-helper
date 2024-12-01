@@ -1,4 +1,5 @@
-import {injectImportAndFillMetadata} from './inject';
+import './inject/index';
+import './inject/inject';
 
 const MIN_URL = '/base/src/app/testdata/work_with_min_metadata.html';
 const MIN_URL_FETCHED = MIN_URL + '?view_adult=true';
@@ -88,7 +89,9 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('fills the metadata for a work with minimal metadata', async () => {
-    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
 
     expect(response).toEqual({result: 'success'});
     expect(getImportedWorkMetadata()).toEqual(MIN_IMPORTED_METADATA);
@@ -98,7 +101,7 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('fills the metadata for using the original title and summary', async () => {
-    const response = await injectImportAndFillMetadata({
+    const response = await window.injectImportAndFillMetadata({
       ...minimalArgs(MIN_URL),
       titleFormat: 'orig',
       summaryFormat: 'orig',
@@ -116,7 +119,7 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('fills the metadata for using the default title and summary', async () => {
-    const response = await injectImportAndFillMetadata({
+    const response = await window.injectImportAndFillMetadata({
       ...minimalArgs(MIN_URL),
       titleFormat: 'anything',
       summaryFormat: 'anything',
@@ -139,7 +142,7 @@ describe('injectImportAndFillMetadata', () => {
   it('fills the metadata for a work with max metadata', async () => {
     const fullTemplate =
       '${blocksummary} ${summary} ${title} ${title-unlinked} ${authors} ${authors-unlinked}';
-    const response = await injectImportAndFillMetadata({
+    const response = await window.injectImportAndFillMetadata({
       url: '/base/src/app/testdata/work_with_max_metadata.html',
       podficLabel: true,
       podficLengthLabel: true,
@@ -219,7 +222,9 @@ describe('injectImportAndFillMetadata', () => {
   it('returns an error if fetch throws', async () => {
     fetchSpy.and.rejectWith(new Error('I always get the shemp'));
 
-    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
 
     expect(response).toEqual({
       result: 'error',
@@ -233,7 +238,7 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('returns an error if the work does not exist', async () => {
-    const response = await injectImportAndFillMetadata(
+    const response = await window.injectImportAndFillMetadata(
       minimalArgs('/does/not/exist'),
     );
     expect(response).toEqual({
@@ -251,7 +256,9 @@ describe('injectImportAndFillMetadata', () => {
 
   it('returns an error if the new work page is broken', async () => {
     testContent.innerHTML = '<marquee>I always get the shemp</marquee>';
-    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
 
     expect(response).toEqual({
       result: 'error',
@@ -267,7 +274,7 @@ describe('injectImportAndFillMetadata', () => {
   it('partially fills the form and returns an error if user is hiding tags and categories', async () => {
     const url =
       '/base/src/app/testdata/work_with_min_metadata_hidden_warnings_and_tags.html';
-    const response = await injectImportAndFillMetadata(minimalArgs(url));
+    const response = await window.injectImportAndFillMetadata(minimalArgs(url));
 
     expect(response).toEqual({
       result: 'error',
@@ -303,7 +310,9 @@ describe('injectImportAndFillMetadata', () => {
         } as Response);
       });
 
-    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
     expect(response).toEqual({result: 'success'});
     expect(fetchSpy).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
@@ -317,7 +326,9 @@ describe('injectImportAndFillMetadata', () => {
       // Load the unrevealed work from the test data.
       fetch('/base/src/app/testdata/unrevealed_work.html'),
     );
-    const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
     expect(response).toEqual({result: 'success'});
     expect(fetchSpy).toHaveBeenCalledTimes(3);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
@@ -340,7 +351,9 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('tries again with the user credentials', async () => {
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
       expect(response).toEqual({result: 'success'});
       expect(fetchSpy).toHaveBeenCalledTimes(2);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
@@ -362,7 +375,9 @@ describe('injectImportAndFillMetadata', () => {
           text: () => Promise.resolve(''),
         } as Response);
 
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
 
       expect(response).toEqual({
         result: 'error',
@@ -386,7 +401,9 @@ describe('injectImportAndFillMetadata', () => {
           fetch('/base/src/app/testdata/unrevealed_work.html'),
         );
 
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
 
       expect(response).toEqual({
         result: 'error',
@@ -423,7 +440,9 @@ describe('injectImportAndFillMetadata', () => {
           } as Response);
         });
 
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
       expect(response).toEqual({result: 'success'});
       expect(fetchSpy).toHaveBeenCalledTimes(4);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
@@ -455,7 +474,9 @@ describe('injectImportAndFillMetadata', () => {
           } as Response);
         });
 
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
       expect(response).toEqual({
         result: 'error',
         message: jasmine.stringContaining('please contact the work author'),
@@ -481,7 +502,9 @@ describe('injectImportAndFillMetadata', () => {
           text: () => fetch(MIN_URL).then(response => response.text()),
         } as Response);
 
-      const response = await injectImportAndFillMetadata(minimalArgs(MIN_URL));
+      const response = await window.injectImportAndFillMetadata(
+        minimalArgs(MIN_URL),
+      );
       expect(response).toEqual({result: 'success'});
       expect(fetchSpy).toHaveBeenCalledTimes(3);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {

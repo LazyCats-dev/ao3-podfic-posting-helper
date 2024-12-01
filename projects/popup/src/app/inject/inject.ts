@@ -1,4 +1,4 @@
-export function injectImportAndFillMetadata({
+window.injectImportAndFillMetadata = ({
   url,
   podficLabel,
   podficLengthLabel,
@@ -26,7 +26,7 @@ export function injectImportAndFillMetadata({
   userNotesTemplate: string;
   beginNotes: boolean;
   endNotes: boolean;
-}) {
+}) => {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
     'please contact the work author to get permission to view ' +
@@ -719,4 +719,4 @@ export function injectImportAndFillMetadata({
       message: `Unhandled error while importing metadata and filling in the form: ${debugMessage}`,
     };
   });
-}
+};

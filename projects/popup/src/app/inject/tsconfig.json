@@ -1,0 +1,13 @@
+{
+  "files": ["inject.ts", "index.ts"],
+  "compilerOptions": {
+    "target": "esnext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "outDir": "../../../../../out-tsc",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}

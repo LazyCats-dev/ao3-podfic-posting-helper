@@ -30,7 +30,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules/"]
             },
-            "scripts": [],
+            "scripts": ["out-tsc/inject.js"],
             "optimization": {
               "styles": {
                 "inlineCritical": false

@@ -19,7 +19,8 @@ import {MatFormFieldHarness} from '@angular/material/form-field/testing';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
 import {MatSelectHarness} from '@angular/material/select/testing';
-import {injectImportAndFillMetadata} from './inject';
+import './inject/index';
+import './inject/inject';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 
 describe('AppComponent', () => {
@@ -457,7 +458,7 @@ describe('AppComponent', () => {
         it('executes the inject script', () => {
           expect(executeScriptSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
             target: {tabId: 666},
-            func: injectImportAndFillMetadata,
+            func: window.injectImportAndFillMetadata,
             world: 'MAIN',
             args: [
               {

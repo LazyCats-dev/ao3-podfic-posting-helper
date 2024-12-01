@@ -1,6 +1,6 @@
 {
-  "name": "test3",
-  "version": "0.0.0",
+  "name": "ao3-podfic-posting-helper",
+  "version": "4.84",
   "lint-staged": {
     "*.{js,scss,md,html,json,ts}": "prettier --write",
     "*.{html,ts}": "eslint --cache --fix",
@@ -8,8 +8,15 @@
   },
   "scripts": {
     "ng": "ng",
-    "build": "rm -rf dist/ && ng build common && ng build popup && ng build options && cp manifest.json dist/",
-    "release": "rm -rf dist/ && ng build common --configuration=production && ng build popup --configuration=production && ng build options --configuration=production && cp manifest.json dist/",
+    "tsc": "tsc",
+    "clean": "rm -rf dist/",
+    "build:inject": "tsc -p projects/popup/src/app/inject",
+    "build:common": "ng build common",
+    "build:popup": "ng build popup",
+    "build:options": "ng build options",
+    "build:manifest": "cp manifest.json dist/",
+    "build": "npm run clean && npm run build:inject && npm run build:common && npm run build:popup && npm run build:options && npm run build:manifest",
+    "release": "npm run clean && npm run build:inject && npm run build:common --configuration=production && npm run build:popup --configuration=production && npm run build:options --configuration=production && npm run build:manifest",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "lint": "ng lint && npm run lint:styles",
     "lint:styles": "stylelint --fix \"projects/**/*.scss\"",

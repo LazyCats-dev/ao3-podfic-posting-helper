@@ -23,11 +23,11 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {ANALYTICS, ThemeSelectorComponent} from 'common';
 import {INITIAL_FORM_VALUES} from '../utils';
-import {injectImportAndFillMetadata} from './inject';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {from} from 'rxjs';
 import {map, tap, take, shareReplay} from 'rxjs/operators';
 import {toSignal} from '@angular/core/rxjs-interop';
+import './inject/index';
 
 const AUDIO_FORMAT_TAG_PREFIX = 'audio-format-tag-';
 
@@ -242,7 +242,7 @@ export class AppComponent {
     try {
       const injectedScriptResults = await chrome.scripting.executeScript({
         target: {tabId: tab.id!},
-        func: injectImportAndFillMetadata,
+        func: window.injectImportAndFillMetadata,
         world: 'MAIN',
         args: [
           {
