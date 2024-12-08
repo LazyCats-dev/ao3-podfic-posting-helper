@@ -120,7 +120,6 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     AsyncPipe,
     CdkTextareaAutosize,

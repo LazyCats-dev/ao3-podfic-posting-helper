@@ -15,11 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/popup",
+            "outputPath": {
+              "base": "dist/popup"
+            },
             "index": "projects/popup/src/index.html",
-            "main": "projects/popup/src/main.ts",
             "tsConfig": "projects/popup/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -35,7 +36,8 @@
               "styles": {
                 "inlineCritical": false
               }
-            }
+            },
+            "browser": "projects/popup/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -99,11 +101,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/options",
+            "outputPath": {
+              "base": "dist/options"
+            },
             "index": "projects/options/src/index.html",
-            "main": "projects/options/src/main.ts",
             "tsConfig": "projects/options/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -120,7 +123,8 @@
               }
             },
             "scripts": [],
-            "allowedCommonJsDependencies": ["highlight.js", "sanitize-html"]
+            "allowedCommonJsDependencies": ["highlight.js", "sanitize-html"],
+            "browser": "projects/options/src/main.ts"
           },
           "configurations": {
             "production": {

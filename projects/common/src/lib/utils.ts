@@ -1,4 +1,9 @@
-import {APP_INITIALIZER, FactoryProvider, Provider} from '@angular/core';
+import {
+  FactoryProvider,
+  Provider,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import {ANALYTICS, Analytics} from './google-analytics';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -54,12 +59,10 @@ export function setupGlobalEventLoggingFactory(analytics: Analytics) {
 }
 
 export function provideGlobalEventLogging(): FactoryProvider {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: setupGlobalEventLoggingFactory,
-    deps: [ANALYTICS],
-    multi: true,
-  };
+  return provideAppInitializer(() => {
+    const initializerFn = setupGlobalEventLoggingFactory(inject(ANALYTICS));
+    return initializerFn();
+  });
 }
 
 export async function setupStorage() {
@@ -131,11 +134,10 @@ export async function setupStorage() {
 }
 
 export function provideStorageSetup(): FactoryProvider {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: () => setupStorage,
-    multi: true,
-  };
+  return provideAppInitializer(() => {
+    const initializerFn = (() => setupStorage)();
+    return initializerFn();
+  });
 }
 
 export function provideMatFormFieldDefaultOptions() {
@@ -163,12 +165,13 @@ function setupMatIconRegistry(
 }
 
 export function provideMatIconRegistry(): Provider {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: setupMatIconRegistry,
-    deps: [MatIconRegistry, DomSanitizer],
-    multi: true,
-  };
+  return provideAppInitializer(() => {
+    const initializerFn = setupMatIconRegistry(
+      inject(MatIconRegistry),
+      inject(DomSanitizer),
+    );
+    return initializerFn();
+  });
 }
 
 export function provideMatSnackBarDefaultOptions() {

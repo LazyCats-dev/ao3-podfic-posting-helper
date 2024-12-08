@@ -18,7 +18,6 @@ type ThemePreference = (typeof THEME_PREFERENCES)[number];
 
 @Component({
   selector: 'lib-theme-selector',
-  standalone: true,
   imports: [MatIcon, MatIconButton, MatTooltip],
   templateUrl: './theme-selector.component.html',
   styleUrl: './theme-selector.component.css',

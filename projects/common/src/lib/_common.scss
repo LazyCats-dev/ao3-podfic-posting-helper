@@ -5,7 +5,8 @@
 
 @mixin apply-base-theme {
   html {
-    @include mat.core;
+    @include mat.elevation-classes;
+    @include mat.app-background;
     @include mat.all-component-themes(light-theme.$light-theme);
     @include mat.strong-focus-indicators-theme(light-theme.$light-theme);
     @include mat.strong-focus-indicators;

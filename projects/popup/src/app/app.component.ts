@@ -42,7 +42,6 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     AsyncPipe,
     MatButton,

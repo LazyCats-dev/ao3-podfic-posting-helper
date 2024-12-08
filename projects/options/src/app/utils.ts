@@ -1,4 +1,8 @@
-import {APP_INITIALIZER, FactoryProvider, InjectionToken} from '@angular/core';
+import {
+  FactoryProvider,
+  InjectionToken,
+  provideAppInitializer,
+} from '@angular/core';
 
 const defaultFormValuesFromStorage = {
   titleTemplate: '',
@@ -37,11 +41,10 @@ async function setInitialFormValues() {
 }
 
 export function provideInitialFormValuesFromStorage(): FactoryProvider {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: () => setInitialFormValues,
-    multi: true,
-  };
+  return provideAppInitializer(() => {
+    const initializerFn = (() => setInitialFormValues)();
+    return initializerFn();
+  });
 }
 
 export const INITIAL_FORM_VALUES = new InjectionToken<
