@@ -35,7 +35,7 @@ describe('AppComponent', () => {
       ['getURL'],
     );
     runtimeSpy.getURL
-      .withArgs('options/index.html')
+      .withArgs('options/browser/index.html')
       .and.returnValue('options-url');
 
     const tabsSpy = jasmine.createSpyObj<typeof chrome.tabs>('chrome.tabs', [
