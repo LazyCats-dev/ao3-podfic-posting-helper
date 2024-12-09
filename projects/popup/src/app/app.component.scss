@@ -1,5 +1,5 @@
 .page-content {
-  padding: 8px;
+  padding: 0.5rem;
 }
 
 .spacer {
@@ -12,11 +12,11 @@
 }
 
 .form-item {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .podfic-length-controls {
@@ -30,7 +30,7 @@
 
 .title-template-select {
   width: 40%;
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 .summary-template-select {
@@ -38,7 +38,7 @@
 }
 
 .length-checkbox {
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 .url-text-field {
@@ -51,7 +51,7 @@
 }
 
 .audio-format-tags-label {
-  margin-inline-end: 8px;
+  margin-inline-end: 0.5rem;
 }
 
 .audio-format-tags {
@@ -60,5 +60,9 @@
 
 .toolbar-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
+}
+
+p {
+  margin-block-start: 0;
 }

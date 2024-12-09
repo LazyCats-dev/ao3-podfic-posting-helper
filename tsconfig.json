@@ -22,7 +22,7 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["ES2022", "dom"],
     "paths": {
-      "common": ["./dist/common"]
+      "common": ["./projects/common/src/public-api"]
     }
   },
   "angularCompilerOptions": {

@@ -20,7 +20,6 @@ type ThemePreference = (typeof THEME_PREFERENCES)[number];
   selector: 'lib-theme-selector',
   imports: [MatIcon, MatIconButton, MatTooltip],
   templateUrl: './theme-selector.component.html',
-  styleUrl: './theme-selector.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSelectorComponent implements OnInit {

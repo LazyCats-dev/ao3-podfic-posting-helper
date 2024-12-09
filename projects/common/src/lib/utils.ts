@@ -1,9 +1,4 @@
-import {
-  FactoryProvider,
-  Provider,
-  inject,
-  provideAppInitializer,
-} from '@angular/core';
+import {inject, provideAppInitializer} from '@angular/core';
 import {ANALYTICS, Analytics} from './google-analytics';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -58,7 +53,7 @@ export function setupGlobalEventLoggingFactory(analytics: Analytics) {
   };
 }
 
-export function provideGlobalEventLogging(): FactoryProvider {
+export function provideGlobalEventLogging() {
   return provideAppInitializer(() => {
     const initializerFn = setupGlobalEventLoggingFactory(inject(ANALYTICS));
     return initializerFn();
@@ -133,7 +128,7 @@ export async function setupStorage() {
   }
 }
 
-export function provideStorageSetup(): FactoryProvider {
+export function provideStorageSetup() {
   return provideAppInitializer(() => {
     const initializerFn = (() => setupStorage)();
     return initializerFn();
@@ -164,7 +159,7 @@ function setupMatIconRegistry(
   };
 }
 
-export function provideMatIconRegistry(): Provider {
+export function provideMatIconRegistry() {
   return provideAppInitializer(() => {
     const initializerFn = setupMatIconRegistry(
       inject(MatIconRegistry),

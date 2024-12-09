@@ -1,3 +1,6 @@
 node_modules/
 projects/common/src/lib/_light-theme.scss
 projects/common/src/lib/_dark-theme.scss
+projects/common/src/lib/_light_theme_colors.scss
+projects/common/src/lib/_dark_theme_colors.scss
+dist/

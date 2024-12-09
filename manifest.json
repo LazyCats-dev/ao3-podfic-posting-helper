@@ -11,7 +11,7 @@
   },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
-    "default_popup": "popup/index.html",
+    "default_popup": "popup/browser/index.html",
     "default_icon": {
       "16": "/common/assets/icon-16.png",
       "32": "/common/assets/icon-32.png",
@@ -26,7 +26,7 @@
     "128": "/common/assets/icon-128.png"
   },
   "options_ui": {
-    "page": "options/index.html",
+    "page": "options/browser/index.html",
     "open_in_tab": true
   },
   "update_URL": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"

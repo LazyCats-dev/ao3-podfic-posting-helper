@@ -1,8 +1,4 @@
-import {
-  FactoryProvider,
-  InjectionToken,
-  provideAppInitializer,
-} from '@angular/core';
+import {InjectionToken, provideAppInitializer} from '@angular/core';
 
 const defaultFormValuesFromStorage = {
   url: '',
@@ -51,7 +47,7 @@ async function setInitialFormValues() {
     audioFormatTagOptionIds ?? ([] as readonly string[]);
 }
 
-export function provideInitialFormValuesFromStorage(): FactoryProvider {
+export function provideInitialFormValuesFromStorage() {
   return provideAppInitializer(() => {
     const initializerFn = (() => setInitialFormValues)();
     return initializerFn();

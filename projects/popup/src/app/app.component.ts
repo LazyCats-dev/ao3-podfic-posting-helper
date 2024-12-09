@@ -70,8 +70,9 @@ export class AppComponent {
   private readonly snackBar = inject(MatSnackBar);
   private readonly analytics = inject(ANALYTICS);
 
-  protected readonly optionsPageUrl =
-    chrome.runtime.getURL('options/index.html');
+  protected readonly optionsPageUrl = chrome.runtime.getURL(
+    'options/browser/index.html',
+  );
 
   protected readonly tab = from(
     chrome.tabs.query({

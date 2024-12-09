@@ -1,96 +1,85 @@
 @use '@angular/material' as mat;
 @use '@angular/cdk';
-@use './light-theme';
-@use './dark-theme';
+@use './light_theme_colors' as lightTheme;
+@use './dark_theme_colors' as darkTheme;
 
 @mixin apply-base-theme {
   html {
-    @include mat.elevation-classes;
-    @include mat.app-background;
-    @include mat.all-component-themes(light-theme.$light-theme);
-    @include mat.strong-focus-indicators-theme(light-theme.$light-theme);
-    @include mat.strong-focus-indicators;
-    @include mat.typography-hierarchy(light-theme.$light-theme);
+    color-scheme: light;
+    height: 100%;
+
+    @include mat.theme(
+      (
+        color: (
+          primary: lightTheme.$primary-palette,
+          tertiary: lightTheme.$tertiary-palette,
+          theme-type: light,
+        ),
+        typography:
+          "'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif, 'GNU Unifont'",
+        density: 0,
+      )
+    );
+
     @include cdk.text-field-autofill;
 
-    --common-color-outline-variant: #{mat.get-theme-color(
-        light-theme.$light-theme,
-        outline-variant
-      )};
-    --common-color-secondary-container: #{mat.get-theme-color(
-        light-theme.$light-theme,
-        secondary-container
-      )};
-    --common-color-on-primary: #{mat.get-theme-color(
-        light-theme.$light-theme,
-        on-primary
-      )};
-    --common-toolbar-background-color: #{mat.get-theme-color(
-        light-theme.$light-theme,
-        primary,
-        30
-      )};
-    --common-color-primary: #{mat.get-theme-color(
-        light-theme.$light-theme,
-        primary
-      )};
-    --mat-toolbar-container-background-color: var(
-      --common-toolbar-background-color
+    @include mat.toolbar-overrides(
+      (
+        container-background-color: var(--mat-sys-on-primary-fixed-variant),
+      )
     );
-    --mat-toolbar-container-text-color: var(--common-color-on-primary);
-    --mat-sidenav-container-shape: 0;
-    --mat-sidenav-container-width: 250px;
-    --mat-sidenav-container-divider-color: var(--common-color-outline-variant);
 
-    .mat-toolbar {
-      --mdc-icon-button-icon-color: var(--common-color-on-primary);
+    body.dark-mode {
+      color-scheme: dark;
+
+      @include mat.theme(
+        (
+          color: (
+            primary: darkTheme.$primary-palette,
+            tertiary: darkTheme.$tertiary-palette,
+            theme-type: dark,
+          ),
+        )
+      );
+
+      @include mat.toolbar-overrides(
+        (
+          container-background-color: var(--mat-sys-primary),
+        )
+      );
     }
 
-    .dark-mode {
-      @include mat.all-component-colors(dark-theme.$dark-theme);
-      @include mat.strong-focus-indicators-color(dark-theme.$dark-theme);
+    body {
+      height: 100%;
+      margin: 0;
+      background: var(--mat-sys-surface);
+      color: var(--mat-sys-on-surface);
+      font: var(--mat-sys-body-large);
+      letter-spacing: var(--mat-sys-body-large-tracking);
 
-      --common-color-outline-variant: #{mat.get-theme-color(
-          dark-theme.$dark-theme,
-          outline-variant
-        )};
-      --common-color-secondary-container: #{mat.get-theme-color(
-          dark-theme.$dark-theme,
-          secondary-container
-        )};
-      --common-color-on-primary: #{mat.get-theme-color(
-          dark-theme.$dark-theme,
-          on-primary
-        )};
-      --common-color-primary: #{mat.get-theme-color(
-          dark-theme.$dark-theme,
-          primary
-        )};
-      --common-toolbar-background-color: var(--common-color-primary);
-      --mat-toolbar-container-background-color: var(
-        --common-toolbar-background-color
-      );
-      --mat-toolbar-container-text-color: var(--common-color-on-primary);
-      --mat-sidenav-container-divider-color: var(
-        --common-color-outline-variant
+      @include mat.strong-focus-indicators(
+        (
+          border-color: var(--mat-sys-outline-variant),
+        )
       );
 
       .mat-toolbar {
-        --mdc-icon-button-icon-color: var(--common-color-on-primary);
+        @include mat.toolbar-overrides(
+          (
+            container-text-color: var(--mat-sys-on-primary),
+          )
+        );
+
+        @include mat.icon-button-overrides(
+          (
+            icon-color: var(--mat-sys-on-primary),
+          )
+        );
       }
-    }
-  }
 
-  html,
-  body {
-    height: 100%;
-  }
-
-  body {
-    margin: 0;
-
-    a {
-      color: var(--common-color-primary);
+      a {
+        color: var(--mat-sys-primary);
+      }
     }
   }
 }

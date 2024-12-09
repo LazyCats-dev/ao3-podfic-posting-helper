@@ -18,7 +18,7 @@ textarea {
 }
 
 code {
-  border: 1px inset var(--common-color-outline-variant);
+  border: 1px inset var(--mat-sys-outline-variant);
 }
 
 pre,
@@ -34,7 +34,7 @@ code {
   margin: auto;
   overflow: auto;
   height: 100%;
-  padding-inline: 16px 16px;
+  padding-inline: 1rem;
 }
 
 h1 {
@@ -42,30 +42,31 @@ h1 {
 }
 
 .main-section {
-  padding-top: 8px;
+  padding-top: 0.5rem;
   width: 100%;
-  max-width: 900px;
+  max-width: 57rem;
 }
 
 .about-section {
-  margin-bottom: 50px;
+  margin-bottom: 3rem;
 
   section:not(:last-of-type) {
-    border-bottom: 1px inset var(--common-color-outline-variant);
+    border-bottom: 1px inset var(--mat-sys-outline-variant);
   }
 }
 
 .header-icon {
-  margin-left: 4px;
+  margin-left: 0.25rem;
 }
 
+code,
 textarea.code-editor-textarea {
   font-family: 'Roboto Mono', Courier, monospace;
 }
 
 @keyframes highlight {
   0% {
-    background-color: var(--common-color-secondary-container);
+    background-color: var(--mat-sys-secondary-container);
   }
 
   100% {
@@ -78,7 +79,7 @@ section:target mat-card {
 }
 
 mat-card-actions > button {
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 mat-sidenav {
@@ -91,7 +92,7 @@ mat-sidenav-container {
   flex: 1;
 
   // Show everything below the toolbar.
-  margin-top: 64px;
+  margin-top: 4rem;
 }
 
 mat-sidenav-content {
@@ -104,10 +105,15 @@ mat-toolbar {
 }
 
 :host h3 {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .toolbar-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
+}
+
+.title-large {
+  font: var(--mat-sys-title-large);
+  letter-spacing: var(--mat-sys-title-large-tracking);
 }

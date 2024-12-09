@@ -1,8 +1,4 @@
-import {
-  FactoryProvider,
-  InjectionToken,
-  provideAppInitializer,
-} from '@angular/core';
+import {InjectionToken, provideAppInitializer} from '@angular/core';
 
 const defaultFormValuesFromStorage = {
   titleTemplate: '',
@@ -40,7 +36,7 @@ async function setInitialFormValues() {
   defaultFormValuesFromStorage.endNotes = notes_template?.end ?? false;
 }
 
-export function provideInitialFormValuesFromStorage(): FactoryProvider {
+export function provideInitialFormValuesFromStorage() {
   return provideAppInitializer(() => {
     const initializerFn = (() => setInitialFormValues)();
     return initializerFn();
