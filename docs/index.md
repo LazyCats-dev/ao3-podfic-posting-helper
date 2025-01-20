@@ -1,6 +1,6 @@
 ---
 title: lazycats.dev
-layout: Home
+layout: home
 ---
 
 ## Download
