@@ -1,5 +1,6 @@
 logo: /assets/img/logo.png
 show_downloads: false
-theme: jekyll-theme-minimal
+theme: just-the-docs
 title: AO3 Podfic Posting Helper
 description: Browser extension to import metadata when creating a new work
+url: lazycats.dev
