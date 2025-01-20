@@ -6,21 +6,21 @@ layout: home
 ## Download
 
 <a href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=github_pages"
-    target="_blank" rel="noopener" class="logo-button">
+    target="_blank" rel="noopener" class="btn">
     <img alt="" role="presentation" src="/assets/img/chrome-logo.svg" class="logo">
     Chrome Web Store
 </a>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/" target="_blank" rel="noopener"
-    class="logo-button">
+    class="btn">
     <img alt="" role="presentation" src="/assets/img/firefox-logo.svg" class="logo">
     Firefox Add-ons Store
 </a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj" target="_blank" rel="noopener"
-    class="logo-button">
+    class="btn">
     <img alt="" role="presentation" src="/assets/img/edge-logo.svg" class="logo">
     Microsoft Edge Add-ons Store
 </a>
-<a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/releases" target="_blank" rel="noopener" class="logo-button">
+<a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/releases" target="_blank" rel="noopener" class="btn">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo"> Source
 </a>
 
@@ -64,12 +64,12 @@ You do not need to set a custom template, but if you wish to do so you can do so
 ## Support
 
 <a href="https://discord.gg/rhynWjrCw2"
-    target="_blank" rel="noopener" class="logo-button">
+    target="_blank" rel="noopener" class="btn">
     <img alt="" role="presentation" src="/assets/img/discord-logo.svg" class="logo">
     Discord
 </a>
 <a href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new" target="_blank" rel="noopener"
-    class="logo-button">
+    class="btn">
     <img alt="" role="presentation" src="/assets/img/github-logo.png" class="logo">
     GitHub
 </a>
