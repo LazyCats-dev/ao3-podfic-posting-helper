@@ -11,8 +11,13 @@ import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {MatIconHarness} from '@angular/material/icon/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatTooltipHarness} from '@angular/material/tooltip/testing';
+import {axe, toHaveNoViolations} from 'jasmine-axe';
 
 describe('ThemeSelectorComponent', () => {
+  beforeAll(() => {
+    jasmine.addMatchers(toHaveNoViolations);
+  });
+
   let originalMatchMedia: typeof window.matchMedia;
   let matchMediaSpy: jasmine.Spy<typeof window.matchMedia>;
   let storageGetSpy: jasmine.Spy<(key: string) => Promise<unknown>>;
@@ -65,6 +70,7 @@ describe('ThemeSelectorComponent', () => {
 
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('dark_mode');
+      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
     }));
 
     it('respects the system preference for dark mode', fakeAsync(async () => {
@@ -80,6 +86,7 @@ describe('ThemeSelectorComponent', () => {
 
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('light_mode');
+      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
     }));
   });
 

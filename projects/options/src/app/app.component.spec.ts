@@ -17,10 +17,15 @@ import {MatInputHarness} from '@angular/material/input/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
+import {axe, toHaveNoViolations} from 'jasmine-axe';
 
 const VERSION = 'version-shemp';
 
 describe('AppComponent', () => {
+  beforeAll(() => {
+    jasmine.addMatchers(toHaveNoViolations);
+  });
+
   beforeEach(() => {
     const runtimeSpy = jasmine.createSpyObj<typeof chrome.runtime>(
       'chrome.runtime',
@@ -76,6 +81,13 @@ describe('AppComponent', () => {
 
       fixture = TestBed.createComponent(AppComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('passes a11y tests', async () => {
+      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
     });
 
     describe('title section', () => {

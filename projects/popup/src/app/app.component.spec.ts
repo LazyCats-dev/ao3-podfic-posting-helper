@@ -22,8 +22,13 @@ import {MatSelectHarness} from '@angular/material/select/testing';
 import './inject/index';
 import './inject/inject';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
+import {axe, toHaveNoViolations} from 'jasmine-axe';
 
 describe('AppComponent', () => {
+  beforeAll(() => {
+    jasmine.addMatchers(toHaveNoViolations);
+  });
+
   let tabsQuerySubject: Subject<chrome.tabs.Tab[]>;
   let analytics: jasmine.SpyObj<Analytics>;
 
@@ -97,6 +102,10 @@ describe('AppComponent', () => {
       flush();
       fixture.detectChanges();
     }));
+
+    it('passes a11y tests', async () => {
+      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
+    });
 
     it('enables the podfic length select because a length is being added', async () => {
       const podficLengthFormField = await loader.getHarness(

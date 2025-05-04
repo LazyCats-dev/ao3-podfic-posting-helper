@@ -1,6 +1,6 @@
-<mat-toolbar role="heading" color="primary">
+<mat-toolbar role="heading" color="primary" aria-level="1">
   <mat-toolbar-row>
-    <a mat-icon-button href="index.html">
+    <a mat-icon-button href="index.html" aria-label="Home button">
       <mat-icon svgIcon="logo"></mat-icon>
     </a>
     <span>AO3 Podfic Posting Helper Extension Options</span>
@@ -66,7 +66,7 @@
           (reset)="resetTitleTemplate($event)"
           (ngSubmit)="saveTitleTemplate()">
           <mat-card>
-            <mat-card-header role="heading">
+            <mat-card-header role="heading" aria-level="2">
               <mat-card-title>Title template</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -136,7 +136,7 @@
       </section>
       <section id="common-template-keywords-section" class="main-section">
         <mat-card>
-          <mat-card-header role="heading">
+          <mat-card-header role="heading" aria-level="2">
             <mat-card-title>Template keywords</mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -199,7 +199,7 @@
           (reset)="resetSummaryTemplate($event)"
           (ngSubmit)="saveSummaryTemplate()">
           <mat-card>
-            <mat-card-header role="heading">
+            <mat-card-header role="heading" aria-level="2">
               <mat-card-title>Summary template</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -272,7 +272,7 @@
           (reset)="resetNotesTemplate($event)"
           (ngSubmit)="saveNotesTemplate()">
           <mat-card>
-            <mat-card-header role="heading">
+            <mat-card-header role="heading" aria-level="2">
               <mat-card-title>Notes template</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -356,7 +356,7 @@
           [formGroup]="workTemplateFormGroup"
           (ngSubmit)="saveWorkTemplate()">
           <mat-card>
-            <mat-card-header role="heading">
+            <mat-card-header role="heading" aria-level="2">
               <mat-card-title>Work template</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -423,7 +423,7 @@
       </section>
       <section class="about-section main-section" id="about-section">
         <mat-card>
-          <mat-card-header role="heading">
+          <mat-card-header role="heading" aria-level="2">
             <mat-card-title>About</mat-card-title>
           </mat-card-header>
           <mat-card-content>
