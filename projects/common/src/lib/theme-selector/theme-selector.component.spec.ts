@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  flush,
-} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ThemeSelectorComponent} from './theme-selector.component';
 import {HarnessLoader, TestElement} from '@angular/cdk/testing';
@@ -12,6 +7,7 @@ import {MatIconHarness} from '@angular/material/icon/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatTooltipHarness} from '@angular/material/tooltip/testing';
 import {axe, toHaveNoViolations} from 'jasmine-axe';
+import {provideZonelessChangeDetection} from '@angular/core';
 
 describe('ThemeSelectorComponent', () => {
   beforeAll(() => {
@@ -42,6 +38,7 @@ describe('ThemeSelectorComponent', () => {
     chrome.storage = storageSpy;
     await TestBed.configureTestingModule({
       imports: [ThemeSelectorComponent],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
   });
 
@@ -57,13 +54,13 @@ describe('ThemeSelectorComponent', () => {
       storageGetSpy.and.resolveTo({themePreference: undefined});
     });
 
-    it('respects the system preference for light mode', fakeAsync(async () => {
+    it('respects the system preference for light mode', async () => {
       matchMediaSpy.and.returnValue({matches: false} as MediaQueryList);
 
       const fixture = TestBed.createComponent(ThemeSelectorComponent);
       const loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
 
       expect(document.body.classList.contains('dark-mode')).toBeFalse();
       expect(storageSetSpy).not.toHaveBeenCalled();
@@ -71,15 +68,15 @@ describe('ThemeSelectorComponent', () => {
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('dark_mode');
       expect(await axe(fixture.nativeElement)).toHaveNoViolations();
-    }));
+    });
 
-    it('respects the system preference for dark mode', fakeAsync(async () => {
+    it('respects the system preference for dark mode', async () => {
       matchMediaSpy.and.returnValue({matches: true} as MediaQueryList);
 
       const fixture = TestBed.createComponent(ThemeSelectorComponent);
       const loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
 
       expect(document.body.classList.contains('dark-mode')).toBeTrue();
       expect(storageSetSpy).not.toHaveBeenCalled();
@@ -87,7 +84,7 @@ describe('ThemeSelectorComponent', () => {
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('light_mode');
       expect(await axe(fixture.nativeElement)).toHaveNoViolations();
-    }));
+    });
   });
 
   describe('with a storage preference of light', () => {
@@ -98,7 +95,7 @@ describe('ThemeSelectorComponent', () => {
     let buttonHost: TestElement;
     let tooltip: MatTooltipHarness;
 
-    beforeEach(fakeAsync(async () => {
+    beforeEach(async () => {
       // Dark mode preference is already in storage.
       storageGetSpy.and.resolveTo({themePreference: 'light'});
       // Light mode is preferred at the system level.
@@ -107,13 +104,13 @@ describe('ThemeSelectorComponent', () => {
       fixture = TestBed.createComponent(ThemeSelectorComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
 
       icon = await loader.getHarness(MatIconHarness);
       button = await loader.getHarness(MatButtonHarness);
       buttonHost = await button.host();
       tooltip = await loader.getHarness(MatTooltipHarness);
-    }));
+    });
 
     it('respects the storage preference over the system preference', async () => {
       expect(document.body.classList.contains('dark-mode')).toBeFalse();
@@ -138,7 +135,7 @@ describe('ThemeSelectorComponent', () => {
     let buttonHost: TestElement;
     let tooltip: MatTooltipHarness;
 
-    beforeEach(fakeAsync(async () => {
+    beforeEach(async () => {
       // Dark mode preference is already in storage.
       storageGetSpy.and.resolveTo({themePreference: 'dark'});
       // Light mode is preferred at the system level.
@@ -147,13 +144,13 @@ describe('ThemeSelectorComponent', () => {
       fixture = TestBed.createComponent(ThemeSelectorComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
 
       icon = await loader.getHarness(MatIconHarness);
       button = await loader.getHarness(MatButtonHarness);
       buttonHost = await button.host();
       tooltip = await loader.getHarness(MatTooltipHarness);
-    }));
+    });
 
     it('respects the storage preference over the system preference', async () => {
       expect(document.body.classList.contains('dark-mode')).toBeTrue();
@@ -170,10 +167,10 @@ describe('ThemeSelectorComponent', () => {
     });
 
     describe('the button is clicked', () => {
-      beforeEach(fakeAsync(async () => {
+      beforeEach(async () => {
         await button.click();
-        flush();
-      }));
+        await fixture.whenStable();
+      });
 
       it('toggles the theme preference', async () => {
         expect(document.body.classList.contains('dark-mode')).toBeFalse();
@@ -190,10 +187,10 @@ describe('ThemeSelectorComponent', () => {
       });
 
       describe('the button is clicked again', () => {
-        beforeEach(fakeAsync(async () => {
+        beforeEach(async () => {
           await button.click();
-          flush();
-        }));
+          await fixture.whenStable();
+        });
 
         it('toggles the theme preference back', async () => {
           expect(document.body.classList.contains('dark-mode')).toBeTrue();

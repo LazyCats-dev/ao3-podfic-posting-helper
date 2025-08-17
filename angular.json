@@ -66,12 +66,17 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [],
             "tsConfig": "projects/popup/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/popup/src/favicon.ico",
-              "projects/popup/src/assets"
+              "projects/popup/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/popup/src/app/testdata",
+                "output": "/assets/"
+              }
             ],
             "styles": ["projects/popup/src/styles.scss"],
             "scripts": [],
@@ -153,7 +158,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [],
             "tsConfig": "projects/options/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -201,7 +206,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/common/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [],
             "karmaConfig": "projects/common/karma.conf.js"
           }
         },

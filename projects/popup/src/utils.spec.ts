@@ -1,6 +1,9 @@
-import {TestBed, waitForAsync} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import {ApplicationInitStatus} from '@angular/core';
+import {
+  ApplicationInitStatus,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import {
   INITIAL_FORM_VALUES,
   provideInitialFormValuesFromStorage,
@@ -27,13 +30,17 @@ describe('INITIAL_FORM_VALUES', () => {
   afterEach(TEST_ONLY.resetDefaultFormValuesForTest);
 
   describe('with no initial values in storage', () => {
-    beforeEach(waitForAsync(async () => {
+    beforeEach(async () => {
       (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({});
       await TestBed.configureTestingModule({
-        providers: [provideInitialFormValuesFromStorage()],
+        providers: [
+          provideInitialFormValuesFromStorage(),
+          provideZonelessChangeDetection(),
+        ],
       }).compileComponents();
-      await TestBed.inject(ApplicationInitStatus).donePromise;
-    }));
+      const applicationInitStatus = TestBed.inject(ApplicationInitStatus);
+      await applicationInitStatus.donePromise;
+    });
 
     it('uses default values', () => {
       expect(TestBed.inject(INITIAL_FORM_VALUES)).toEqual({
@@ -49,15 +56,18 @@ describe('INITIAL_FORM_VALUES', () => {
   });
 
   describe('with empty values populated in storage', () => {
-    beforeEach(waitForAsync(async () => {
+    beforeEach(async () => {
       (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({
         options: {},
       });
       await TestBed.configureTestingModule({
-        providers: [provideInitialFormValuesFromStorage()],
+        providers: [
+          provideInitialFormValuesFromStorage(),
+          provideZonelessChangeDetection(),
+        ],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
-    }));
+    });
 
     it('uses default values', () => {
       expect(TestBed.inject(INITIAL_FORM_VALUES)).toEqual({
@@ -73,7 +83,7 @@ describe('INITIAL_FORM_VALUES', () => {
   });
 
   describe('with values populated in storage', () => {
-    beforeEach(waitForAsync(async () => {
+    beforeEach(async () => {
       (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({
         options: {
           url: 'https://acrhiveofourown.org/works/12345678',
@@ -89,10 +99,13 @@ describe('INITIAL_FORM_VALUES', () => {
         },
       });
       await TestBed.configureTestingModule({
-        providers: [provideInitialFormValuesFromStorage()],
+        providers: [
+          provideInitialFormValuesFromStorage(),
+          provideZonelessChangeDetection(),
+        ],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
-    }));
+    });
 
     it('uses storage values', () => {
       expect(TestBed.inject(INITIAL_FORM_VALUES)).toEqual({

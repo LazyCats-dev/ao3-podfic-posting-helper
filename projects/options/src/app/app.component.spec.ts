@@ -18,6 +18,7 @@ import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
 import {axe, toHaveNoViolations} from 'jasmine-axe';
+import {provideZonelessChangeDetection} from '@angular/core';
 
 const VERSION = 'version-shemp';
 
@@ -76,6 +77,7 @@ describe('AppComponent', () => {
               },
             },
           },
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
 
@@ -84,6 +86,9 @@ describe('AppComponent', () => {
 
       fixture.detectChanges();
       await fixture.whenStable();
+
+      // Wait for previews.
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
     });
 
     it('passes a11y tests', async () => {
@@ -240,6 +245,7 @@ describe('AppComponent', () => {
               },
             },
           },
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
 
@@ -258,6 +264,12 @@ describe('AppComponent', () => {
       storageSpy.sync = syncSpy;
       setSpy = syncSpy.set.and.resolveTo(undefined);
       chrome.storage = storageSpy;
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      // Wait for previews.
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
     });
 
     describe('title section', () => {
@@ -301,6 +313,9 @@ describe('AppComponent', () => {
       it('clicking the reset button resets without saving', async () => {
         await resetButton.click();
 
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
+
         expect(await input.getValue()).toBe('[Podfic] ${title}');
         expect(await preview.getText()).toBe('[Podfic] TITLE_TEXT');
         expect(setSpy).not.toHaveBeenCalled();
@@ -309,6 +324,9 @@ describe('AppComponent', () => {
       it('entering html shows a warning', async () => {
         await input.setValue('<b>bold</b>');
         await input.blur();
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await formField.getTextErrors()).toContain(
           'This template should not contain HTML but it appears to contain HTML',
@@ -335,6 +353,8 @@ describe('AppComponent', () => {
           '${title} ${title-unlinked} ${authors} ${author} ${authors-unlinked} ' +
             '${author-unlinked} ${ignored}',
         );
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await preview.getText()).toBe(
           'TITLE_TEXT TITLE_TEXT AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ' +
@@ -396,6 +416,9 @@ describe('AppComponent', () => {
       it('clicking the reset button resets without saving', async () => {
         await resetButton.click();
 
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+
         expect(await input.getValue()).toBe(
           '${blocksummary}Podfic of ${title} by ${authors}.',
         );
@@ -409,6 +432,9 @@ describe('AppComponent', () => {
       it('entering invalid ao3 html shows a warning', async () => {
         await input.setValue('<b>bold</b><video>video</video>');
         await input.blur();
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
@@ -435,6 +461,9 @@ describe('AppComponent', () => {
           '<video>video</video><strong>strong</strong>${blocksummary} ${title} ${title-unlinked} ' +
           '${authors} ${author} ${authors-unlinked} ${author-unlinked} ${ignored}';
         await input.setValue(value);
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
@@ -506,6 +535,9 @@ describe('AppComponent', () => {
       it('clicking the reset button resets without saving', async () => {
         await resetButton.click();
 
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+
         expect(await input.getValue()).toBe('');
         expect(await preview.getText()).toBe('');
         expect(setSpy).not.toHaveBeenCalled();
@@ -514,6 +546,9 @@ describe('AppComponent', () => {
       it('entering invalid ao3 html shows a warning', async () => {
         await input.setValue('<b>bold</b><video>video</video>');
         await input.blur();
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
@@ -544,6 +579,9 @@ describe('AppComponent', () => {
           '<video>video</video><strong>strong</strong>${blocksummary} ${title} ${title-unlinked} ' +
           '${authors} ${author} ${authors-unlinked} ${author-unlinked} ${ignored}';
         await input.setValue(value);
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
@@ -604,6 +642,9 @@ describe('AppComponent', () => {
         await input.setValue('<b>bold</b><video>video</video>');
         await input.blur();
 
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
         );
@@ -629,6 +670,9 @@ describe('AppComponent', () => {
           '<video>video</video><strong>strong</strong>${blocksummary} ${title} ${title-unlinked} ' +
           '${authors} ${author} ${authors-unlinked} ${author-unlinked} ${ignored}';
         await input.setValue(value);
+
+        // Wait for previews.
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +

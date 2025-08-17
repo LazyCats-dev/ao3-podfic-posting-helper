@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  flush,
-} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {Subject, firstValueFrom} from 'rxjs';
 import {MatIconTestingModule} from '@angular/material/icon/testing';
@@ -23,6 +18,7 @@ import './inject/index';
 import './inject/inject';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {axe, toHaveNoViolations} from 'jasmine-axe';
+import {provideZonelessChangeDetection} from '@angular/core';
 
 describe('AppComponent', () => {
   beforeAll(() => {
@@ -67,7 +63,7 @@ describe('AppComponent', () => {
     let loader: HarnessLoader;
     let fixture: ComponentFixture<AppComponent>;
 
-    beforeEach(fakeAsync(async () => {
+    beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [AppComponent, MatIconTestingModule, NoopAnimationsModule],
         providers: [
@@ -88,6 +84,7 @@ describe('AppComponent', () => {
               ],
             },
           },
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
 
@@ -99,9 +96,9 @@ describe('AppComponent', () => {
           id: 666,
         } as chrome.tabs.Tab,
       ]);
-      flush();
       fixture.detectChanges();
-    }));
+      await fixture.whenStable();
+    });
 
     it('passes a11y tests', async () => {
       expect(await axe(fixture.nativeElement)).toHaveNoViolations();
@@ -184,6 +181,7 @@ describe('AppComponent', () => {
               audioFormatTagOptionIds: [] as readonly string[],
             },
           },
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
 
@@ -211,10 +209,10 @@ describe('AppComponent', () => {
       expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeTrue();
     });
 
-    it('shows an error message if the opened on a page that is not allowed', fakeAsync(async () => {
+    it('shows an error message if the opened on a page that is not allowed', async () => {
       fixture.detectChanges();
       tabsQuerySubject.next([{url: 'https://example.com'} as chrome.tabs.Tab]);
-      flush();
+      await fixture.whenStable();
 
       expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
 
@@ -227,14 +225,14 @@ describe('AppComponent', () => {
       );
       expect(analytics.fireEvent).not.toHaveBeenCalled();
       expect(analytics.fireErrorEvent).not.toHaveBeenCalled();
-    }));
+    });
 
     describe('when the user is on the ao3 new work page', () => {
       let submitButton: MatButtonHarness;
       let urlInputFormField: MatFormFieldHarness;
       let urlInput: MatInputHarness;
 
-      beforeEach(fakeAsync(async () => {
+      beforeEach(async () => {
         fixture.detectChanges();
         tabsQuerySubject.next([
           {
@@ -242,7 +240,7 @@ describe('AppComponent', () => {
             id: 666,
           } as chrome.tabs.Tab,
         ]);
-        flush();
+        await fixture.whenStable();
         fixture.detectChanges();
 
         submitButton = await loader.getHarness(
@@ -254,7 +252,7 @@ describe('AppComponent', () => {
           }),
         );
         urlInput = (await urlInputFormField.getControl(MatInputHarness))!;
-      }));
+      });
 
       it('is not loading', async () => {
         expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
@@ -273,18 +271,18 @@ describe('AppComponent', () => {
       });
 
       // Check that the page hasn't changed
-      it('ignores the tab updates', fakeAsync(async () => {
+      it('ignores the tab updates', async () => {
         tabsQuerySubject.next([
           {url: 'https://example.com'} as chrome.tabs.Tab,
         ]);
-        flush();
+        await fixture.whenStable();
 
         expect(fixture.nativeElement.textContent).not.toContain(
           'This extension can only be used on the AO3 page',
         );
         expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
         expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
-      }));
+      });
 
       it('does not import when the url is empty', async () => {
         await submitButton.click();
@@ -338,7 +336,7 @@ describe('AppComponent', () => {
           typeof chrome.scripting.executeScript
         >;
 
-        beforeEach(fakeAsync(async () => {
+        beforeEach(async () => {
           const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
             'chrome.storage',
             ['sync'],
@@ -349,6 +347,8 @@ describe('AppComponent', () => {
           );
           storageSpy.sync = syncSpy;
           setSpy = syncSpy.set.and.resolveTo(undefined);
+          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+          (syncSpy.get as any).and.resolveTo({});
           (syncSpy.get as jasmine.Spy)
             .withArgs([
               'workbody',
@@ -428,7 +428,7 @@ describe('AppComponent', () => {
 
           await submitButton.click();
           fixture.detectChanges();
-        }));
+        });
 
         it('starts loading', async () => {
           expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeTrue();
@@ -493,7 +493,7 @@ describe('AppComponent', () => {
         });
 
         describe('the script execution succeeds', () => {
-          beforeEach(fakeAsync(() => {
+          beforeEach(async () => {
             executeScriptResolve([
               {
                 documentId: '666',
@@ -503,8 +503,8 @@ describe('AppComponent', () => {
                 },
               },
             ]);
-            flush();
-          }));
+            await fixture.whenStable();
+          });
 
           it('shows a snack bar', async () => {
             const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
@@ -520,10 +520,10 @@ describe('AppComponent', () => {
         });
 
         describe('the script execution throws', () => {
-          beforeEach(fakeAsync(() => {
+          beforeEach(async () => {
             executeScriptReject(new Error('I always get the shemp'));
-            flush();
-          }));
+            await fixture.whenStable();
+          });
 
           it('shows a snack bar', async () => {
             const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
@@ -557,7 +557,7 @@ describe('AppComponent', () => {
         });
 
         describe('the script execution fails', () => {
-          beforeEach(fakeAsync(() => {
+          beforeEach(async () => {
             executeScriptResolve([
               {
                 documentId: '666',
@@ -568,8 +568,8 @@ describe('AppComponent', () => {
                 },
               },
             ]);
-            flush();
-          }));
+            await fixture.whenStable();
+          });
 
           it('shows a snack bar', async () => {
             const snackBar = await rootLoader.getHarness(MatSnackBarHarness);

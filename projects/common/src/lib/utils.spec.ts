@@ -6,7 +6,10 @@ import {
   provideMatSnackBarDefaultOptions,
   provideStorageSetup,
 } from './utils';
-import {ApplicationInitStatus} from '@angular/core';
+import {
+  ApplicationInitStatus,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import {ANALYTICS, Analytics} from './google-analytics';
 
 describe('provideStorageSetup', () => {
@@ -52,6 +55,7 @@ describe('provideStorageSetup', () => {
           provideMatFormFieldDefaultOptions(),
           provideMatIconRegistry(),
           provideMatSnackBarDefaultOptions(),
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
@@ -113,7 +117,7 @@ describe('provideStorageSetup', () => {
         });
 
       await TestBed.configureTestingModule({
-        providers: [provideStorageSetup()],
+        providers: [provideStorageSetup(), provideZonelessChangeDetection()],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
     });
@@ -174,7 +178,7 @@ describe('provideStorageSetup', () => {
         });
 
       await TestBed.configureTestingModule({
-        providers: [provideStorageSetup()],
+        providers: [provideStorageSetup(), provideZonelessChangeDetection()],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
     });
@@ -247,6 +251,7 @@ describe('provideStorageSetup', () => {
           provideMatFormFieldDefaultOptions(),
           provideMatIconRegistry(),
           provideMatSnackBarDefaultOptions(),
+          provideZonelessChangeDetection(),
         ],
       }).compileComponents();
       await TestBed.inject(ApplicationInitStatus).donePromise;
@@ -276,6 +281,7 @@ describe('provideGlobalEventLogging', () => {
         provideMatFormFieldDefaultOptions(),
         provideMatIconRegistry(),
         provideMatSnackBarDefaultOptions(),
+        provideZonelessChangeDetection(),
       ],
     }).compileComponents();
     await TestBed.inject(ApplicationInitStatus).donePromise;

@@ -22,7 +22,7 @@ module.exports = function (config) {
       },
     ],
     proxies: {
-      'https://archiveofourown.org/works/': '/base/src/app/testdata/',
+      'https://archiveofourown.org/works/': '/assets/',
     },
     client: {
       jasmine: {

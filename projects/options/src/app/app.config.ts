@@ -1,7 +1,4 @@
-import {
-  ApplicationConfig,
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
+import {ApplicationConfig, provideZonelessChangeDetection} from '@angular/core';
 import {provideHttpClient} from '@angular/common/http';
 import {
   provideGlobalEventLogging,
@@ -25,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideMatFormFieldDefaultOptions(),
     provideMatIconRegistry(),
     provideMatSnackBarDefaultOptions(),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     {
       provide: MAT_CARD_CONFIG,
       useValue: {appearance: 'outlined'} as MatCardConfig,

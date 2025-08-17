@@ -1,7 +1,7 @@
 import './inject/index';
 import './inject/inject';
 
-const MIN_URL = '/base/src/app/testdata/work_with_min_metadata.html';
+const MIN_URL = '/assets/work_with_min_metadata.html';
 const MIN_URL_FETCHED = MIN_URL + '?view_adult=true';
 const MIN_IMPORTED_METADATA = {
   rating: 'Not Rated',
@@ -21,7 +21,7 @@ const MIN_IMPORTED_METADATA = {
   collections: [],
   workRecipients: [],
   isPodifc: true,
-  parentWorkUrl: '/base/src/app/testdata/work_with_min_metadata.html',
+  parentWorkUrl: '/assets/work_with_min_metadata.html',
   parentWorkTitle: '',
   parentWorkAuthor: '',
   parentWorkLanguage: '',
@@ -75,7 +75,7 @@ describe('injectImportAndFillMetadata', () => {
   let fetchSpy: jasmine.Spy<typeof window.fetch>;
 
   beforeEach(async () => {
-    const response = await fetch('/base/src/app/testdata/new_work_page.html');
+    const response = await fetch('/assets/new_work_page.html');
     const text = await response.text();
     testContent = document.createElement('div');
     testContent.id = 'test-content';
@@ -143,7 +143,7 @@ describe('injectImportAndFillMetadata', () => {
     const fullTemplate =
       '${blocksummary} ${summary} ${title} ${title-unlinked} ${authors} ${authors-unlinked}';
     const response = await window.injectImportAndFillMetadata({
-      url: '/base/src/app/testdata/work_with_max_metadata.html',
+      url: '/assets/work_with_max_metadata.html',
       podficLabel: true,
       podficLengthLabel: true,
       podficLengthValue: '20-30 Minutes',
@@ -196,7 +196,7 @@ describe('injectImportAndFillMetadata', () => {
       collections: [],
       workRecipients: [],
       isPodifc: true,
-      parentWorkUrl: '/base/src/app/testdata/work_with_max_metadata.html',
+      parentWorkUrl: '/assets/work_with_max_metadata.html',
       parentWorkTitle: '',
       parentWorkAuthor: '',
       parentWorkLanguage: '',
@@ -214,7 +214,7 @@ describe('injectImportAndFillMetadata', () => {
       ),
     });
     expect(fetchSpy).toHaveBeenCalledOnceWith(
-      '/base/src/app/testdata/work_with_max_metadata.html?view_adult=true',
+      '/assets/work_with_max_metadata.html?view_adult=true',
       {credentials: 'omit'},
     );
   });
@@ -272,8 +272,7 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('partially fills the form and returns an error if user is hiding tags and categories', async () => {
-    const url =
-      '/base/src/app/testdata/work_with_min_metadata_hidden_warnings_and_tags.html';
+    const url = '/assets/work_with_min_metadata_hidden_warnings_and_tags.html';
     const response = await window.injectImportAndFillMetadata(minimalArgs(url));
 
     expect(response).toEqual({
@@ -324,7 +323,7 @@ describe('injectImportAndFillMetadata', () => {
   it('fetches the work with creds if the work is unrevealed', async () => {
     fetchSpy.withArgs(MIN_URL_FETCHED, {credentials: 'omit'}).and.callFake(() =>
       // Load the unrevealed work from the test data.
-      fetch('/base/src/app/testdata/unrevealed_work.html'),
+      fetch('/assets/unrevealed_work.html'),
     );
     const response = await window.injectImportAndFillMetadata(
       minimalArgs(MIN_URL),
@@ -398,7 +397,7 @@ describe('injectImportAndFillMetadata', () => {
         .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
         .and.callFake(() =>
           // Load the unrevealed work from the test data.
-          fetch('/base/src/app/testdata/unrevealed_work.html'),
+          fetch('/assets/unrevealed_work.html'),
         );
 
       const response = await window.injectImportAndFillMetadata(
@@ -434,8 +433,8 @@ describe('injectImportAndFillMetadata', () => {
             url: MIN_URL,
             ok: true,
             text: () =>
-              fetch('/base/src/app/testdata/adult_warning_page.html').then(
-                response => response.text(),
+              fetch('/assets/adult_warning_page.html').then(response =>
+                response.text(),
               ),
           } as Response);
         });
@@ -468,8 +467,8 @@ describe('injectImportAndFillMetadata', () => {
             url: MIN_URL,
             ok: true,
             text: () =>
-              fetch('/base/src/app/testdata/unrevealed_work.html').then(
-                response => response.text(),
+              fetch('/assets/unrevealed_work.html').then(response =>
+                response.text(),
               ),
           } as Response);
         });
