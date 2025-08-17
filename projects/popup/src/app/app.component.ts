@@ -1,11 +1,11 @@
 import {AsyncPipe} from '@angular/common';
 import {
   Component,
-  ViewChild,
   inject,
   signal,
   ElementRef,
   effect,
+  viewChild,
 } from '@angular/core';
 import {
   FormControl,
@@ -173,8 +173,8 @@ export class AppComponent {
     {initialValue: this.formGroup.controls.podficLengthLabel.value},
   );
 
-  @ViewChild('urlInput')
-  urlInput!: ElementRef<HTMLInputElement>;
+  readonly urlInput =
+    viewChild.required<ElementRef<HTMLInputElement>>('urlInput');
 
   constructor() {
     effect(() => {
@@ -188,7 +188,7 @@ export class AppComponent {
 
   protected async fillNewWorkForm(tab: chrome.tabs.Tab): Promise<void> {
     if (this.formGroup.invalid) {
-      this.urlInput.nativeElement.focus();
+      this.urlInput().nativeElement.focus();
       return;
     }
 
@@ -277,7 +277,7 @@ export class AppComponent {
       });
       this.analytics.fireErrorEvent(result?.message || '');
       this.snackBar.open('Failed to import metadata');
-      this.urlInput.nativeElement.focus();
+      this.urlInput().nativeElement.focus();
     } else {
       this.snackBar.open('Import finished');
     }

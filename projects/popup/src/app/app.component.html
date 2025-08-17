@@ -1,12 +1,12 @@
 <mat-toolbar role="heading" color="primary" aria-level="1">
   <mat-toolbar-row>
     <a mat-icon-button href="index.html" aria-label="Home button">
-      <mat-icon svgIcon="logo"></mat-icon>
+      <mat-icon svgIcon="logo" />
     </a>
     <span>AO3 Podfic Posting Helper</span>
     <span class="spacer"></span>
     <div class="toolbar-actions">
-      <lib-theme-selector></lib-theme-selector>
+      <lib-theme-selector />
       <a
         mat-icon-button
         aria-label="Submit feedback"
@@ -128,7 +128,7 @@
                   <mat-progress-spinner
                     diameter="24"
                     mode="indeterminate"
-                    aria-label="Importing please wait"></mat-progress-spinner>
+                    aria-label="Importing please wait" />
                 </button>
               } @else {
                 <button type="submit" mat-flat-button>
@@ -157,9 +157,7 @@
       </p>
     }
     @case (null) {
-      <mat-spinner
-        mode="indeterminate"
-        aria-label="Loading extension"></mat-spinner>
+      <mat-spinner mode="indeterminate" aria-label="Loading extension" />
     }
   }
 </main>
