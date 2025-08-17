@@ -1,4 +1,4 @@
-import {AsyncPipe, NgIf} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {
   Component,
   ViewChild,
@@ -58,7 +58,6 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
     MatSnackBarModule,
     MatToolbar,
     MatToolbarRow,
-    NgIf,
     ReactiveFormsModule,
     ThemeSelectorComponent,
   ],

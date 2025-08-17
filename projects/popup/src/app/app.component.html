@@ -35,112 +35,111 @@
         "Import". Anything already entered into the form may be deleted after
         clicking "Import"
       </p>
-      <form
-        [formGroup]="formGroup"
-        *ngIf="tab | async as tabValue"
-        (ngSubmit)="fillNewWorkForm(tabValue)">
-        <div class="list" role="group">
-          <div class="form-item">
-            <mat-form-field class="url-text-field">
-              <mat-label>URL of work to import from</mat-label>
-              <input
-                #urlInput
-                matInput
-                type="url"
-                [formControl]="formGroup.controls.url" />
-              @if (formGroup.controls.url.hasError('required')) {
-                <mat-error>This field is required</mat-error>
-              }
-              @if (formGroup.controls.url.hasError('pattern')) {
-                <mat-error>Must be an AO3 work URL</mat-error>
-              }
-              @if (formGroup.controls.url.hasError('injectedScriptError')) {
-                <mat-error>
-                  {{ formGroup.controls.url.getError('injectedScriptError') }}
-                </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          <div class="form-item">
-            <mat-checkbox [formControl]="formGroup.controls.podficLabel">
-              Add the tag "Podfic"
-            </mat-checkbox>
-          </div>
-          <div class="form-item">
-            <mat-checkbox
-              class="length-checkbox"
-              [formControl]="formGroup.controls.podficLengthLabel">
-              Add a "Podfic Length" tag
-            </mat-checkbox>
-            <mat-form-field>
-              <mat-label>Podfic Length</mat-label>
-              <mat-select [formControl]="formGroup.controls.podficLength">
-                @for (option of podficLengthOptions; track option) {
-                  <mat-option [value]="option">{{ option }}</mat-option>
+      @if (tab | async; as tabValue) {
+        <form [formGroup]="formGroup" (ngSubmit)="fillNewWorkForm(tabValue)">
+          <div class="list" role="group">
+            <div class="form-item">
+              <mat-form-field class="url-text-field">
+                <mat-label>URL of work to import from</mat-label>
+                <input
+                  #urlInput
+                  matInput
+                  type="url"
+                  [formControl]="formGroup.controls.url" />
+                @if (formGroup.controls.url.hasError('required')) {
+                  <mat-error>This field is required</mat-error>
                 }
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="form-item">
-            <div class="template-controls">
-              <mat-form-field class="title-template-select">
-                <mat-label>Title format</mat-label>
-                <mat-select [formControl]="formGroup.controls.titleFormat">
-                  <mat-option value="default">"[Podfic] " + title</mat-option>
-                  <mat-option value="orig">Original title</mat-option>
-                  <mat-option value="blank">Leave blank</mat-option>
-                  <mat-option value="custom">Custom</mat-option>
-                </mat-select>
+                @if (formGroup.controls.url.hasError('pattern')) {
+                  <mat-error>Must be an AO3 work URL</mat-error>
+                }
+                @if (formGroup.controls.url.hasError('injectedScriptError')) {
+                  <mat-error>
+                    {{ formGroup.controls.url.getError('injectedScriptError') }}
+                  </mat-error>
+                }
               </mat-form-field>
-              <mat-form-field class="summary-template-select">
-                <mat-label>Summary format</mat-label>
-                <mat-select [formControl]="formGroup.controls.summaryFormat">
-                  <mat-option value="default">Summary + credits</mat-option>
-                  <mat-option value="orig">Original summary</mat-option>
-                  <mat-option value="blank">Leave blank</mat-option>
-                  <mat-option value="custom">Custom</mat-option>
+            </div>
+            <div class="form-item">
+              <mat-checkbox [formControl]="formGroup.controls.podficLabel">
+                Add the tag "Podfic"
+              </mat-checkbox>
+            </div>
+            <div class="form-item">
+              <mat-checkbox
+                class="length-checkbox"
+                [formControl]="formGroup.controls.podficLengthLabel">
+                Add a "Podfic Length" tag
+              </mat-checkbox>
+              <mat-form-field>
+                <mat-label>Podfic Length</mat-label>
+                <mat-select [formControl]="formGroup.controls.podficLength">
+                  @for (option of podficLengthOptions; track option) {
+                    <mat-option [value]="option">{{ option }}</mat-option>
+                  }
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="form-item">
+              <div class="template-controls">
+                <mat-form-field class="title-template-select">
+                  <mat-label>Title format</mat-label>
+                  <mat-select [formControl]="formGroup.controls.titleFormat">
+                    <mat-option value="default">"[Podfic] " + title</mat-option>
+                    <mat-option value="orig">Original title</mat-option>
+                    <mat-option value="blank">Leave blank</mat-option>
+                    <mat-option value="custom">Custom</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="summary-template-select">
+                  <mat-label>Summary format</mat-label>
+                  <mat-select [formControl]="formGroup.controls.summaryFormat">
+                    <mat-option value="default">Summary + credits</mat-option>
+                    <mat-option value="orig">Original summary</mat-option>
+                    <mat-option value="blank">Leave blank</mat-option>
+                    <mat-option value="custom">Custom</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-item">
+              <mat-form-field class="audio-format-tags">
+                <mat-label>"Audio Format" tags</mat-label>
+                <mat-select
+                  multiple
+                  [formControl]="formGroup.controls.audioFormatTags">
+                  @for (format of podficFormatTagOptions; track format) {
+                    <mat-option [value]="format">
+                      {{ format }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <p>
+              You can set up custom templates for sections of the form in the
+              <a target="_blank" [href]="optionsPageUrl">options page</a>
+            </p>
+            <div class="form-item">
+              @if (loading()) {
+                <button
+                  mat-flat-button
+                  disabled
+                  [attr.role]="loading() ? 'generic' : 'button'">
+                  <mat-progress-spinner
+                    diameter="24"
+                    mode="indeterminate"
+                    aria-label="Importing please wait"></mat-progress-spinner>
+                </button>
+              } @else {
+                <button type="submit" mat-flat-button>
+                  <mat-icon>import_export</mat-icon>
+                  Import
+                </button>
+              }
+            </div>
           </div>
-          <div class="form-item">
-            <mat-form-field class="audio-format-tags">
-              <mat-label>"Audio Format" tags</mat-label>
-              <mat-select
-                multiple
-                [formControl]="formGroup.controls.audioFormatTags">
-                @for (format of podficFormatTagOptions; track format) {
-                  <mat-option [value]="format">
-                    {{ format }}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <p>
-            You can set up custom templates for sections of the form in the
-            <a target="_blank" [href]="optionsPageUrl">options page</a>
-          </p>
-          <div class="form-item">
-            @if (loading()) {
-              <button
-                mat-flat-button
-                disabled
-                [attr.role]="loading() ? 'generic' : 'button'">
-                <mat-progress-spinner
-                  diameter="24"
-                  mode="indeterminate"
-                  aria-label="Importing please wait"></mat-progress-spinner>
-              </button>
-            } @else {
-              <button type="submit" mat-flat-button>
-                <mat-icon>import_export</mat-icon>
-                Import
-              </button>
-            }
-          </div>
-        </div>
-      </form>
+        </form>
+      }
     }
     @case (false) {
       <p>
