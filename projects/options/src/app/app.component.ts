@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {MatButton, MatIconAnchor} from '@angular/material/button';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
@@ -32,13 +32,11 @@ import {
 } from '@angular/forms';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
-import {map, startWith} from 'rxjs/operators';
 import {HighlightModule} from 'ngx-highlightjs';
-import {MonoTypeOperatorFunction, pipe} from 'rxjs';
-import {AsyncPipe} from '@angular/common';
 import {INITIAL_FORM_VALUES} from './utils';
 import {ThemeSelectorComponent} from 'common';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   allowedTags: [
@@ -121,7 +119,6 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
 @Component({
   selector: 'app-root',
   imports: [
-    AsyncPipe,
     CdkTextareaAutosize,
     HighlightModule,
     MatButton,
@@ -173,19 +170,21 @@ export class AppComponent {
     }),
   });
 
-  protected readonly titleTemplatePreview =
-    this.titleTemplateFormGroup.controls.template.valueChanges.pipe(
-      startWith(this.titleTemplateFormGroup.controls.template.value),
-      map(value =>
-        value
-          .replaceAll('${title}', 'TITLE_TEXT')
-          .replaceAll('${title-unlinked}', 'TITLE_TEXT')
-          .replaceAll('${authors}', 'AUTHOR_1, AUTHOR_2')
-          .replaceAll('${author}', 'AUTHOR_1, AUTHOR_2')
-          .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
-          .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2'),
-      ),
-    );
+  private readonly titleTemplateValue = toSignal(
+    this.titleTemplateFormGroup.controls.template.valueChanges,
+    {initialValue: this.titleTemplateFormGroup.controls.template.value},
+  );
+
+  protected readonly titleTemplatePreview = computed(() => {
+    const titleTemplateValue = this.titleTemplateValue();
+    return titleTemplateValue
+      .replaceAll('${title}', 'TITLE_TEXT')
+      .replaceAll('${title-unlinked}', 'TITLE_TEXT')
+      .replaceAll('${authors}', 'AUTHOR_1, AUTHOR_2')
+      .replaceAll('${author}', 'AUTHOR_1, AUTHOR_2')
+      .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
+      .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2');
+  });
 
   protected readonly workTemplateFormGroup = new FormGroup({
     template: new FormControl<string>(this.initialFormValues.workTemplate, {
@@ -194,11 +193,14 @@ export class AppComponent {
     }),
   });
 
-  protected readonly workTemplatePreview =
-    this.workTemplateFormGroup.controls.template.valueChanges.pipe(
-      startWith(this.workTemplateFormGroup.controls.template.value),
-      mapToSanitizedHtml(),
-    );
+  private readonly workTemplateValue = toSignal(
+    this.workTemplateFormGroup.controls.template.valueChanges,
+    {initialValue: this.workTemplateFormGroup.controls.template.value},
+  );
+
+  protected readonly workTemplatePreview = computed(() =>
+    mapToSanitizedHtml(this.workTemplateValue()),
+  );
 
   protected readonly summaryTemplateFormGroup = new FormGroup({
     template: new FormControl<string>(this.initialFormValues.summaryTemplate, {
@@ -207,11 +209,14 @@ export class AppComponent {
     }),
   });
 
-  protected readonly summaryTemplatePreview =
-    this.summaryTemplateFormGroup.controls.template.valueChanges.pipe(
-      startWith(this.summaryTemplateFormGroup.controls.template.value),
-      mapToSanitizedHtml(),
-    );
+  private readonly summaryTemplateValue = toSignal(
+    this.summaryTemplateFormGroup.controls.template.valueChanges,
+    {initialValue: this.summaryTemplateFormGroup.controls.template.value},
+  );
+
+  protected readonly summaryTemplatePreview = computed(() =>
+    mapToSanitizedHtml(this.summaryTemplateValue()),
+  );
 
   protected readonly notesTemplateFormGroup = new FormGroup({
     template: new FormControl<string>(this.initialFormValues.notesTemplate, {
@@ -227,11 +232,14 @@ export class AppComponent {
     }),
   });
 
-  protected readonly notesTemplatePreview =
-    this.notesTemplateFormGroup.controls.template.valueChanges.pipe(
-      startWith(this.notesTemplateFormGroup.controls.template.value),
-      mapToSanitizedHtml(),
-    );
+  protected readonly notesTemplateValue = toSignal(
+    this.notesTemplateFormGroup.controls.template.valueChanges,
+    {initialValue: this.notesTemplateFormGroup.controls.template.value},
+  );
+
+  protected readonly notesTemplatePreview = computed(() =>
+    mapToSanitizedHtml(this.notesTemplateValue()),
+  );
 
   protected resetTitleTemplate(event: Event): void {
     event.preventDefault();
@@ -291,25 +299,21 @@ export class AppComponent {
   }
 }
 
-function mapToSanitizedHtml(): MonoTypeOperatorFunction<string> {
-  return pipe(
-    map(value =>
-      sanitizeHtml(
-        value
-          .replaceAll(
-            '${blocksummary}',
-            '<blockquote>BLOCK_SUMMARY_TEXT</blockquote>',
-          )
-          .replaceAll('${summary}', 'SUMMARY_TEXT')
-          .replaceAll('${title}', '<a>TITLE_TEXT</a>')
-          .replaceAll('${title-unlinked}', 'TITLE_TEXT')
-          .replaceAll('${authors}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
-          .replaceAll('${author}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
-          .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
-          .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2'),
-        SANITIZE_HTML_OPTIONS,
-      ),
-    ),
+function mapToSanitizedHtml(value: string): string {
+  return sanitizeHtml(
+    value
+      .replaceAll(
+        '${blocksummary}',
+        '<blockquote>BLOCK_SUMMARY_TEXT</blockquote>',
+      )
+      .replaceAll('${summary}', 'SUMMARY_TEXT')
+      .replaceAll('${title}', '<a>TITLE_TEXT</a>')
+      .replaceAll('${title-unlinked}', 'TITLE_TEXT')
+      .replaceAll('${authors}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
+      .replaceAll('${author}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
+      .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
+      .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2'),
+    SANITIZE_HTML_OPTIONS,
   );
 }
 

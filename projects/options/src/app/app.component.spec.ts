@@ -27,6 +27,8 @@ describe('AppComponent', () => {
     jasmine.addMatchers(toHaveNoViolations);
   });
 
+  let setSpy: jasmine.Spy<typeof chrome.storage.sync.set>;
+
   beforeEach(() => {
     const runtimeSpy = jasmine.createSpyObj<typeof chrome.runtime>(
       'chrome.runtime',
@@ -39,6 +41,21 @@ describe('AppComponent', () => {
     });
 
     chrome.runtime = runtimeSpy;
+
+    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
+      'chrome.storage',
+      ['sync'],
+    );
+    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
+      'chrome.storage.sync',
+      ['set', 'get'],
+    );
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    (syncSpy.get as any).and.resolveTo({});
+
+    storageSpy.sync = syncSpy;
+    setSpy = syncSpy.set.and.resolveTo(undefined);
+    chrome.storage = storageSpy;
   });
 
   describe('with saved values', () => {
@@ -88,7 +105,7 @@ describe('AppComponent', () => {
       await fixture.whenStable();
 
       // Wait for previews.
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
     });
 
     it('passes a11y tests', async () => {
@@ -218,7 +235,6 @@ describe('AppComponent', () => {
     let loader: HarnessLoader;
     let rootLoader: HarnessLoader;
     let fixture: ComponentFixture<AppComponent>;
-    let setSpy: jasmine.Spy<typeof chrome.storage.sync.set>;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -253,23 +269,11 @@ describe('AppComponent', () => {
       loader = TestbedHarnessEnvironment.loader(fixture);
       rootLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
 
-      const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-        'chrome.storage',
-        ['sync'],
-      );
-      const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-        'chrome.storage.sync',
-        ['set'],
-      );
-      storageSpy.sync = syncSpy;
-      setSpy = syncSpy.set.and.resolveTo(undefined);
-      chrome.storage = storageSpy;
-
       fixture.detectChanges();
       await fixture.whenStable();
 
       // Wait for previews.
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
     });
 
     describe('title section', () => {
