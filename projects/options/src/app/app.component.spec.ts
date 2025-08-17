@@ -88,7 +88,7 @@ describe('AppComponent', () => {
       await fixture.whenStable();
 
       // Wait for previews.
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
     });
 
     it('passes a11y tests', async () => {
@@ -269,7 +269,7 @@ describe('AppComponent', () => {
       await fixture.whenStable();
 
       // Wait for previews.
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
     });
 
     describe('title section', () => {
@@ -326,7 +326,7 @@ describe('AppComponent', () => {
         await input.blur();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await formField.getTextErrors()).toContain(
           'This template should not contain HTML but it appears to contain HTML',
@@ -354,7 +354,7 @@ describe('AppComponent', () => {
             '${author-unlinked} ${ignored}',
         );
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await preview.getText()).toBe(
           'TITLE_TEXT TITLE_TEXT AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ' +
@@ -417,7 +417,7 @@ describe('AppComponent', () => {
         await resetButton.click();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_00));
 
         expect(await input.getValue()).toBe(
           '${blocksummary}Podfic of ${title} by ${authors}.',
@@ -434,7 +434,7 @@ describe('AppComponent', () => {
         await input.blur();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
@@ -463,7 +463,7 @@ describe('AppComponent', () => {
         await input.setValue(value);
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
@@ -536,7 +536,7 @@ describe('AppComponent', () => {
         await resetButton.click();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await input.getValue()).toBe('');
         expect(await preview.getText()).toBe('');
@@ -548,7 +548,7 @@ describe('AppComponent', () => {
         await input.blur();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
@@ -581,7 +581,7 @@ describe('AppComponent', () => {
         await input.setValue(value);
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
@@ -643,7 +643,7 @@ describe('AppComponent', () => {
         await input.blur();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
@@ -672,7 +672,7 @@ describe('AppComponent', () => {
         await input.setValue(value);
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_000));
 
         expect(await preview.getText()).toBe(
           'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
