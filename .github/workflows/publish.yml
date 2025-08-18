@@ -9,12 +9,12 @@ jobs:
     name: Build extension artifact
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.4.0
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Create source archive
         run: zip -r source-${{ github.sha }}.zip .
@@ -30,13 +30,13 @@ jobs:
           (cd dist && zip -r ../extension-${{ github.sha }}.zip .)
 
       - name: Upload extension artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: extension-${{ github.sha }}
           path: extension-${{ github.sha }}.zip
 
       - name: Upload source artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: source-${{ github.sha }}
           path: source-${{ github.sha }}.zip
@@ -50,12 +50,12 @@ jobs:
 
     steps:
       - name: Download bundle artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: extension-${{ github.sha }}
 
       - name: Upload and publish
-        uses: wdzeng/chrome-extension@v1
+        uses: wdzeng/chrome-extension@v1.3.0
         with:
           extension-id: liceoplaldpcfdkndimfppgdcbophgma
           zip-path: extension-${{ github.sha }}.zip
@@ -70,17 +70,17 @@ jobs:
 
     steps:
       - name: Download bundle artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: extension-${{ github.sha }}
 
       - name: Download source artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: source-${{ github.sha }}
 
       - name: Upload and publish
-        uses: wdzeng/firefox-addon@v1
+        uses: wdzeng/firefox-addon@v1.2.0
         with:
           addon-guid: ao3-podfic-helper@github.com
           xpi-path: extension-${{ github.sha }}.zip
@@ -97,12 +97,12 @@ jobs:
 
     steps:
       - name: Download bundle artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: extension-${{ github.sha }}
 
       - name: Upload and publish
-        uses: wdzeng/edge-addon@v2
+        uses: wdzeng/edge-addon@v2.1.0
         with:
           product-id: 36cbee63-3b81-4f9e-94f8-ea9585396e41
           zip-path: extension-${{ github.sha }}.zip
