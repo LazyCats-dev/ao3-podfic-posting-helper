@@ -1,4 +1,3 @@
-import {AsyncPipe} from '@angular/common';
 import {
   Component,
   inject,
@@ -6,6 +5,8 @@ import {
   ElementRef,
   effect,
   viewChild,
+  resource,
+  computed,
 } from '@angular/core';
 import {
   FormControl,
@@ -24,8 +25,6 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {ANALYTICS, ThemeSelectorComponent} from 'common';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {from} from 'rxjs';
-import {map, tap, take, shareReplay} from 'rxjs/operators';
 import {toSignal} from '@angular/core/rxjs-interop';
 import './inject/index';
 
@@ -43,7 +42,6 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 @Component({
   selector: 'app-root',
   imports: [
-    AsyncPipe,
     MatButton,
     MatCheckbox,
     MatError,
@@ -73,32 +71,25 @@ export class AppComponent {
     'options/browser/index.html',
   );
 
-  protected readonly tab = from(
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    }),
-  ).pipe(
-    take(1),
-    map(([currentTab]) => currentTab),
-    shareReplay({bufferSize: 1, refCount: true}),
-  );
+  protected readonly tab = resource({
+    loader: async () => {
+      const tabs = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      return tabs[0];
+    },
+  });
 
-  protected readonly onAo3NewWorkPage = this.tab.pipe(
-    map(currentTab => {
-      const currentTabUrl = currentTab.url || '';
-      return ALLOWED_URL_PATTERNS.some(
-        allowedUrlPattern => currentTabUrl.match(allowedUrlPattern) !== null,
-      );
-    }),
-    tap(onAo3NewWorkPage => {
-      if (onAo3NewWorkPage) {
-        this.analytics.firePageViewEvent('Form');
-      } else {
-        this.analytics.firePageViewEvent('Not on new work URL page');
-      }
-    }),
-  );
+  protected readonly onAo3NewWorkPage = computed(() => {
+    if (!this.tab.hasValue()) {
+      return null;
+    }
+    const currentTabUrl = this.tab.value().url ?? '';
+    return ALLOWED_URL_PATTERNS.some(
+      allowedUrlPattern => currentTabUrl.match(allowedUrlPattern) !== null,
+    );
+  });
 
   protected readonly podficLengthOptions: readonly string[] = [
     '0-10 Minutes',
@@ -183,6 +174,17 @@ export class AppComponent {
       } else {
         this.formGroup.controls.podficLength.disable();
       }
+    });
+    effect(() => {
+      const onAo3NewWorkPage = this.onAo3NewWorkPage();
+      if (onAo3NewWorkPage === null) {
+        return;
+      }
+      if (onAo3NewWorkPage) {
+        this.analytics.firePageViewEvent('Form');
+        return;
+      }
+      this.analytics.firePageViewEvent('Not on new work URL page');
     });
   }
 

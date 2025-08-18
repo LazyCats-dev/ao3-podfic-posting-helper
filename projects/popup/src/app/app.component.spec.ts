@@ -2,12 +2,12 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {Subject, firstValueFrom} from 'rxjs';
 import {MatIconTestingModule} from '@angular/material/icon/testing';
-import {HarnessLoader} from '@angular/cdk/testing';
+import {HarnessLoader, manualChangeDetection} from '@angular/cdk/testing';
 import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {MatToolbarHarness} from '@angular/material/toolbar/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatProgressSpinnerHarness} from '@angular/material/progress-spinner/testing';
-import {ANALYTICS, Analytics} from 'common';
+import {ANALYTICS, Analytics, provideMatFormFieldDefaultOptions} from 'common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputHarness} from '@angular/material/input/testing';
 import {MatFormFieldHarness} from '@angular/material/form-field/testing';
@@ -85,6 +85,7 @@ describe('AppComponent', () => {
             },
           },
           provideZonelessChangeDetection(),
+          provideMatFormFieldDefaultOptions(),
         ],
       }).compileComponents();
 
@@ -193,20 +194,30 @@ describe('AppComponent', () => {
     it('has options button in the toolbar with the correct link', async () => {
       fixture.detectChanges();
 
-      const toolbarHarness = await loader.getHarness(MatToolbarHarness);
-      const optionsButton = await toolbarHarness.getHarness(
-        MatButtonHarness.with({text: /settings/}),
+      const toolbarHarness = await manualChangeDetection(() =>
+        loader.getHarness(MatToolbarHarness),
       );
-      const optionsButtonHost = await optionsButton.host();
-      expect(await optionsButtonHost.getProperty('href')).toContain(
-        'options-url',
+      const optionsButton = await manualChangeDetection(() =>
+        toolbarHarness.getHarness(MatButtonHarness.with({text: /settings/})),
       );
+      const optionsButtonHost = await manualChangeDetection(() =>
+        optionsButton.host(),
+      );
+      expect(
+        await manualChangeDetection(() =>
+          optionsButtonHost.getProperty('href'),
+        ),
+      ).toContain('options-url');
     });
 
     it('shows a spinner because the tabs are loading', async () => {
       fixture.detectChanges();
 
-      expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeTrue();
+      expect(
+        await manualChangeDetection(() =>
+          loader.hasHarness(MatProgressSpinnerHarness),
+        ),
+      ).toBeTrue();
     });
 
     it('shows an error message if the opened on a page that is not allowed', async () => {
@@ -240,8 +251,8 @@ describe('AppComponent', () => {
             id: 666,
           } as chrome.tabs.Tab,
         ]);
-        await fixture.whenStable();
         fixture.detectChanges();
+        await fixture.whenStable();
 
         submitButton = await loader.getHarness(
           MatButtonHarness.with({text: /Import/}),
