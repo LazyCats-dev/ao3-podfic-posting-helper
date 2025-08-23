@@ -51,11 +51,11 @@
         <mat-icon matListItemIcon>work</mat-icon>
         <a matListItemTitle href="#work-section">Work template</a>
       </mat-list-item>
-      <mat-divider />
       <mat-list-item>
         <mat-icon matListItemIcon>privacy_tip</mat-icon>
         <a matListItemTitle href="#privacy-section">Privacy template</a>
       </mat-list-item>
+      <mat-divider />
       <mat-list-item>
         <mat-icon matListItemIcon>info</mat-icon>
         <a matListItemTitle href="#about-section">About and help</a>
@@ -472,19 +472,25 @@
                   [formControl]="
                     privacyTemplateFormGroup.controls.commentPermissionSetting
                   ">
-                  <mat-radio-button
-                    [value]="
-                      CommentPermissionSetting.REGISTERED_USERS_AND_GUESTS
-                    ">
-                    Registered users and guests can comment
-                  </mat-radio-button>
-                  <mat-radio-button
-                    [value]="CommentPermissionSetting.REGISTERED_USERS_ONLY">
-                    Only registered users can comment
-                  </mat-radio-button>
-                  <mat-radio-button [value]="CommentPermissionSetting.NO_ONE">
-                    No one can comment
-                  </mat-radio-button>
+                  <div>
+                    <mat-radio-button
+                      [value]="
+                        CommentPermissionSetting.REGISTERED_USERS_AND_GUESTS
+                      ">
+                      Registered users and guests can comment
+                    </mat-radio-button>
+                  </div>
+                  <div>
+                    <mat-radio-button
+                      [value]="CommentPermissionSetting.REGISTERED_USERS_ONLY">
+                      Only registered users can comment
+                    </mat-radio-button>
+                  </div>
+                  <div>
+                    <mat-radio-button [value]="CommentPermissionSetting.NO_ONE">
+                      No one can comment
+                    </mat-radio-button>
+                  </div>
                 </mat-radio-group>
               </div>
             </mat-card-content>
