@@ -9,6 +9,7 @@ import {
   TEST_ONLY,
   provideInitialFormValuesFromStorage,
 } from './utils';
+import {CommentPermissionSetting} from 'common';
 
 describe('INITIAL_FORM_VALUES', () => {
   let getSpy: jasmine.Spy<typeof chrome.storage.sync.get>;
@@ -37,6 +38,7 @@ describe('INITIAL_FORM_VALUES', () => {
           'workbody',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           title_template: undefined,
@@ -61,6 +63,12 @@ describe('INITIAL_FORM_VALUES', () => {
         notesTemplate: '',
         beginningNotes: false,
         endNotes: false,
+        privacyTemplate: {
+          onlyShowToRegisteredUsers: false,
+          enableCommentModeration: false,
+          commentPermissionSetting:
+            CommentPermissionSetting.REGISTER_USERS_ONLY,
+        },
       });
     });
   });
@@ -73,12 +81,18 @@ describe('INITIAL_FORM_VALUES', () => {
           'workbody',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           title_template: {default: 'title_template'},
           workbody: {default: 'workbody'},
           summary_template: {default: 'summary_template'},
           notes_template: {default: 'notes_template', begin: true, end: true},
+          privacy_template: {
+            onlyShowToRegisteredUsers: true,
+            enableCommentModeration: true,
+            commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+          },
         });
       await TestBed.configureTestingModule({
         providers: [
@@ -97,6 +111,11 @@ describe('INITIAL_FORM_VALUES', () => {
         notesTemplate: 'notes_template',
         beginningNotes: true,
         endNotes: true,
+        privacyTemplate: {
+          onlyShowToRegisteredUsers: true,
+          enableCommentModeration: true,
+          commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+        },
       });
     });
   });

@@ -1,5 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {
+  CommentPermissionSetting,
   provideGlobalEventLogging,
   provideMatFormFieldDefaultOptions,
   provideMatIconRegistry,
@@ -40,6 +41,7 @@ describe('provideStorageSetup', () => {
           'title_template',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           options: undefined,
@@ -47,6 +49,7 @@ describe('provideStorageSetup', () => {
           title_template: undefined,
           summary_template: undefined,
           notes_template: undefined,
+          privacy_template: undefined,
         });
 
       await TestBed.configureTestingModule({
@@ -62,7 +65,7 @@ describe('provideStorageSetup', () => {
     });
 
     it('sets default values', () => {
-      expect(setSpy).toHaveBeenCalledTimes(5);
+      expect(setSpy).toHaveBeenCalledTimes(6);
       expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
         options: {
           url: '',
@@ -93,6 +96,14 @@ describe('provideStorageSetup', () => {
           default: '',
           begin: false,
           end: false,
+        },
+      });
+      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+        privacy_template: {
+          onlyShowToRegisteredUsers: false,
+          enableCommentModeration: false,
+          commentPermissionSetting:
+            CommentPermissionSetting.REGISTER_USERS_ONLY,
         },
       });
     });
@@ -107,6 +118,7 @@ describe('provideStorageSetup', () => {
           'title_template',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           options: {transform_title: true, transform_summary: true},
@@ -114,6 +126,7 @@ describe('provideStorageSetup', () => {
           title_template: undefined,
           summary_template: undefined,
           notes_template: undefined,
+          privacy_template: undefined,
         });
 
       await TestBed.configureTestingModule({
@@ -123,7 +136,7 @@ describe('provideStorageSetup', () => {
     });
 
     it('sets default values', () => {
-      expect(setSpy).toHaveBeenCalledTimes(5);
+      expect(setSpy).toHaveBeenCalledTimes(6);
       expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
         options: {
           url: '',
@@ -156,6 +169,14 @@ describe('provideStorageSetup', () => {
           end: false,
         },
       });
+      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+        privacy_template: {
+          onlyShowToRegisteredUsers: false,
+          enableCommentModeration: false,
+          commentPermissionSetting:
+            CommentPermissionSetting.REGISTER_USERS_ONLY,
+        },
+      });
     });
   });
 
@@ -168,6 +189,7 @@ describe('provideStorageSetup', () => {
           'title_template',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           options: {transform_title: false, transform_summary: false},
@@ -175,6 +197,7 @@ describe('provideStorageSetup', () => {
           title_template: undefined,
           summary_template: undefined,
           notes_template: undefined,
+          privacy_template: undefined,
         });
 
       await TestBed.configureTestingModule({
@@ -184,7 +207,7 @@ describe('provideStorageSetup', () => {
     });
 
     it('sets default values', () => {
-      expect(setSpy).toHaveBeenCalledTimes(5);
+      expect(setSpy).toHaveBeenCalledTimes(6);
       expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
         options: {
           url: '',
@@ -217,6 +240,14 @@ describe('provideStorageSetup', () => {
           end: false,
         },
       });
+      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+        privacy_template: {
+          onlyShowToRegisteredUsers: false,
+          enableCommentModeration: false,
+          commentPermissionSetting:
+            CommentPermissionSetting.REGISTER_USERS_ONLY,
+        },
+      });
     });
   });
 
@@ -229,6 +260,7 @@ describe('provideStorageSetup', () => {
           'title_template',
           'summary_template',
           'notes_template',
+          'privacy_template',
         ])
         .and.resolveTo({
           options: {
@@ -243,6 +275,11 @@ describe('provideStorageSetup', () => {
           title_template: {default: 'title_template'},
           summary_template: {default: 'summary_template'},
           notes_template: {default: 'notes_template', begin: true, end: true},
+          privacy_template: {
+            onlyShowToRegisteredUsers: true,
+            enableCommentModeration: true,
+            commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+          },
         });
 
       await TestBed.configureTestingModule({
@@ -258,7 +295,9 @@ describe('provideStorageSetup', () => {
     });
 
     it('does not set any storage item', () => {
-      expect(setSpy).not.toHaveBeenCalled();
+      expect(setSpy)
+        .withContext(JSON.stringify(setSpy.calls.all()))
+        .not.toHaveBeenCalled();
     });
   });
 });

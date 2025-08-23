@@ -34,9 +34,10 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
 import {HighlightModule} from 'ngx-highlightjs';
 import {INITIAL_FORM_VALUES} from './utils';
-import {ThemeSelectorComponent} from 'common';
+import {CommentPermissionSetting, ThemeSelectorComponent} from 'common';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {MatRadioGroup, MatRadioButton} from '@angular/material/radio';
 
 const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   allowedTags: [
@@ -139,6 +140,8 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
     MatListItemIcon,
     MatListItemTitle,
     MatNavList,
+    MatRadioButton,
+    MatRadioGroup,
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
@@ -153,6 +156,8 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  protected readonly CommentPermissionSetting = CommentPermissionSetting;
+
   private readonly initialFormValues = inject(INITIAL_FORM_VALUES);
   private readonly snackBar = inject(MatSnackBar);
 
@@ -241,6 +246,27 @@ export class AppComponent {
     mapToSanitizedHtml(this.notesTemplateValue()),
   );
 
+  protected readonly privacyTemplateFormGroup = new FormGroup({
+    onlyShowToRegisteredUsers: new FormControl<boolean>(
+      this.initialFormValues.privacyTemplate.onlyShowToRegisteredUsers,
+      {
+        nonNullable: true,
+      },
+    ),
+    enableCommentModeration: new FormControl<boolean>(
+      this.initialFormValues.privacyTemplate.enableCommentModeration,
+      {
+        nonNullable: true,
+      },
+    ),
+    commentPermissionSetting: new FormControl<CommentPermissionSetting>(
+      this.initialFormValues.privacyTemplate.commentPermissionSetting,
+      {
+        nonNullable: true,
+      },
+    ),
+  });
+
   protected resetTitleTemplate(event: Event): void {
     event.preventDefault();
     this.titleTemplateFormGroup.controls.template.setValue('[Podfic] ${title}');
@@ -287,6 +313,34 @@ export class AppComponent {
       },
     });
     this.snackBar.open('Notes template saved');
+  }
+
+  protected resetPrivacyTemplate(event: Event): void {
+    event.preventDefault();
+    this.privacyTemplateFormGroup.controls.onlyShowToRegisteredUsers.setValue(
+      false,
+    );
+    this.privacyTemplateFormGroup.controls.enableCommentModeration.setValue(
+      false,
+    );
+    this.privacyTemplateFormGroup.controls.commentPermissionSetting.setValue(
+      CommentPermissionSetting.REGISTER_USERS_ONLY,
+    );
+  }
+
+  protected async savePrivacyTemplate(): Promise<void> {
+    await chrome.storage.sync.set({
+      privacy_template: {
+        onlyShowToRegisteredUsers:
+          this.privacyTemplateFormGroup.controls.onlyShowToRegisteredUsers
+            .value,
+        enableCommentModeration:
+          this.privacyTemplateFormGroup.controls.enableCommentModeration.value,
+        commentPermissionSetting:
+          this.privacyTemplateFormGroup.controls.commentPermissionSetting.value,
+      },
+    });
+    this.snackBar.open('Privacy template saved');
   }
 
   protected async saveWorkTemplate(): Promise<void> {
