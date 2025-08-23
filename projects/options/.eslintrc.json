@@ -25,7 +25,26 @@
     },
     {
       "files": ["*.html"],
-      "rules": {}
+      "rules": {
+        "@angular-eslint/template/label-has-associated-control": [
+          "error",
+          {
+            "checkIds": false,
+            "controlComponents": [
+              "input",
+              "meter",
+              "output",
+              "progress",
+              "select",
+              "textarea",
+              "mat-radio-group"
+            ],
+            "labelComponents": [
+              {"inputs": ["for", "htmlFor"], "selector": "label"}
+            ]
+          }
+        ]
+      }
     }
   ]
 }
