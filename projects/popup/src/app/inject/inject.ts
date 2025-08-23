@@ -680,21 +680,17 @@ window.injectImportAndFillMetadata = ({
         const languageOptions = mapOptions(languageSelect);
         languageSelect.value = languageOptions.get(metadata['language'])!;
 
-        if (onlyShowToRegisteredUsers) {
-          const registeredUsersOnly = queryElement(
-            newWorkPage,
-            '#work_restricted',
-          ) as HTMLInputElement;
-          registeredUsersOnly.checked = true;
-        }
+        const registeredUsersOnly = queryElement(
+          newWorkPage,
+          '#work_restricted',
+        ) as HTMLInputElement;
+        registeredUsersOnly.checked = onlyShowToRegisteredUsers;
 
-        if (enableCommentModeration) {
-          const commentModeration = queryElement(
-            newWorkPage,
-            '#work_moderated_commenting_enabled',
-          ) as HTMLInputElement;
-          commentModeration.checked = true;
-        }
+        const commentModeration = queryElement(
+          newWorkPage,
+          '#work_moderated_commenting_enabled',
+        ) as HTMLInputElement;
+        commentModeration.checked = enableCommentModeration;
 
         const commentPermissionsOptions = document.getElementsByName(
           'work[comment_permissions]',
