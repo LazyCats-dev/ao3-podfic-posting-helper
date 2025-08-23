@@ -223,13 +223,19 @@ export class AppComponent {
       },
     });
 
-    const {workbody, title_template, summary_template, notes_template} =
-      await chrome.storage.sync.get([
-        'workbody',
-        'title_template',
-        'summary_template',
-        'notes_template',
-      ]);
+    const {
+      workbody,
+      title_template,
+      summary_template,
+      notes_template,
+      privacy_template,
+    } = await chrome.storage.sync.get([
+      'workbody',
+      'title_template',
+      'summary_template',
+      'notes_template',
+      'privacy_template',
+    ]);
 
     this.analytics.fireEvent('popup_form_submit', {
       podfic_label: String(podficLabel),
@@ -260,6 +266,7 @@ export class AppComponent {
             userNotesTemplate: notes_template['default'],
             beginNotes: notes_template['begin'],
             endNotes: notes_template['end'],
+            ...privacy_template,
           },
         ],
       });

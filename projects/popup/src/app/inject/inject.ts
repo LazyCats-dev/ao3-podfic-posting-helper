@@ -12,6 +12,9 @@ window.injectImportAndFillMetadata = ({
   userNotesTemplate,
   beginNotes,
   endNotes,
+  onlyShowToRegisteredUsers,
+  enableCommentModeration,
+  commentPermissionSetting,
 }: {
   url: string;
   podficLabel: boolean;
@@ -26,6 +29,9 @@ window.injectImportAndFillMetadata = ({
   userNotesTemplate: string;
   beginNotes: boolean;
   endNotes: boolean;
+  onlyShowToRegisteredUsers: boolean;
+  enableCommentModeration: boolean;
+  commentPermissionSetting: number;
 }) => {
   const ACCESS_ERROR_MESSAGE =
     'The selected work appears to be unrevealed or a draft, ' +
@@ -673,6 +679,29 @@ window.injectImportAndFillMetadata = ({
         ) as HTMLSelectElement;
         const languageOptions = mapOptions(languageSelect);
         languageSelect.value = languageOptions.get(metadata['language'])!;
+
+        const registeredUsersOnly = queryElement(
+          newWorkPage,
+          '#work_restricted',
+        ) as HTMLInputElement;
+        registeredUsersOnly.checked = onlyShowToRegisteredUsers;
+
+        const commentModeration = queryElement(
+          newWorkPage,
+          '#work_moderated_commenting_enabled',
+        ) as HTMLInputElement;
+        commentModeration.checked = enableCommentModeration;
+
+        const commentPermissionsOptions = document.getElementsByName(
+          'work[comment_permissions]',
+        );
+
+        const commentPersmissionRadio = commentPermissionsOptions.item(
+          commentPermissionSetting,
+        );
+        if (commentPersmissionRadio instanceof HTMLInputElement) {
+          commentPersmissionRadio.checked = true;
+        }
 
         // Set the new work text.
         const workText = queryElement(

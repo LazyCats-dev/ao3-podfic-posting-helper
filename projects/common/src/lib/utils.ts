@@ -21,6 +21,16 @@ const DEFAULT_WORKBODY =
   '<a href="PODFIC_URL" rel="nofollow">Download the podfic here (FILE_SIZE ' +
   'MB/FILE_MINUTES minutes)</a>.';
 
+/**
+ * The differnet permission settings AO3 offers.
+ * WARNING: These options must be in the same order as the AO3 options.
+ */
+export enum CommentPermissionSetting {
+  REGISTERED_USERS_AND_GUESTS = 0,
+  REGISTERED_USERS_ONLY = 1,
+  NO_ONE = 2,
+}
+
 const DEFAULT_OPTIONS = {
   url: '',
   podfic_label: true,
@@ -61,14 +71,21 @@ export function provideGlobalEventLogging() {
 }
 
 export async function setupStorage() {
-  const {options, workbody, title_template, summary_template, notes_template} =
-    await chrome.storage.sync.get([
-      'options',
-      'workbody',
-      'title_template',
-      'summary_template',
-      'notes_template',
-    ]);
+  const {
+    options,
+    workbody,
+    title_template,
+    summary_template,
+    notes_template,
+    privacy_template,
+  } = await chrome.storage.sync.get([
+    'options',
+    'workbody',
+    'title_template',
+    'summary_template',
+    'notes_template',
+    'privacy_template',
+  ]);
 
   const optionsToSave = {...DEFAULT_OPTIONS, ...options};
 
@@ -123,6 +140,16 @@ export async function setupStorage() {
         default: '',
         begin: false,
         end: false,
+      },
+    });
+  }
+  if (privacy_template === undefined) {
+    await chrome.storage.sync.set({
+      privacy_template: {
+        onlyShowToRegisteredUsers: false,
+        enableCommentModeration: false,
+        commentPermissionSetting:
+          CommentPermissionSetting.REGISTERED_USERS_ONLY,
       },
     });
   }

@@ -1,4 +1,5 @@
 import {InjectionToken, provideAppInitializer} from '@angular/core';
+import {CommentPermissionSetting} from 'common';
 
 const defaultFormValuesFromStorage = {
   titleTemplate: '',
@@ -7,6 +8,11 @@ const defaultFormValuesFromStorage = {
   notesTemplate: '',
   beginningNotes: false,
   endNotes: false,
+  privacyTemplate: {
+    onlyShowToRegisteredUsers: false,
+    enableCommentModeration: false,
+    commentPermissionSetting: CommentPermissionSetting.REGISTERED_USERS_ONLY,
+  },
 };
 
 function resetDefaultFormValuesForTest() {
@@ -16,16 +22,27 @@ function resetDefaultFormValuesForTest() {
   defaultFormValuesFromStorage.notesTemplate = '';
   defaultFormValuesFromStorage.beginningNotes = false;
   defaultFormValuesFromStorage.endNotes = false;
+  defaultFormValuesFromStorage.privacyTemplate = {
+    onlyShowToRegisteredUsers: false,
+    enableCommentModeration: false,
+    commentPermissionSetting: CommentPermissionSetting.REGISTERED_USERS_ONLY,
+  };
 }
 
 async function setInitialFormValues() {
-  const {title_template, workbody, summary_template, notes_template} =
-    await chrome.storage.sync.get([
-      'title_template',
-      'workbody',
-      'summary_template',
-      'notes_template',
-    ]);
+  const {
+    title_template,
+    workbody,
+    summary_template,
+    notes_template,
+    privacy_template,
+  } = await chrome.storage.sync.get([
+    'title_template',
+    'workbody',
+    'summary_template',
+    'notes_template',
+    'privacy_template',
+  ]);
 
   defaultFormValuesFromStorage.titleTemplate = title_template?.default ?? '';
   defaultFormValuesFromStorage.workTemplate = workbody?.default ?? '';
@@ -34,6 +51,14 @@ async function setInitialFormValues() {
   defaultFormValuesFromStorage.notesTemplate = notes_template?.default ?? '';
   defaultFormValuesFromStorage.beginningNotes = notes_template?.begin ?? false;
   defaultFormValuesFromStorage.endNotes = notes_template?.end ?? false;
+  defaultFormValuesFromStorage.privacyTemplate = {
+    onlyShowToRegisteredUsers:
+      privacy_template?.onlyShowToRegisteredUsers ?? false,
+    enableCommentModeration: privacy_template?.enableCommentModeration ?? false,
+    commentPermissionSetting:
+      privacy_template?.commentPermissionSetting ??
+      CommentPermissionSetting.REGISTERED_USERS_ONLY,
+  };
 }
 
 export function provideInitialFormValuesFromStorage() {

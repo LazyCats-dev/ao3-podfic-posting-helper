@@ -19,6 +19,9 @@ import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
 import {axe, toHaveNoViolations} from 'jasmine-axe';
 import {provideZonelessChangeDetection} from '@angular/core';
+import {CommentPermissionSetting} from 'common';
+import {MatRadioGroupHarness} from '@angular/material/radio/testing';
+import {MatRadioButtonHarness} from '@angular/material/radio/testing';
 
 const VERSION = 'version-shemp';
 
@@ -82,6 +85,11 @@ describe('AppComponent', () => {
               notesTemplate: 'notes: ' + TEMPLATE_VALUE,
               beginningNotes: true,
               endNotes: true,
+              privacyTemplate: {
+                onlyShowToRegisteredUsers: true,
+                enableCommentModeration: true,
+                commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+              },
             },
           },
           {
@@ -229,6 +237,37 @@ describe('AppComponent', () => {
         expect(await preview.getText()).toBe('work: ' + PREVIEW_VALUE);
       });
     });
+
+    describe('privacy section', () => {
+      let onlyRegisteredCheckbox: MatCheckboxHarness;
+      let commentModerationCheckbox: MatCheckboxHarness;
+      let commentPermissionRadioGroup: MatRadioGroupHarness;
+
+      beforeEach(async () => {
+        const card = await loader.getHarness(
+          MatCardHarness.with({title: 'Privacy template'}),
+        );
+        const cardContentLoader = await card.getChildLoader(
+          MatCardSection.CONTENT,
+        );
+        onlyRegisteredCheckbox = await cardContentLoader.getHarness(
+          MatCheckboxHarness.with({label: 'Only show to registered users'}),
+        );
+        commentModerationCheckbox = await cardContentLoader.getHarness(
+          MatCheckboxHarness.with({label: 'Enable comment moderation'}),
+        );
+        commentPermissionRadioGroup =
+          await cardContentLoader.getHarness(MatRadioGroupHarness);
+      });
+
+      it('should display the saved values', async () => {
+        expect(await onlyRegisteredCheckbox.isChecked()).toBeTrue();
+        expect(await commentModerationCheckbox.isChecked()).toBeTrue();
+        expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
+          String(CommentPermissionSetting.NO_ONE),
+        );
+      });
+    });
   });
 
   describe('with no saved values', () => {
@@ -249,6 +288,12 @@ describe('AppComponent', () => {
               notesTemplate: '',
               beginningNotes: false,
               endNotes: false,
+              privacyTemplate: {
+                onlyShowToRegisteredUsers: false,
+                enableCommentModeration: false,
+                commentPermissionSetting:
+                  CommentPermissionSetting.REGISTERED_USERS_ONLY,
+              },
             },
           },
           {
@@ -692,6 +737,87 @@ describe('AppComponent', () => {
         expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
           workbody: {
             default: value,
+          },
+        });
+      });
+    });
+
+    describe('privacy section', () => {
+      let onlyRegisteredCheckbox: MatCheckboxHarness;
+      let commentModerationCheckbox: MatCheckboxHarness;
+      let commentPermissionRadioGroup: MatRadioGroupHarness;
+      let submitButton: MatButtonHarness;
+      let resetButton: MatButtonHarness;
+
+      beforeEach(async () => {
+        const card = await loader.getHarness(
+          MatCardHarness.with({title: 'Privacy template'}),
+        );
+        const cardContentLoader = await card.getChildLoader(
+          MatCardSection.CONTENT,
+        );
+        onlyRegisteredCheckbox = await cardContentLoader.getHarness(
+          MatCheckboxHarness.with({label: 'Only show to registered users'}),
+        );
+        commentModerationCheckbox = await cardContentLoader.getHarness(
+          MatCheckboxHarness.with({label: 'Enable comment moderation'}),
+        );
+        commentPermissionRadioGroup =
+          await cardContentLoader.getHarness(MatRadioGroupHarness);
+
+        const cardActionsLoader = await card.getChildLoader(
+          MatCardSection.ACTIONS,
+        );
+
+        submitButton = await cardActionsLoader.getHarness(
+          MatButtonHarness.with({text: /Save/}),
+        );
+        resetButton = await cardActionsLoader.getHarness(
+          MatButtonHarness.with({text: /Reset/}),
+        );
+      });
+
+      it('should display the default values', async () => {
+        expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
+        expect(await commentModerationCheckbox.isChecked()).toBeFalse();
+        expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
+          String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
+        );
+      });
+
+      it('clicking the reset button resets without saving', async () => {
+        await onlyRegisteredCheckbox.check();
+        await commentModerationCheckbox.check();
+        await commentPermissionRadioGroup.checkRadioButton({
+          label: 'No one can comment',
+        });
+
+        await resetButton.click();
+
+        expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
+        expect(await commentModerationCheckbox.isChecked()).toBeFalse();
+        expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
+          String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
+        );
+      });
+
+      it('can save changed values', async () => {
+        await onlyRegisteredCheckbox.check();
+        await commentModerationCheckbox.check();
+        await commentPermissionRadioGroup.checkRadioButton({
+          label: 'No one can comment',
+        });
+
+        await submitButton.click();
+
+        const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
+
+        expect(await snackBar.getMessage()).toBe('Privacy template saved');
+        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+          privacy_template: {
+            onlyShowToRegisteredUsers: true,
+            enableCommentModeration: true,
+            commentPermissionSetting: CommentPermissionSetting.NO_ONE,
           },
         });
       });

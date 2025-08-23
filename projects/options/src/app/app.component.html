@@ -51,6 +51,10 @@
         <mat-icon matListItemIcon>work</mat-icon>
         <a matListItemTitle href="#work-section">Work template</a>
       </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>privacy_tip</mat-icon>
+        <a matListItemTitle href="#privacy-section">Privacy template</a>
+      </mat-list-item>
       <mat-divider />
       <mat-list-item>
         <mat-icon matListItemIcon>info</mat-icon>
@@ -420,6 +424,84 @@
               <button mat-flat-button color="primary" type="submit">
                 <mat-icon>save</mat-icon>
                 Save
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </section>
+      <section class="privacy-section main-section" id="privacy-section">
+        <form
+          [formGroup]="privacyTemplateFormGroup"
+          (reset)="resetPrivacyTemplate($event)"
+          (ngSubmit)="savePrivacyTemplate()">
+          <mat-card>
+            <mat-card-header role="heading" aria-level="2">
+              <mat-card-title>Privacy template</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>
+                Set the default privacy options for new works.
+                <a
+                  href="https://archiveofourown.org/faq/tutorial-posting-a-work-on-ao3?language_id=en#pwtprivacy"
+                  target="_blank"
+                  >Learn more about AO3 work privacy options</a
+                >
+              </p>
+              <div class="form-item">
+                <mat-checkbox
+                  [formControl]="
+                    privacyTemplateFormGroup.controls.onlyShowToRegisteredUsers
+                  ">
+                  Only show to registered users
+                </mat-checkbox>
+              </div>
+              <div class="form-item">
+                <mat-checkbox
+                  [formControl]="
+                    privacyTemplateFormGroup.controls.enableCommentModeration
+                  ">
+                  Enable comment moderation
+                </mat-checkbox>
+              </div>
+              <div class="form-item">
+                <label id="comment-permission-setting-radio-group-label"
+                  >Who can comment on works</label
+                >
+                <mat-radio-group
+                  aria-labelledby="comment-permission-setting-radio-group-label"
+                  [formControl]="
+                    privacyTemplateFormGroup.controls.commentPermissionSetting
+                  ">
+                  <div>
+                    <mat-radio-button
+                      [value]="
+                        CommentPermissionSetting.REGISTERED_USERS_AND_GUESTS
+                      ">
+                      Registered users and guests can comment
+                    </mat-radio-button>
+                  </div>
+                  <div>
+                    <mat-radio-button
+                      [value]="CommentPermissionSetting.REGISTERED_USERS_ONLY">
+                      Only registered users can comment
+                    </mat-radio-button>
+                  </div>
+                  <div>
+                    <mat-radio-button [value]="CommentPermissionSetting.NO_ONE">
+                      No one can comment
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-flat-button color="primary" type="submit">
+                <mat-icon>save</mat-icon>
+                Save
+              </button>
+              <button mat-stroked-button color="primary" type="reset">
+                <mat-icon>restart_alt</mat-icon>
+                Reset to default
               </button>
             </mat-card-actions>
           </mat-card>
