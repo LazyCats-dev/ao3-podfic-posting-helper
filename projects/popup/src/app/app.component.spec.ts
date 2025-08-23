@@ -7,7 +7,12 @@ import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {MatToolbarHarness} from '@angular/material/toolbar/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatProgressSpinnerHarness} from '@angular/material/progress-spinner/testing';
-import {ANALYTICS, Analytics, provideMatFormFieldDefaultOptions} from 'common';
+import {
+  ANALYTICS,
+  Analytics,
+  CommentPermissionSetting,
+  provideMatFormFieldDefaultOptions,
+} from 'common';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputHarness} from '@angular/material/input/testing';
 import {MatFormFieldHarness} from '@angular/material/form-field/testing';
@@ -82,6 +87,11 @@ describe('AppComponent', () => {
                 'audio-format-tag-Streaming',
                 'audio-format-tag-Download',
               ],
+              privacyTemplate: {
+                onlyShowToRegisteredUsers: true,
+                enableCommentModeration: true,
+                commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+              },
             },
           },
           provideZonelessChangeDetection(),
@@ -180,6 +190,12 @@ describe('AppComponent', () => {
               titleFormat: '',
               summaryFormat: '',
               audioFormatTagOptionIds: [] as readonly string[],
+              privacyTemplate: {
+                onlyShowToRegisteredUsers: false,
+                enableCommentModeration: false,
+                commentPermissionSetting:
+                  CommentPermissionSetting.REGISTERED_USERS_ONLY,
+              },
             },
           },
           provideZonelessChangeDetection(),
@@ -366,6 +382,7 @@ describe('AppComponent', () => {
               'title_template',
               'summary_template',
               'notes_template',
+              'privacy_template',
             ])
             .and.resolveTo({
               workbody: {default: 'workbody'},
@@ -375,6 +392,11 @@ describe('AppComponent', () => {
                 default: 'notes_template',
                 begin: true,
                 end: false,
+              },
+              privacy_template: {
+                onlyShowToRegisteredUsers: true,
+                enableCommentModeration: true,
+                commentPermissionSetting: CommentPermissionSetting.NO_ONE,
               },
             });
 
@@ -498,6 +520,9 @@ describe('AppComponent', () => {
                 userNotesTemplate: 'notes_template',
                 beginNotes: true,
                 endNotes: false,
+                onlyShowToRegisteredUsers: true,
+                enableCommentModeration: true,
+                commentPermissionSetting: CommentPermissionSetting.NO_ONE,
               },
             ],
           });

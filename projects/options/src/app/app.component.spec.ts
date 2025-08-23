@@ -292,7 +292,7 @@ describe('AppComponent', () => {
                 onlyShowToRegisteredUsers: false,
                 enableCommentModeration: false,
                 commentPermissionSetting:
-                  CommentPermissionSetting.REGISTER_USERS_ONLY,
+                  CommentPermissionSetting.REGISTERED_USERS_ONLY,
               },
             },
           },
@@ -781,7 +781,7 @@ describe('AppComponent', () => {
         expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
         expect(await commentModerationCheckbox.isChecked()).toBeFalse();
         expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
-          String(CommentPermissionSetting.REGISTER_USERS_ONLY),
+          String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
         );
       });
 
@@ -797,7 +797,7 @@ describe('AppComponent', () => {
         expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
         expect(await commentModerationCheckbox.isChecked()).toBeFalse();
         expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
-          String(CommentPermissionSetting.REGISTER_USERS_ONLY),
+          String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
         );
       });
 

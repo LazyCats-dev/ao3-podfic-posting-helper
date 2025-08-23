@@ -14,6 +14,9 @@ declare global {
       userNotesTemplate: string;
       beginNotes: boolean;
       endNotes: boolean;
+      onlyShowToRegisteredUsers: boolean;
+      enableCommentModeration: boolean;
+      commentPermissionSetting: number;
     }) => Promise<{result: string; message?: string}>;
   }
 }

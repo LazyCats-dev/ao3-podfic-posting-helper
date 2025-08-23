@@ -67,7 +67,7 @@ describe('INITIAL_FORM_VALUES', () => {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
           commentPermissionSetting:
-            CommentPermissionSetting.REGISTER_USERS_ONLY,
+            CommentPermissionSetting.REGISTERED_USERS_ONLY,
         },
       });
     });

@@ -11,7 +11,7 @@ const defaultFormValuesFromStorage = {
   privacyTemplate: {
     onlyShowToRegisteredUsers: false,
     enableCommentModeration: false,
-    commentPermissionSetting: CommentPermissionSetting.REGISTER_USERS_ONLY,
+    commentPermissionSetting: CommentPermissionSetting.REGISTERED_USERS_ONLY,
   },
 };
 
@@ -25,7 +25,7 @@ function resetDefaultFormValuesForTest() {
   defaultFormValuesFromStorage.privacyTemplate = {
     onlyShowToRegisteredUsers: false,
     enableCommentModeration: false,
-    commentPermissionSetting: CommentPermissionSetting.REGISTER_USERS_ONLY,
+    commentPermissionSetting: CommentPermissionSetting.REGISTERED_USERS_ONLY,
   };
 }
 
@@ -57,7 +57,7 @@ async function setInitialFormValues() {
     enableCommentModeration: privacy_template?.enableCommentModeration ?? false,
     commentPermissionSetting:
       privacy_template?.commentPermissionSetting ??
-      CommentPermissionSetting.REGISTER_USERS_ONLY,
+      CommentPermissionSetting.REGISTERED_USERS_ONLY,
   };
 }
 

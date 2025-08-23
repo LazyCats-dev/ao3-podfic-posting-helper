@@ -324,7 +324,7 @@ export class AppComponent {
       false,
     );
     this.privacyTemplateFormGroup.controls.commentPermissionSetting.setValue(
-      CommentPermissionSetting.REGISTER_USERS_ONLY,
+      CommentPermissionSetting.REGISTERED_USERS_ONLY,
     );
   }
 

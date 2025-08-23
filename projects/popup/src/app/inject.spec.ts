@@ -1,3 +1,4 @@
+import {CommentPermissionSetting} from 'common';
 import './inject/index';
 import './inject/inject';
 
@@ -33,7 +34,7 @@ const MIN_IMPORTED_METADATA = {
   workSkin: '',
   isRestricted: false,
   moderationEnabled: false,
-  commentPermissions: 'enable_all',
+  commentPermissions: 'disable_anon',
   workText: '',
 };
 const UNCHANGED_METADATA = {
@@ -66,7 +67,7 @@ const UNCHANGED_METADATA = {
   workSkin: '',
   isRestricted: false,
   moderationEnabled: false,
-  commentPermissions: 'enable_all',
+  commentPermissions: 'disable_anon',
   workText: '',
 };
 
@@ -157,6 +158,9 @@ describe('injectImportAndFillMetadata', () => {
       userNotesTemplate: 'Notes: ' + fullTemplate,
       beginNotes: true,
       endNotes: true,
+      onlyShowToRegisteredUsers: true,
+      enableCommentModeration: true,
+      commentPermissionSetting: CommentPermissionSetting.NO_ONE,
     });
 
     expect(response).toEqual({result: 'success'});
@@ -206,9 +210,9 @@ describe('injectImportAndFillMetadata', () => {
       hasDifferentPublicationDate: false,
       language: '7', // Deutsch
       workSkin: '',
-      isRestricted: false,
-      moderationEnabled: false,
-      commentPermissions: 'enable_all',
+      isRestricted: true,
+      moderationEnabled: true,
+      commentPermissions: 'disable_all',
       workText: jasmine.stringContaining(
         'Work: <blockquote>Work for testing ao3 podfic posting helper',
       ),
@@ -531,6 +535,9 @@ describe('injectImportAndFillMetadata', () => {
       userNotesTemplate: '',
       beginNotes: false,
       endNotes: false,
+      onlyShowToRegisteredUsers: false,
+      enableCommentModeration: false,
+      commentPermissionSetting: CommentPermissionSetting.REGISTERED_USERS_ONLY,
     };
   }
 
@@ -604,14 +611,16 @@ describe('injectImportAndFillMetadata', () => {
     const language = getInputByName('work[language_id]').value;
     const workSkin = getInputByName('work[work_skin_id]').value;
     const isRestricted = (
-      getInputByName('work[restricted]') as HTMLInputElement
+      document.getElementById('work_restricted') as HTMLInputElement
     ).checked;
     const moderationEnabled = (
-      getInputByName('work[moderated_commenting_enabled]') as HTMLInputElement
+      document.getElementById(
+        'work_moderated_commenting_enabled',
+      ) as HTMLInputElement
     ).checked;
-    const commentPermissions = getInputByName(
+    const commentPermissions = getAllInputsByName(
       'work[comment_permissions]',
-    ).value;
+    ).filter(element => element.checked)[0].value;
     const workText = getInputByName('work[chapter_attributes][content]').value;
 
     return {

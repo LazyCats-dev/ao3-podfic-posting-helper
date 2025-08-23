@@ -103,7 +103,7 @@ describe('provideStorageSetup', () => {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
           commentPermissionSetting:
-            CommentPermissionSetting.REGISTER_USERS_ONLY,
+            CommentPermissionSetting.REGISTERED_USERS_ONLY,
         },
       });
     });
@@ -174,7 +174,7 @@ describe('provideStorageSetup', () => {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
           commentPermissionSetting:
-            CommentPermissionSetting.REGISTER_USERS_ONLY,
+            CommentPermissionSetting.REGISTERED_USERS_ONLY,
         },
       });
     });
@@ -245,7 +245,7 @@ describe('provideStorageSetup', () => {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
           commentPermissionSetting:
-            CommentPermissionSetting.REGISTER_USERS_ONLY,
+            CommentPermissionSetting.REGISTERED_USERS_ONLY,
         },
       });
     });
