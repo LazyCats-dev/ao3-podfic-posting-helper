@@ -20,7 +20,6 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "typeRoots": ["node_modules/@types"],
-    "lib": ["ES2022", "dom"],
     "paths": {
       "common": ["./projects/common/src/public-api"]
     }
