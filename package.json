@@ -16,7 +16,7 @@
     "build:options": "ng build options",
     "build:manifest": "cp manifest.json dist/",
     "build": "npm run clean && npm run build:inject && npm run build:common && npm run build:popup && npm run build:options && npm run build:manifest",
-    "release": "npm run clean && npm run build:inject && npm run build:common --configuration=production && npm run build:popup --configuration=production && npm run build:options --configuration=production && npm run build:manifest",
+    "release": "npm run clean && npm run build:inject && npm run build:common -- --configuration=production && npm run build:popup -- --configuration=production && npm run build:options -- --configuration=production && npm run build:manifest",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "lint": "ng lint && npm run lint:styles",
     "lint:styles": "stylelint --fix \"projects/**/*.scss\"",

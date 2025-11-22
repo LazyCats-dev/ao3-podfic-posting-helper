@@ -56,6 +56,12 @@ describe('AppComponent', () => {
 
     chrome.runtime = runtimeSpy;
     chrome.tabs = tabsSpy;
+    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
+      'chrome.storage.sync',
+      ['get', 'set'],
+    );
+    (syncSpy.get as jasmine.Spy).and.resolveTo({});
+    chrome.storage = {sync: syncSpy} as unknown as typeof chrome.storage;
 
     analytics = jasmine.createSpyObj<Analytics>('Analytics', [
       'firePageViewEvent',

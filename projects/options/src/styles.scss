@@ -1,3 +1,4 @@
+@use 'sass:meta';
 @use '../../common/src/lib/common' as common;
 @use '@angular/material' as mat;
 @import 'https://fonts.cdnfonts.com/css/lucida-sans';
@@ -5,12 +6,14 @@
 @include common.apply-base-theme;
 
 body {
-  /* stylelint-disable-next-line no-invalid-position-at-import-rule */
-  @import '../../../node_modules/highlight.js/styles/a11y-light';
+  @include meta.load-css(
+    '../../../node_modules/highlight.js/styles/a11y-light'
+  );
 
   &.dark-mode {
-    /* stylelint-disable-next-line no-invalid-position-at-import-rule */
-    @import '../../../node_modules/highlight.js/styles/a11y-dark';
+    @include meta.load-css(
+      '../../../node_modules/highlight.js/styles/a11y-dark'
+    );
   }
 
   @include mat.sidenav-overrides(

@@ -23,6 +23,7 @@ module.exports = function (config) {
     ],
     proxies: {
       'https://archiveofourown.org/works/': '/assets/',
+      '/images/': '/assets/images/',
     },
     client: {
       jasmine: {
