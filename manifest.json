@@ -6,7 +6,10 @@
   "manifest_version": 3,
   "browser_specific_settings": {
     "gecko": {
-      "id": "ao3-podfic-helper@github.com"
+      "id": "ao3-podfic-helper@github.com",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   },
   "permissions": ["storage", "activeTab", "scripting"],
