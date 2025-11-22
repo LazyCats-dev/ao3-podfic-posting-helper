@@ -1,6 +1,6 @@
 {
   "name": "ao3-podfic-posting-helper",
-  "version": "4.84",
+  "version": "4.90",
   "lint-staged": {
     "*.{js,scss,md,html,json,ts}": "prettier --write",
     "*.{html,ts}": "eslint --cache --fix",
