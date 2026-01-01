@@ -203,11 +203,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/common/tsconfig.spec.json",
-            "polyfills": [],
-            "karmaConfig": "projects/common/karma.conf.js"
+            "browsers": ["ChromiumHeadless"],
+            "runnerConfig": "projects/common/vitest.config.ts"
           }
         },
         "lint": {

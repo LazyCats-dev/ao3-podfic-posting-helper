@@ -17,7 +17,10 @@
     "build:manifest": "cp manifest.json dist/",
     "build": "npm run clean && npm run build:inject && npm run build:common && npm run build:popup && npm run build:options && npm run build:manifest",
     "release": "npm run clean && npm run build:inject && npm run build:common -- --configuration=production && npm run build:popup -- --configuration=production && npm run build:options -- --configuration=production && npm run build:manifest",
-    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:common": "ng test --project=common --no-watch --no-progress",
+    "test:popup": "ng test --project=popup --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:options": "ng test --project=options --no-watch --no-progress --browsers=ChromeHeadless",
+    "test": "npm run test:common && npm run test:popup && npm run test:options",
     "lint": "ng lint && npm run lint:styles",
     "lint:styles": "stylelint --fix \"projects/**/*.scss\"",
     "coverage": "ng test --no-watch --code-coverage"
@@ -56,6 +59,8 @@
     "@types/sanitize-html": "^2.11.0",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
+    "@vitest/browser-playwright": "^4.0.16",
+    "axe-core": "^4.11.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -72,6 +77,8 @@
     "stylelint": "^16.3.0",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.16",
+    "vitest-axe": "^0.1.0"
   }
 }

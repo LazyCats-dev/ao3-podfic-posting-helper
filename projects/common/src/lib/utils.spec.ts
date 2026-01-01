@@ -1,3 +1,4 @@
+import type {Mock, MockedObject} from 'vitest';
 import {TestBed} from '@angular/core/testing';
 import {
   CommentPermissionSetting,
@@ -12,45 +13,34 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import {ANALYTICS, Analytics} from './google-analytics';
+import {vi, beforeEach, describe, it, expect} from 'vitest';
 
 describe('provideStorageSetup', () => {
-  let setSpy: jasmine.Spy<typeof chrome.storage.sync.set>;
-  let getSpy: jasmine.Spy<typeof chrome.storage.sync.get>;
+  let setSpy: Mock;
+  let getSpy: Mock;
 
   beforeEach(() => {
-    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-      'chrome.storage',
-      ['sync'],
-    );
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['get', 'set'],
-    );
-    storageSpy.sync = syncSpy;
-    setSpy = syncSpy.set.and.resolveTo(undefined);
-    getSpy = syncSpy.get;
-    chrome.storage = storageSpy;
+    const storageSpy = {
+      sync: {
+        get: vi.fn().mockName('chrome.storage.sync.get'),
+        set: vi.fn().mockName('chrome.storage.sync.set'),
+      },
+    };
+    setSpy = storageSpy.sync.set.mockResolvedValue(undefined);
+    getSpy = storageSpy.sync.get;
+    (chrome.storage as unknown) = storageSpy;
   });
 
   describe('with no saved values', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'options',
-          'workbody',
-          'title_template',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          options: undefined,
-          workbody: undefined,
-          title_template: undefined,
-          summary_template: undefined,
-          notes_template: undefined,
-          privacy_template: undefined,
-        });
+      getSpy.mockResolvedValue({
+        options: undefined,
+        workbody: undefined,
+        title_template: undefined,
+        summary_template: undefined,
+        notes_template: undefined,
+        privacy_template: undefined,
+      });
 
       await TestBed.configureTestingModule({
         providers: [
@@ -66,7 +56,7 @@ describe('provideStorageSetup', () => {
 
     it('sets default values', () => {
       expect(setSpy).toHaveBeenCalledTimes(6);
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy).toHaveBeenCalledWith({
         options: {
           url: '',
           podfic_label: true,
@@ -76,29 +66,29 @@ describe('provideStorageSetup', () => {
           summary_format: 'default',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy).toHaveBeenCalledWith({
         workbody: {
-          default: jasmine.stringContaining('Here are a few building blocks'),
+          default: expect.stringContaining('Here are a few building blocks'),
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy).toHaveBeenCalledWith({
         title_template: {
           default: '[Podfic] ${title}',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy).toHaveBeenCalledWith({
         summary_template: {
           default: '${blocksummary}Podfic of ${title} by ${authors}.',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy).toHaveBeenCalledWith({
         notes_template: {
           default: '',
           begin: false,
           end: false,
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         privacy_template: {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
@@ -111,23 +101,14 @@ describe('provideStorageSetup', () => {
 
   describe('with legacy transform options set to true', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'options',
-          'workbody',
-          'title_template',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          options: {transform_title: true, transform_summary: true},
-          workbody: undefined,
-          title_template: undefined,
-          summary_template: undefined,
-          notes_template: undefined,
-          privacy_template: undefined,
-        });
+      getSpy.mockResolvedValue({
+        options: {transform_title: true, transform_summary: true},
+        workbody: undefined,
+        title_template: undefined,
+        summary_template: undefined,
+        notes_template: undefined,
+        privacy_template: undefined,
+      });
 
       await TestBed.configureTestingModule({
         providers: [provideStorageSetup(), provideZonelessChangeDetection()],
@@ -137,7 +118,7 @@ describe('provideStorageSetup', () => {
 
     it('sets default values', () => {
       expect(setSpy).toHaveBeenCalledTimes(6);
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         options: {
           url: '',
           podfic_label: true,
@@ -147,29 +128,29 @@ describe('provideStorageSetup', () => {
           summary_format: 'default',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         workbody: {
-          default: jasmine.stringContaining('Here are a few building blocks'),
+          default: expect.stringContaining('Here are a few building blocks'),
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         title_template: {
           default: '[Podfic] ${title}',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         summary_template: {
           default: '${blocksummary}Podfic of ${title} by ${authors}.',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         notes_template: {
           default: '',
           begin: false,
           end: false,
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         privacy_template: {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
@@ -182,23 +163,14 @@ describe('provideStorageSetup', () => {
 
   describe('with legacy transform options set to false', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'options',
-          'workbody',
-          'title_template',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          options: {transform_title: false, transform_summary: false},
-          workbody: undefined,
-          title_template: undefined,
-          summary_template: undefined,
-          notes_template: undefined,
-          privacy_template: undefined,
-        });
+      getSpy.mockResolvedValue({
+        options: {transform_title: false, transform_summary: false},
+        workbody: undefined,
+        title_template: undefined,
+        summary_template: undefined,
+        notes_template: undefined,
+        privacy_template: undefined,
+      });
 
       await TestBed.configureTestingModule({
         providers: [provideStorageSetup(), provideZonelessChangeDetection()],
@@ -208,7 +180,7 @@ describe('provideStorageSetup', () => {
 
     it('sets default values', () => {
       expect(setSpy).toHaveBeenCalledTimes(6);
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         options: {
           url: '',
           podfic_label: true,
@@ -218,29 +190,29 @@ describe('provideStorageSetup', () => {
           summary_format: 'orig',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         workbody: {
-          default: jasmine.stringContaining('Here are a few building blocks'),
+          default: expect.stringContaining('Here are a few building blocks'),
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         title_template: {
           default: '[Podfic] ${title}',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         summary_template: {
           default: '${blocksummary}Podfic of ${title} by ${authors}.',
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         notes_template: {
           default: '',
           begin: false,
           end: false,
         },
       });
-      expect(setSpy as jasmine.Spy).toHaveBeenCalledWith({
+      expect(setSpy as Mock).toHaveBeenCalledWith({
         privacy_template: {
           onlyShowToRegisteredUsers: false,
           enableCommentModeration: false,
@@ -253,34 +225,25 @@ describe('provideStorageSetup', () => {
 
   describe('with full saved values', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'options',
-          'workbody',
-          'title_template',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          options: {
-            url: 'foo',
-            podfic_label: false,
-            podfic_length_label: false,
-            podfic_length_value: '0-10 Minutes',
-            title_format: 'orig',
-            summary_format: 'custom',
-          },
-          workbody: {default: 'workbody'},
-          title_template: {default: 'title_template'},
-          summary_template: {default: 'summary_template'},
-          notes_template: {default: 'notes_template', begin: true, end: true},
-          privacy_template: {
-            onlyShowToRegisteredUsers: true,
-            enableCommentModeration: true,
-            commentPermissionSetting: CommentPermissionSetting.NO_ONE,
-          },
-        });
+      getSpy.mockResolvedValue({
+        options: {
+          url: 'foo',
+          podfic_label: false,
+          podfic_length_label: false,
+          podfic_length_value: '0-10 Minutes',
+          title_format: 'orig',
+          summary_format: 'custom',
+        },
+        workbody: {default: 'workbody'},
+        title_template: {default: 'title_template'},
+        summary_template: {default: 'summary_template'},
+        notes_template: {default: 'notes_template', begin: true, end: true},
+        privacy_template: {
+          onlyShowToRegisteredUsers: true,
+          enableCommentModeration: true,
+          commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+        },
+      });
 
       await TestBed.configureTestingModule({
         providers: [
@@ -295,21 +258,19 @@ describe('provideStorageSetup', () => {
     });
 
     it('does not set any storage item', () => {
-      expect(setSpy)
-        .withContext(JSON.stringify(setSpy.calls.all()))
-        .not.toHaveBeenCalled();
+      expect(
+        setSpy,
+        JSON.stringify(vi.mocked(setSpy).mock.calls),
+      ).not.toHaveBeenCalled();
     });
   });
 });
 
 describe('provideGlobalEventLogging', () => {
-  let analytics: jasmine.SpyObj<Analytics>;
+  let analytics: MockedObject<Analytics>;
 
   beforeEach(async () => {
-    analytics = jasmine.createSpyObj('Analytics', [
-      'firePageViewEvent',
-      'fireEvent',
-    ]);
+    analytics = vi.mockObject(Analytics.prototype);
     await TestBed.configureTestingModule({
       providers: [
         {

@@ -1,41 +1,35 @@
+import type {Mock} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {ThemeSelectorComponent} from './theme-selector.component';
 import {HarnessLoader, TestElement} from '@angular/cdk/testing';
 import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {MatIconHarness} from '@angular/material/icon/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatTooltipHarness} from '@angular/material/tooltip/testing';
-import {axe, toHaveNoViolations} from 'jasmine-axe';
 import {provideZonelessChangeDetection} from '@angular/core';
+import {vi, beforeEach, describe, it, expect} from 'vitest';
+import axe from 'axe-core';
 
 describe('ThemeSelectorComponent', () => {
-  beforeAll(() => {
-    jasmine.addMatchers(toHaveNoViolations);
-  });
-
   let originalMatchMedia: typeof window.matchMedia;
-  let matchMediaSpy: jasmine.Spy<typeof window.matchMedia>;
-  let storageGetSpy: jasmine.Spy<(key: string) => Promise<unknown>>;
-  let storageSetSpy: jasmine.Spy;
+  let matchMediaSpy: Mock;
+  let storageGetSpy: Mock;
+  let storageSetSpy: Mock;
 
   beforeEach(async () => {
     originalMatchMedia = window.matchMedia;
-    matchMediaSpy = spyOn(window, 'matchMedia').and.returnValue({
+    matchMediaSpy = vi.spyOn(window, 'matchMedia').mockReturnValue({
       matches: false,
     } as MediaQueryList);
-    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-      'chrome.storage',
-      ['sync'],
-    );
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['get', 'set'],
-    );
-    storageGetSpy = (syncSpy.get as jasmine.Spy).withArgs('themePreference');
-    storageSetSpy = syncSpy.set;
-    storageSpy.sync = syncSpy;
-    chrome.storage = storageSpy;
+    const storageSpy = {
+      sync: {
+        get: vi.fn().mockName('chrome.storage.sync.get'),
+        set: vi.fn().mockName('chrome.storage.sync.set'),
+      },
+    };
+    storageGetSpy = storageSpy.sync.get;
+    storageSetSpy = storageSpy.sync.set;
+    (chrome.storage as unknown) = storageSpy;
     await TestBed.configureTestingModule({
       imports: [ThemeSelectorComponent],
       providers: [provideZonelessChangeDetection()],
@@ -51,39 +45,41 @@ describe('ThemeSelectorComponent', () => {
   describe('with no storage preference', () => {
     beforeEach(() => {
       // No theme preference is stored.
-      storageGetSpy.and.resolveTo({themePreference: undefined});
+      storageGetSpy.mockResolvedValue({themePreference: undefined});
     });
 
     it('respects the system preference for light mode', async () => {
-      matchMediaSpy.and.returnValue({matches: false} as MediaQueryList);
+      matchMediaSpy.mockReturnValue({matches: false} as MediaQueryList);
 
       const fixture = TestBed.createComponent(ThemeSelectorComponent);
       const loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(document.body.classList.contains('dark-mode')).toBeFalse();
+      expect(document.body.classList.contains('dark-mode')).toBe(false);
       expect(storageSetSpy).not.toHaveBeenCalled();
 
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('dark_mode');
-      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
+      const axeResults = await axe.run(fixture.nativeElement);
+      expect(axeResults.violations).toEqual([]);
     });
 
     it('respects the system preference for dark mode', async () => {
-      matchMediaSpy.and.returnValue({matches: true} as MediaQueryList);
+      matchMediaSpy.mockReturnValue({matches: true} as MediaQueryList);
 
       const fixture = TestBed.createComponent(ThemeSelectorComponent);
       const loader = TestbedHarnessEnvironment.loader(fixture);
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(document.body.classList.contains('dark-mode')).toBeTrue();
+      expect(document.body.classList.contains('dark-mode')).toBe(true);
       expect(storageSetSpy).not.toHaveBeenCalled();
 
       const icon = await loader.getHarness(MatIconHarness);
       expect(await icon.getName()).toBe('light_mode');
-      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
+      const axeResults = await axe.run(fixture.nativeElement);
+      expect(axeResults.violations).toEqual([]);
     });
   });
 
@@ -97,9 +93,9 @@ describe('ThemeSelectorComponent', () => {
 
     beforeEach(async () => {
       // Dark mode preference is already in storage.
-      storageGetSpy.and.resolveTo({themePreference: 'light'});
+      storageGetSpy.mockResolvedValue({themePreference: 'light'});
       // Light mode is preferred at the system level.
-      matchMediaSpy.and.returnValue({matches: true} as MediaQueryList);
+      matchMediaSpy.mockReturnValue({matches: true} as MediaQueryList);
 
       fixture = TestBed.createComponent(ThemeSelectorComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
@@ -113,7 +109,7 @@ describe('ThemeSelectorComponent', () => {
     });
 
     it('respects the storage preference over the system preference', async () => {
-      expect(document.body.classList.contains('dark-mode')).toBeFalse();
+      expect(document.body.classList.contains('dark-mode')).toBe(false);
       expect(storageSetSpy).not.toHaveBeenCalled();
 
       expect(await icon.getName()).toBe('dark_mode');
@@ -137,9 +133,9 @@ describe('ThemeSelectorComponent', () => {
 
     beforeEach(async () => {
       // Dark mode preference is already in storage.
-      storageGetSpy.and.resolveTo({themePreference: 'dark'});
+      storageGetSpy.mockResolvedValue({themePreference: 'dark'});
       // Light mode is preferred at the system level.
-      matchMediaSpy.and.returnValue({matches: false} as MediaQueryList);
+      matchMediaSpy.mockReturnValue({matches: false} as MediaQueryList);
 
       fixture = TestBed.createComponent(ThemeSelectorComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
@@ -153,7 +149,7 @@ describe('ThemeSelectorComponent', () => {
     });
 
     it('respects the storage preference over the system preference', async () => {
-      expect(document.body.classList.contains('dark-mode')).toBeTrue();
+      expect(document.body.classList.contains('dark-mode')).toBe(true);
       expect(storageSetSpy).not.toHaveBeenCalled();
 
       expect(await icon.getName()).toBe('light_mode');
@@ -173,7 +169,7 @@ describe('ThemeSelectorComponent', () => {
       });
 
       it('toggles the theme preference', async () => {
-        expect(document.body.classList.contains('dark-mode')).toBeFalse();
+        expect(document.body.classList.contains('dark-mode')).toBe(false);
         expect(storageSetSpy).toHaveBeenCalledWith({themePreference: 'light'});
 
         expect(await icon.getName()).toBe('dark_mode');
@@ -193,7 +189,7 @@ describe('ThemeSelectorComponent', () => {
         });
 
         it('toggles the theme preference back', async () => {
-          expect(document.body.classList.contains('dark-mode')).toBeTrue();
+          expect(document.body.classList.contains('dark-mode')).toBe(true);
           expect(storageSetSpy).toHaveBeenCalledWith({themePreference: 'dark'});
 
           expect(await icon.getName()).toBe('light_mode');

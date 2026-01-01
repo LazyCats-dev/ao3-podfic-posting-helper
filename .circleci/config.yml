@@ -11,6 +11,10 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - run:
           command: |
             google-chrome --version
