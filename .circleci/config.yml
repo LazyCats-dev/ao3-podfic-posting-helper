@@ -12,6 +12,9 @@ jobs:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
+          name: Install dependencies
+          command: npm install
+      - run:
           name: Install Playwright Browsers
           command: npx playwright install --with-deps
       - run:
