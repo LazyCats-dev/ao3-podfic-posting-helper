@@ -11,9 +11,9 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - run:
-          name: Install dependencies
-          command: npm install
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - run:
           name: Install Playwright Browsers
           command: npx playwright install --with-deps
@@ -22,9 +22,6 @@ jobs:
             google-chrome --version
             chromedriver --version
           name: Check install
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run:
           name: Run tests
           command: |
