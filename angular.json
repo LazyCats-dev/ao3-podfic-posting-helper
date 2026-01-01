@@ -156,18 +156,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [],
-            "tsConfig": "projects/options/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/options/src/favicon.ico",
-              "projects/options/src/assets"
-            ],
-            "styles": ["projects/options/src/styles.scss"],
-            "scripts": [],
-            "karmaConfig": "projects/options/karma.conf.js"
+            "browsers": ["ChromiumHeadless"],
+            "runnerConfig": "projects/options/vitest.config.ts"
           }
         },
         "lint": {

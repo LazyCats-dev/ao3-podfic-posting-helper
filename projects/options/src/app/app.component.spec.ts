@@ -1,3 +1,4 @@
+import type {Mock} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -17,48 +18,39 @@ import {MatInputHarness} from '@angular/material/input/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {MatCheckboxHarness} from '@angular/material/checkbox/testing';
-import {axe, toHaveNoViolations} from 'jasmine-axe';
 import {provideZonelessChangeDetection} from '@angular/core';
 import {CommentPermissionSetting} from 'common';
 import {MatRadioGroupHarness} from '@angular/material/radio/testing';
-import {MatRadioButtonHarness} from '@angular/material/radio/testing';
+import {vi, beforeEach, describe, it, expect} from 'vitest';
+import axe from 'axe-core';
 
 const VERSION = 'version-shemp';
 
 describe('AppComponent', () => {
-  beforeAll(() => {
-    jasmine.addMatchers(toHaveNoViolations);
-  });
-
-  let setSpy: jasmine.Spy<typeof chrome.storage.sync.set>;
+  let setSpy: Mock;
 
   beforeEach(() => {
-    const runtimeSpy = jasmine.createSpyObj<typeof chrome.runtime>(
-      'chrome.runtime',
-      ['getManifest'],
-    );
-    runtimeSpy.getManifest.and.returnValue({
+    const runtimeSpy = {
+      getManifest: vi.fn().mockName('chrome.runtime.getManifest'),
+    };
+    runtimeSpy.getManifest.mockReturnValue({
       version: VERSION,
       manifest_version: 3,
       name: '',
     });
 
-    chrome.runtime = runtimeSpy;
+    (chrome.runtime as unknown) = runtimeSpy;
 
-    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-      'chrome.storage',
-      ['sync'],
-    );
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['set', 'get'],
-    );
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    (syncSpy.get as any).and.resolveTo({});
+    const storageSpy = {
+      sync: {
+        set: vi.fn().mockName('chrome.storage.sync.set'),
+        get: vi.fn().mockName('chrome.storage.sync.get'),
+      },
+    };
+    storageSpy.sync.get.mockResolvedValue({});
 
-    storageSpy.sync = syncSpy;
-    setSpy = syncSpy.set.and.resolveTo(undefined);
-    chrome.storage = storageSpy;
+    setSpy = storageSpy.sync.set.mockResolvedValue(undefined);
+    (chrome.storage as unknown) = storageSpy;
   });
 
   describe('with saved values', () => {
@@ -66,7 +58,7 @@ describe('AppComponent', () => {
       '<video>video</video><strong>strong</strong>${blocksummary} ${title} ${title-unlinked} ' +
       '${authors} ${author} ${authors-unlinked} ${author-unlinked} ${ignored}';
     const PREVIEW_VALUE =
-      'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
+      '<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
       '<a>TITLE_TEXT</a> TITLE_TEXT <a>AUTHOR_1</a>, <a>AUTHOR_2</a> <a>AUTHOR_1</a>, ' +
       '<a>AUTHOR_2</a> AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ${ignored}';
     let loader: HarnessLoader;
@@ -117,7 +109,8 @@ describe('AppComponent', () => {
     });
 
     it('passes a11y tests', async () => {
-      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
+      const axeResults = await axe.run(fixture.nativeElement);
+      expect(axeResults.violations).toEqual([]);
     });
 
     describe('title section', () => {
@@ -203,8 +196,8 @@ describe('AppComponent', () => {
 
       it('should display the saved template', async () => {
         expect(await input.getValue()).toBe('notes: ' + TEMPLATE_VALUE);
-        expect(await beginNotesCheckbox.isChecked()).toBeTrue();
-        expect(await endNotesCheckbox.isChecked()).toBeTrue();
+        expect(await beginNotesCheckbox.isChecked()).toBe(true);
+        expect(await endNotesCheckbox.isChecked()).toBe(true);
       });
 
       it('should display a preview with the saved value', async () => {
@@ -261,8 +254,8 @@ describe('AppComponent', () => {
       });
 
       it('should display the saved values', async () => {
-        expect(await onlyRegisteredCheckbox.isChecked()).toBeTrue();
-        expect(await commentModerationCheckbox.isChecked()).toBeTrue();
+        expect(await onlyRegisteredCheckbox.isChecked()).toBe(true);
+        expect(await commentModerationCheckbox.isChecked()).toBe(true);
         expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
           String(CommentPermissionSetting.NO_ONE),
         );
@@ -363,7 +356,7 @@ describe('AppComponent', () => {
         await resetButton.click();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
 
         expect(await input.getValue()).toBe('[Podfic] ${title}');
         expect(await preview.getText()).toBe('[Podfic] TITLE_TEXT');
@@ -390,7 +383,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Title template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           title_template: {
             default: '',
           },
@@ -403,7 +397,7 @@ describe('AppComponent', () => {
             '${author-unlinked} ${ignored}',
         );
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
 
         expect(await preview.getText()).toBe(
           'TITLE_TEXT TITLE_TEXT AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ' +
@@ -415,7 +409,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Title template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           title_template: {
             default:
               '${title} ${title-unlinked} ${authors} ${author} ${authors-unlinked} ${author-unlinked} ${ignored}',
@@ -466,7 +461,7 @@ describe('AppComponent', () => {
         await resetButton.click();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 1_00));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
 
         expect(await input.getValue()).toBe(
           '${blocksummary}Podfic of ${title} by ${authors}.',
@@ -488,7 +483,7 @@ describe('AppComponent', () => {
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
         );
-        expect(await preview.getText()).toBe('<b>bold</b>video');
+        expect(await preview.getText()).toBe('<b>bold</b>');
       });
 
       it('can save an empty value', async () => {
@@ -498,7 +493,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Summary template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           summary_template: {
             default: '',
           },
@@ -515,7 +511,7 @@ describe('AppComponent', () => {
         await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
 
         expect(await preview.getText()).toBe(
-          'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
+          '<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
             '<a>TITLE_TEXT</a> TITLE_TEXT <a>AUTHOR_1</a>, <a>AUTHOR_2</a> <a>AUTHOR_1</a>, ' +
             '<a>AUTHOR_2</a> AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ${ignored}',
         );
@@ -525,7 +521,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Summary template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           summary_template: {
             default: value,
           },
@@ -573,8 +570,8 @@ describe('AppComponent', () => {
 
       it('should display the default template', async () => {
         expect(await input.getValue()).toBe('');
-        expect(await beginNotesCheckbox.isChecked()).toBeFalse();
-        expect(await endNotesCheckbox.isChecked()).toBeFalse();
+        expect(await beginNotesCheckbox.isChecked()).toBe(false);
+        expect(await endNotesCheckbox.isChecked()).toBe(false);
       });
 
       it('should display an empty preview', async () => {
@@ -602,7 +599,7 @@ describe('AppComponent', () => {
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
         );
-        expect(await preview.getText()).toBe('<b>bold</b>video');
+        expect(await preview.getText()).toBe('<b>bold</b>');
       });
 
       it('can save an empty value', async () => {
@@ -612,7 +609,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Notes template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           notes_template: {
             default: '',
             begin: false,
@@ -633,7 +631,7 @@ describe('AppComponent', () => {
         await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
 
         expect(await preview.getText()).toBe(
-          'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
+          '<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
             '<a>TITLE_TEXT</a> TITLE_TEXT <a>AUTHOR_1</a>, <a>AUTHOR_2</a> <a>AUTHOR_1</a>, ' +
             '<a>AUTHOR_2</a> AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ${ignored}',
         );
@@ -643,7 +641,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Notes template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           notes_template: {
             default: value,
             begin: true,
@@ -697,7 +696,7 @@ describe('AppComponent', () => {
         expect(await formField.getTextErrors()).toContain(
           'This template appears to contain HTML tags that cannot be used on AO3, they have been removed from the preview',
         );
-        expect(await preview.getText()).toBe('<b>bold</b>video');
+        expect(await preview.getText()).toBe('<b>bold</b>');
       });
 
       it('can save an empty value', async () => {
@@ -707,7 +706,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Work template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           workbody: {
             default: '',
           },
@@ -724,7 +724,7 @@ describe('AppComponent', () => {
         await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
 
         expect(await preview.getText()).toBe(
-          'video<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
+          '<strong>strong</strong><blockquote>BLOCK_SUMMARY_TEXT</blockquote> ' +
             '<a>TITLE_TEXT</a> TITLE_TEXT <a>AUTHOR_1</a>, <a>AUTHOR_2</a> <a>AUTHOR_1</a>, ' +
             '<a>AUTHOR_2</a> AUTHOR_1, AUTHOR_2 AUTHOR_1, AUTHOR_2 ${ignored}',
         );
@@ -734,7 +734,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Work template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           workbody: {
             default: value,
           },
@@ -778,8 +779,8 @@ describe('AppComponent', () => {
       });
 
       it('should display the default values', async () => {
-        expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
-        expect(await commentModerationCheckbox.isChecked()).toBeFalse();
+        expect(await onlyRegisteredCheckbox.isChecked()).toBe(false);
+        expect(await commentModerationCheckbox.isChecked()).toBe(false);
         expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
           String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
         );
@@ -794,8 +795,8 @@ describe('AppComponent', () => {
 
         await resetButton.click();
 
-        expect(await onlyRegisteredCheckbox.isChecked()).toBeFalse();
-        expect(await commentModerationCheckbox.isChecked()).toBeFalse();
+        expect(await onlyRegisteredCheckbox.isChecked()).toBe(false);
+        expect(await commentModerationCheckbox.isChecked()).toBe(false);
         expect(await commentPermissionRadioGroup.getCheckedValue()).toEqual(
           String(CommentPermissionSetting.REGISTERED_USERS_ONLY),
         );
@@ -813,7 +814,8 @@ describe('AppComponent', () => {
         const snackBar = await rootLoader.getHarness(MatSnackBarHarness);
 
         expect(await snackBar.getMessage()).toBe('Privacy template saved');
-        expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+        expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+        expect(setSpy as Mock).toHaveBeenCalledWith({
           privacy_template: {
             onlyShowToRegisteredUsers: true,
             enableCommentModeration: true,

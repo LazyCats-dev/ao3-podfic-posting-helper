@@ -1,5 +1,5 @@
+import type {Mock} from 'vitest';
 import {TestBed} from '@angular/core/testing';
-
 import {
   ApplicationInitStatus,
   provideZonelessChangeDetection,
@@ -10,42 +10,32 @@ import {
   provideInitialFormValuesFromStorage,
 } from './utils';
 import {CommentPermissionSetting} from 'common';
+import {vi, beforeEach, describe, it, expect} from 'vitest';
 
 describe('INITIAL_FORM_VALUES', () => {
-  let getSpy: jasmine.Spy<typeof chrome.storage.sync.get>;
+  let getSpy: Mock;
 
   beforeEach(() => {
-    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-      'chrome.storage',
-      ['sync'],
-    );
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['get', 'set'],
-    );
-    getSpy = syncSpy.get;
-    storageSpy.sync = syncSpy;
-    chrome.storage = storageSpy;
+    const storageSpy = {
+      sync: {
+        get: vi.fn().mockName('chrome.storage.sync.get'),
+        set: vi.fn().mockName('chrome.storage.sync.set'),
+      },
+    };
+    (chrome.storage as unknown) = storageSpy;
+    getSpy = storageSpy.sync.get;
   });
 
   afterEach(TEST_ONLY.resetDefaultFormValuesForTest);
 
   describe('with no initial values in storage', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'title_template',
-          'workbody',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          title_template: undefined,
-          workbody: undefined,
-          summary_template: undefined,
-          notes_template: undefined,
-        });
+      getSpy.mockResolvedValue({
+        title_template: undefined,
+        workbody: undefined,
+        summary_template: undefined,
+        notes_template: undefined,
+      });
       await TestBed.configureTestingModule({
         providers: [
           provideInitialFormValuesFromStorage(),
@@ -75,25 +65,17 @@ describe('INITIAL_FORM_VALUES', () => {
 
   describe('with values populated in storage', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy)
-        .withArgs([
-          'title_template',
-          'workbody',
-          'summary_template',
-          'notes_template',
-          'privacy_template',
-        ])
-        .and.resolveTo({
-          title_template: {default: 'title_template'},
-          workbody: {default: 'workbody'},
-          summary_template: {default: 'summary_template'},
-          notes_template: {default: 'notes_template', begin: true, end: true},
-          privacy_template: {
-            onlyShowToRegisteredUsers: true,
-            enableCommentModeration: true,
-            commentPermissionSetting: CommentPermissionSetting.NO_ONE,
-          },
-        });
+      getSpy.mockResolvedValue({
+        title_template: {default: 'title_template'},
+        workbody: {default: 'workbody'},
+        summary_template: {default: 'summary_template'},
+        notes_template: {default: 'notes_template', begin: true, end: true},
+        privacy_template: {
+          onlyShowToRegisteredUsers: true,
+          enableCommentModeration: true,
+          commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+        },
+      });
       await TestBed.configureTestingModule({
         providers: [
           provideInitialFormValuesFromStorage(),

@@ -19,8 +19,8 @@
     "release": "npm run clean && npm run build:inject && npm run build:common -- --configuration=production && npm run build:popup -- --configuration=production && npm run build:options -- --configuration=production && npm run build:manifest",
     "test:common": "ng test --project=common --no-watch --no-progress",
     "test:popup": "ng test --project=popup --no-watch --no-progress --browsers=ChromeHeadless",
-    "test:options": "ng test --project=options --no-watch --no-progress --browsers=ChromeHeadless",
-    "test": "npm run test:common && npm run test:popup && npm run test:options",
+    "test:options": "ng test --project=options --no-watch --no-progress",
+    "test": "npm run test:common && npm run test:options && npm run test:popup",
     "lint": "ng lint && npm run lint:styles",
     "lint:styles": "stylelint --fix \"projects/**/*.scss\"",
     "coverage": "ng test --no-watch --code-coverage"
@@ -40,10 +40,10 @@
     "@angular/router": "^21.0.6",
     "@typescript-eslint/types": "^8.50.1",
     "@typescript-eslint/utils": "^8.50.1",
+    "dompurify": "^3.3.1",
     "highlight.js": "^11.9.0",
     "ngx-highlightjs": "^10.0.0",
     "rxjs": "~7.8.0",
-    "sanitize-html": "^2.13.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -55,6 +55,7 @@
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.6",
     "@types/chrome": "^0.0.263",
+    "@types/dompurify": "^3.0.5",
     "@types/jasmine": "~5.1.0",
     "@types/sanitize-html": "^2.11.0",
     "@typescript-eslint/eslint-plugin": "7.2.0",
@@ -78,7 +79,6 @@
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.16",
-    "vitest-axe": "^0.1.0"
+    "vitest": "^4.0.16"
   }
 }

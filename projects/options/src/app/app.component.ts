@@ -31,7 +31,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {default as sanitize, default as sanitizeHtml} from 'sanitize-html';
+import DOMPurify from 'dompurify';
 import {HighlightModule} from 'ngx-highlightjs';
 import {INITIAL_FORM_VALUES} from './utils';
 import {CommentPermissionSetting, ThemeSelectorComponent} from 'common';
@@ -39,8 +39,8 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {MatRadioGroup, MatRadioButton} from '@angular/material/radio';
 
-const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
-  allowedTags: [
+DOMPurify.setConfig({
+  ALLOWED_TAGS: [
     'a',
     'abbr',
     'acronym',
@@ -102,20 +102,18 @@ const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
     'ul',
     'var',
   ],
-  allowedAttributes: {
-    '*': [
-      'rel',
-      'alt',
-      'crossorigin',
-      'preload',
-      'href',
-      'src',
-      'height',
-      'width',
-      'controls',
-    ],
-  },
-};
+  ALLOWED_ATTR: [
+    'rel',
+    'alt',
+    'crossorigin',
+    'preload',
+    'href',
+    'src',
+    'height',
+    'width',
+    'controls',
+  ],
+});
 
 @Component({
   selector: 'app-root',
@@ -354,7 +352,7 @@ export class AppComponent {
 }
 
 function mapToSanitizedHtml(value: string): string {
-  return sanitizeHtml(
+  return DOMPurify.sanitize(
     value
       .replaceAll(
         '${blocksummary}',
@@ -367,7 +365,6 @@ function mapToSanitizedHtml(value: string): string {
       .replaceAll('${author}', '<a>AUTHOR_1</a>, <a>AUTHOR_2</a>')
       .replaceAll('${authors-unlinked}', 'AUTHOR_1, AUTHOR_2')
       .replaceAll('${author-unlinked}', 'AUTHOR_1, AUTHOR_2'),
-    SANITIZE_HTML_OPTIONS,
   );
 }
 
@@ -378,7 +375,7 @@ function isHtml(str: string) {
 const DOM_PARSER = new DOMParser();
 
 function isValidAo3Html(html: string) {
-  const sanitized = sanitizeHtml(html.trim(), SANITIZE_HTML_OPTIONS);
+  const sanitized = DOMPurify.sanitize(html.trim());
   const userDocument = DOM_PARSER.parseFromString(html.trim(), 'text/html');
   const sanitizedDocument = DOM_PARSER.parseFromString(sanitized, 'text/html');
   return (
