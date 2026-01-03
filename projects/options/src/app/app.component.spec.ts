@@ -23,6 +23,7 @@ import {CommentPermissionSetting} from 'common';
 import {MatRadioGroupHarness} from '@angular/material/radio/testing';
 import {vi, beforeEach, describe, it, expect} from 'vitest';
 import axe from 'axe-core';
+import {page} from 'vitest/browser';
 
 const VERSION = 'version-shemp';
 
@@ -111,6 +112,7 @@ describe('AppComponent', () => {
     it('passes a11y tests', async () => {
       const axeResults = await axe.run(fixture.nativeElement);
       expect(axeResults.violations).toEqual([]);
+      await expect(page.getByRole('document')).toMatchScreenshot();
     });
 
     describe('title section', () => {

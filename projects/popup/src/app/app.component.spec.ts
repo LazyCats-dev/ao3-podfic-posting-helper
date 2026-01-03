@@ -26,6 +26,7 @@ import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {provideZonelessChangeDetection} from '@angular/core';
 import {beforeEach, describe, it, expect, vi} from 'vitest';
 import axe from 'axe-core';
+import {page} from 'vitest/browser';
 
 describe('AppComponent', () => {
   let tabsQuerySubject: Subject<chrome.tabs.Tab[]>;
@@ -105,6 +106,7 @@ describe('AppComponent', () => {
     it('passes a11y tests', async () => {
       const axeResults = await axe.run(fixture.nativeElement);
       expect(axeResults.violations).toEqual([]);
+      await expect(page.getByRole('document')).toMatchScreenshot();
     });
 
     it('enables the podfic length select because a length is being added', async () => {

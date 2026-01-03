@@ -9,6 +9,7 @@ import {MatTooltipHarness} from '@angular/material/tooltip/testing';
 import {provideZonelessChangeDetection} from '@angular/core';
 import {vi, beforeEach, describe, it, expect} from 'vitest';
 import axe from 'axe-core';
+import {page} from 'vitest/browser';
 
 describe('ThemeSelectorComponent', () => {
   let originalMatchMedia: typeof window.matchMedia;
@@ -63,6 +64,7 @@ describe('ThemeSelectorComponent', () => {
       expect(await icon.getName()).toBe('dark_mode');
       const axeResults = await axe.run(fixture.nativeElement);
       expect(axeResults.violations).toEqual([]);
+      await expect(page.getByRole('button')).toMatchScreenshot();
     });
 
     it('respects the system preference for dark mode', async () => {
@@ -80,6 +82,7 @@ describe('ThemeSelectorComponent', () => {
       expect(await icon.getName()).toBe('light_mode');
       const axeResults = await axe.run(fixture.nativeElement);
       expect(axeResults.violations).toEqual([]);
+      await expect(page.getByRole('button')).toMatchScreenshot();
     });
   });
 
