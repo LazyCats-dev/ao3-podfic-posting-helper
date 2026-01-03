@@ -1,5 +1,5 @@
+import type {Mock} from 'vitest';
 import {TestBed} from '@angular/core/testing';
-
 import {
   ApplicationInitStatus,
   provideZonelessChangeDetection,
@@ -9,29 +9,27 @@ import {
   provideInitialFormValuesFromStorage,
   TEST_ONLY,
 } from './utils';
+import {vi, beforeEach, describe, it, expect} from 'vitest';
 
 describe('INITIAL_FORM_VALUES', () => {
-  let getSpy: jasmine.Spy<typeof chrome.storage.sync.get>;
+  let getSpy: Mock;
 
   beforeEach(() => {
-    const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-      'chrome.storage',
-      ['sync'],
-    );
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['get', 'set'],
-    );
-    getSpy = syncSpy.get;
-    storageSpy.sync = syncSpy;
-    chrome.storage = storageSpy;
+    const storageSpy = {
+      sync: {
+        get: vi.fn().mockName('chrome.storage.sync.get'),
+        set: vi.fn().mockName('chrome.storage.sync.set'),
+      },
+    };
+    getSpy = storageSpy.sync.get;
+    (chrome.storage as unknown) = storageSpy;
   });
 
   afterEach(TEST_ONLY.resetDefaultFormValuesForTest);
 
   describe('with no initial values in storage', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({});
+      getSpy.mockResolvedValue({});
       await TestBed.configureTestingModule({
         providers: [
           provideInitialFormValuesFromStorage(),
@@ -57,7 +55,7 @@ describe('INITIAL_FORM_VALUES', () => {
 
   describe('with empty values populated in storage', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({
+      getSpy.mockResolvedValue({
         options: {},
       });
       await TestBed.configureTestingModule({
@@ -84,7 +82,7 @@ describe('INITIAL_FORM_VALUES', () => {
 
   describe('with values populated in storage', () => {
     beforeEach(async () => {
-      (getSpy as jasmine.Spy).withArgs('options').and.resolveTo({
+      getSpy.mockResolvedValue({
         options: {
           url: 'https://acrhiveofourown.org/works/12345678',
           podfic_label: true,

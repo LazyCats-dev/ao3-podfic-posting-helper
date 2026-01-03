@@ -1,6 +1,14 @@
+import type {Mock} from 'vitest';
 import {CommentPermissionSetting} from 'common';
 import './inject/index';
 import './inject/inject';
+import ADULT_WARNING_PAGE from './testdata/adult_warning_page.html.txt?raw';
+import NEW_WORK_PAGE from './testdata/new_work_page.html.txt?raw';
+import UNREVEALED_WORK_PAGE from './testdata/unrevealed_work.html.txt?raw';
+import WORK_WITH_MAX_METADATA from './testdata/work_with_max_metadata.html.txt?raw';
+import WORK_WITH_MIN_METADATA from './testdata/work_with_min_metadata.html.txt?raw';
+import WORK_WITH_MIN_METADATA_HIDDEN_WARNINGS_AND_TAGS from './testdata/work_with_min_metadata_hidden_warnings_and_tags.html.txt?raw';
+import {beforeEach, afterEach, describe, it, expect, vi} from 'vitest';
 
 const MIN_URL = '/assets/work_with_min_metadata.html';
 const MIN_URL_FETCHED = MIN_URL + '?view_adult=true';
@@ -73,16 +81,32 @@ const UNCHANGED_METADATA = {
 
 describe('injectImportAndFillMetadata', () => {
   let testContent: HTMLElement;
-  let fetchSpy: jasmine.Spy<typeof window.fetch>;
+  let fetchSpy: Mock;
 
-  beforeEach(async () => {
-    const response = await fetch('/assets/new_work_page.html');
-    const text = await response.text();
+  beforeEach(() => {
     testContent = document.createElement('div');
     testContent.id = 'test-content';
-    testContent.innerHTML = text;
+    testContent.innerHTML = NEW_WORK_PAGE;
     document.body.appendChild(testContent);
-    fetchSpy = spyOn(window, 'fetch').and.callThrough();
+    fetchSpy = vi.spyOn(window, 'fetch');
+    fetchSpy.mockImplementation((url: string) => {
+      if (url.includes('work_with_min_metadata.html')) {
+        return Promise.resolve(new Response(WORK_WITH_MIN_METADATA));
+      }
+      if (url.includes('work_with_max_metadata.html')) {
+        return Promise.resolve(new Response(WORK_WITH_MAX_METADATA));
+      }
+      if (
+        url.includes('work_with_min_metadata_hidden_warnings_and_tags.html')
+      ) {
+        return Promise.resolve(
+          new Response(WORK_WITH_MIN_METADATA_HIDDEN_WARNINGS_AND_TAGS),
+        );
+      }
+      return Promise.resolve(
+        new Response(undefined, {status: 404, statusText: 'Not Found'}),
+      );
+    });
   });
 
   afterEach(() => {
@@ -96,7 +120,8 @@ describe('injectImportAndFillMetadata', () => {
 
     expect(response).toEqual({result: 'success'});
     expect(getImportedWorkMetadata()).toEqual(MIN_IMPORTED_METADATA);
-    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
@@ -114,7 +139,8 @@ describe('injectImportAndFillMetadata', () => {
       workTitle: 'Test',
       summary: 'Summary',
     });
-    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
@@ -130,12 +156,14 @@ describe('injectImportAndFillMetadata', () => {
     expect(getImportedWorkMetadata()).toEqual({
       ...MIN_IMPORTED_METADATA,
       workTitle: '[Podfic] Test',
-      summary: jasmine.stringContaining(
+      summary: expect.stringContaining(
         '<blockquote>Summary</blockquote>Podfic of <a href',
       ),
     });
 
-    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
@@ -186,15 +214,15 @@ describe('injectImportAndFillMetadata', () => {
       workTitle:
         'Testing: simple case jermowery Testing: simple case jermowery jermowery jermowery',
       coCreators: [],
-      summary: jasmine.stringContaining(
+      summary: expect.stringContaining(
         'Summary: <blockquote>Work for testing ao3 podfic posting helper',
       ),
       useBeginNotes: true,
-      beginNotes: jasmine.stringContaining(
+      beginNotes: expect.stringContaining(
         'Notes: <blockquote>Work for testing ao3 podfic posting helper',
       ),
       useEndNotes: true,
-      endNotes: jasmine.stringContaining(
+      endNotes: expect.stringContaining(
         'Notes: <blockquote>Work for testing ao3 podfic posting helper',
       ),
       collections: [],
@@ -213,18 +241,19 @@ describe('injectImportAndFillMetadata', () => {
       isRestricted: true,
       moderationEnabled: true,
       commentPermissions: 'disable_all',
-      workText: jasmine.stringContaining(
+      workText: expect.stringContaining(
         'Work: <blockquote>Work for testing ao3 podfic posting helper',
       ),
     });
-    expect(fetchSpy).toHaveBeenCalledOnceWith(
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(
       '/assets/work_with_max_metadata.html?view_adult=true',
       {credentials: 'omit'},
     );
   });
 
   it('returns an error if fetch throws', async () => {
-    fetchSpy.and.rejectWith(new Error('I always get the shemp'));
+    fetchSpy.mockRejectedValueOnce(new Error('I always get the shemp'));
 
     const response = await window.injectImportAndFillMetadata(
       minimalArgs(MIN_URL),
@@ -232,11 +261,12 @@ describe('injectImportAndFillMetadata', () => {
 
     expect(response).toEqual({
       result: 'error',
-      message: jasmine.stringContaining(
+      message: expect.stringContaining(
         'Error: Failed to fetch the work! I always get the shemp',
       ),
     });
-    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
@@ -247,15 +277,15 @@ describe('injectImportAndFillMetadata', () => {
     );
     expect(response).toEqual({
       result: 'error',
-      message: jasmine.stringContaining(
+      message: expect.stringContaining(
         'Error: Failed to fetch the work! Error: 404 Not Found',
       ),
     });
     expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
-    expect(fetchSpy).toHaveBeenCalledOnceWith(
-      '/does/not/exist?view_adult=true',
-      {credentials: 'omit'},
-    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith('/does/not/exist?view_adult=true', {
+      credentials: 'omit',
+    });
   });
 
   it('returns an error if the new work page is broken', async () => {
@@ -266,11 +296,12 @@ describe('injectImportAndFillMetadata', () => {
 
     expect(response).toEqual({
       result: 'error',
-      message: jasmine.stringContaining(
+      message: expect.stringContaining(
         'Unhandled error while importing metadata',
       ),
     });
-    expect(fetchSpy).toHaveBeenCalledOnceWith(MIN_URL_FETCHED, {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
@@ -291,27 +322,19 @@ describe('injectImportAndFillMetadata', () => {
       additionalTags: ['Show additional tags'],
       parentWorkUrl: url,
     });
-    expect(fetchSpy).toHaveBeenCalledOnceWith(url + '?view_adult=true', {
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(url + '?view_adult=true', {
       credentials: 'omit',
     });
   });
 
   it('follows the first redirection if login is not required', async () => {
-    fetchSpy
-      .withArgs(MIN_URL_FETCHED, {credentials: 'omit'})
-      .and.callFake(() => {
-        // This is a terrible thing to do but we don't have a good way let the next call get
-        // the real text.
-        fetchSpy
-          .withArgs(MIN_URL_FETCHED, {credentials: 'omit'})
-          .and.callThrough();
-        return Promise.resolve({
-          redirected: true,
-          url: MIN_URL,
-          ok: true,
-          text: () => Promise.resolve(''),
-        } as Response);
-      });
+    fetchSpy.mockResolvedValueOnce({
+      redirected: true,
+      url: MIN_URL,
+      ok: true,
+      text: () => Promise.resolve(''),
+    } as Response);
 
     const response = await window.injectImportAndFillMetadata(
       minimalArgs(MIN_URL),
@@ -325,15 +348,12 @@ describe('injectImportAndFillMetadata', () => {
   });
 
   it('fetches the work with creds if the work is unrevealed', async () => {
-    fetchSpy.withArgs(MIN_URL_FETCHED, {credentials: 'omit'}).and.callFake(() =>
-      // Load the unrevealed work from the test data.
-      fetch('/assets/unrevealed_work.html'),
-    );
+    fetchSpy.mockResolvedValueOnce(new Response(UNREVEALED_WORK_PAGE));
     const response = await window.injectImportAndFillMetadata(
       minimalArgs(MIN_URL),
     );
     expect(response).toEqual({result: 'success'});
-    expect(fetchSpy).toHaveBeenCalledTimes(3);
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
@@ -345,7 +365,7 @@ describe('injectImportAndFillMetadata', () => {
 
   describe('when the work is only available to logged in users', () => {
     beforeEach(() => {
-      fetchSpy.withArgs(MIN_URL_FETCHED, {credentials: 'omit'}).and.resolveTo({
+      fetchSpy.mockResolvedValueOnce({
         redirected: true,
         url: 'https://archiveofourown.org/users/login',
         ok: true,
@@ -369,14 +389,12 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('returns an error if the user does not have access to the work', async () => {
-      fetchSpy
-        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-        .and.resolveTo({
-          redirected: true,
-          url: 'https://archiveofourown.org/users/jermowery',
-          ok: true,
-          text: () => Promise.resolve(''),
-        } as Response);
+      fetchSpy.mockResolvedValueOnce({
+        redirected: true,
+        url: 'https://archiveofourown.org/users/jermowery',
+        ok: true,
+        text: () => Promise.resolve(''),
+      } as Response);
 
       const response = await window.injectImportAndFillMetadata(
         minimalArgs(MIN_URL),
@@ -384,7 +402,7 @@ describe('injectImportAndFillMetadata', () => {
 
       expect(response).toEqual({
         result: 'error',
-        message: jasmine.stringContaining('please contact the work author'),
+        message: expect.stringContaining('please contact the work author'),
       });
       expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
       expect(fetchSpy).toHaveBeenCalledTimes(2);
@@ -397,12 +415,7 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('returns an error if the work has not been revealed', async () => {
-      fetchSpy
-        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-        .and.callFake(() =>
-          // Load the unrevealed work from the test data.
-          fetch('/assets/unrevealed_work.html'),
-        );
+      fetchSpy.mockResolvedValueOnce(new Response(UNREVEALED_WORK_PAGE));
 
       const response = await window.injectImportAndFillMetadata(
         minimalArgs(MIN_URL),
@@ -410,11 +423,10 @@ describe('injectImportAndFillMetadata', () => {
 
       expect(response).toEqual({
         result: 'error',
-        message: jasmine.stringContaining('please contact the work author'),
+        message: expect.stringContaining('please contact the work author'),
       });
       expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
-      // 2 times because we call it once.
-      expect(fetchSpy).toHaveBeenCalledTimes(3);
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
         credentials: 'omit',
       });
@@ -424,30 +436,18 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('imports the metadata if the redirection leads to the adult warning page', async () => {
-      fetchSpy
-        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-        .and.callFake(() => {
-          // This is a terrible thing to do but we don't have a good way let the next call get
-          // the real text.
-          fetchSpy
-            .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-            .and.callThrough();
-          return Promise.resolve({
-            redirected: true,
-            url: MIN_URL,
-            ok: true,
-            text: () =>
-              fetch('/assets/adult_warning_page.html').then(response =>
-                response.text(),
-              ),
-          } as Response);
-        });
+      fetchSpy.mockResolvedValueOnce({
+        redirected: true,
+        url: MIN_URL,
+        ok: true,
+        text: () => Promise.resolve(ADULT_WARNING_PAGE),
+      });
 
       const response = await window.injectImportAndFillMetadata(
         minimalArgs(MIN_URL),
       );
       expect(response).toEqual({result: 'success'});
-      expect(fetchSpy).toHaveBeenCalledTimes(4);
+      expect(fetchSpy).toHaveBeenCalledTimes(3);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
         credentials: 'omit',
       });
@@ -458,35 +458,22 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('returns an error if the work has not been revealed after a redirect', async () => {
-      fetchSpy
-        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-        .and.callFake(() => {
-          // This is a terrible thing to do but we don't have a good way let the next call get
-          // the real text.
-          fetchSpy
-            .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-            .and.callThrough();
-          return Promise.resolve({
-            redirected: true,
-            url: MIN_URL,
-            ok: true,
-            text: () =>
-              fetch('/assets/unrevealed_work.html').then(response =>
-                response.text(),
-              ),
-          } as Response);
-        });
+      fetchSpy.mockResolvedValueOnce({
+        redirected: true,
+        url: MIN_URL,
+        ok: true,
+        text: () => Promise.resolve(UNREVEALED_WORK_PAGE),
+      } as Response);
 
       const response = await window.injectImportAndFillMetadata(
         minimalArgs(MIN_URL),
       );
       expect(response).toEqual({
         result: 'error',
-        message: jasmine.stringContaining('please contact the work author'),
+        message: expect.stringContaining('please contact the work author'),
       });
       expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
-      // 2 times because we call it once.
-      expect(fetchSpy).toHaveBeenCalledTimes(3);
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
         credentials: 'omit',
       });
@@ -496,20 +483,18 @@ describe('injectImportAndFillMetadata', () => {
     });
 
     it('imports the metadata if the redirection leads to a real work', async () => {
-      fetchSpy
-        .withArgs(MIN_URL_FETCHED, {credentials: 'include'})
-        .and.resolveTo({
-          redirected: true,
-          url: 'https://archiveofourown.org/some/other/work/',
-          ok: true,
-          text: () => fetch(MIN_URL).then(response => response.text()),
-        } as Response);
+      fetchSpy.mockResolvedValueOnce({
+        redirected: true,
+        url: 'https://archiveofourown.org/some/other/work/',
+        ok: true,
+        text: () => Promise.resolve(WORK_WITH_MIN_METADATA),
+      } as Response);
 
       const response = await window.injectImportAndFillMetadata(
         minimalArgs(MIN_URL),
       );
       expect(response).toEqual({result: 'success'});
-      expect(fetchSpy).toHaveBeenCalledTimes(3);
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
       expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
         credentials: 'omit',
       });

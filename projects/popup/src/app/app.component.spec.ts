@@ -1,3 +1,4 @@
+import type {Mock, MockedObject} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {Subject, firstValueFrom} from 'rxjs';
@@ -22,52 +23,36 @@ import {MatSelectHarness} from '@angular/material/select/testing';
 import './inject/index';
 import './inject/inject';
 import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
-import {axe, toHaveNoViolations} from 'jasmine-axe';
 import {provideZonelessChangeDetection} from '@angular/core';
+import {beforeEach, describe, it, expect, vi} from 'vitest';
+import axe from 'axe-core';
 
 describe('AppComponent', () => {
-  beforeAll(() => {
-    jasmine.addMatchers(toHaveNoViolations);
-  });
-
   let tabsQuerySubject: Subject<chrome.tabs.Tab[]>;
-  let analytics: jasmine.SpyObj<Analytics>;
+  let analytics: MockedObject<Analytics>;
 
   beforeEach(async () => {
     tabsQuerySubject = new Subject<chrome.tabs.Tab[]>();
 
-    const runtimeSpy = jasmine.createSpyObj<typeof chrome.runtime>(
-      'chrome.runtime',
-      ['getURL'],
-    );
-    runtimeSpy.getURL
-      .withArgs('options/browser/index.html')
-      .and.returnValue('options-url');
+    const runtimeSpy = {
+      getURL: vi.fn().mockName('chrome.runtime.getURL'),
+    };
+    runtimeSpy.getURL.mockReturnValue('options-url');
 
-    const tabsSpy = jasmine.createSpyObj<typeof chrome.tabs>('chrome.tabs', [
-      'query',
-    ]);
-    tabsSpy.query
-      .withArgs({
-        active: true,
-        currentWindow: true,
-      })
-      .and.returnValue(firstValueFrom(tabsQuerySubject));
+    const tabsSpy = {
+      query: vi.fn().mockName('chrome.tabs.query'),
+    };
+    tabsSpy.query.mockReturnValue(firstValueFrom(tabsQuerySubject));
 
-    chrome.runtime = runtimeSpy;
-    chrome.tabs = tabsSpy;
-    const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-      'chrome.storage.sync',
-      ['get', 'set'],
-    );
-    (syncSpy.get as jasmine.Spy).and.resolveTo({});
+    (chrome.runtime as unknown) = runtimeSpy;
+    (chrome.tabs as unknown) = tabsSpy;
+    const syncSpy = {
+      get: vi.fn().mockName('chrome.storage.sync.get'),
+      set: vi.fn().mockName('chrome.storage.sync.set'),
+    };
+    (syncSpy.get as Mock).mockResolvedValue({});
     chrome.storage = {sync: syncSpy} as unknown as typeof chrome.storage;
-
-    analytics = jasmine.createSpyObj<Analytics>('Analytics', [
-      'firePageViewEvent',
-      'fireErrorEvent',
-      'fireEvent',
-    ]);
+    analytics = vi.mockObject(Analytics.prototype);
   });
 
   describe('with saved values', () => {
@@ -118,7 +103,8 @@ describe('AppComponent', () => {
     });
 
     it('passes a11y tests', async () => {
-      expect(await axe(fixture.nativeElement)).toHaveNoViolations();
+      const axeResults = await axe.run(fixture.nativeElement);
+      expect(axeResults.violations).toEqual([]);
     });
 
     it('enables the podfic length select because a length is being added', async () => {
@@ -126,19 +112,19 @@ describe('AppComponent', () => {
         MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),
       );
 
-      expect(await podficLengthFormField.isDisabled()).toBeFalse();
+      expect(await podficLengthFormField.isDisabled()).toBe(false);
     });
 
     it('sets the input values to the intial values', async () => {
       const podficTagCheckbox = await loader.getHarness(
         MatCheckboxHarness.with({label: 'Add the tag "Podfic"'}),
       );
-      expect(await podficTagCheckbox.isChecked()).toBeTrue();
+      expect(await podficTagCheckbox.isChecked()).toBe(true);
 
       const podficLengthCheckbox = await loader.getHarness(
         MatCheckboxHarness.with({label: 'Add a "Podfic Length" tag'}),
       );
-      expect(await podficLengthCheckbox.isChecked()).toBeTrue();
+      expect(await podficLengthCheckbox.isChecked()).toBe(true);
 
       const podficLengthFormField = await loader.getHarness(
         MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),
@@ -239,7 +225,7 @@ describe('AppComponent', () => {
         await manualChangeDetection(() =>
           loader.hasHarness(MatProgressSpinnerHarness),
         ),
-      ).toBeTrue();
+      ).toBe(true);
     });
 
     it('shows an error message if the opened on a page that is not allowed', async () => {
@@ -247,13 +233,14 @@ describe('AppComponent', () => {
       tabsQuerySubject.next([{url: 'https://example.com'} as chrome.tabs.Tab]);
       await fixture.whenStable();
 
-      expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
+      expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(false);
 
       expect(fixture.nativeElement.textContent).toContain(
         'This extension can only be used on the AO3 page',
       );
       expect(fixture.nativeElement.querySelector('form')).toBeNull();
-      expect(analytics.firePageViewEvent).toHaveBeenCalledOnceWith(
+      expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
+      expect(analytics.firePageViewEvent).toHaveBeenCalledWith(
         'Not on new work URL page',
       );
       expect(analytics.fireEvent).not.toHaveBeenCalled();
@@ -288,7 +275,7 @@ describe('AppComponent', () => {
       });
 
       it('is not loading', async () => {
-        expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
+        expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(false);
       });
 
       it('does not contain the error message', () => {
@@ -298,7 +285,8 @@ describe('AppComponent', () => {
       });
 
       it('fired a page view event', () => {
-        expect(analytics.firePageViewEvent).toHaveBeenCalledOnceWith('Form');
+        expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
+        expect(analytics.firePageViewEvent).toHaveBeenCalledWith('Form');
         expect(analytics.fireEvent).not.toHaveBeenCalled();
         expect(analytics.fireErrorEvent).not.toHaveBeenCalled();
       });
@@ -313,7 +301,7 @@ describe('AppComponent', () => {
         expect(fixture.nativeElement.textContent).not.toContain(
           'This extension can only be used on the AO3 page',
         );
-        expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeFalse();
+        expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(false);
         expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
       });
 
@@ -321,7 +309,7 @@ describe('AppComponent', () => {
         await submitButton.click();
         fixture.detectChanges();
 
-        expect(await urlInput?.isFocused()).toBeTrue();
+        expect(await urlInput?.isFocused()).toBe(true);
         expect(await urlInputFormField.getTextErrors()).toContain(
           'This field is required',
         );
@@ -333,7 +321,7 @@ describe('AppComponent', () => {
         await submitButton.click();
         fixture.detectChanges();
 
-        expect(await urlInput.isFocused()).toBeTrue();
+        expect(await urlInput.isFocused()).toBe(true);
         expect(await urlInputFormField.getTextErrors()).toContain(
           'Must be an AO3 work URL',
         );
@@ -344,7 +332,7 @@ describe('AppComponent', () => {
           MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),
         );
 
-        expect(await podficLengthFormField.isDisabled()).toBeTrue();
+        expect(await podficLengthFormField.isDisabled()).toBe(true);
 
         const podficLengthCheckbox = await loader.getHarness(
           MatCheckboxHarness.with({label: 'Add a "Podfic Length" tag'}),
@@ -352,11 +340,11 @@ describe('AppComponent', () => {
 
         await podficLengthCheckbox.check();
 
-        expect(await podficLengthFormField.isDisabled()).toBeFalse();
+        expect(await podficLengthFormField.isDisabled()).toBe(false);
 
         await podficLengthCheckbox.uncheck();
 
-        expect(await podficLengthFormField.isDisabled()).toBeTrue();
+        expect(await podficLengthFormField.isDisabled()).toBe(true);
       });
 
       describe('when the form is filled with valid values and submitted', () => {
@@ -364,63 +352,50 @@ describe('AppComponent', () => {
           value: chrome.scripting.InjectionResult[],
         ) => void;
         let executeScriptReject: (error: Error) => void;
-        let setSpy: jasmine.Spy<typeof chrome.storage.sync.set>;
-        let executeScriptSpy: jasmine.Spy<
-          typeof chrome.scripting.executeScript
-        >;
+        let setSpy: Mock;
+        let executeScriptSpy: Mock;
 
         beforeEach(async () => {
-          const storageSpy = jasmine.createSpyObj<typeof chrome.storage>(
-            'chrome.storage',
-            ['sync'],
-          );
-          const syncSpy = jasmine.createSpyObj<typeof chrome.storage.sync>(
-            'chrome.storage.sync',
-            ['get', 'set'],
-          );
-          storageSpy.sync = syncSpy;
-          setSpy = syncSpy.set.and.resolveTo(undefined);
-          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-          (syncSpy.get as any).and.resolveTo({});
-          (syncSpy.get as jasmine.Spy)
-            .withArgs([
-              'workbody',
-              'title_template',
-              'summary_template',
-              'notes_template',
-              'privacy_template',
-            ])
-            .and.resolveTo({
-              workbody: {default: 'workbody'},
-              title_template: {default: 'title_template'},
-              summary_template: {default: 'summary_template'},
-              notes_template: {
-                default: 'notes_template',
-                begin: true,
-                end: false,
-              },
-              privacy_template: {
-                onlyShowToRegisteredUsers: true,
-                enableCommentModeration: true,
-                commentPermissionSetting: CommentPermissionSetting.NO_ONE,
-              },
-            });
-
-          const scriptingSpy = jasmine.createSpyObj<typeof chrome.scripting>(
-            'chrome.scripting',
-            ['executeScript'],
-          );
-          executeScriptSpy = scriptingSpy.executeScript.and.callFake(() => {
-            return new Promise<chrome.scripting.InjectionResult[]>(
-              (resolve, reject) => {
-                executeScriptResolve = resolve;
-                executeScriptReject = reject;
-              },
-            );
+          const storageSpy = {
+            sync: {
+              get: vi.fn().mockName('chrome.storage.sync.get'),
+              set: vi.fn().mockName('chrome.storage.sync.set'),
+            },
+          };
+          setSpy = storageSpy.sync.set.mockResolvedValue(undefined);
+          storageSpy.sync.get.mockResolvedValue({});
+          storageSpy.sync.get.mockResolvedValue({
+            workbody: {default: 'workbody'},
+            title_template: {default: 'title_template'},
+            summary_template: {default: 'summary_template'},
+            notes_template: {
+              default: 'notes_template',
+              begin: true,
+              end: false,
+            },
+            privacy_template: {
+              onlyShowToRegisteredUsers: true,
+              enableCommentModeration: true,
+              commentPermissionSetting: CommentPermissionSetting.NO_ONE,
+            },
           });
 
-          chrome.storage = storageSpy;
-          chrome.scripting = scriptingSpy;
+          const scriptingSpy = {
+            executeScript: vi.fn().mockName('chrome.scripting.executeScript'),
+          };
+          executeScriptSpy = scriptingSpy.executeScript.mockImplementation(
+            () => {
+              return new Promise<chrome.scripting.InjectionResult[]>(
+                (resolve, reject) => {
+                  executeScriptResolve = resolve;
+                  executeScriptReject = reject;
+                },
+              );
+            },
+          );
+
+          (chrome.storage as unknown) = storageSpy;
+          (chrome.scripting as unknown) = scriptingSpy;
 
           // Spaces are intentional to verify that we trim the value.
           await urlInput.setValue(' https://archiveofourown.org/works/12345 ');
@@ -470,11 +445,12 @@ describe('AppComponent', () => {
         });
 
         it('starts loading', async () => {
-          expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBeTrue();
+          expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(true);
         });
 
         it('stores form values', () => {
-          expect(setSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+          expect(setSpy as Mock).toHaveBeenCalledTimes(1);
+          expect(setSpy as Mock).toHaveBeenCalledWith({
             options: {
               url: 'https://archiveofourown.org/works/12345',
               podfic_label: true,
@@ -491,7 +467,8 @@ describe('AppComponent', () => {
         });
 
         it('fires an analytics event', () => {
-          expect(analytics.fireEvent).toHaveBeenCalledOnceWith(
+          expect(analytics.fireEvent).toHaveBeenCalledTimes(1);
+          expect(analytics.fireEvent).toHaveBeenCalledWith(
             'popup_form_submit',
             {
               podfic_label: 'true',
@@ -504,7 +481,8 @@ describe('AppComponent', () => {
         });
 
         it('executes the inject script', () => {
-          expect(executeScriptSpy as jasmine.Spy).toHaveBeenCalledOnceWith({
+          expect(executeScriptSpy as Mock).toHaveBeenCalledTimes(1);
+          expect(executeScriptSpy as Mock).toHaveBeenCalledWith({
             target: {tabId: 666},
             func: window.injectImportAndFillMetadata,
             world: 'MAIN',
@@ -555,9 +533,9 @@ describe('AppComponent', () => {
           });
 
           it('finishes loading', async () => {
-            expect(
-              await loader.hasHarness(MatProgressSpinnerHarness),
-            ).toBeFalse();
+            expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(
+              false,
+            );
           });
         });
 
@@ -576,24 +554,25 @@ describe('AppComponent', () => {
           });
 
           it('finishes loading', async () => {
-            expect(
-              await loader.hasHarness(MatProgressSpinnerHarness),
-            ).toBeFalse();
-          });
-
-          it('set a form error', async () => {
-            expect(await urlInputFormField.getTextErrors()).toContain(
-              jasmine.stringContaining('I always get the shemp'),
+            expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(
+              false,
             );
           });
 
+          it('set a form error', async () => {
+            expect(await urlInputFormField.getTextErrors()).toEqual([
+              expect.stringContaining('I always get the shemp'),
+            ]);
+          });
+
           it('shifted the focus to the url input', async () => {
-            expect(await urlInput.isFocused()).toBeTrue();
+            expect(await urlInput.isFocused()).toBe(true);
           });
 
           it('fired an analytics error event', () => {
-            expect(analytics.fireErrorEvent).toHaveBeenCalledOnceWith(
-              jasmine.stringContaining('I always get the shemp'),
+            expect(analytics.fireErrorEvent).toHaveBeenCalledTimes(1);
+            expect(analytics.fireErrorEvent).toHaveBeenCalledWith(
+              expect.stringContaining('I always get the shemp'),
             );
           });
         });
@@ -622,24 +601,25 @@ describe('AppComponent', () => {
           });
 
           it('finishes loading', async () => {
-            expect(
-              await loader.hasHarness(MatProgressSpinnerHarness),
-            ).toBeFalse();
-          });
-
-          it('set a form error', async () => {
-            expect(await urlInputFormField.getTextErrors()).toContain(
-              jasmine.stringContaining('I always get the shemp'),
+            expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(
+              false,
             );
           });
 
+          it('set a form error', async () => {
+            expect(await urlInputFormField.getTextErrors()).toEqual([
+              expect.stringContaining('I always get the shemp'),
+            ]);
+          });
+
           it('shifted the focus to the url input', async () => {
-            expect(await urlInput.isFocused()).toBeTrue();
+            expect(await urlInput.isFocused()).toBe(true);
           });
 
           it('fired an analytics error event', () => {
-            expect(analytics.fireErrorEvent).toHaveBeenCalledOnceWith(
-              jasmine.stringContaining('I always get the shemp'),
+            expect(analytics.fireErrorEvent).toHaveBeenCalledTimes(1);
+            expect(analytics.fireErrorEvent).toHaveBeenCalledWith(
+              expect.stringContaining('I always get the shemp'),
             );
           });
         });

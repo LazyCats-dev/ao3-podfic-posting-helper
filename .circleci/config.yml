@@ -9,19 +9,12 @@ jobs:
     # Install node dependencies and run tests
     executor: node/default
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - checkout
       - node/install-packages:
           pkg-manager: npm
       - run:
           name: Install Playwright Browsers
           command: npx playwright install --with-deps
-      - run:
-          command: |
-            google-chrome --version
-            chromedriver --version
-          name: Check install
       - run:
           name: Run tests
           command: |

@@ -64,23 +64,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [],
-            "tsConfig": "projects/popup/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/popup/src/favicon.ico",
-              "projects/popup/src/assets",
-              {
-                "glob": "**/*",
-                "input": "projects/popup/src/app/testdata",
-                "output": "/assets/"
-              }
-            ],
-            "styles": ["projects/popup/src/styles.scss"],
-            "scripts": [],
-            "karmaConfig": "projects/popup/karma.conf.js"
+            "browsers": ["ChromiumHeadless"],
+            "runnerConfig": "projects/popup/vitest.config.ts"
           }
         },
         "lint": {
