@@ -473,7 +473,7 @@ window.injectImportAndFillMetadata = ({
         if (e instanceof Error) {
           return {
             result: 'error',
-            message: `${e.stack}`,
+            message: `${e.message}\n${e.stack}`,
           };
         }
         return {

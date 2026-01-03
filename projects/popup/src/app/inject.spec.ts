@@ -262,7 +262,7 @@ describe('injectImportAndFillMetadata', () => {
     expect(response).toEqual({
       result: 'error',
       message: expect.stringContaining(
-        'Error: Failed to fetch the work! I always get the shemp',
+        'Failed to fetch the work! I always get the shemp',
       ),
     });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -278,7 +278,7 @@ describe('injectImportAndFillMetadata', () => {
     expect(response).toEqual({
       result: 'error',
       message: expect.stringContaining(
-        'Error: Failed to fetch the work! Error: 404 Not Found',
+        'Failed to fetch the work! Error: 404 Not Found',
       ),
     });
     expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
