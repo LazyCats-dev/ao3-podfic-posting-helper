@@ -10,7 +10,7 @@ import {
   provideInitialFormValuesFromStorage,
 } from './utils';
 import {CommentPermissionSetting} from 'common';
-import {vi, beforeEach, describe, it, expect} from 'vitest';
+import {vi, beforeEach, describe, it, expect, afterEach} from 'vitest';
 
 describe('INITIAL_FORM_VALUES', () => {
   let getSpy: Mock;

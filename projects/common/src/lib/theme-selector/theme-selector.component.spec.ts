@@ -7,7 +7,7 @@ import {MatIconHarness} from '@angular/material/icon/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatTooltipHarness} from '@angular/material/tooltip/testing';
 import {provideZonelessChangeDetection} from '@angular/core';
-import {vi, beforeEach, describe, it, expect} from 'vitest';
+import {vi, beforeEach, describe, it, expect, afterEach} from 'vitest';
 import axe from 'axe-core';
 import {page} from 'vitest/browser';
 
