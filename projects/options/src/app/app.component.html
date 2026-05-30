@@ -1,5 +1,8 @@
 <mat-toolbar role="heading" color="primary" aria-level="1">
   <mat-toolbar-row>
+    <button matIconButton (click)="sidenav.toggle()" aria-label="Toggle navigation menu">
+      <mat-icon>menu</mat-icon>
+    </button>
     <a mat-icon-button href="index.html" aria-label="Home button">
       <mat-icon svgIcon="logo" />
     </a>
@@ -26,8 +29,12 @@
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-sidenav-container>
-  <mat-sidenav opened="true" disableClose="true" mode="side">
+<mat-sidenav-container [style.marginTop.px]="isMobile() ? 64 : 0">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [fixedInViewport]="isMobile()"
+    fixedTopGap="56">
     <mat-nav-list>
       <mat-list-item>
         <mat-icon matListItemIcon>title</mat-icon>

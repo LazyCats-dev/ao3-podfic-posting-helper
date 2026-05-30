@@ -38,6 +38,7 @@ import {CommentPermissionSetting, ThemeSelectorComponent} from 'common';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {MatRadioGroup, MatRadioButton} from '@angular/material/radio';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 DOMPurify.setConfig({
   ALLOWED_TAGS: [
@@ -152,6 +153,9 @@ DOMPurify.setConfig({
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  host: {
+    '[class.is-mobile]': 'isMobile()',
+  },
 })
 export class AppComponent {
   protected readonly CommentPermissionSetting = CommentPermissionSetting;
@@ -160,6 +164,11 @@ export class AppComponent {
   private readonly snackBar = inject(MatSnackBar);
 
   protected readonly version = chrome.runtime.getManifest().version;
+  private readonly isMobileMatcher = toSignal(
+    inject(BreakpointObserver).observe([Breakpoints.XSmall, Breakpoints.Small]),
+    {requireSync: true},
+  );
+  protected readonly isMobile = computed(() => this.isMobileMatcher().matches);
 
   protected readonly titleTemplateFormGroup = new FormGroup({
     template: new FormControl<string>(this.initialFormValues.titleTemplate, {
