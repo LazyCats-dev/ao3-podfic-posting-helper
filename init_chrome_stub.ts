@@ -5,5 +5,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  delete (window as {chrome?: unknown}).chrome;
+  try {
+    delete (window as {chrome?: unknown}).chrome;
+  } catch (e) {}
 });

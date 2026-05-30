@@ -20,6 +20,7 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "typeRoots": ["node_modules/@types"],
+    "types": ["chrome"],
     "paths": {
       "common": ["./projects/common/src/public-api"]
     }

@@ -5,6 +5,24 @@
   inset: 0;
 }
 
+:host.is-mobile {
+  mat-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+  }
+
+  mat-sidenav-container {
+    flex: 1 0 auto;
+  }
+}
+
+.toolbar-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
@@ -44,7 +62,7 @@ h1 {
 .main-section {
   padding-top: 0.5rem;
   width: 100%;
-  max-width: 57rem;
+  max-width: 50rem;
 }
 
 .about-section {
@@ -88,20 +106,8 @@ mat-sidenav {
   }
 }
 
-mat-sidenav-container {
-  flex: 1;
-
-  // Show everything below the toolbar.
-  margin-top: 4rem;
-}
-
 mat-sidenav-content {
   scroll-behavior: smooth;
-}
-
-mat-toolbar {
-  position: fixed;
-  z-index: 1000;
 }
 
 :host h3 {

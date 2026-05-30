@@ -89,6 +89,7 @@ jobs:
           jwt-secret: ${{ secrets.MOZILLA_FIREFOX_ADDONS_API_JWT_SECRET }}
           source-file-path: source-${{ github.sha }}.zip
           approval-notes: ${{ secrets.EXTENSION_INSTRUCTIONS }}
+          compatibility: firefox,android
 
   upload-and-publish-to-microsoft-edge-addons:
     name: Upload and publish to Microsoft Edge Addons
