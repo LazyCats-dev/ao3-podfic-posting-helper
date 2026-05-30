@@ -16,6 +16,13 @@
     flex: 1 0 auto;
   }
 }
+
+.toolbar-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
@@ -102,7 +109,6 @@ mat-sidenav {
 mat-sidenav-content {
   scroll-behavior: smooth;
 }
-
 
 :host h3 {
   margin-top: 1rem;
