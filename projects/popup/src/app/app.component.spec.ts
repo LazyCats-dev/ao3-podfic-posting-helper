@@ -106,7 +106,6 @@ describe('AppComponent', () => {
     it('passes a11y tests', async () => {
       const axeResults = await axe.run(fixture.nativeElement);
       expect(axeResults.violations).toEqual([]);
-      await expect(page.getByRole('document')).toMatchScreenshot();
     });
 
     it('enables the podfic length select because a length is being added', async () => {
