@@ -9,8 +9,9 @@
 
 body {
   max-height: max-content;
-    max-width: 100%;
-    width: 800px;
+  max-width: 100%;
+  width: 800px;
+  
   @include mat.theme(
     (
       density: -2,
