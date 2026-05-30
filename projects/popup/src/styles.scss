@@ -8,9 +8,9 @@
 @include common.apply-base-theme;
 
 body {
-  /* Max width allowed by any chrome extension */
-  min-width: 600px;
-
+  max-height: max-content;
+    max-width: 100%;
+    width: 800px;
   @include mat.theme(
     (
       density: -2,
