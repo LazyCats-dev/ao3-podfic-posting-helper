@@ -366,7 +366,12 @@ describe('AppComponent', () => {
           setSpy = storageSpy.sync.set.mockResolvedValue(undefined);
           storageSpy.sync.get.mockResolvedValue({});
           storageSpy.sync.get.mockResolvedValue({
-            workbody: {default: 'workbody'},
+            workbody: {
+              default:
+                '<p>Hi</p>' +
+                '<video src="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></video>' +
+                '<what-am-i src="i do not know"></what-am-i>',
+            },
             title_template: {default: 'title_template'},
             summary_template: {default: 'summary_template'},
             notes_template: {
@@ -499,7 +504,10 @@ describe('AppComponent', () => {
                   'audio-format-tag-MP3',
                   'audio-format-tag-Streaming',
                 ],
-                workTemplate: 'workbody',
+                workTemplate:
+                  '<p>Hi</p>' +
+                  '<video src="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></video>' +
+                  '<what-am-i src="i_do_not_know"></what-am-i>',
                 userSummaryTemplate: 'summary_template',
                 userTitleTemplate: 'title_template',
                 userNotesTemplate: 'notes_template',
