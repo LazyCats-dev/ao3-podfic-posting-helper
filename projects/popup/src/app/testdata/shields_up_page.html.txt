@@ -1,0 +1,9 @@
+<html>
+  <body>
+    <p>Shields are up!</p>
+    <p>
+      We apologize for the interruption, please prove that you are not a robot:
+    </p>
+    <p>Waiting for archiveofourown.org to respond...</p>
+  </body>
+</html>
