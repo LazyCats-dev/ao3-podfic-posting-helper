@@ -251,6 +251,22 @@ window.injectImportAndFillMetadata = ({
    * Parse the metadata from a work page.
    */
   function parseGenMetadata(doc: Document) {
+    try {
+      return unsafeParseGenMetadata(doc);
+    } catch (e) {
+      if (looksLikeShieldsAreUp(doc)) {
+        throw new Error(
+          'It looks like AO3 is in "Shields Up" mode and requires users to ' +
+            'prove they are not a robot. Surprisingly, despite how sexy it is, ' +
+            'this extension is a robot 🤖 and cannot do so. ' +
+            'Please check AO3 status and try again when AO3 is back to normal.',
+        );
+      }
+      throw e;
+    }
+  }
+
+  function unsafeParseGenMetadata(doc: Document) {
     const meta = queryElement(doc, '.meta');
     const rating = queryElement(meta, 'dd.rating.tags').innerText.trim();
     const warnings = queryElements(
@@ -464,6 +480,14 @@ window.injectImportAndFillMetadata = ({
     // The page has a notice saying that the work may contain adult content.
     return Array.from(doc.querySelectorAll('p.caution')).some(notice =>
       notice!.textContent!.includes('This work could have adult content'),
+    );
+  }
+
+  function looksLikeShieldsAreUp(doc: Document) {
+    const documentTextContent = doc.documentElement.textContent;
+    return (
+      documentTextContent.includes('Shields are up!') &&
+      documentTextContent.includes('please prove that you are not a robot:')
     );
   }
 

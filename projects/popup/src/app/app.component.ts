@@ -260,7 +260,7 @@ export class AppComponent {
             titleFormat: titleFormat!,
             summaryFormat: summaryFormat!,
             audioFormatTagOptionIds,
-            workTemplate: workbody['default'],
+            workTemplate: sanitizeHtmlForAo3(workbody['default']),
             userSummaryTemplate: summary_template['default'],
             userTitleTemplate: title_template['default'],
             userNotesTemplate: notes_template['default'],
@@ -293,4 +293,28 @@ export class AppComponent {
 
     this.loading.set(false);
   }
+}
+
+function sanitizeHtmlForAo3(html: string): string {
+  const container = document.createElement('template');
+  container.innerHTML = html;
+  const fragment = container.content;
+  // AO3 will return a 500 if the user attempts to create a work with a src attribute
+  // that contains spaces, so to prevent people from complaining to us, we replace them
+  const srcHavingElements = Array.from(fragment.querySelectorAll('[src]'));
+  for (const element of srcHavingElements) {
+    element.setAttribute(
+      'src',
+      element.getAttribute('src')?.replaceAll(' ', '_') || '',
+    );
+  }
+
+  // Create an off-screen container element
+  const div = document.createElement('div');
+
+  // Clone and append the fragment content
+  div.appendChild(container.content.cloneNode(true));
+
+  // Return the combined HTML output string
+  return div.innerHTML;
 }

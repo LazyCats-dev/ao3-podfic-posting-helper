@@ -8,6 +8,7 @@ import UNREVEALED_WORK_PAGE from './testdata/unrevealed_work.html.txt?raw';
 import WORK_WITH_MAX_METADATA from './testdata/work_with_max_metadata.html.txt?raw';
 import WORK_WITH_MIN_METADATA from './testdata/work_with_min_metadata.html.txt?raw';
 import WORK_WITH_MIN_METADATA_HIDDEN_WARNINGS_AND_TAGS from './testdata/work_with_min_metadata_hidden_warnings_and_tags.html.txt?raw';
+import SHIELDS_UP_PAGE from './testdata/shields_up_page.html.txt?raw';
 import {beforeEach, afterEach, describe, it, expect, vi} from 'vitest';
 
 const MIN_URL = '/assets/work_with_min_metadata.html';
@@ -102,6 +103,9 @@ describe('injectImportAndFillMetadata', () => {
         return Promise.resolve(
           new Response(WORK_WITH_MIN_METADATA_HIDDEN_WARNINGS_AND_TAGS),
         );
+      }
+      if (url.includes('shields_up_page.html')) {
+        return Promise.resolve(new Response(SHIELDS_UP_PAGE));
       }
       return Promise.resolve(
         new Response(undefined, {status: 404, statusText: 'Not Found'}),
@@ -250,6 +254,21 @@ describe('injectImportAndFillMetadata', () => {
       '/assets/work_with_max_metadata.html?view_adult=true',
       {credentials: 'omit'},
     );
+  });
+
+  it('returns a descriptive error when AO3 is in "Shields Up" mode', async () => {
+    const url = '/assets/shields_up_page.html';
+
+    const response = await window.injectImportAndFillMetadata(minimalArgs(url));
+
+    expect(response).toEqual({
+      result: 'error',
+      message: expect.stringContaining('Please check AO3 status'),
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(url + '?view_adult=true', {
+      credentials: 'omit',
+    });
   });
 
   it('returns an error if fetch throws', async () => {
