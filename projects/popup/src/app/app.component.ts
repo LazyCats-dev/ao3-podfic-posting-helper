@@ -250,7 +250,6 @@ export class AppComponent {
       const injectedScriptResults = await chrome.scripting.executeScript({
         target: {tabId: tab.id!},
         func: window.injectImportAndFillMetadata,
-        world: 'MAIN',
         args: [
           {
             url: url!, // Fix: Assign the url value to the url property
