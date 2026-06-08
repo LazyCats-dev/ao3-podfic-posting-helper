@@ -1,5 +1,5 @@
 import {ApplicationConfig, provideZonelessChangeDetection} from '@angular/core';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {
   provideGlobalEventLogging,
   provideStorageSetup,
@@ -14,7 +14,7 @@ import {MAT_CARD_CONFIG, MatCardConfig} from '@angular/material/card';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideAnimationsRespectingMotionPreferences(),
     provideGlobalEventLogging(),
     provideStorageSetup(),

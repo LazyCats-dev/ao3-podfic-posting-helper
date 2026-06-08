@@ -491,7 +491,6 @@ describe('AppComponent', () => {
           expect(executeScriptSpy as Mock).toHaveBeenCalledWith({
             target: {tabId: 666},
             func: window.injectImportAndFillMetadata,
-            world: 'MAIN',
             args: [
               {
                 url: 'https://archiveofourown.org/works/12345',

@@ -1,4 +1,9 @@
-import {Component, computed, inject} from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {MatButton, MatIconAnchor} from '@angular/material/button';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
@@ -153,6 +158,7 @@ DOMPurify.setConfig({
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.is-mobile]': 'isMobile()',
   },

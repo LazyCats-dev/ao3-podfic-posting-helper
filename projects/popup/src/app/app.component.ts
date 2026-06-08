@@ -7,6 +7,7 @@ import {
   viewChild,
   resource,
   computed,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   FormControl,
@@ -60,6 +61,7 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
     ThemeSelectorComponent,
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
