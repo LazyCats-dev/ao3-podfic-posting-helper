@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/angular-accessibility/SKILL.md",
       "computedHash": "a995f2a67b69c6b71cf1dddac2cc9a3199a9ae382e077a4a37640eeb92d1c3ad"
+    },
+    "angular-developer": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": "skills/dev-skills/angular-developer/SKILL.md",
+      "computedHash": "c5d9759b9e39a49a382dedda3bb4b79a9d952c9d1aedbf07905272baa0e389ab"
     }
   }
 }
