@@ -328,6 +328,20 @@ describe('AppComponent', () => {
         );
       });
 
+      it('accepts a chapter-only URL without a work ID', async () => {
+        await urlInput.setValue(
+          'https://archiveofourown.org/chapters/70248750',
+        );
+
+        await submitButton.click();
+        fixture.detectChanges();
+
+        expect(await urlInput.isFocused()).toBe(true);
+        expect(await urlInputFormField.getTextErrors()).not.toContain(
+          'Must be an AO3 work URL',
+        );
+      });
+
       it('disables the podfic length select when a podfic length will not be added', async () => {
         const podficLengthFormField = await loader.getHarness(
           MatFormFieldHarness.with({floatingLabelText: 'Podfic Length'}),

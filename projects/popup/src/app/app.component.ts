@@ -133,7 +133,9 @@ export class AppComponent {
       nonNullable: true,
       validators: [
         Validators.required,
-        Validators.pattern('https://archiveofourown.org/(.*/)?works/[0-9]+.*'),
+        Validators.pattern(
+          'https://archiveofourown.org/((.*/)?works/[0-9]+.*|chapters/[0-9]+.*)',
+        ),
       ],
     }),
     podficLabel: new FormControl<boolean>(this.initialFormValues.podficLabel, {
