@@ -448,15 +448,36 @@ window.injectImportAndFillMetadata = ({
     return window
       .fetch(url, {credentials})
       .catch(e => {
-        if (e instanceof Error) {
-          throw new Error(`Failed to fetch the work! ${e.message}: ${e.stack}`);
+        if (e instanceof TypeError) {
+          throw new Error(
+            'Failed to fetch the work, likely this is because of a network issue. ' +
+              'Please check your network connection and try again. If this ' +
+              'continues to happen, please reach out on our support Discord server.',
+            {cause: e},
+          );
         }
-        throw new Error(`Failed to fetch the work! {${e}}`);
+        throw new Error(
+          'Failed to fetch the work for an unknown reason, most likely AO3 ' +
+            'is blocking your request. Please try again later. If this continues ' +
+            'to happen, please reach out on our support Discord server.',
+          {
+            cause: e,
+          },
+        );
       })
       .then(result => {
         if (!result.ok) {
+          if (result.status === 404) {
+            throw new Error('Work not found. Please check the URL.');
+          }
+          if (result.status === 429) {
+            throw new Error(
+              'AO3 is rate limiting you, please try again later.',
+            );
+          }
           throw new Error(
-            `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
+            'AO3 returned an unexpected response. ' +
+              `Error: ${result.status} ${result.statusText}`,
           );
         }
         return result;
@@ -497,7 +518,7 @@ window.injectImportAndFillMetadata = ({
         if (e instanceof Error) {
           return {
             result: 'error',
-            message: `${e.message}\n${e.stack}`,
+            message: `${e.message}\n${e.stack}\n${e.cause}`,
           };
         }
         return {

@@ -278,12 +278,27 @@ describe('injectImportAndFillMetadata', () => {
       minimalArgs(MIN_URL),
     );
 
-    expect(response).toEqual({
-      result: 'error',
-      message: expect.stringContaining(
-        'Failed to fetch the work! I always get the shemp',
-      ),
+    expect(response.result).toEqual('error');
+    expect(response.message).toContain(
+      'Failed to fetch the work for an unknown reason',
+    );
+    expect(response.message).toContain('I always get the shemp');
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
+      credentials: 'omit',
     });
+  });
+
+  it('returns an error if fetch throws with a TypeError', async () => {
+    fetchSpy.mockRejectedValueOnce(new TypeError('I always get the shemp'));
+
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
+
+    expect(response.result).toEqual('error');
+    expect(response.message).toContain('because of a network issue');
+    expect(response.message).toContain('I always get the shemp');
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
@@ -294,15 +309,47 @@ describe('injectImportAndFillMetadata', () => {
     const response = await window.injectImportAndFillMetadata(
       minimalArgs('/does/not/exist'),
     );
-    expect(response).toEqual({
-      result: 'error',
-      message: expect.stringContaining(
-        'Failed to fetch the work! Error: 404 Not Found',
-      ),
-    });
+
+    expect(response.result).toEqual('error');
+    expect(response.message).toContain('Work not found');
     expect(getImportedWorkMetadata()).toEqual(UNCHANGED_METADATA);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith('/does/not/exist?view_adult=true', {
+      credentials: 'omit',
+    });
+  });
+
+  it('returns an error if the user is rate limited', async () => {
+    fetchSpy.mockResolvedValueOnce(new Response(undefined, {status: 429}));
+
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
+
+    expect(response.result).toEqual('error');
+    expect(response.message).toContain(
+      'AO3 is rate limiting you, please try again later',
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
+      credentials: 'omit',
+    });
+  });
+
+  it('returns an error if the error is something unhandled', async () => {
+    fetchSpy.mockResolvedValueOnce(
+      new Response(undefined, {status: 418, statusText: 'I am a teapot'}),
+    );
+
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
+
+    expect(response.result).toEqual('error');
+    expect(response.message).toContain('AO3 returned an unexpected response');
+    expect(response.message).toContain('418 I am a teapot');
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
     });
   });
