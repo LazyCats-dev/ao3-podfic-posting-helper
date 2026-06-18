@@ -1,4 +1,4 @@
-import type {Mock, MockedObject} from 'vitest';
+import type {Mock} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {Subject, firstValueFrom} from 'rxjs';
@@ -9,8 +9,6 @@ import {MatToolbarHarness} from '@angular/material/toolbar/testing';
 import {MatButtonHarness} from '@angular/material/button/testing';
 import {MatProgressSpinnerHarness} from '@angular/material/progress-spinner/testing';
 import {
-  ANALYTICS,
-  Analytics,
   CommentPermissionSetting,
   provideMatFormFieldDefaultOptions,
 } from 'common';
@@ -26,11 +24,9 @@ import {MatSnackBarHarness} from '@angular/material/snack-bar/testing';
 import {provideZonelessChangeDetection} from '@angular/core';
 import {beforeEach, describe, it, expect, vi} from 'vitest';
 import axe from 'axe-core';
-import {page} from 'vitest/browser';
 
 describe('AppComponent', () => {
   let tabsQuerySubject: Subject<chrome.tabs.Tab[]>;
-  let analytics: MockedObject<Analytics>;
 
   beforeEach(async () => {
     tabsQuerySubject = new Subject<chrome.tabs.Tab[]>();
@@ -53,7 +49,6 @@ describe('AppComponent', () => {
     };
     (syncSpy.get as Mock).mockResolvedValue({});
     chrome.storage = {sync: syncSpy} as unknown as typeof chrome.storage;
-    analytics = vi.mockObject(Analytics.prototype);
   });
 
   describe('with saved values', () => {
@@ -64,7 +59,6 @@ describe('AppComponent', () => {
       await TestBed.configureTestingModule({
         imports: [AppComponent, MatIconTestingModule, NoopAnimationsModule],
         providers: [
-          {provide: ANALYTICS, useValue: analytics},
           {
             provide: INITIAL_FORM_VALUES,
             useValue: {
@@ -172,7 +166,6 @@ describe('AppComponent', () => {
       await TestBed.configureTestingModule({
         imports: [AppComponent, MatIconTestingModule, NoopAnimationsModule],
         providers: [
-          {provide: ANALYTICS, useValue: analytics},
           {
             provide: INITIAL_FORM_VALUES,
             useValue: {
@@ -240,12 +233,6 @@ describe('AppComponent', () => {
         'This extension can only be used on the AO3 page',
       );
       expect(fixture.nativeElement.querySelector('form')).toBeNull();
-      expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
-      expect(analytics.firePageViewEvent).toHaveBeenCalledWith(
-        'Not on new work URL page',
-      );
-      expect(analytics.fireEvent).not.toHaveBeenCalled();
-      expect(analytics.fireErrorEvent).not.toHaveBeenCalled();
     });
 
     describe('when the user is on the ao3 new work page', () => {
@@ -285,13 +272,6 @@ describe('AppComponent', () => {
         );
       });
 
-      it('fired a page view event', () => {
-        expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
-        expect(analytics.firePageViewEvent).toHaveBeenCalledWith('Form');
-        expect(analytics.fireEvent).not.toHaveBeenCalled();
-        expect(analytics.fireErrorEvent).not.toHaveBeenCalled();
-      });
-
       // Check that the page hasn't changed
       it('ignores the tab updates', async () => {
         tabsQuerySubject.next([
@@ -303,7 +283,6 @@ describe('AppComponent', () => {
           'This extension can only be used on the AO3 page',
         );
         expect(await loader.hasHarness(MatProgressSpinnerHarness)).toBe(false);
-        expect(analytics.firePageViewEvent).toHaveBeenCalledTimes(1);
       });
 
       it('does not import when the url is empty', async () => {
@@ -486,20 +465,6 @@ describe('AppComponent', () => {
           });
         });
 
-        it('fires an analytics event', () => {
-          expect(analytics.fireEvent).toHaveBeenCalledTimes(1);
-          expect(analytics.fireEvent).toHaveBeenCalledWith(
-            'popup_form_submit',
-            {
-              podfic_label: 'true',
-              podfic_length_value: '3-3.5 Hours',
-              title_format: 'blank',
-              summary_format: 'orig',
-              audio_formats: 'audio-format-tag-MP3,audio-format-tag-Streaming',
-            },
-          );
-        });
-
         it('executes the inject script', () => {
           expect(executeScriptSpy as Mock).toHaveBeenCalledTimes(1);
           expect(executeScriptSpy as Mock).toHaveBeenCalledWith({
@@ -590,13 +555,6 @@ describe('AppComponent', () => {
           it('shifted the focus to the url input', async () => {
             expect(await urlInput.isFocused()).toBe(true);
           });
-
-          it('fired an analytics error event', () => {
-            expect(analytics.fireErrorEvent).toHaveBeenCalledTimes(1);
-            expect(analytics.fireErrorEvent).toHaveBeenCalledWith(
-              expect.stringContaining('I always get the shemp'),
-            );
-          });
         });
 
         describe('the script execution fails', () => {
@@ -636,13 +594,6 @@ describe('AppComponent', () => {
 
           it('shifted the focus to the url input', async () => {
             expect(await urlInput.isFocused()).toBe(true);
-          });
-
-          it('fired an analytics error event', () => {
-            expect(analytics.fireErrorEvent).toHaveBeenCalledTimes(1);
-            expect(analytics.fireErrorEvent).toHaveBeenCalledWith(
-              expect.stringContaining('I always get the shemp'),
-            );
           });
         });
       });

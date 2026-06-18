@@ -30,19 +30,33 @@ function resetDefaultFormValuesForTest() {
 }
 
 async function setInitialFormValues() {
-  const {
-    title_template,
-    workbody,
-    summary_template,
-    notes_template,
-    privacy_template,
-  } = await chrome.storage.sync.get([
+  const results = await chrome.storage.sync.get([
     'title_template',
     'workbody',
     'summary_template',
     'notes_template',
     'privacy_template',
   ]);
+
+  const title_template = results['title_template'] as {
+    default: string;
+  };
+  const workbody = results['workbody'] as {
+    default: string;
+  };
+  const summary_template = results['summary_template'] as {
+    default: string;
+  };
+  const notes_template = results['notes_template'] as {
+    default: string;
+    begin: boolean;
+    end: boolean;
+  };
+  const privacy_template = results['privacy_template'] as {
+    onlyShowToRegisteredUsers: boolean;
+    enableCommentModeration: boolean;
+    commentPermissionSetting: CommentPermissionSetting;
+  };
 
   defaultFormValuesFromStorage.titleTemplate = title_template?.default ?? '';
   defaultFormValuesFromStorage.workTemplate = workbody?.default ?? '';

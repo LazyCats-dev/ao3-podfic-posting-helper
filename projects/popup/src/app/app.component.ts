@@ -23,7 +23,7 @@ import {MatInput} from '@angular/material/input';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {ANALYTICS, ThemeSelectorComponent} from 'common';
+import {CommentPermissionSetting, ThemeSelectorComponent} from 'common';
 import {INITIAL_FORM_VALUES} from '../utils';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -67,7 +67,6 @@ const ALLOWED_URL_PATTERNS: Array<RegExp | string> = [
 export class AppComponent {
   private readonly initialFormValues = inject(INITIAL_FORM_VALUES);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly analytics = inject(ANALYTICS);
 
   protected readonly optionsPageUrl = chrome.runtime.getURL(
     'options/browser/index.html',
@@ -179,17 +178,6 @@ export class AppComponent {
         this.formGroup.controls.podficLength.disable();
       }
     });
-    effect(() => {
-      const onAo3NewWorkPage = this.onAo3NewWorkPage();
-      if (onAo3NewWorkPage === null) {
-        return;
-      }
-      if (onAo3NewWorkPage) {
-        this.analytics.firePageViewEvent('Form');
-        return;
-      }
-      this.analytics.firePageViewEvent('Not on new work URL page');
-    });
   }
 
   protected async fillNewWorkForm(tab: chrome.tabs.Tab): Promise<void> {
@@ -227,13 +215,7 @@ export class AppComponent {
       },
     });
 
-    const {
-      workbody,
-      title_template,
-      summary_template,
-      notes_template,
-      privacy_template,
-    } = await chrome.storage.sync.get([
+    const results = await chrome.storage.sync.get([
       'workbody',
       'title_template',
       'summary_template',
@@ -241,13 +223,22 @@ export class AppComponent {
       'privacy_template',
     ]);
 
-    this.analytics.fireEvent('popup_form_submit', {
-      podfic_label: String(podficLabel),
-      podfic_length_value: podficLength,
-      title_format: titleFormat,
-      summary_format: summaryFormat,
-      audio_formats: audioFormatTagOptionIds.join(','),
-    });
+    const workbody = results['workbody'] as Record<string, string>;
+    const title_template = results['title_template'] as Record<string, string>;
+    const summary_template = results['summary_template'] as Record<
+      string,
+      string
+    >;
+    const notes_template = results['notes_template'] as {
+      default: string;
+      begin: boolean;
+      end: boolean;
+    };
+    const privacy_template = results['privacy_template'] as {
+      onlyShowToRegisteredUsers: boolean;
+      enableCommentModeration: boolean;
+      commentPermissionSetting: CommentPermissionSetting;
+    };
 
     let result: {result: string; message?: string} | undefined;
     try {
@@ -287,7 +278,6 @@ export class AppComponent {
       this.formGroup.controls.url.setErrors({
         injectedScriptError: result?.message,
       });
-      this.analytics.fireErrorEvent(result?.message || '');
       this.snackBar.open('Failed to import metadata');
       this.urlInput().nativeElement.focus();
     } else {

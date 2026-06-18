@@ -120,22 +120,16 @@
             <a target="_blank" [href]="optionsPageUrl">options page</a>
           </p>
           <div class="form-item">
-            @if (loading()) {
-              <button
-                mat-flat-button
-                disabled
-                [attr.role]="loading() ? 'generic' : 'button'">
-                <mat-progress-spinner
-                  diameter="24"
-                  mode="indeterminate"
-                  aria-label="Importing please wait" />
-              </button>
-            } @else {
-              <button type="submit" mat-flat-button>
-                <mat-icon>import_export</mat-icon>
-                Import
-              </button>
-            }
+            <button type="submit" mat-flat-button [showProgress]="loading()">
+              <mat-icon>import_export</mat-icon>
+              Import
+              <mat-progress-spinner
+                progressIndicator
+                diameter="24"
+                mode="indeterminate"
+                aria-label="Importing please wait"
+                tabindex="" />
+            </button>
           </div>
         </div>
       </form>

@@ -1,4 +1,5 @@
 import {InjectionToken, provideAppInitializer} from '@angular/core';
+import {CommentPermissionSetting} from 'common';
 
 const defaultFormValuesFromStorage = {
   url: '',
@@ -27,6 +28,7 @@ async function setInitialFormValues() {
     return;
   }
 
+
   const {
     url,
     podfic_label,
@@ -35,7 +37,25 @@ async function setInitialFormValues() {
     title_format,
     summary_format,
     audioFormatTagOptionIds,
-  } = options;
+  } = options as {
+    url?: string;
+    podfic_label?: boolean;
+    podfic_length_label?: boolean;
+    podfic_length_value?: string;
+    title_format?: string;
+    summary_format?: string;
+    audioFormatTagOptionIds?: string[];
+    notes_template?: {
+      default: string;
+      begin: boolean;
+      end: boolean;
+    };
+    privacy_template?: {
+      onlyShowToRegisteredUsers: boolean;
+      enableCommentModeration: boolean;
+      commentPermissionSetting: CommentPermissionSetting;
+    };
+  };
 
   defaultFormValuesFromStorage.url = url ?? '';
   defaultFormValuesFromStorage.podficLabel = podfic_label ?? false;
