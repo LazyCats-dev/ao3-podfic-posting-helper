@@ -1,8 +1,7 @@
-import type {Mock, MockedObject} from 'vitest';
+import type {Mock} from 'vitest';
 import {TestBed} from '@angular/core/testing';
 import {
   CommentPermissionSetting,
-  provideGlobalEventLogging,
   provideMatFormFieldDefaultOptions,
   provideMatIconRegistry,
   provideMatSnackBarDefaultOptions,
@@ -12,7 +11,6 @@ import {
   ApplicationInitStatus,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import {ANALYTICS, Analytics} from './google-analytics';
 import {vi, beforeEach, describe, it, expect} from 'vitest';
 
 describe('provideStorageSetup', () => {
@@ -262,59 +260,6 @@ describe('provideStorageSetup', () => {
         setSpy,
         JSON.stringify(vi.mocked(setSpy).mock.calls),
       ).not.toHaveBeenCalled();
-    });
-  });
-});
-
-describe('provideGlobalEventLogging', () => {
-  let analytics: MockedObject<Analytics>;
-
-  beforeEach(async () => {
-    analytics = vi.mockObject(Analytics.prototype);
-    await TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: ANALYTICS,
-          useValue: analytics,
-        },
-        provideGlobalEventLogging(),
-        provideMatFormFieldDefaultOptions(),
-        provideMatIconRegistry(),
-        provideMatSnackBarDefaultOptions(),
-        provideZonelessChangeDetection(),
-      ],
-    }).compileComponents();
-    await TestBed.inject(ApplicationInitStatus).donePromise;
-  });
-
-  it('sets up a load listener', () => {
-    window.dispatchEvent(new Event('load'));
-
-    expect(analytics.firePageViewEvent).toHaveBeenCalledWith(
-      document.title,
-      document.location.href,
-    );
-  });
-
-  it('sets up a click listener', () => {
-    const button = document.createElement('button');
-    button.id = 'foo';
-    document.body.appendChild(button);
-    button.dispatchEvent(new Event('click', {bubbles: true}));
-
-    expect(analytics.fireEvent).toHaveBeenCalledWith('click_button', {
-      id: 'foo',
-    });
-  });
-
-  it('sets up a change listener', () => {
-    const input = document.createElement('input');
-    input.id = 'bar';
-    document.body.appendChild(input);
-    input.dispatchEvent(new Event('change', {bubbles: true}));
-
-    expect(analytics.fireEvent).toHaveBeenCalledWith('input_changed', {
-      id: 'bar',
     });
   });
 });

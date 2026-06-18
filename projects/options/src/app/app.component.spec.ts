@@ -106,7 +106,7 @@ describe('AppComponent', () => {
       await fixture.whenStable();
 
       // Wait for previews.
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 0));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
     });
 
     it('passes a11y tests', async () => {
@@ -369,7 +369,7 @@ describe('AppComponent', () => {
         await input.blur();
 
         // Wait for previews.
-        await new Promise<void>(resolve => setTimeout(() => resolve(), 10));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), 100));
 
         expect(await formField.getTextErrors()).toContain(
           'This template should not contain HTML but it appears to contain HTML',

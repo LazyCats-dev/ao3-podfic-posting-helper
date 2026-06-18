@@ -89,13 +89,8 @@ export class ThemeSelectorComponent implements OnInit {
   }
 
   async ngOnInit() {
-    let themePreference = 'none';
-    try {
-      const results = await chrome.storage.sync.get('themePreference');
-      themePreference = results['themePreference'];
-    } catch (e) {
-      this.errorHandler.handleError(e);
-    }
+    const results = await chrome.storage.sync.get('themePreference');
+    const themePreference = results['themePreference'];
     if (!isThemePreference(themePreference)) {
       return;
     }

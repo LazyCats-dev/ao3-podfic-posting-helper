@@ -1,5 +1,4 @@
 import {inject, provideAppInitializer} from '@angular/core';
-import {ANALYTICS, Analytics} from './google-analytics';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldDefaultOptions,
@@ -40,36 +39,6 @@ const DEFAULT_OPTIONS = {
   summary_format: 'default',
 };
 
-export function setupGlobalEventLoggingFactory(analytics: Analytics) {
-  return () => {
-    // Fire a page view event on load
-    window.addEventListener('load', () => {
-      analytics.firePageViewEvent(document.title, document.location.href);
-    });
-
-    // Listen globally for all button events
-    document.addEventListener('click', event => {
-      if (event.target && 'id' in event.target) {
-        analytics.fireEvent('click_button', {id: event.target.id});
-      }
-    });
-
-    // Listen globally for all input events
-    document.addEventListener('change', event => {
-      if (event.target && 'id' in event.target) {
-        analytics.fireEvent('input_changed', {id: event.target.id});
-      }
-    });
-  };
-}
-
-export function provideGlobalEventLogging() {
-  return provideAppInitializer(() => {
-    const initializerFn = setupGlobalEventLoggingFactory(inject(ANALYTICS));
-    return initializerFn();
-  });
-}
-
 export async function setupStorage() {
   const {
     options,
@@ -87,7 +56,10 @@ export async function setupStorage() {
     'privacy_template',
   ]);
 
-  const optionsToSave = {...DEFAULT_OPTIONS, ...options};
+  const optionsToSave = {
+    ...DEFAULT_OPTIONS,
+    ...(typeof options === 'object' ? options : DEFAULT_OPTIONS),
+  };
 
   // Preserve behavior for existing extension users.
   if ('transform_title' in optionsToSave) {
