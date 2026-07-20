@@ -70,9 +70,9 @@
     "vitest": "^4.1.9"
   },
   "allowScripts": {
-    "@parcel/watcher@2.5.6": true,
     "msgpackr-extract@3.0.4": true,
     "lmdb@3.5.4": true,
-    "esbuild@0.28.1": true
+    "esbuild@0.28.1": true,
+    "@parcel/watcher@2.6.0": true
   }
 }
