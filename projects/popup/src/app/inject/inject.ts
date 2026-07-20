@@ -255,7 +255,8 @@ window.injectImportAndFillMetadata = ({
       return unsafeParseGenMetadata(doc);
     } catch (e) {
       if (looksLikeShieldsAreUp(doc)) {
-        throw new Error(
+        // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+        throw new window.Error(
           'It looks like AO3 is in "Shields Up" mode and requires users to ' +
             'prove they are not a robot. Surprisingly, despite how sexy it is, ' +
             'this extension is a robot 🤖 and cannot do so. ' +
@@ -381,7 +382,8 @@ window.injectImportAndFillMetadata = ({
           // If the user doesn't have access they will be redirected to their
           // profile.
           if (response.url.includes('users/')) {
-            throw new Error(ACCESS_ERROR_MESSAGE);
+            // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+            throw new window.Error(ACCESS_ERROR_MESSAGE);
           }
           // We reach this case if we were redirected to a specific chapter and then
           // hit the adult warning page.
@@ -407,7 +409,8 @@ window.injectImportAndFillMetadata = ({
           }
         }
         if (looksLikeUnrevealedWork(doc)) {
-          throw new Error(ACCESS_ERROR_MESSAGE);
+          // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+          throw new window.Error(ACCESS_ERROR_MESSAGE);
         }
         return {
           result: 'success',
@@ -449,33 +452,45 @@ window.injectImportAndFillMetadata = ({
       .fetch(url, {credentials})
       .catch(e => {
         if (e instanceof TypeError) {
-          throw new Error(
+          // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+          throw new window.Error(
             'Failed to fetch the work, likely this is because of a network issue. ' +
               'Please check your network connection and try again. If this ' +
               'continues to happen, please reach out on our support Discord server.',
-            {cause: e},
           );
         }
-        throw new Error(
+        throw new window.Error(
           'Failed to fetch the work for an unknown reason, most likely AO3 ' +
             'is blocking your request. Please try again later. If this continues ' +
             'to happen, please reach out on our support Discord server.',
-          {
-            cause: e,
-          },
         );
       })
       .then(result => {
         if (!result.ok) {
           if (result.status === 404) {
-            throw new Error('Work not found. Please check the URL.');
+            // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+            throw new window.Error('Work not found. Please check the URL.');
           }
           if (result.status === 429) {
-            throw new Error(
+            // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+            throw new window.Error(
               'AO3 is rate limiting you, please try again later.',
             );
           }
-          throw new Error(
+          if (result.status === 403) {
+            if (result.body) {
+              // Parsing of the document from this will come later and will produce a nicer
+              // error message.
+              return result;
+            }
+            // AO3 provided no information so we just fallback to a generic error message.
+            // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+            throw new window.Error(
+              'AO3 is blocking your request, please try again later.',
+            );
+          }
+          // Firefox requires window.error https://bugzilla.mozilla.org/show_bug.cgi?id=1871516#:~:text=replacing%20that%20with%20new%20window%2EError
+          throw new window.Error(
             'AO3 returned an unexpected response. ' +
               `Error: ${result.status} ${result.statusText}`,
           );
@@ -518,7 +533,7 @@ window.injectImportAndFillMetadata = ({
         if (e instanceof Error) {
           return {
             result: 'error',
-            message: `${e.message}\n${e.stack}\n${e.cause}`,
+            message: `${e.message}`,
           };
         }
         return {
@@ -783,7 +798,7 @@ window.injectImportAndFillMetadata = ({
   return importAndFillMetadata().catch(e => {
     let debugMessage;
     if (e instanceof Error) {
-      debugMessage = `${e.message}: ${e.stack}`;
+      debugMessage = `${e.message}`;
     } else {
       // Not much we can do here besides just try to coerce this to a string.
       debugMessage = `${e}`;

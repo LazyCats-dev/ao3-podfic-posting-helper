@@ -1,9 +1,187 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shields are up! | Archive of Our Own</title>
+    <style>
+      .logo {
+        width: 100px;
+      }
+      a {
+        color: #dc8100;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #333333;
+      }
+      body {
+        font:
+          1.25em Helvetica,
+          sans-serif;
+      }
+      body,
+      h1,
+      h2 {
+        margin: 0;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 1.714em;
+      }
+      header {
+        background: #990000;
+        color: white;
+        font-family: Georgia, serif;
+        padding: 0.5rem;
+      }
+      main {
+        margin: auto;
+        margin-top: 15px;
+        max-width: 600px;
+        padding: 15px;
+      }
+      footer {
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+        border-style: solid;
+        border-width: 0px;
+        border-top-width: 1px;
+        --border-opacity: 1;
+        border-color: rgba(235, 235, 235, var(--border-opacity));
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        text-align: center;
+      }
+      .hidden {
+        display: none;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #222;
+          color: #d9d9d9;
+        }
+        body p,
+        h2,
+        small {
+          opacity: 87%;
+        }
+        header {
+          background-color: #1e1c1c;
+          color: #5998d6;
+        }
+      }
+    </style>
+    <meta http-equiv="refresh" content="360" />
+  </head>
   <body>
-    <p>Shields are up!</p>
-    <p>
-      We apologize for the interruption, please prove that you are not a robot:
-    </p>
-    <p>Waiting for archiveofourown.org to respond...</p>
+    <header>
+      <h1>Archive of Our Own</h1>
+    </header>
+    <main>
+      <h2>
+        <img
+          class="logo"
+          alt="Archive Of Our Own logo"
+          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTM3MC4xNiAxMC44MTFjLTU0LjAxOSAwLTk3LjgxNiA0Mi42NDgtOTcuODE2IDk1LjI2NiAwIDUyLjYwOCA0My43OTcgOTUuMjQ0IDk3LjgxNiA5NS4yNDRzOTcuODE2LTQyLjYzNiA5Ny44MTYtOTUuMjQ0YzAtNTIuNjE4LTQzLjc5Ny05NS4yNjYtOTcuODE2LTk1LjI2NnptLTM1NS4yOCA0LjU4MmMtMi45MzU2IDAuMTIwMS00LjAyNDIgMC45Mjg1Ny00LjgxMDUgMS43MTg4IDAgMC0xLjI2MDggNS4wNDEyIDcuOTg0NCA2LjcxNDggOS4yMzUxIDEuNjgzNyA2Mi4xNjUgMTcuMjMxIDEzNC44NSA3NC4zNTUgNzIuNjcxIDU3LjEzNSAxMTIuMTYgMTA3Ljk2IDE0MC4zIDEzNy43OSAwIDAtODUuNjk3IDMwLjI0Ni0xODYuMDkgOTYuNjE1IDAgMCAzNS4yODYtNDIuNDI2IDQ5LjE0OC0xNDcuODcgMi4wMjY1LTE1LjQxNSA1Ljc2NzktMzQuNjUxIDcuNTYyNS01Mi45MyAwIDAgMi4wOTY5LTE0LjY5OS0zLjM1NzQtMTQuNjk5LTUuNDY0NCAwLTE0LjI4NyA3My41MTctMjkuNDEgMTE5LjMtOC4yMzcgMjQuOTMzLTE4LjQ4IDU1Ljg3NS00Ny44ODkgOTYuMjAzLTE4LjE4OCAyNC45NTMtMzYuMzY2IDQzLjY2NS0zMi4zNDQgNTIuMDk0IDguODIxNyAxOC40OCAyNy4zMDMgMC40MTQwNyAyNy4zMDMgMC40MTQwN3MxMTcuNjMtNzcuNzEyIDI0MS4xMy0xMTUuOTRjMCAwIDMwLjA3NCAzMi44OTcgMzUuNDI4IDM5LjIyOSAxNi4xMjEgMTkuMDU1IDI3LjY4NiA0MC4xMTcgNDEuNDM4IDM5Ljc1NCAxMS4xNzEtMC4zMDI0NiAxNS4xMjQtNi4zMDEyIDIxLjAxMi0zOC42NTQgNS44Nzc4LTMyLjM0MyAxOC45MDItNjQuMjczIDE4LjkwMi02NC4yNzNzNzQuMDMzLTMuNTU4OSA3Ny43MTMgMjAuMTY0YzIuNDYgMTUuODQ5LTguNTQ5IDI0LjAxNi0xNy4zMiAyNi45My00LjI3NDggMS40MzE2LTE3LjQzMiA1LjI2MTUtMjIuODk2IDYuODI0Mi0xMC4yMjMgMi45MTM3LTEyLjgzNCAxOC40NCA0LjA5MzggMjUuOSAyNy42MjUgMTIuMTY5IDU1Ljk0NSAxOC4yMjkgNTMuMzQ0IDM5LjQ5Mi0yLjUyMDUgMjAuNTc3LTM2LjU4OCAzMC44NTItNjAuNDkyIDI1LjYxOS00NC4xMDktOS42NTg2LTQ2LjIyNi0zMC4yMDYtNTMuNzY4LTI3LjMwMy01LjQ2NDQgMi4wOTcgMTAuMDgyIDE4LjkwMyAxOC40OCAyNC4zNjcgOC40MDg0IDUuNDU0NCA3MC4xNjEgMzYuNTQ5IDEwMi41LTIuMTA1NSAzNi41NTctNDMuNjc1LTMzLjYwNC03MC45ODgtMzMuNjA0LTcwLjk4OHM0My4yNjItMTkuMzI4IDM1LjI4Ny01NS44NzVjLTcuOTg1LTM2LjU0Ny01NS4wMzktNDIuMDExLTg5LjkwMi00NC45NDUgMCAwIDE1LjEyMy0zOC4yMyA0OS45ODYtNzguMTM1IDE4LjEyNy0yMC43NDkgNDYuNzUtNDQuMyA2My44NTktNTcuMTM1IDE2Ljc5Ny0xMi42MDIgMjkuNzQzLTE0Ljg1MSAyNi4wNDMtMjIuMjYyLTQuMjA0Mi04LjM5ODMtNzIuMjU4IDQwLjc1Mi04NS4yNzMgNTIuNTA4LTEzLjAyNiAxMS43NjYtNTAuODM0IDQ4LjcyNi04Mi4zNCAxMDUuMDIgMCAwLTUwLjgyNCAyLjUyMDgtODkuNDc5IDExLjc1NiAwIDAtNTUuMDI4LTU5LjY0NC0xMTkuMy0xMDkuNjQtNjQuMjczLTQ5Ljk4Ny0xMjQuMzQtODAuMjM0LTE2MC44OS05MS41NzYtMjIuMjg3LTYuOTE4OC0zMi4zMDktOC42MzM4LTM3LjIwMS04LjQzMzZ6bTM1NS4yOCAyMC42NTRjMzkuNzEzIDAgNzEuOTA0IDMxLjM0NSA3MS45MDQgNzAuMDI5IDAgMzguNjY0LTMyLjE5MSA3MC4wMi03MS45MDQgNzAuMDJzLTcxLjkwNC0zMS4zNTUtNzEuOTA0LTcwLjAyYzAtMzguNjg1IDMyLjE5MS03MC4wMjkgNzEuOTA0LTcwLjAyOXptMzQuMTU4IDIxMi43NXMtMTAuNjg4IDIxLjE0MS0xNS43MDkgNDIuMDMxYy04Ljg0MTktMTEuMTkxLTI5LjYyMS0zMy44MjQtMjkuNjIxLTMzLjgyNHMxNS43Ny00LjA1MzIgNDUuMzMtOC4yMDd6IiBmaWxsPSIjOTAwIi8+Cjwvc3ZnPgo=" />
+        Shields are up!
+      </h2>
+      <p>
+        We apologize for the interruption, please prove that you are not a
+        robot:
+      </p>
+      <p></p>
+      <div class="main-wrapper" role="main">
+        <div class="main-content">
+          <noscript
+            ><div class="h2">
+              <span id="challenge-error-text"
+                >Enable JavaScript and cookies to continue</span
+              >
+            </div></noscript
+          >
+        </div>
+      </div>
+      <script>
+        (function () {
+          window._cf_chl_opt = {
+            cFPWv: 'b',
+            cH: 'dElH17Xt0bI5aXebjHn6avJu0Nyk5Jf1zTRB3c4Wjgk-1784588052-1.2.1.1-T3OKTw4BX3KZSBR10EV8oBXTK5xFJ0MxJwNQZlDItWjO.sXDFrQXjRNzgBAvdnoi',
+            cITimeS: '1784588052',
+            cRay: 'a1e58be09855efe0',
+            cTplB: '0',
+            cTplC: 1,
+            cTplO: 0,
+            cTplV: 5,
+            cType: 'managed',
+            cUPMDTk:
+              '/works/15749226?__cf_chl_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40',
+            cvId: '3',
+            cZone: 'archiveofourown.org',
+            fa: '/works/15749226?__cf_chl_f_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40',
+            md: '_2iY5WxyW2IWECZUJi2fbK89FyPKYR7p.fhP36h9iIc-1784588052-1.2.1.1-WAyldnEfGXPc3e9zkSbpXTd3_H98kmvZ9y2zs5GlooScGrdCb7iZe_Bdp1HgkFXY3jqqTe2RJahGYz1o7pSEfB1f9kWu0BdTycksEXEuUP3CdZTe9pGQlWkHSHqu8k8snpc9fwyMoD7.GlUT3ufgyJhCqJdKiHOd1_Z4CWj9hM2aEz4hB3hvqI_QJ.8hW5qWok7GWhw2DqJqZyKjKEZ15XS5GpdRYOZxZF8oyMPPnTr_S9ivoFbFT27xA8hzA6M4N.vXAno5sfPEzmrCKGne3q_9wmYXyV3CkOfXxouZUoIX1AKZ7q6VKzZ6LvZX2gJk2neE6MVynJBEnXoc9iu5oup2GaR4cPcx_ZlXCxoStawIMSxrjcanwv1LqWgx85AGZE1fpgM6tIK5IZIqoCtePFMVCibZa6FhBjI5n4kMWW_hgjjV5RjtpoL4n6Mx6ffbg_mLSQY4cNZHW2ucxjK4ueZdUELMeG0.AEGkDG0u3WE6q2J80CdZPJLSZZNKNFjoDom0okyyAofjfZryE3gky4JxIqsurUpJ.Fv6CjXD.Icsh4zk2L2axEu56U4V8dKA6Twj.Al66QzFUARoIPLlJhkchJjI28HuB5dP.0UvW0XnaL3R5hIZP8qY06vLHfgIaNejTWQkk5XM3RaYZ2Mt4zqSCMtQp6CPXGCIIBy5hWpY7wc5MeJZ_fRJMtpn85kLlLLmTAcOXwdra70wlgDEQv1MNEv8FCniunVDUW4InKEO_0z.X1TbZaeBdlYYFcRsUUFqK2svWHBx5aHivJ_bR5d8ib7dcukaAjc4l7fa56KXm2Jhf1R0crHsw0JJIqhi.ELM9Sv16Kk2CFQcWA0FU5CLNjuwYwEy5bvANu7q6fKTiXcMH_YnVaDZbjkzI.CYzCFS8iTF9wb8EJsCX1.0VG6ibdsY7W8ue0g3IWzvygqemfS9SU.2nLChGk1nTXZYMUcyTfuhaHVM0Mlc79p06L2KLvOPlluMqXqDSyA6k9AU0T8r.JmqNRYSDHn0CTm6iEjUzgCCf7kNB_sJL18N0_qexn9mzxb_RUgQ6HNw8vJegOrQ06s9ONQIRqYw34Km_4dB_fmg4w_OIuTjAGA7nszEQsmarWfpwyJ46ymMDSuoNiPTBtIUe7i_XJYFj5L15ww_cT5GJfp94OaPERoeew',
+            mdrd: 'GzfZQHEennnphUuxXZAUF1rCKQh3mcGbFRY.8gUX8a8-1784588052-1.2.1.1-snOnugOsoRuZxJU1EImeEyD7muMiYPEqL8eIjkCMiN7WxsLE.FuIzzL2NnEwH.PojFbhyZHhgYrGcJ36VYLhif7mVbu8MeNc6jMjS4Ttrtjc4NNs5rLbkIym_sZiU82rpApNaCkXfeYMsT67df7v811Ye7Qqb8Gy7sUnLu8iLNiDiy1eZL1COZsfTT747g_MzWsbUhamFEJgbIEFxL4AzIBdgNUpqQIwzxM30192lCucCG0bV7kfNkcTMWjk9h7zuLHMxM0c.uLzaXiPsREUgUeI4LlEhdh9DInn1i2siXvOWoM38aW.gDJnP_kIrwH6nk7JSBERJWChyiPYhA_tVeX37oE7ADn0thGqq7.5gHcywfYGQjcfjPUsiK2uBhqQ4RtsAvtk2qZk3MtJwtmzVwSPBgihBDQ8bB7UyH9znyr55dCVJcG4dQhVGzDEEYiA9SDxaPaGmPMkni9nS0BtAr_bKFYaaHlVlGsjQa2CB7w',
+          };
+          var a = document.createElement('script');
+          a.src =
+            '/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a1e58be09855efe0';
+          window._cf_chl_opt.cOgUHash =
+            location.hash === '' && location.href.indexOf('#') !== -1
+              ? '#'
+              : location.hash;
+          window._cf_chl_opt.cOgUQuery =
+            location.search === '' &&
+            location.href
+              .slice(
+                0,
+                location.href.length - window._cf_chl_opt.cOgUHash.length,
+              )
+              .indexOf('?') !== -1
+              ? '?'
+              : location.search;
+          if (window.history && window.history.replaceState) {
+            var ogU =
+              location.pathname +
+              window._cf_chl_opt.cOgUQuery +
+              window._cf_chl_opt.cOgUHash;
+            history.replaceState(
+              null,
+              null,
+              '/works/15749226?__cf_chl_rt_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40' +
+                window._cf_chl_opt.cOgUHash,
+            );
+            a.onload = function () {
+              history.replaceState(null, null, ogU);
+            };
+          }
+          document.getElementsByTagName('head')[0].appendChild(a);
+        })();
+      </script>
+    </main>
+    <footer>
+      <small>
+        <b>Ray ID:</b> a1e58be09855efe0 // <b>Your IP:</b>
+        <a id="client-ip-reveal" type="button">Show IP</a>
+        <span id="client-ip" class="hidden">74.118.126.99</span>
+      </small>
+    </footer>
+    <script>
+      (function () {
+        function d() {
+          var b = a.getElementById('client-ip'),
+            c = a.getElementById('client-ip-reveal');
+          b &&
+            'classList' in b &&
+            c.addEventListener('click', function () {
+              c.classList.add('hidden');
+              a.getElementById('client-ip').classList.remove('hidden');
+            });
+        }
+        var a = document;
+        document.addEventListener && a.addEventListener('DOMContentLoaded', d);
+      })();
+    </script>
   </body>
 </html>
