@@ -105,7 +105,7 @@ describe('injectImportAndFillMetadata', () => {
         );
       }
       if (url.includes('shields_up_page.html')) {
-        return Promise.resolve(new Response(SHIELDS_UP_PAGE));
+        return Promise.resolve(new Response(SHIELDS_UP_PAGE, {status: 403}));
       }
       return Promise.resolve(
         new Response(undefined, {status: 404, statusText: 'Not Found'}),
@@ -271,6 +271,23 @@ describe('injectImportAndFillMetadata', () => {
     });
   });
 
+  it('returns a descriptive error when AO3 blocks the request', async () => {
+    fetchSpy.mockResolvedValueOnce(
+      new Response(undefined, {status: 403, statusText: 'I am a teapot'}),
+    );
+    const response = await window.injectImportAndFillMetadata(
+      minimalArgs(MIN_URL),
+    );
+    expect(response).toEqual({
+      result: 'error',
+      message: expect.stringContaining('AO3 is blocking your request'),
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
+      credentials: 'omit',
+    });
+  });
+
   it('returns an error if fetch throws', async () => {
     fetchSpy.mockRejectedValueOnce(new Error('I always get the shemp'));
 
@@ -282,7 +299,7 @@ describe('injectImportAndFillMetadata', () => {
     expect(response.message).toContain(
       'Failed to fetch the work for an unknown reason',
     );
-    expect(response.message).toContain('I always get the shemp');
+    expect(response.message).not.toContain('I always get the shemp');
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',
@@ -298,7 +315,7 @@ describe('injectImportAndFillMetadata', () => {
 
     expect(response.result).toEqual('error');
     expect(response.message).toContain('because of a network issue');
-    expect(response.message).toContain('I always get the shemp');
+    expect(response.message).not.toContain('I always get the shemp');
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(MIN_URL_FETCHED, {
       credentials: 'omit',

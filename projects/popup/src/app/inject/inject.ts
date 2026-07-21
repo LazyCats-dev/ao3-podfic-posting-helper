@@ -523,7 +523,7 @@ window.injectImportAndFillMetadata = ({
     const documentTextContent = doc.documentElement.textContent;
     return (
       documentTextContent.includes('Shields are up!') &&
-      documentTextContent.includes('please prove that you are not a robot:')
+      documentTextContent.includes('please prove that you are not a')
     );
   }
 

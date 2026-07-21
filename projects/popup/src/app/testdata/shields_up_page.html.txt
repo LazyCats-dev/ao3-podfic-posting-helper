@@ -104,61 +104,6 @@
           >
         </div>
       </div>
-      <script>
-        (function () {
-          window._cf_chl_opt = {
-            cFPWv: 'b',
-            cH: 'dElH17Xt0bI5aXebjHn6avJu0Nyk5Jf1zTRB3c4Wjgk-1784588052-1.2.1.1-T3OKTw4BX3KZSBR10EV8oBXTK5xFJ0MxJwNQZlDItWjO.sXDFrQXjRNzgBAvdnoi',
-            cITimeS: '1784588052',
-            cRay: 'a1e58be09855efe0',
-            cTplB: '0',
-            cTplC: 1,
-            cTplO: 0,
-            cTplV: 5,
-            cType: 'managed',
-            cUPMDTk:
-              '/works/15749226?__cf_chl_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40',
-            cvId: '3',
-            cZone: 'archiveofourown.org',
-            fa: '/works/15749226?__cf_chl_f_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40',
-            md: '_2iY5WxyW2IWECZUJi2fbK89FyPKYR7p.fhP36h9iIc-1784588052-1.2.1.1-WAyldnEfGXPc3e9zkSbpXTd3_H98kmvZ9y2zs5GlooScGrdCb7iZe_Bdp1HgkFXY3jqqTe2RJahGYz1o7pSEfB1f9kWu0BdTycksEXEuUP3CdZTe9pGQlWkHSHqu8k8snpc9fwyMoD7.GlUT3ufgyJhCqJdKiHOd1_Z4CWj9hM2aEz4hB3hvqI_QJ.8hW5qWok7GWhw2DqJqZyKjKEZ15XS5GpdRYOZxZF8oyMPPnTr_S9ivoFbFT27xA8hzA6M4N.vXAno5sfPEzmrCKGne3q_9wmYXyV3CkOfXxouZUoIX1AKZ7q6VKzZ6LvZX2gJk2neE6MVynJBEnXoc9iu5oup2GaR4cPcx_ZlXCxoStawIMSxrjcanwv1LqWgx85AGZE1fpgM6tIK5IZIqoCtePFMVCibZa6FhBjI5n4kMWW_hgjjV5RjtpoL4n6Mx6ffbg_mLSQY4cNZHW2ucxjK4ueZdUELMeG0.AEGkDG0u3WE6q2J80CdZPJLSZZNKNFjoDom0okyyAofjfZryE3gky4JxIqsurUpJ.Fv6CjXD.Icsh4zk2L2axEu56U4V8dKA6Twj.Al66QzFUARoIPLlJhkchJjI28HuB5dP.0UvW0XnaL3R5hIZP8qY06vLHfgIaNejTWQkk5XM3RaYZ2Mt4zqSCMtQp6CPXGCIIBy5hWpY7wc5MeJZ_fRJMtpn85kLlLLmTAcOXwdra70wlgDEQv1MNEv8FCniunVDUW4InKEO_0z.X1TbZaeBdlYYFcRsUUFqK2svWHBx5aHivJ_bR5d8ib7dcukaAjc4l7fa56KXm2Jhf1R0crHsw0JJIqhi.ELM9Sv16Kk2CFQcWA0FU5CLNjuwYwEy5bvANu7q6fKTiXcMH_YnVaDZbjkzI.CYzCFS8iTF9wb8EJsCX1.0VG6ibdsY7W8ue0g3IWzvygqemfS9SU.2nLChGk1nTXZYMUcyTfuhaHVM0Mlc79p06L2KLvOPlluMqXqDSyA6k9AU0T8r.JmqNRYSDHn0CTm6iEjUzgCCf7kNB_sJL18N0_qexn9mzxb_RUgQ6HNw8vJegOrQ06s9ONQIRqYw34Km_4dB_fmg4w_OIuTjAGA7nszEQsmarWfpwyJ46ymMDSuoNiPTBtIUe7i_XJYFj5L15ww_cT5GJfp94OaPERoeew',
-            mdrd: 'GzfZQHEennnphUuxXZAUF1rCKQh3mcGbFRY.8gUX8a8-1784588052-1.2.1.1-snOnugOsoRuZxJU1EImeEyD7muMiYPEqL8eIjkCMiN7WxsLE.FuIzzL2NnEwH.PojFbhyZHhgYrGcJ36VYLhif7mVbu8MeNc6jMjS4Ttrtjc4NNs5rLbkIym_sZiU82rpApNaCkXfeYMsT67df7v811Ye7Qqb8Gy7sUnLu8iLNiDiy1eZL1COZsfTT747g_MzWsbUhamFEJgbIEFxL4AzIBdgNUpqQIwzxM30192lCucCG0bV7kfNkcTMWjk9h7zuLHMxM0c.uLzaXiPsREUgUeI4LlEhdh9DInn1i2siXvOWoM38aW.gDJnP_kIrwH6nk7JSBERJWChyiPYhA_tVeX37oE7ADn0thGqq7.5gHcywfYGQjcfjPUsiK2uBhqQ4RtsAvtk2qZk3MtJwtmzVwSPBgihBDQ8bB7UyH9znyr55dCVJcG4dQhVGzDEEYiA9SDxaPaGmPMkni9nS0BtAr_bKFYaaHlVlGsjQa2CB7w',
-          };
-          var a = document.createElement('script');
-          a.src =
-            '/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a1e58be09855efe0';
-          window._cf_chl_opt.cOgUHash =
-            location.hash === '' && location.href.indexOf('#') !== -1
-              ? '#'
-              : location.hash;
-          window._cf_chl_opt.cOgUQuery =
-            location.search === '' &&
-            location.href
-              .slice(
-                0,
-                location.href.length - window._cf_chl_opt.cOgUHash.length,
-              )
-              .indexOf('?') !== -1
-              ? '?'
-              : location.search;
-          if (window.history && window.history.replaceState) {
-            var ogU =
-              location.pathname +
-              window._cf_chl_opt.cOgUQuery +
-              window._cf_chl_opt.cOgUHash;
-            history.replaceState(
-              null,
-              null,
-              '/works/15749226?__cf_chl_rt_tk=qf0dEdHIpr_v4XnJbisWl2duHeVb0_nmgjzo1m8QFbY-1784588052-1.0.1.1-tOPk.wr5irqGjWnd.iVSvoJEcMKuydXYJobU5z9Qa40' +
-                window._cf_chl_opt.cOgUHash,
-            );
-            a.onload = function () {
-              history.replaceState(null, null, ogU);
-            };
-          }
-          document.getElementsByTagName('head')[0].appendChild(a);
-        })();
-      </script>
     </main>
     <footer>
       <small>
@@ -167,21 +112,5 @@
         <span id="client-ip" class="hidden">74.118.126.99</span>
       </small>
     </footer>
-    <script>
-      (function () {
-        function d() {
-          var b = a.getElementById('client-ip'),
-            c = a.getElementById('client-ip-reveal');
-          b &&
-            'classList' in b &&
-            c.addEventListener('click', function () {
-              c.classList.add('hidden');
-              a.getElementById('client-ip').classList.remove('hidden');
-            });
-        }
-        var a = document;
-        document.addEventListener && a.addEventListener('DOMContentLoaded', d);
-      })();
-    </script>
   </body>
 </html>
