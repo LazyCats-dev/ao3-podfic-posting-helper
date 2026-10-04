@@ -1,0 +1,217 @@
+{
+  "skill_name": "frontend-a11y",
+  "evals": [
+    {
+      "id": 1,
+      "use_case": "contact-page",
+      "prompt": "Build a complete, self-contained contact page in a single HTML file. It must include: a skip-to-main-content link, a site navigation with a dropdown submenu, a contact form with properly labeled fields (name, email, subject, message), an inline error notification using role='alert', and a collapsible FAQ section using details/summary. Style it with inline CSS.",
+      "expected_output": "A single HTML file with skip link, semantic nav with dropdown using aria-expanded, form with associated labels, role='alert' for errors, and details/summary for FAQ.",
+      "files": [],
+      "a11y_patterns": [
+        "skip-link",
+        "nav-with-dropdown",
+        "form-labels",
+        "role-alert",
+        "details-summary"
+      ],
+      "expectations": [
+        "First focusable element is a skip link targeting #main-content",
+        "Navigation uses <nav> element",
+        "Dropdown toggle uses <button> with aria-expanded",
+        "Dropdown does not use role='menu' or role='menuitem'",
+        "Every form input has an associated <label> using for/id",
+        "Error notification uses role='alert'",
+        "FAQ uses <details> and <summary> elements",
+        "No JavaScript used for the accordion/FAQ behavior",
+        "No <div role='button'> anywhere",
+        "No redundant landmark roles (e.g. <nav role='navigation'>)",
+        "<html> has a lang attribute",
+        "<title> is present and descriptive",
+        "Form submit button uses <button type='submit'>",
+        "No title attribute on interactive elements",
+        "Text-transform CSS used for any uppercase visual text, not literal uppercase HTML"
+      ]
+    },
+    {
+      "id": 2,
+      "use_case": "article-page",
+      "prompt": "Build a complete, self-contained article/blog post page in a single HTML file. It must include: a correct heading hierarchy (h1 for article title, h2 for sections, h3 for subsections), semantic elements including <article>, <figure> with <figcaption>, <blockquote> with <cite>, and <aside> for related content, a site <header> and <footer>, no redundant ARIA landmark roles on semantic elements, and any visually uppercase text achieved via CSS text-transform. Style it with inline CSS.",
+      "expected_output": "A single HTML file using semantic elements correctly, proper heading hierarchy, CSS text-transform for visual uppercase, no redundant ARIA roles.",
+      "files": [],
+      "a11y_patterns": [
+        "heading-hierarchy",
+        "semantic-article-elements",
+        "no-redundant-roles",
+        "text-transform-css",
+        "figure-figcaption"
+      ],
+      "expectations": [
+        "Single <h1> identifies the article title",
+        "Section headings use <h2>, subsections use <h3>",
+        "No skipped heading levels (e.g. h1 → h3)",
+        "Uses <article> element to wrap post content",
+        "Uses <figure> and <figcaption> for images with captions",
+        "Uses <blockquote> with <cite> for quotations",
+        "Uses <aside> for related or tangential content",
+        "No <nav role='navigation'>, <header role='banner'>, <main role='main'>, or <footer role='contentinfo'>",
+        "Any uppercase display text uses text-transform: uppercase in CSS",
+        "No literal all-caps text in HTML content",
+        "<html> has a lang attribute",
+        "<title> matches or reflects the article title",
+        "Images have meaningful alt text or empty alt if decorative",
+        "No title attribute misused as a tooltip",
+        "Link text is descriptive, not 'click here' or 'read more'"
+      ]
+    },
+    {
+      "id": 3,
+      "use_case": "dashboard-page",
+      "prompt": "Build a complete, self-contained analytics dashboard page in a single HTML file. It must include: a skip-to-main-content link, a data table with <caption> and scope attributes on headers, a tab panel using the APG Manual Tabs pattern (role='tablist', role='tab', role='tabpanel', aria-selected, aria-controls), a modal dialog using native <dialog> with showModal(), a live notification region using role='alert', and a site navigation. Style it with inline CSS.",
+      "expected_output": "A dashboard with skip link, accessible data table, APG manual tabs, native dialog, and role='alert' notification.",
+      "files": [],
+      "a11y_patterns": [
+        "skip-link",
+        "data-table-scope",
+        "apg-manual-tabs",
+        "native-dialog",
+        "role-alert"
+      ],
+      "expectations": [
+        "First focusable element is a skip link targeting #main-content",
+        "Data table has a <caption> element",
+        "Table header cells use scope='col' or scope='row'",
+        "Tab list uses role='tablist' on container",
+        "Each tab uses role='tab' with aria-selected and aria-controls",
+        "Each panel uses role='tabpanel' with matching id",
+        "Keyboard navigation within tabs uses arrow keys (implemented in JS)",
+        "Modal uses native <dialog> element",
+        "Modal is opened with showModal()",
+        "No <div role='dialog'> or <div role='button'>",
+        "Notification area uses role='alert'",
+        "No redundant landmark roles",
+        "<html> has a lang attribute",
+        "<title> is present and descriptive",
+        "No aria-haspopup on navigation items"
+      ]
+    },
+    {
+      "id": 4,
+      "use_case": "product-page",
+      "prompt": "Build a complete, self-contained e-commerce product page in a single HTML file. It must include: a site navigation with aria-label to distinguish multiple nav elements, a product options form using <fieldset> and <legend> for grouped radio button choices (e.g. size, color), a quantity input using <input type='number'> with an associated <label>, a collapsible product details section using <details>/<summary>, and a product image with <figure> and <figcaption>. Style it with inline CSS.",
+      "expected_output": "Product page with labeled nav, fieldset/legend for options, labeled number input, details/summary, and figure/figcaption.",
+      "files": [],
+      "a11y_patterns": [
+        "nav-aria-label",
+        "fieldset-legend-radio",
+        "input-number-label",
+        "details-summary",
+        "figure-figcaption"
+      ],
+      "expectations": [
+        "Navigation uses <nav> with aria-label to identify purpose",
+        "Radio button groups are wrapped in <fieldset> with <legend>",
+        "Each radio button has an associated <label>",
+        "Quantity field uses <input type='number'>",
+        "Quantity input has an associated <label> using for/id",
+        "Product detail accordion uses <details> and <summary>",
+        "No JavaScript used for the accordion behavior",
+        "Product image uses <figure> with <figcaption>",
+        "Image has meaningful alt text",
+        "No <div role='button'> anywhere",
+        "No redundant ARIA landmark roles",
+        "<html> has a lang attribute",
+        "<title> includes product name",
+        "Add to cart button uses native <button> element",
+        "No title attribute misused as tooltip on interactive elements"
+      ]
+    },
+    {
+      "id": 5,
+      "use_case": "signup-page",
+      "prompt": "Build a complete, self-contained user signup page in a single HTML file. It must include: a registration form where every control has an associated <label>, inline validation errors linked via aria-describedby, a live error summary using role='alert', a password visibility toggle using a native <button> (not a checkbox), proper input types (email, password, text), and no use of the title attribute as a tooltip substitute. Style it with inline CSS.",
+      "expected_output": "Signup form with labels, aria-describedby errors, role='alert' summary, password toggle button, correct input types, no title abuse.",
+      "files": [],
+      "a11y_patterns": [
+        "label-per-control",
+        "aria-describedby-errors",
+        "role-alert",
+        "password-toggle-button",
+        "no-title-abuse"
+      ],
+      "expectations": [
+        "Every form control has an associated <label> using for/id",
+        "Error messages are linked to inputs via aria-describedby",
+        "Error summary or notification uses role='alert'",
+        "Password toggle uses <button type='button'>, not a checkbox",
+        "Password toggle button has descriptive accessible name",
+        "Email field uses <input type='email'>",
+        "Password field uses <input type='password'>",
+        "No title attribute on any form control or button",
+        "No placeholder used as a substitute for label",
+        "Submit uses <button type='submit'>",
+        "No <div role='button'> anywhere",
+        "<html> has a lang attribute",
+        "<title> is present and descriptive",
+        "No redundant ARIA landmark roles",
+        "Form is wrapped in a <main> landmark"
+      ]
+    },
+    {
+      "id": 6,
+      "use_case": "landing-page",
+      "prompt": "Build a complete, self-contained marketing landing page in a single HTML file. It must include: a skip-to-main-content link, a responsive hamburger menu button with aria-expanded toggling a navigation list, a correct heading hierarchy with h1 for the page headline, a feature toggle implemented as a switch button using the APG Switch Button pattern (role='switch' with aria-checked), a modal dialog using native <dialog> with showModal() for a lead capture form, and CSS respecting both prefers-reduced-motion and prefers-reduced-transparency. Style it with inline CSS.",
+      "expected_output": "Landing page with skip link, hamburger nav with aria-expanded, h1 headline, APG switch button, native dialog, and reduced-motion/transparency CSS.",
+      "files": [],
+      "a11y_patterns": [
+        "skip-link",
+        "hamburger-aria-expanded",
+        "heading-hierarchy",
+        "role-switch-aria-checked",
+        "native-dialog",
+        "reduced-motion-transparency-css"
+      ],
+      "expectations": [
+        "First focusable element is a skip link targeting #main-content",
+        "Hamburger button uses <button> with aria-expanded",
+        "Hamburger button aria-expanded toggles between 'true' and 'false' via JS",
+        "Navigation list is hidden/shown based on aria-expanded state",
+        "Single <h1> identifies the primary page headline",
+        "Section headings use <h2>, no skipped levels",
+        "Feature toggle uses role='switch' with aria-checked on a <button>",
+        "Switch button aria-checked toggles via JavaScript",
+        "Modal uses native <dialog> element with showModal()",
+        "No <div role='dialog'> or <div role='button'>",
+        "@media (prefers-reduced-motion: no-preference) wraps all transitions/animations",
+        "@media (prefers-reduced-transparency: no-preference) wraps any backdrop-filter or translucent backgrounds",
+        "<html> has a lang attribute",
+        "<title> is present and descriptive",
+        "No redundant ARIA landmark roles"
+      ]
+    }
+    ,{
+      "id": 7,
+      "use_case": "fix-inaccessible-markup",
+      "prompt": "Here's a navigation and search form from an existing site. Fix all the accessibility issues you can find — don't rebuild it from scratch, just fix what's broken.\n\n```html\n<div class=\"nav\">\n  <div class=\"logo\">Acme</div>\n  <div class=\"menu\">\n    <div onclick=\"toggleMenu()\" class=\"menu-toggle\">Menu</div>\n    <ul id=\"nav-links\" style=\"display:none\">\n      <li><a href=\"/\">Home</a></li>\n      <li><a href=\"/about\">About</a></li>\n      <li>\n        <a href=\"#\" onclick=\"toggleDropdown()\">Products</a>\n        <ul class=\"dropdown\">\n          <li><a href=\"/widgets\">Widgets</a></li>\n          <li><a href=\"/gadgets\">Gadgets</a></li>\n        </ul>\n      </li>\n    </ul>\n  </div>\n</div>\n<div class=\"search\">\n  <input type=\"text\" placeholder=\"Search...\" />\n  <div onclick=\"submitSearch()\" class=\"search-btn\">GO</div>\n</div>\n```",
+      "expected_output": "Navigation wrapped in <nav>. Menu toggle converted from div to <button> with aria-expanded and aria-controls. Dropdown trigger uses <button> with aria-expanded. Search input has an associated <label>. Search button converted from div to <button type='submit'> inside a <form>. No div role='button' anywhere. Placeholder not used as a label substitute.",
+      "files": [],
+      "a11y_patterns": [
+        "nav-element",
+        "div-to-button",
+        "aria-expanded",
+        "form-labels",
+        "no-div-role-button"
+      ],
+      "expectations": [
+        "Navigation is wrapped in a <nav> element",
+        "Menu toggle is converted from <div> to <button> with aria-expanded",
+        "aria-expanded on the menu toggle reflects open/closed state",
+        "Dropdown trigger is converted from <a> to <button> with aria-expanded",
+        "Dropdown does not use role='menu' or role='menuitem'",
+        "Search input has an associated <label> — not just a placeholder",
+        "Search button is converted from <div> to a native <button> element",
+        "No <div> or <a> is used as a button anywhere in the output",
+        "Placeholder is not relied on as the sole label for the search input"
+      ]
+    }
+  ]
+}
